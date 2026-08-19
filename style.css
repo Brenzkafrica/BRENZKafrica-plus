@@ -41,11 +41,12 @@ nav span {
   display: flex;
   align-items: center;
 
-  /* BRENZKafrica Plus background image */
   background:
     linear-gradient(
-      rgba(0, 0, 0, 0.25),
-      rgba(0, 0, 0, 0.25)
+      90deg,
+      #090909 0%,
+      #090909dd 42%,
+      #09090933 100%
     ),
     url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/IMG_1886.jpeg");
 
@@ -210,17 +211,7 @@ article p {
   .hero {
     min-height: 520px;
     padding: 90px 5%;
-
-    background:
-      linear-gradient(
-        rgba(0, 0, 0, 0.25),
-        rgba(0, 0, 0, 0.25)
-      ),
-      url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/IMG_1886.jpeg");
-
-    background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
   }
 
   .hero h1 {
