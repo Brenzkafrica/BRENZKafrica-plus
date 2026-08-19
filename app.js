@@ -1,110 +1,83 @@
-const modal = document.getElementById('modal');
-const title = document.getElementById('modalTitle');
-const text = document.getElementById('modalText');
-
+// ========================================
+// BRENZKAFRICA PLUS
+// VIDEO PLAYER
+// ========================================
 const VIDEO_URL =
-  'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov';
-
-const THUMBNAIL_URL =
-  'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg';
-
-let videoPlayer = null;
-let thumbnail = null;
-
-function openSubscribe() {
-  title.textContent = 'Join BRENZKafrica Plus';
-  text.textContent =
-    'Subscribe to unlock premium episodes and exclusive content.';
-
-  removeVideo();
-  modal.style.display = 'flex';
-}
-
-function openLogin() {
-  title.textContent = 'Sign in';
-  text.textContent =
-    'Account authentication will be connected in the next build.';
-
-  removeVideo();
-  modal.style.display = 'flex';
-}
-
-function watch(name) {
-  title.textContent = name;
-  text.textContent = 'Now playing on BRENZKafrica Plus.';
-
-  const card = document.querySelector('#modal .card');
-  const price = document.querySelector('.price');
-
-  if (!thumbnail) {
-    thumbnail = document.createElement('img');
-
-    thumbnail.src = THUMBNAIL_URL;
-    thumbnail.alt = name;
-
-    thumbnail.style.width = '100%';
-    thumbnail.style.maxHeight = '60vh';
-    thumbnail.style.objectFit = 'cover';
-    thumbnail.style.borderRadius = '10px';
-    thumbnail.style.display = 'block';
-    thumbnail.style.marginTop = '15px';
-
-    card.insertBefore(thumbnail, price);
+  "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg";
+// Find player elements
+const video = document.querySelector("video");
+const modal = document.querySelector(".modal");
+const title = document.querySelector(".modal h2");
+const text = document.querySelector(".modal p");
+// ========================================
+// WATCH VIDEO
+// ========================================
+function watch(name = "BRENZKafrica Cinema") {
+  if (!video) {
+    console.error("Video element not found.");
+    return;
   }
-
-  thumbnail.style.display = 'block';
-
-  if (!videoPlayer) {
-    videoPlayer = document.createElement('video');
-
-    videoPlayer.controls = true;
-    videoPlayer.playsInline = true;
-
-    videoPlayer.style.width = '100%';
-    videoPlayer.style.maxHeight = '60vh';
-    videoPlayer.style.borderRadius = '10px';
-    videoPlayer.style.marginTop = '10px';
-    videoPlayer.style.background = '#000';
-
-    card.insertBefore(videoPlayer, price);
+  // Set video source
+  video.src = VIDEO_URL;
+  // Load the new source
+  video.load();
+  // Open modal if available
+  if (modal) {
+    modal.style.display = "flex";
   }
-
-  videoPlayer.src = VIDEO_URL;
-  videoPlayer.style.display = 'block';
-
-  modal.style.display = 'flex';
-
-  videoPlayer.load();
+  // Update title
+  if (title) {
+    title.textContent = name;
+  }
+  // Update description
+  if (text) {
+    text.textContent = "Now playing on BRENZKafrica Plus.";
+  }
+  // Try to start playback
+  video
+    .play()
+    .then(() => {
+      console.log("BRENZKafrica Plus video started.");
+    })
+    .catch((error) => {
+      console.log(
+        "Playback requires the user to press Play.",
+        error
+      );
+    });
 }
-
-function removeVideo() {
-  if (videoPlayer) {
-    videoPlayer.pause();
-    videoPlayer.removeAttribute('src');
-    videoPlayer.load();
-    videoPlayer.style.display = 'none';
-  }
-
-  if (thumbnail) {
-    thumbnail.style.display = 'none';
+// ========================================
+// CLOSE PLAYER
+// ========================================
+function closePlayer() {
+  if (!video) return;
+  video.pause();
+  video.removeAttribute("src");
+  video.load();
+  if (modal) {
+    modal.style.display = "none";
   }
 }
-
-function demoSubscribe() {
-  alert(
-    'Demo subscription activated. Real payment + account access will be connected before launch.'
-  );
-
-  closeModal();
+// ========================================
+// CLOSE WHEN CLICKING OUTSIDE CARD
+// ========================================
+if (modal) {
+  modal.addEventListener("click", function (event) {
+    if (event.target === modal) {
+      closePlayer();
+    }
+  });
 }
-
-function closeModal() {
-  removeVideo();
-  modal.style.display = 'none';
-}
-
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) {
-    closeModal();
+// ========================================
+// ESCAPE KEY
+// ========================================
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closePlayer();
   }
 });
+// ========================================
+// GLOBAL FUNCTIONS
+// ========================================
+window.watch = watch;
+window.closePlayer = closePlayer;
