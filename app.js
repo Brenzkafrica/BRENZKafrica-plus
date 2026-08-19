@@ -9,6 +9,7 @@ const THUMBNAIL_URL =
   'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg';
 
 let videoPlayer = null;
+let thumbnail = null;
 
 function openSubscribe() {
   title.textContent = 'Join BRENZKafrica Plus';
@@ -32,6 +33,27 @@ function watch(name) {
   title.textContent = name;
   text.textContent = 'Now playing on BRENZKafrica Plus.';
 
+  const card = document.querySelector('#modal .card');
+  const price = document.querySelector('.price');
+
+  if (!thumbnail) {
+    thumbnail = document.createElement('img');
+
+    thumbnail.src = THUMBNAIL_URL;
+    thumbnail.alt = name;
+
+    thumbnail.style.width = '100%';
+    thumbnail.style.maxHeight = '60vh';
+    thumbnail.style.objectFit = 'cover';
+    thumbnail.style.borderRadius = '10px';
+    thumbnail.style.display = 'block';
+    thumbnail.style.marginTop = '15px';
+
+    card.insertBefore(thumbnail, price);
+  }
+
+  thumbnail.style.display = 'block';
+
   if (!videoPlayer) {
     videoPlayer = document.createElement('video');
 
@@ -41,35 +63,30 @@ function watch(name) {
     videoPlayer.style.width = '100%';
     videoPlayer.style.maxHeight = '60vh';
     videoPlayer.style.borderRadius = '10px';
-    videoPlayer.style.marginTop = '15px';
+    videoPlayer.style.marginTop = '10px';
     videoPlayer.style.background = '#000';
-
-    const card = document.querySelector('#modal .card');
-    const price = document.querySelector('.price');
 
     card.insertBefore(videoPlayer, price);
   }
 
   videoPlayer.src = VIDEO_URL;
-  videoPlayer.poster = THUMBNAIL_URL;
   videoPlayer.style.display = 'block';
 
   modal.style.display = 'flex';
 
   videoPlayer.load();
-
-  videoPlayer.play().catch(() => {
-    // Some browsers require the user to press Play manually.
-  });
 }
 
 function removeVideo() {
   if (videoPlayer) {
     videoPlayer.pause();
     videoPlayer.removeAttribute('src');
-    videoPlayer.removeAttribute('poster');
     videoPlayer.load();
     videoPlayer.style.display = 'none';
+  }
+
+  if (thumbnail) {
+    thumbnail.style.display = 'none';
   }
 }
 
