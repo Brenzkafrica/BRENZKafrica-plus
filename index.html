@@ -6,6 +6,9 @@
 
   <title>BRENZKafrica Plus</title>
 
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     * {
       margin: 0;
@@ -99,6 +102,10 @@
       font-weight: bold;
     }
 
+    .signin:hover {
+      transform: scale(1.04);
+    }
+
     /* =========================
        HERO
     ========================== */
@@ -186,8 +193,7 @@
     }
 
     .play-btn:hover,
-    .info-btn:hover,
-    .signin:hover {
+    .info-btn:hover {
       transform: scale(1.04);
     }
 
@@ -223,7 +229,6 @@
       gap: 12px;
       overflow-x: auto;
       padding-bottom: 15px;
-
       scrollbar-width: none;
     }
 
@@ -347,6 +352,197 @@
     }
 
     /* =========================
+       AUTHENTICATION
+    ========================== */
+
+    .auth-section {
+      display: none;
+
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0,0,0,0.88);
+
+      z-index: 10000;
+
+      align-items: center;
+      justify-content: center;
+
+      padding: 20px;
+    }
+
+    .auth-section.active {
+      display: flex;
+    }
+
+    .auth-box {
+      width: 100%;
+      max-width: 420px;
+
+      background: #111;
+
+      border: 1px solid #333;
+
+      border-radius: 12px;
+
+      padding: 30px;
+
+      position: relative;
+
+      box-shadow: 0 20px 70px rgba(0,0,0,0.8);
+    }
+
+    .auth-box h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .auth-description {
+      color: #888;
+      font-size: 14px;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .auth-box input {
+      width: 100%;
+
+      background: #050505;
+
+      color: white;
+
+      border: 1px solid #333;
+
+      padding: 14px;
+
+      border-radius: 6px;
+
+      margin-bottom: 12px;
+
+      outline: none;
+    }
+
+    .auth-box input:focus {
+      border-color: #777;
+    }
+
+    #auth-button {
+      width: 100%;
+
+      padding: 13px;
+
+      border: none;
+
+      border-radius: 6px;
+
+      background: #e50914;
+
+      color: white;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      margin-top: 5px;
+    }
+
+    #auth-button:hover {
+      background: #f40612;
+    }
+
+    #auth-message {
+      min-height: 20px;
+
+      margin-top: 15px;
+
+      color: #aaa;
+
+      font-size: 13px;
+
+      line-height: 1.4;
+    }
+
+    .auth-switch {
+      margin-top: 20px;
+
+      color: #888;
+
+      font-size: 13px;
+
+      text-align: center;
+    }
+
+    .auth-switch button {
+      background: none;
+
+      border: none;
+
+      color: white;
+
+      cursor: pointer;
+
+      font-weight: bold;
+    }
+
+    .auth-switch button:hover {
+      text-decoration: underline;
+    }
+
+    .auth-close {
+      position: absolute;
+
+      top: 12px;
+      right: 15px;
+
+      background: none;
+
+      border: none;
+
+      color: #aaa;
+
+      font-size: 26px;
+
+      cursor: pointer;
+    }
+
+    .auth-close:hover {
+      color: white;
+    }
+
+    /* =========================
+       LOGGED IN ACCOUNT
+    ========================== */
+
+    .account-status {
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .account-status span {
+      color: #ccc;
+      font-size: 13px;
+      max-width: 150px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .signout {
+      background: #222;
+      border: 1px solid #444;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .signout:hover {
+      background: #333;
+    }
+
+    /* =========================
        FOOTER
     ========================== */
 
@@ -418,6 +614,14 @@
         min-width: 140px;
         height: 210px;
       }
+
+      .auth-box {
+        padding: 25px 20px;
+      }
+
+      .account-status span {
+        display: none;
+      }
     }
   </style>
 </head>
@@ -451,12 +655,29 @@
         placeholder="Search"
       />
 
+      <!-- SIGN IN BUTTON -->
       <button
         class="signin"
+        id="signinButton"
         onclick="openAccount()"
       >
         Sign In
       </button>
+
+      <!-- LOGGED-IN STATUS -->
+      <div
+        class="account-status"
+        id="accountStatus"
+      >
+        <span id="userEmail"></span>
+
+        <button
+          class="signout"
+          onclick="signOut()"
+        >
+          Sign Out
+        </button>
+      </div>
 
     </div>
 
@@ -538,12 +759,15 @@
         <div
           class="card"
           onclick="playVideo(
-          'BRENZKafrica Cinema',
-          'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov'
+            'BRENZKafrica Cinema',
+            'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov'
           )"
         >
 
-          <img src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg">
+          <img
+            src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
+            alt="BRENZKafrica Cinema"
+          >
 
           <div class="card-overlay">
 
@@ -562,7 +786,10 @@
 
         <div class="card">
 
-          <img src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=800&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=800&q=80"
+            alt="African Stories"
+          >
 
           <div class="card-overlay">
 
@@ -581,7 +808,10 @@
 
         <div class="card">
 
-          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80"
+            alt="Behind The Vision"
+          >
 
           <div class="card-overlay">
 
@@ -617,12 +847,17 @@
 
         <div class="card portrait-card">
 
-          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80"
+            alt="BRENZKafrica Series"
+          >
 
           <div class="card-overlay">
+
             <div class="card-title">
               BRENZKafrica Series
             </div>
+
           </div>
 
         </div>
@@ -630,12 +865,17 @@
 
         <div class="card portrait-card">
 
-          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80"
+            alt="Cinema Stories"
+          >
 
           <div class="card-overlay">
+
             <div class="card-title">
               Cinema Stories
             </div>
+
           </div>
 
         </div>
@@ -643,12 +883,17 @@
 
         <div class="card portrait-card">
 
-          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80"
+            alt="Africa Unseen"
+          >
 
           <div class="card-overlay">
+
             <div class="card-title">
               Africa Unseen
             </div>
+
           </div>
 
         </div>
@@ -673,7 +918,10 @@
 
         <div class="card">
 
-          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80"
+            alt="African Cinema"
+          >
 
           <div class="card-overlay">
 
@@ -692,7 +940,10 @@
 
         <div class="card">
 
-          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80"
+            alt="The Journey"
+          >
 
           <div class="card-overlay">
 
@@ -728,7 +979,10 @@
 
         <div class="card">
 
-          <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80">
+          <img
+            src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80"
+            alt="African Vision"
+          >
 
           <div class="card-overlay">
 
@@ -782,6 +1036,73 @@
 
 
   <!-- =========================
+       AUTHENTICATION PANEL
+  ========================== -->
+
+  <div
+    id="auth-section"
+    class="auth-section"
+  >
+
+    <div class="auth-box">
+
+      <button
+        class="auth-close"
+        onclick="closeAccount()"
+      >
+        ×
+      </button>
+
+      <h2 id="auth-title">
+        Sign In
+      </h2>
+
+      <p class="auth-description">
+        Sign in to your BRENZKafrica Plus account
+        or create a new viewer account.
+      </p>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="Email address"
+        autocomplete="email"
+        required
+      />
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Password"
+        autocomplete="current-password"
+        required
+      />
+
+      <button
+        id="auth-button"
+        onclick="signIn()"
+      >
+        Sign In
+      </button>
+
+      <p id="auth-message"></p>
+
+      <p class="auth-switch">
+        Don't have an account?
+
+        <button
+          onclick="showSignUp()"
+        >
+          Create Account
+        </button>
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================
        FOOTER
   ========================== -->
 
@@ -808,9 +1129,42 @@
 
   <script>
 
-    const player = document.getElementById("player");
-    const video = document.getElementById("video");
-    const playerTitle = document.getElementById("playerTitle");
+    /* ==========================================
+       SUPABASE CONNECTION
+    ========================================== */
+
+    const SUPABASE_URL =
+      "https://fcddfmfpzbilagphpsxs.supabase.co";
+
+    /*
+      IMPORTANT:
+      Put your Supabase PUBLISHABLE / ANON KEY here.
+
+      DO NOT put your secret/service-role key here.
+    */
+
+    const SUPABASE_KEY =
+      "YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    /* ==========================================
+       VIDEO PLAYER
+    ========================================== */
+
+    const player =
+      document.getElementById("player");
+
+    const video =
+      document.getElementById("video");
+
+    const playerTitle =
+      document.getElementById("playerTitle");
 
 
     function playVideo(name, url) {
@@ -821,7 +1175,9 @@
 
       player.classList.add("active");
 
-      video.play();
+      video.play().catch(function(error) {
+        console.log("Video autoplay prevented:", error);
+      });
 
     }
 
@@ -830,6 +1186,7 @@
 
       playVideo(
         "BRENZKafrica Cinema",
+
         "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
       );
 
@@ -856,48 +1213,413 @@
     }
 
 
+    /* ==========================================
+       ACCOUNT PANEL
+    ========================================== */
+
     function openAccount() {
 
-      alert(
-        "Account system coming next — users will be able to Sign In or Create an Account."
-      );
+      document
+        .getElementById("auth-section")
+        .classList.add("active");
 
     }
 
 
-    /* SEARCH */
+    function closeAccount() {
 
-    const search = document.getElementById("search");
+      document
+        .getElementById("auth-section")
+        .classList.remove("active");
 
-    search.addEventListener("input", function() {
+      document
+        .getElementById("auth-message")
+        .textContent = "";
 
-      const query =
-        search.value.toLowerCase();
+    }
 
-      const cards =
-        document.querySelectorAll(".card");
 
-      cards.forEach(card => {
+    /* ==========================================
+       CREATE ACCOUNT
+    ========================================== */
 
-        const text =
-          card.innerText.toLowerCase();
+    async function signUp() {
 
-        if (text.includes(query)) {
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
 
-          card.style.display = "";
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+      const message =
+        document.getElementById("auth-message");
+
+
+      if (!email || !password) {
+
+        message.textContent =
+          "Please enter your email and password.";
+
+        return;
+
+      }
+
+
+      if (password.length < 6) {
+
+        message.textContent =
+          "Password must be at least 6 characters.";
+
+        return;
+
+      }
+
+
+      message.textContent =
+        "Creating your account...";
+
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        message.textContent =
+          error.message;
+
+        return;
+
+      }
+
+
+      if (data.user) {
+
+        message.textContent =
+          "Account created successfully. Please check your email to confirm your account.";
+
+      }
+
+    }
+
+
+    /* ==========================================
+       SIGN IN
+    ========================================== */
+
+    async function signIn() {
+
+      const email =
+        document
+          .getElementById("email")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("password")
+          .value;
+
+      const message =
+        document.getElementById("auth-message");
+
+
+      if (!email || !password) {
+
+        message.textContent =
+          "Please enter your email and password.";
+
+        return;
+
+      }
+
+
+      message.textContent =
+        "Signing you in...";
+
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+
+          email: email,
+
+          password: password
+
+        });
+
+
+      if (error) {
+
+        message.textContent =
+          error.message;
+
+        return;
+
+      }
+
+
+      if (data.user) {
+
+        message.textContent =
+          "Welcome to BRENZKafrica Plus!";
+
+        updateAccountUI(data.user);
+
+        setTimeout(function() {
+
+          closeAccount();
+
+        }, 800);
+
+      }
+
+    }
+
+
+    /* ==========================================
+       SWITCH TO CREATE ACCOUNT
+    ========================================== */
+
+    function showSignUp() {
+
+      document.getElementById("auth-title")
+        .textContent = "Create Account";
+
+
+      document.getElementById("auth-button")
+        .textContent = "Create Account";
+
+
+      document.getElementById("auth-button")
+        .onclick = signUp;
+
+
+      document.querySelector(".auth-switch")
+        .innerHTML =
+          'Already have an account? ' +
+          '<button onclick="showSignIn()">Sign In</button>';
+
+
+      document.getElementById("auth-message")
+        .textContent = "";
+
+    }
+
+
+    /* ==========================================
+       SWITCH TO SIGN IN
+    ========================================== */
+
+    function showSignIn() {
+
+      document.getElementById("auth-title")
+        .textContent = "Sign In";
+
+
+      document.getElementById("auth-button")
+        .textContent = "Sign In";
+
+
+      document.getElementById("auth-button")
+        .onclick = signIn;
+
+
+      document.querySelector(".auth-switch")
+        .innerHTML =
+          'Don\'t have an account? ' +
+          '<button onclick="showSignUp()">Create Account</button>';
+
+
+      document.getElementById("auth-message")
+        .textContent = "";
+
+    }
+
+
+    /* ==========================================
+       UPDATE ACCOUNT UI
+    ========================================== */
+
+    function updateAccountUI(user) {
+
+      const signinButton =
+        document.getElementById("signinButton");
+
+      const accountStatus =
+        document.getElementById("accountStatus");
+
+      const userEmail =
+        document.getElementById("userEmail");
+
+
+      if (user) {
+
+        signinButton.style.display = "none";
+
+        accountStatus.style.display = "flex";
+
+        userEmail.textContent =
+          user.email || "Viewer";
+
+      } else {
+
+        signinButton.style.display = "block";
+
+        accountStatus.style.display = "none";
+
+        userEmail.textContent = "";
+
+      }
+
+    }
+
+
+    /* ==========================================
+       SIGN OUT
+    ========================================== */
+
+    async function signOut() {
+
+      const { error } =
+        await supabaseClient.auth.signOut();
+
+
+      if (error) {
+
+        console.error(
+          "Sign out error:",
+          error
+        );
+
+        return;
+
+      }
+
+
+      updateAccountUI(null);
+
+    }
+
+
+    /* ==========================================
+       CHECK EXISTING SESSION
+    ========================================== */
+
+    async function checkSession() {
+
+      const { data, error } =
+        await supabaseClient.auth.getSession();
+
+
+      if (error) {
+
+        console.error(
+          "Session error:",
+          error
+        );
+
+        return;
+
+      }
+
+
+      if (data.session) {
+
+        updateAccountUI(
+          data.session.user
+        );
+
+      } else {
+
+        updateAccountUI(null);
+
+      }
+
+    }
+
+
+    checkSession();
+
+
+    /* ==========================================
+       AUTH STATE CHANGES
+    ========================================== */
+
+    supabaseClient.auth.onAuthStateChange(
+      function(event, session) {
+
+        if (session) {
+
+          updateAccountUI(
+            session.user
+          );
 
         } else {
 
-          card.style.display = "none";
+          updateAccountUI(null);
 
         }
 
-      });
+      }
+    );
 
-    });
+
+    /* ==========================================
+       SEARCH
+    ========================================== */
+
+    const search =
+      document.getElementById("search");
 
 
-    /* ESCAPE KEY */
+    search.addEventListener(
+      "input",
+      function() {
+
+        const query =
+          search.value.toLowerCase();
+
+
+        const cards =
+          document.querySelectorAll(".card");
+
+
+        cards.forEach(function(card) {
+
+          const text =
+            card.innerText.toLowerCase();
+
+
+          if (text.includes(query)) {
+
+            card.style.display = "";
+
+          } else {
+
+            card.style.display = "none";
+
+          }
+
+        });
+
+      }
+    );
+
+
+    /* ==========================================
+       ESCAPE KEY
+    ========================================== */
 
     document.addEventListener(
       "keydown",
@@ -906,6 +1628,8 @@
         if (event.key === "Escape") {
 
           closePlayer();
+
+          closeAccount();
 
         }
 
