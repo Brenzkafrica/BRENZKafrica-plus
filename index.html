@@ -1,1 +1,251 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>BRENZKafrica Plus</title><link rel='stylesheet' href='style.css'></head><body><nav><b>BRENZKafrica <span>PLUS</span></b><button onclick="openLogin()">Sign in</button></nav><main><section class='hero'><div><p class='eyebrow'>BRENZKAFRICA ORIGINALS</p><h1>Stories. Creativity. Unlimited Vision.</h1><p>Watch premium African stories, creator series and exclusive BRENZKafrica content.</p><button class='cta' onclick="openSubscribe()">Join BRENZKafrica Plus</button></div></section><section><h2>Featured Series</h2><div class='grid'><article><div class='thumb'>SERIES 01</div><h3>The Creative Journey</h3><p>Behind the vision of African creators.</p><button onclick="watch('The Creative Journey')">Watch</button></article><article><div class='thumb'>ORIGINAL</div><h3>BRENZKafrica Originals</h3><p>Exclusive stories made for Plus.</p><button onclick="watch('BRENZKafrica Originals')">Watch</button></article><article><div class='thumb'>MASTERCLASS</div><h3>Creative Masterclass</h3><p>Photography, retouching and color.</p><button onclick="watch('Creative Masterclass')">Watch</button></article></div></section></main><div id='modal' class='modal'><div class='card'><button class='x' onclick='closeModal()'>×</button><h2 id='modalTitle'>BRENZKafrica Plus</h2><p id='modalText'>Subscribe to unlock premium episodes.</p><div class='price'>$5 <small>/ month</small></div><button class='cta' onclick='demoSubscribe()'>Continue</button><p class='note'>Demo checkout only. Connect a real payment provider before launch.</p></div></div><script src='app.js'></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>BRENZKafrica Plus</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #050505;
+      color: white;
+    }
+
+    header {
+      padding: 20px;
+      text-align: center;
+      background: #000;
+      border-bottom: 1px solid #222;
+    }
+
+    header h1 {
+      font-size: 28px;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      margin-top: 6px;
+      color: #aaa;
+    }
+
+    .hero {
+      width: 100%;
+      max-width: 1100px;
+      margin: 25px auto;
+      padding: 15px;
+    }
+
+    .poster {
+      width: 100%;
+      max-height: 550px;
+      object-fit: cover;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .content {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .content h2 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .content p {
+      color: #aaa;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: white;
+      color: black;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .player-section {
+      display: none;
+      width: 100%;
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 15px;
+    }
+
+    video {
+      width: 100%;
+      max-height: 600px;
+      background: black;
+      border-radius: 12px;
+      display: block;
+    }
+
+    .now-playing {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .now-playing h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .now-playing p {
+      color: #aaa;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: #777;
+      border-top: 1px solid #222;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>BRENZKafrica Plus</h1>
+    <p>Stream African creativity. Unlimited vision.</p>
+  </header>
+
+
+  <section class="hero">
+
+    <!-- BRENZKafrica Cinema Poster -->
+    <img
+      class="poster"
+      src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
+      alt="BRENZKafrica Cinema"
+    >
+
+    <div class="content">
+
+      <h2>BRENZKafrica Cinema</h2>
+
+      <p>
+        Watch the latest BRENZKafrica cinematic content on BRENZKafrica Plus.
+      </p>
+
+      <button onclick="watchVideo()">
+        ▶ Watch Now
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- VIDEO PLAYER -->
+
+  <section class="player-section" id="playerSection">
+
+    <video
+      id="videoPlayer"
+      controls
+      playsinline
+      preload="metadata"
+    >
+      Your browser does not support HTML5 video.
+    </video>
+
+    <div class="now-playing">
+
+      <h3 id="videoTitle">
+        BRENZKafrica Cinema
+      </h3>
+
+      <p id="videoText">
+        Now playing on BRENZKafrica Plus.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <footer>
+    © 2026 BRENZKafrica Plus. All rights reserved.
+  </footer>
+
+
+  <script>
+
+    // BRENZKafrica Cinema Video
+    const videoUrl =
+      "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/sign/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV82ZjAxZGNkNy0wZjI0LTQzOGEtYTA4Zi03ZWIzN2VhNzllZjciLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJCUkVOWkthZnJpY2Egc2VyaWVzIGVwaXNvZGUgMS9CUkVOWkthZnJpY2EgY2luZW1hIGFkIC5tb3YiLCJzY29wZSI6ImRvd25sb2FkIiwiaWF0IjoxNzg3MDQzMzgxLCJleHAiOjE5NDQ3MjMzODF9.sWkXlv9zgQkH86rGdbilyhfvU28mMFt-6tgPXG3z1T0";
+
+
+    function watchVideo() {
+
+      const playerSection =
+        document.getElementById("playerSection");
+
+      const video =
+        document.getElementById("videoPlayer");
+
+      const title =
+        document.getElementById("videoTitle");
+
+      const text =
+        document.getElementById("videoText");
+
+
+      // Set video
+      video.src = videoUrl;
+
+      // Update information
+      title.textContent = "BRENZKafrica Cinema";
+
+      text.textContent =
+        "Now playing on BRENZKafrica Plus.";
+
+
+      // Show player
+      playerSection.style.display = "block";
+
+
+      // Load video
+      video.load();
+
+
+      // Scroll to player
+      playerSection.scrollIntoView({
+        behavior: "smooth"
+      });
+
+
+      // Start playback
+      video.play().catch(function(error) {
+
+        console.log(
+          "Autoplay was blocked. Press play to start the video."
+        );
+
+      });
+
+    }
+
+  </script>
+
+</body>
+</html>
