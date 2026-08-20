@@ -1,240 +1,462 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  background: #090909;
-  color: #f5f5f5;
-  font-family: Inter, Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #050505;
+  color: #fff;
 }
 
-/* NAVIGATION */
-nav {
-  height: 70px;
-  padding: 0 6%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #0b0b0b;
+/* =========================
+   HEADER
+========================= */
+
+header {
+  background: #000;
   border-bottom: 1px solid #222;
+  padding: 18px 20px;
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 100;
 }
 
-nav b {
-  font-size: 20px;
-  letter-spacing: 0.5px;
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-nav span {
-  font-size: 11px;
-  letter-spacing: 2px;
-  margin-left: 5px;
+.logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
-/* HERO */
-.hero {
-  min-height: 540px;
-  padding: 120px 6%;
+.plus {
+  font-weight: 400;
+}
+
+.menu {
+  color: #aaa;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+/* =========================
+   BRENZKAFRICA PLUS
+   PUBLIC PROFILE / AVATAR
+========================= */
+
+.header-profile {
   display: flex;
   align-items: center;
-
-  background:
-    linear-gradient(
-      90deg,
-      #090909 0%,
-      #090909dd 42%,
-      #09090933 100%
-    ),
-    url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/IMG_1886.jpeg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  gap: 12px;
 }
 
-.hero div {
-  max-width: 650px;
+.profile-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  border: 2px solid #222;
+  background: #111;
 }
 
-.eyebrow {
-  letter-spacing: 3px;
-  font-size: 12px;
-  font-weight: 700;
+/* =========================
+   MAIN
+========================= */
+
+main {
+  max-width: 1200px;
+  margin: auto;
+  padding-bottom: 60px;
 }
 
-.hero h1 {
-  font-size: clamp(42px, 7vw, 82px);
-  line-height: 0.98;
-  margin: 18px 0;
+/* =========================
+   FEATURED
+========================= */
+
+.featured {
+  padding: 25px 15px;
 }
 
-.hero p {
-  font-size: 18px;
-  line-height: 1.6;
+.featured-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #111;
+}
+
+.featured-card img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  display: block;
+}
+
+.featured-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 70px 25px 25px;
+  background: linear-gradient(
+    transparent,
+    rgba(0, 0, 0, 0.95)
+  );
+}
+
+.featured-overlay h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.featured-overlay p {
   color: #ccc;
+  max-width: 650px;
+  line-height: 1.5;
+  margin-bottom: 18px;
 }
 
-/* BUTTONS */
-.cta,
-article button,
-nav button {
-  border: 0;
-  border-radius: 8px;
-  padding: 13px 20px;
-  font-weight: 700;
-  cursor: pointer;
-}
+/* =========================
+   WATCH BUTTON
+========================= */
 
-.cta {
+.watch-button {
+  border: none;
   background: #fff;
   color: #000;
-}
-
-nav button,
-article button {
-  background: #222;
-  color: #fff;
-}
-
-/* SECTIONS */
-section:not(.hero) {
-  padding: 55px 6%;
-}
-
-h2 {
-  font-size: 30px;
-}
-
-/* CONTENT GRID */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(240px, 1fr)
-  );
-  gap: 22px;
-}
-
-/* EPISODE CARDS */
-article {
-  background: #121212;
-  padding: 14px;
-  border-radius: 12px;
-}
-
-/* THUMBNAILS */
-.thumb {
-  height: 170px;
-  border-radius: 8px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #1c1c1c,
-      #49301f
-    );
-
-  display: flex;
-  align-items: end;
-  padding: 18px;
-  font-weight: 800;
-  letter-spacing: 2px;
-}
-
-article p {
-  color: #aaa;
-}
-
-/* MODAL */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: #000b;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  z-index: 4;
-}
-
-/* MODAL CARD */
-.card {
-  background: #151515;
-  border: 1px solid #333;
-  border-radius: 16px;
-  padding: 32px;
-  max-width: 430px;
-  width: 100%;
-  position: relative;
-}
-
-/* CLOSE BUTTON */
-.x {
-  position: absolute;
-  right: 15px;
-  top: 10px;
-  background: none;
-  border: 0;
-  color: #fff;
-  font-size: 28px;
+  padding: 13px 24px;
+  border-radius: 7px;
+  font-size: 15px;
+  font-weight: bold;
   cursor: pointer;
 }
 
-/* PRICE */
-.price {
-  font-size: 45px;
-  font-weight: 800;
-  margin: 25px 0;
+.watch-button:hover {
+  opacity: 0.85;
 }
 
-.price small {
-  font-size: 15px;
+/* =========================
+   SECTIONS
+========================= */
+
+.section {
+  padding: 10px 15px 25px;
+}
+
+.section-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   PLAYLIST
+========================= */
+
+.playlist {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(210px, 1fr)
+  );
+  gap: 18px;
+}
+
+.video-card {
+  background: #111;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.video-card:hover {
+  transform: translateY(-4px);
+}
+
+.thumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #222;
+  overflow: hidden;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.play-icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.78);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+}
+
+.card-info {
+  padding: 13px;
+}
+
+.card-info h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.card-info p {
+  font-size: 13px;
+  color: #888;
+}
+
+/* =========================
+   VIDEO PLAYER
+========================= */
+
+.player-section {
+  display: none;
+  padding: 20px 15px 35px;
+}
+
+.player-container {
+  background: #000;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.75);
+  border: 1px solid #1d1d1d;
+}
+
+.player-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #090909;
+  border-bottom: 1px solid #222;
+}
+
+.back-button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.back-button:hover {
   color: #aaa;
 }
 
-/* NOTE */
-.note {
-  font-size: 12px;
+.player-label {
   color: #777;
-  margin-top: 20px;
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
-/* MOBILE */
+.video-wrapper {
+  background: #000;
+}
+
+video {
+  width: 100%;
+  max-height: 650px;
+  display: block;
+  background: #000;
+}
+
+.player-info {
+  padding: 18px;
+  background: #111;
+}
+
+.player-info h2 {
+  font-size: 22px;
+  margin-bottom: 7px;
+}
+
+.player-info p {
+  color: #999;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* =========================
+   PLAYER ACTIONS
+========================= */
+
+.player-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.player-action {
+  background: #181818;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 9px 15px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.player-action:hover {
+  background: #252525;
+}
+
+.close-player {
+  margin-top: 12px;
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+  padding: 9px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* =========================
+   NEXT EPISODE
+========================= */
+
+.next-episode {
+  margin-top: 18px;
+  padding: 16px;
+  background: #151515;
+  border: 1px solid #252525;
+  border-radius: 9px;
+}
+
+.next-episode-label {
+  color: #777;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.next-episode h3 {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.next-episode p {
+  color: #888;
+  font-size: 13px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+  border-top: 1px solid #222;
+  text-align: center;
+  padding: 35px 20px;
+  color: #777;
+  font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 600px) {
-  nav {
-    padding: 0 5%;
+
+  .logo {
+    font-size: 20px;
   }
 
-  .hero {
-    min-height: 520px;
-    padding: 90px 5%;
-    background-position: center;
+  .header-profile {
+    gap: 8px;
   }
 
-  .hero h1 {
-    font-size: clamp(40px, 13vw, 60px);
+  .profile-avatar {
+    width: 38px;
+    height: 38px;
   }
 
-  .hero p {
-    font-size: 16px;
+  .menu {
+    font-size: 11px;
   }
 
-  section:not(.hero) {
-    padding: 40px 5%;
+  .featured-card img {
+    height: 350px;
   }
 
-  h2 {
-    font-size: 26px;
+  .featured-overlay {
+    padding: 55px 18px 18px;
   }
 
-  .grid {
-    grid-template-columns: 1fr;
+  .featured-overlay h1 {
+    font-size: 25px;
   }
 
-  .thumb {
-    height: 190px;
+  .featured-overlay p {
+    font-size: 14px;
+  }
+
+  .playlist {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card-info {
+    padding: 10px;
+  }
+
+  .card-info h3 {
+    font-size: 14px;
+  }
+
+  .card-info p {
+    font-size: 12px;
+  }
+
+  .play-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 17px;
+  }
+
+  .player-section {
+    padding: 20px 10px 35px;
+  }
+
+  .player-top {
+    padding: 10px 12px;
+  }
+
+  .player-info {
+    padding: 16px;
+  }
+
+  .player-info h2 {
+    font-size: 20px;
+  }
+
+  video {
+    max-height: none;
   }
 }
