@@ -1,103 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>const SUPABASE_URL =
-  "https://fcddfmfpzbilagphpsxs.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>BRENZKafrica Plus</title>
 
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
     body {
+      background: #080808;
+      color: white;
       font-family: Arial, Helvetica, sans-serif;
-      background: #050505;
-      color: #ffffff;
+      overflow-x: hidden;
     }
 
-    /* HEADER */
+    /* =========================
+       NAVBAR
+    ========================== */
 
     header {
-      background: #000;
-      border-bottom: 1px solid #222;
-      padding: 18px 20px;
-    }
-
-    .header-inner {
-      max-width: 1200px;
-      margin: auto;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      z-index: 1000;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
+
+      padding: 0 5%;
+
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,0.95),
+        rgba(0,0,0,0)
+      );
     }
 
     .logo {
       font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-weight: 900;
+      letter-spacing: -1px;
     }
 
-    .plus {
-      font-weight: 400;
+    .logo span {
+      color: #e50914;
     }
 
-    .menu {
-      color: #aaa;
-      font-size: 13px;
-      letter-spacing: 1px;
+    nav {
+      display: flex;
+      gap: 25px;
+      margin-left: 30px;
+      flex: 1;
     }
 
-    /* MAIN */
+    nav a {
+      color: #ddd;
+      text-decoration: none;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      color: white;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .search {
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #555;
+      color: white;
+      padding: 9px 12px;
+      border-radius: 4px;
+      outline: none;
+      width: 150px;
+    }
+
+    .signin {
+      background: #e50914;
+      border: none;
+      color: white;
+      padding: 9px 18px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+      height: 90vh;
+      min-height: 600px;
+
+      position: relative;
+
+      display: flex;
+      align-items: center;
+
+      padding: 0 5%;
+
+      background:
+        linear-gradient(
+          90deg,
+          rgba(0,0,0,0.95) 0%,
+          rgba(0,0,0,0.65) 45%,
+          rgba(0,0,0,0.1) 100%
+        ),
+        linear-gradient(
+          0deg,
+          #080808 0%,
+          transparent 30%
+        ),
+        url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg");
+
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero-content {
+      max-width: 650px;
+      padding-top: 100px;
+    }
+
+    .hero-label {
+      color: #e50914;
+      font-weight: bold;
+      letter-spacing: 3px;
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+
+    .hero h1 {
+      font-size: clamp(45px, 7vw, 85px);
+      line-height: 0.95;
+      margin-bottom: 20px;
+      font-weight: 900;
+    }
+
+    .hero p {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #ddd;
+      max-width: 600px;
+      margin-bottom: 25px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .play-btn,
+    .info-btn {
+      border: none;
+      padding: 13px 25px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .play-btn {
+      background: white;
+      color: black;
+    }
+
+    .info-btn {
+      background: rgba(100,100,100,0.7);
+      color: white;
+    }
+
+    .play-btn:hover,
+    .info-btn:hover,
+    .signin:hover {
+      transform: scale(1.04);
+    }
+
+    /* =========================
+       CONTENT
+    ========================== */
 
     main {
-      max-width: 1200px;
-      margin: auto;
-      padding-bottom: 60px;
-    }
-
-    /* FEATURED */
-
-    .featured {
-      padding: 25px 15px;
-    }
-
-    .featured-card {
+      margin-top: -80px;
       position: relative;
+      z-index: 2;
+    }
+
+    .section {
+      padding: 20px 5%;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 22px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
+
+    .section-subtitle {
+      color: #999;
+      margin-top: -10px;
+      margin-bottom: 18px;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 15px;
+
+      scrollbar-width: none;
+    }
+
+    .row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .card {
+      min-width: 220px;
+      height: 125px;
+
+      border-radius: 5px;
       overflow: hidden;
-      border-radius: 15px;
-      background: #111;
+
+      position: relative;
+
+      background: #181818;
+
+      cursor: pointer;
+
+      transition: 0.3s;
     }
 
-    .featured-card img {
+    .card:hover {
+      transform: scale(1.08);
+      z-index: 10;
+    }
+
+    .card img {
       width: 100%;
-      height: 500px;
+      height: 100%;
       object-fit: cover;
-      display: block;
     }
 
-    .featured-overlay {
+    .card-overlay {
       position: absolute;
+      bottom: 0;
       left: 0;
       right: 0;
-      bottom: 0;
 
-      padding: 80px 25px 25px;
+      padding: 35px 10px 10px;
 
       background: linear-gradient(
         transparent,
@@ -105,601 +272,475 @@ const supabaseClient =
       );
     }
 
-    .featured-overlay h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    .featured-overlay p {
-      color: #ccc;
-      max-width: 650px;
-      line-height: 1.5;
-      margin-bottom: 18px;
-    }
-
-    /* BUTTON */
-
-    .watch-button {
-      border: none;
-      background: #fff;
-      color: #000;
-
-      padding: 13px 24px;
-
-      border-radius: 7px;
-
-      font-size: 15px;
+    .card-title {
+      font-size: 14px;
       font-weight: bold;
-
-      cursor: pointer;
     }
 
-    .watch-button:hover {
-      opacity: 0.85;
+    .card-type {
+      font-size: 11px;
+      color: #bbb;
+      margin-top: 4px;
     }
 
-    /* SECTIONS */
+    /* =========================
+       BIG CARDS
+    ========================== */
 
-    .section {
-      padding: 10px 15px 25px;
+    .portrait-card {
+      min-width: 180px;
+      height: 270px;
     }
 
-    .section-title {
-      font-size: 22px;
-      margin-bottom: 15px;
-    }
+    /* =========================
+       VIDEO PLAYER
+    ========================== */
 
-    /* PLAYLIST */
+    .player {
+      display: none;
 
-    .playlist {
-      display: grid;
+      position: fixed;
+      inset: 0;
 
-      grid-template-columns:
-        repeat(
-          auto-fill,
-          minmax(210px, 1fr)
-        );
+      background: #000;
 
-      gap: 18px;
-    }
-
-    /* VIDEO CARD */
-
-    .video-card {
-      background: #111;
-
-      border-radius: 10px;
-
-      overflow: hidden;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.2s ease;
-    }
-
-    .video-card:hover {
-      transform: translateY(-4px);
-    }
-
-    /* THUMBNAIL */
-
-    .thumbnail {
-      position: relative;
-
-      width: 100%;
-
-      aspect-ratio: 16 / 9;
-
-      background: #222;
-
-      overflow: hidden;
-    }
-
-    .thumbnail img {
-      width: 100%;
-      height: 100%;
-
-      object-fit: cover;
-
-      display: block;
-    }
-
-    .play-icon {
-      position: absolute;
-
-      left: 50%;
-      top: 50%;
-
-      transform:
-        translate(-50%, -50%);
-
-      width: 48px;
-      height: 48px;
-
-      border-radius: 50%;
-
-      background:
-        rgba(0,0,0,0.78);
-
-      display: flex;
+      z-index: 5000;
 
       align-items: center;
       justify-content: center;
-
-      font-size: 20px;
+      flex-direction: column;
     }
 
-    /* CARD INFO */
-
-    .card-info {
-      padding: 13px;
+    .player.active {
+      display: flex;
     }
 
-    .card-info h3 {
-      font-size: 16px;
-      margin-bottom: 6px;
-    }
-
-    .card-info p {
-      font-size: 13px;
-      color: #888;
-    }
-
-    /* PLAYER */
-
-    .player-section {
-      display: none;
-      padding: 20px 15px 35px;
-    }
-
-    .player-container {
-      background: #000;
-
-      border-radius: 12px;
-
-      overflow: hidden;
-
-      border: 1px solid #222;
-    }
-
-    video {
-      width: 100%;
-
-      display: block;
-
-      background: #000;
-
-      max-height: 650px;
-    }
-
-    .player-info {
-      padding: 18px;
-      background: #111;
-    }
-
-    .player-info h2 {
-      font-size: 22px;
-      margin-bottom: 7px;
-    }
-
-    .player-info p {
-      color: #999;
-      font-size: 14px;
+    .player video {
+      width: 90%;
+      max-height: 80vh;
+      background: black;
     }
 
     .close-player {
-      margin-top: 15px;
+      position: absolute;
+      top: 25px;
+      right: 30px;
 
-      background: transparent;
+      background: rgba(255,255,255,0.15);
+      color: white;
 
-      color: #aaa;
+      border: none;
+      border-radius: 50%;
 
-      border: 1px solid #444;
+      width: 45px;
+      height: 45px;
 
-      padding: 9px 15px;
-
-      border-radius: 6px;
+      font-size: 22px;
 
       cursor: pointer;
     }
 
-    /* FOOTER */
-
-    footer {
-      border-top: 1px solid #222;
-
-      text-align: center;
-
-      padding: 35px 20px;
-
-      color: #777;
-
-      font-size: 13px;
+    .player-title {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
     }
 
-    /* MOBILE */
+    /* =========================
+       FOOTER
+    ========================== */
 
-    @media (max-width: 600px) {
+    footer {
+      padding: 60px 5%;
+      color: #777;
+      text-align: center;
+      border-top: 1px solid #222;
+      margin-top: 40px;
+    }
+
+    /* =========================
+       MOBILE
+    ========================== */
+
+    @media (max-width: 700px) {
+
+      header {
+        height: 60px;
+        padding: 0 18px;
+      }
 
       .logo {
-        font-size: 20px;
+        font-size: 19px;
       }
 
-      .featured-card img {
-        height: 350px;
+      nav {
+        display: none;
       }
 
-      .featured-overlay {
-        padding:
-          55px 18px 18px;
+      .search {
+        width: 90px;
+        padding: 7px;
       }
 
-      .featured-overlay h1 {
-        font-size: 25px;
-      }
-
-      .featured-overlay p {
-        font-size: 14px;
-      }
-
-      .playlist {
-        grid-template-columns:
-          repeat(2, 1fr);
-
-        gap: 12px;
-      }
-
-      .card-info {
-        padding: 10px;
-      }
-
-      .card-info h3 {
-        font-size: 14px;
-      }
-
-      .card-info p {
+      .signin {
+        padding: 8px 12px;
         font-size: 12px;
       }
 
-      .play-icon {
-        width: 40px;
-        height: 40px;
-        font-size: 17px;
+      .hero {
+        height: 75vh;
+        min-height: 500px;
+        padding: 0 20px;
       }
 
-    }
+      .hero-content {
+        padding-top: 80px;
+      }
 
+      .hero h1 {
+        font-size: 48px;
+      }
+
+      .hero p {
+        font-size: 15px;
+      }
+
+      .section {
+        padding: 15px 20px;
+      }
+
+      .card {
+        min-width: 170px;
+        height: 100px;
+      }
+
+      .portrait-card {
+        min-width: 140px;
+        height: 210px;
+      }
+    }
   </style>
 </head>
 
-
 <body>
 
-
-  <!-- HEADER -->
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
   <header>
 
-    <div class="header-inner">
+    <div class="logo">
+      BRENZK<span>africa</span>+
+    </div>
 
-      <div class="logo">
-        BRENZKafrica
-        <span class="plus">Plus</span>
-      </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#originals">Originals</a>
+      <a href="#series">Series</a>
+      <a href="#films">Films</a>
+      <a href="#documentaries">Documentaries</a>
+    </nav>
 
-      <div class="menu">
-  <button
-    class="account-button"
-    onclick="openAccount()"
-  >
-    ACCOUNT
-  </button>
-</div>
+    <div class="nav-right">
+
+      <input
+        class="search"
+        id="search"
+        type="text"
+        placeholder="Search"
+      />
+
+      <button
+        class="signin"
+        onclick="openAccount()"
+      >
+        Sign In
+      </button>
+
+    </div>
+
   </header>
 
 
+  <!-- =========================
+       HERO
+  ========================== -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <div class="hero-label">
+        BRENZKAFRICA ORIGINAL
+      </div>
+
+      <h1>
+        Stories.<br>
+        Creativity.<br>
+        Unlimited Vision.
+      </h1>
+
+      <p>
+        Discover original African stories, films, series,
+        documentaries and creative work from BRENZKafrica.
+      </p>
+
+      <div class="hero-buttons">
+
+        <button
+          class="play-btn"
+          onclick="playFeatured()"
+        >
+          ▶ Play
+        </button>
+
+        <button
+          class="info-btn"
+          onclick="showInfo()"
+        >
+          ⓘ More Info
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================
+       CONTENT
+  ========================== -->
+
   <main>
 
-
-    <!-- FEATURED -->
-
-    <section class="featured">
-
-      <div class="featured-card">
-
-        <img
-          src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-          alt="BRENZKafrica Cinema"
-        >
-
-        <div class="featured-overlay">
-
-          <h1>
-            BRENZKafrica ORIGINALS
-          </h1>
-
-          <p>
-            Watch premium African stories, creator series and exclusive BRENZKafrica content.
-          </p>
-
-          <button
-            class="watch-button"
-            onclick="playVideo()"
-          >
-            ▶ Watch Now
-          </button>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- LATEST -->
-
-    <section class="section">
-
-      <h2 class="section-title">
-        Latest
-      </h2>
-
-      <div class="playlist">
-
-
-        <!-- EPISODE 1 -->
-
-        <div
-          class="video-card"
-          onclick="playVideo()"
-        >
-
-          <div class="thumbnail">
-
-            <img
-              src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-              alt="BRENZKafrica Cinema"
-            >
-
-            <div class="play-icon">
-              ▶
-            </div>
-
-          </div>
-
-          <div class="card-info">
-
-            <h3>
-              BRENZKafrica Cinema
-            </h3>
-
-            <p>
-              Episode 1 • Watch now
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <!-- EPISODE 2 -->
-
-        <div class="video-card">
-
-          <div class="thumbnail">
-
-            <img
-              src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-              alt="Episode 2"
-            >
-
-            <div class="play-icon">
-              🔒
-            </div>
-
-          </div>
-
-          <div class="card-info">
-
-            <h3>
-              Episode 2
-            </h3>
-
-            <p>
-              Coming soon
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <!-- EPISODE 3 -->
-
-        <div class="video-card">
-
-          <div class="thumbnail">
-
-            <img
-              src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-              alt="Episode 3"
-            >
-
-            <div class="play-icon">
-              🔒
-            </div>
-
-          </div>
-
-          <div class="card-info">
-
-            <h3>
-              Episode 3
-            </h3>
-
-            <p>
-              Coming soon
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <!-- EPISODE 4 -->
-
-        <div class="video-card">
-
-          <div class="thumbnail">
-
-            <img
-              src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-              alt="Episode 4"
-            >
-
-            <div class="play-icon">
-              🔒
-            </div>
-
-          </div>
-
-          <div class="card-info">
-
-            <h3>
-              Episode 4
-            </h3>
-
-            <p>
-              Coming soon
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- BRENZKAFRICA SERIES -->
-
-    <section class="section">
-
-      <h2 class="section-title">
-        BRENZKafrica Series
-      </h2>
-
-      <div class="playlist">
-
-
-        <!-- SERIES EPISODE 1 -->
-
-        <div
-          class="video-card"
-          onclick="playVideo()"
-        >
-
-          <div class="thumbnail">
-
-            <img
-              src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-              alt="Series Episode 1"
-            >
-
-            <div class="play-icon">
-              ▶
-            </div>
-
-          </div>
-
-          <div class="card-info">
-
-            <h3>
-              Episode 1
-            </h3>
-
-            <p>
-              BRENZKafrica Cinema
-            </p>
-
-          </div>
-
-        </div>
-
-
-        <!-- SERIES EPISODE 2 -->
-
-        <div class="video-card">
-
-          <div class="thumbnail">
-
-            <img
-              src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-              alt="Series Episode 2"
-            >
-
-            <div class="play-icon">
-              🔒
-            </div>
-
-          </div>
-
-          <div class="card-info">
-
-            <h3>
-              Episode 2
-            </h3>
-
-            <p>
-              Coming soon
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- VIDEO PLAYER -->
+    <!-- ORIGINALS -->
 
     <section
-      class="player-section"
-      id="playerSection"
+      class="section"
+      id="originals"
     >
 
-      <div class="player-container">
+      <h2 class="section-title">
+        BRENZKafrica Originals
+      </h2>
 
-        <video
-          id="videoPlayer"
-          controls
-          playsinline
-          preload="metadata"
+      <p class="section-subtitle">
+        Stories created by Africa. For the world.
+      </p>
+
+      <div
+        class="row"
+        id="originalsRow"
+      >
+
+        <div
+          class="card"
+          onclick="playVideo(
+          'BRENZKafrica Cinema',
+          'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov'
+          )"
         >
-          Your browser does not support HTML5 video.
-        </video>
 
-        <div class="player-info">
+          <img src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg">
 
-          <h2>
-            BRENZKafrica Cinema
-          </h2>
+          <div class="card-overlay">
 
-          <p>
-            Episode 1 • Now playing on
-            BRENZKafrica Plus.
-          </p>
+            <div class="card-title">
+              BRENZKafrica Cinema
+            </div>
 
-          <button
-            class="close-player"
-            onclick="closePlayer()"
-          >
-            Close Player
-          </button>
+            <div class="card-type">
+              Original • Film
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <img src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=800&q=80">
+
+          <div class="card-overlay">
+
+            <div class="card-title">
+              African Stories
+            </div>
+
+            <div class="card-type">
+              Original Series
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80">
+
+          <div class="card-overlay">
+
+            <div class="card-title">
+              Behind The Vision
+            </div>
+
+            <div class="card-type">
+              Documentary
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SERIES -->
+
+    <section
+      class="section"
+      id="series"
+    >
+
+      <h2 class="section-title">
+        Series
+      </h2>
+
+      <div class="row">
+
+        <div class="card portrait-card">
+
+          <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80">
+
+          <div class="card-overlay">
+            <div class="card-title">
+              BRENZKafrica Series
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card portrait-card">
+
+          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80">
+
+          <div class="card-overlay">
+            <div class="card-title">
+              Cinema Stories
+            </div>
+          </div>
+
+        </div>
+
+
+        <div class="card portrait-card">
+
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80">
+
+          <div class="card-overlay">
+            <div class="card-title">
+              Africa Unseen
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FILMS -->
+
+    <section
+      class="section"
+      id="films"
+    >
+
+      <h2 class="section-title">
+        Films
+      </h2>
+
+      <div class="row">
+
+        <div class="card">
+
+          <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80">
+
+          <div class="card-overlay">
+
+            <div class="card-title">
+              African Cinema
+            </div>
+
+            <div class="card-type">
+              Film
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="card">
+
+          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80">
+
+          <div class="card-overlay">
+
+            <div class="card-title">
+              The Journey
+            </div>
+
+            <div class="card-type">
+              Film
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- DOCUMENTARIES -->
+
+    <section
+      class="section"
+      id="documentaries"
+    >
+
+      <h2 class="section-title">
+        Documentaries
+      </h2>
+
+      <div class="row">
+
+        <div class="card">
+
+          <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80">
+
+          <div class="card-overlay">
+
+            <div class="card-title">
+              African Vision
+            </div>
+
+            <div class="card-type">
+              Documentary
+            </div>
+
+          </div>
 
         </div>
 
@@ -710,87 +751,168 @@ const supabaseClient =
   </main>
 
 
-  <!-- FOOTER -->
+  <!-- =========================
+       VIDEO PLAYER
+  ========================== -->
+
+  <div
+    class="player"
+    id="player"
+  >
+
+    <button
+      class="close-player"
+      onclick="closePlayer()"
+    >
+      ×
+    </button>
+
+    <video
+      id="video"
+      controls
+      playsinline
+    ></video>
+
+    <div
+      class="player-title"
+      id="playerTitle"
+    ></div>
+
+  </div>
+
+
+  <!-- =========================
+       FOOTER
+  ========================== -->
 
   <footer>
 
-    © 2026 BRENZKafrica Plus
+    <h3>BRENZKafrica+</h3>
+
+    <p>
+      African Creativity. Unlimited Vision.
+    </p>
+
+    <br>
+
+    <p>
+      © 2026 BRENZKafrica. All rights reserved.
+    </p>
 
   </footer>
 
 
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
   <script>
 
-    /*
-      CURRENT VIDEO SOURCE
-    */
-
-    const videoUrl =
-      "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov";
+    const player = document.getElementById("player");
+    const video = document.getElementById("video");
+    const playerTitle = document.getElementById("playerTitle");
 
 
-    /*
-      PLAY VIDEO
-    */
+    function playVideo(name, url) {
 
-    function playVideo() {
+      playerTitle.textContent = name;
 
-      const player =
-        document.getElementById(
-          "videoPlayer"
-        );
+      video.src = url;
 
-      const section =
-        document.getElementById(
-          "playerSection"
-        );
+      player.classList.add("active");
 
-
-      player.src = videoUrl;
-
-      section.style.display = "block";
-
-
-      section.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
-
-
-      player.load();
+      video.play();
 
     }
 
 
-    /*
-      CLOSE PLAYER
-    */
+    function playFeatured() {
+
+      playVideo(
+        "BRENZKafrica Cinema",
+        "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
+      );
+
+    }
+
 
     function closePlayer() {
 
-      const player =
-        document.getElementById(
-          "videoPlayer"
-        );
+      video.pause();
 
-      const section =
-        document.getElementById(
-          "playerSection"
-        );
+      video.src = "";
 
-
-      player.pause();
-
-      player.removeAttribute("src");
-
-      player.load();
-
-      section.style.display = "none";
+      player.classList.remove("active");
 
     }
 
-  </script>
 
+    function showInfo() {
+
+      alert(
+        "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
+      );
+
+    }
+
+
+    function openAccount() {
+
+      alert(
+        "Account system coming next — users will be able to Sign In or Create an Account."
+      );
+
+    }
+
+
+    /* SEARCH */
+
+    const search = document.getElementById("search");
+
+    search.addEventListener("input", function() {
+
+      const query =
+        search.value.toLowerCase();
+
+      const cards =
+        document.querySelectorAll(".card");
+
+      cards.forEach(card => {
+
+        const text =
+          card.innerText.toLowerCase();
+
+        if (text.includes(query)) {
+
+          card.style.display = "";
+
+        } else {
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+    });
+
+
+    /* ESCAPE KEY */
+
+    document.addEventListener(
+      "keydown",
+      function(event) {
+
+        if (event.key === "Escape") {
+
+          closePlayer();
+
+        }
+
+      }
+    );
+
+  </script>
 
 </body>
 </html>
