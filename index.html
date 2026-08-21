@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>BRENZKafrica Plus</title>
 
@@ -10,7 +10,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-
     * {
       margin: 0;
       padding: 0;
@@ -23,10 +22,6 @@
       font-family: Arial, Helvetica, sans-serif;
       overflow-x: hidden;
     }
-
-    /* =========================
-       HEADER
-    ========================= */
 
     header {
       position: fixed;
@@ -87,10 +82,8 @@
       background: rgba(0,0,0,0.7);
       border: 1px solid #555;
       color: white;
-
       padding: 9px 12px;
       border-radius: 4px;
-
       outline: none;
       width: 150px;
     }
@@ -99,10 +92,8 @@
       background: #e50914;
       border: none;
       color: white;
-
       padding: 9px 18px;
       border-radius: 4px;
-
       cursor: pointer;
       font-weight: bold;
     }
@@ -110,10 +101,6 @@
     .signin:hover {
       transform: scale(1.04);
     }
-
-    /* =========================
-       HERO
-    ========================= */
 
     .hero {
       height: 90vh;
@@ -152,31 +139,23 @@
     .hero-label {
       color: #e50914;
       font-weight: bold;
-
       letter-spacing: 3px;
       font-size: 14px;
-
       margin-bottom: 15px;
     }
 
     .hero h1 {
       font-size: clamp(45px, 7vw, 85px);
-
       line-height: 0.95;
-
       margin-bottom: 20px;
-
       font-weight: 900;
     }
 
     .hero p {
       font-size: 18px;
       line-height: 1.6;
-
       color: #ddd;
-
       max-width: 600px;
-
       margin-bottom: 25px;
     }
 
@@ -188,14 +167,10 @@
     .play-btn,
     .info-btn {
       border: none;
-
       padding: 13px 25px;
-
       border-radius: 4px;
-
       font-size: 16px;
       font-weight: bold;
-
       cursor: pointer;
     }
 
@@ -214,13 +189,8 @@
       transform: scale(1.04);
     }
 
-    /* =========================
-       MAIN
-    ========================= */
-
     main {
       margin-top: -80px;
-
       position: relative;
       z-index: 2;
     }
@@ -232,28 +202,21 @@
 
     .section-title {
       font-size: 22px;
-
       margin-bottom: 15px;
-
       font-weight: bold;
     }
 
     .section-subtitle {
       color: #999;
-
       margin-top: -10px;
       margin-bottom: 18px;
     }
 
     .row {
       display: flex;
-
       gap: 12px;
-
       overflow-x: auto;
-
       padding-bottom: 15px;
-
       scrollbar-width: none;
     }
 
@@ -261,16 +224,11 @@
       display: none;
     }
 
-    /* =========================
-       CARDS
-    ========================= */
-
     .card {
       min-width: 220px;
       height: 125px;
 
       border-radius: 5px;
-
       overflow: hidden;
 
       position: relative;
@@ -280,26 +238,21 @@
       cursor: pointer;
 
       transition: 0.3s;
-
-      flex-shrink: 0;
     }
 
     .card:hover {
       transform: scale(1.08);
-
       z-index: 10;
     }
 
     .card img {
       width: 100%;
       height: 100%;
-
       object-fit: cover;
     }
 
     .card-overlay {
       position: absolute;
-
       bottom: 0;
       left: 0;
       right: 0;
@@ -314,15 +267,12 @@
 
     .card-title {
       font-size: 14px;
-
       font-weight: bold;
     }
 
     .card-type {
       font-size: 11px;
-
       color: #bbb;
-
       margin-top: 4px;
     }
 
@@ -331,51 +281,62 @@
       height: 270px;
     }
 
-    /* =========================
-       YOUTUBE CARDS
-    ========================= */
+    /* =========================================
+       YOUTUBE
+    ========================================= */
 
     .youtube-card {
-      min-width: 280px;
-      height: 158px;
+      min-width: 240px;
+      height: 135px;
     }
 
-    .youtube-badge {
+    .youtube-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .youtube-card::after {
+      content: "▶";
+
       position: absolute;
 
-      top: 10px;
-      left: 10px;
+      left: 50%;
+      top: 50%;
+
+      transform: translate(-50%, -50%);
+
+      width: 42px;
+      height: 30px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       background: #e50914;
 
+      border-radius: 7px;
+
+      font-size: 17px;
       color: white;
 
-      padding: 5px 8px;
-
-      border-radius: 4px;
-
-      font-size: 10px;
-
-      font-weight: bold;
-
-      z-index: 5;
+      opacity: 0.95;
     }
 
-    .youtube-loading {
+    .youtube-status {
       color: #888;
-
+      font-size: 14px;
       padding: 20px 0;
     }
 
-    /* =========================
+    /* =========================================
        VIDEO PLAYER
-    ========================= */
+    ========================================= */
 
     .player {
       display: none;
 
       position: fixed;
-
       inset: 0;
 
       background: #000;
@@ -383,9 +344,7 @@
       z-index: 5000;
 
       align-items: center;
-
       justify-content: center;
-
       flex-direction: column;
     }
 
@@ -395,34 +354,19 @@
 
     .player video {
       width: 90%;
-
       max-height: 80vh;
-
       background: black;
-    }
-
-    .youtube-frame {
-      width: 90%;
-
-      max-width: 1100px;
-
-      aspect-ratio: 16 / 9;
-
-      border: none;
     }
 
     .close-player {
       position: absolute;
-
       top: 25px;
       right: 30px;
 
       background: rgba(255,255,255,0.15);
-
       color: white;
 
       border: none;
-
       border-radius: 50%;
 
       width: 45px;
@@ -431,15 +375,50 @@
       font-size: 22px;
 
       cursor: pointer;
-
-      z-index: 10;
     }
 
     .player-title {
       margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* =========================================
+       YOUTUBE PLAYER
+    ========================================= */
+
+    .youtube-player {
+      display: none;
+
+      position: fixed;
+      inset: 0;
+
+      background: rgba(0,0,0,0.97);
+
+      z-index: 6000;
+
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    .youtube-player.active {
+      display: flex;
+    }
+
+    .youtube-player iframe {
+      width: 90%;
+      max-width: 1000px;
+      aspect-ratio: 16 / 9;
+
+      border: none;
+      border-radius: 6px;
+    }
+
+    .youtube-player-title {
+      margin-top: 15px;
 
       font-size: 18px;
-
       font-weight: bold;
 
       text-align: center;
@@ -447,15 +426,33 @@
       max-width: 90%;
     }
 
-    /* =========================
-       AUTH
-    ========================= */
+    .close-youtube {
+      position: absolute;
+      top: 25px;
+      right: 30px;
+
+      background: rgba(255,255,255,0.15);
+      color: white;
+
+      border: none;
+      border-radius: 50%;
+
+      width: 45px;
+      height: 45px;
+
+      font-size: 22px;
+
+      cursor: pointer;
+    }
+
+    /* =========================================
+       AUTHENTICATION
+    ========================================= */
 
     .auth-section {
       display: none;
 
       position: fixed;
-
       inset: 0;
 
       background: rgba(0,0,0,0.88);
@@ -463,7 +460,6 @@
       z-index: 10000;
 
       align-items: center;
-
       justify-content: center;
 
       padding: 20px;
@@ -475,7 +471,6 @@
 
     .auth-box {
       width: 100%;
-
       max-width: 420px;
 
       background: #111;
@@ -493,17 +488,13 @@
 
     .auth-box h2 {
       font-size: 28px;
-
       margin-bottom: 10px;
     }
 
     .auth-description {
       color: #888;
-
       font-size: 14px;
-
       margin-bottom: 22px;
-
       line-height: 1.5;
     }
 
@@ -525,6 +516,10 @@
       outline: none;
     }
 
+    .auth-box input:focus {
+      border-color: #777;
+    }
+
     #auth-button {
       width: 100%;
 
@@ -543,6 +538,15 @@
       cursor: pointer;
 
       margin-top: 5px;
+    }
+
+    #auth-button:hover {
+      background: #f40612;
+    }
+
+    #auth-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     #auth-message {
@@ -581,6 +585,10 @@
       font-weight: bold;
     }
 
+    .auth-switch button:hover {
+      text-decoration: underline;
+    }
+
     .auth-close {
       position: absolute;
 
@@ -598,73 +606,55 @@
       cursor: pointer;
     }
 
-    /* =========================
+    .auth-close:hover {
+      color: white;
+    }
+
+    /* =========================================
        ACCOUNT
-    ========================= */
+    ========================================= */
 
     .account-status {
       display: none;
-
       align-items: center;
-
       gap: 10px;
     }
 
     .account-status span {
       color: #ccc;
-
       font-size: 13px;
-
       max-width: 150px;
-
       overflow: hidden;
-
       text-overflow: ellipsis;
-
       white-space: nowrap;
     }
 
     .signout {
       background: #222;
-
       border: 1px solid #444;
-
       color: white;
-
       padding: 8px 12px;
-
       border-radius: 4px;
-
       cursor: pointer;
-
       font-size: 12px;
     }
 
-    /* =========================
-       FOOTER
-    ========================= */
+    .signout:hover {
+      background: #333;
+    }
 
     footer {
       padding: 60px 5%;
-
       color: #777;
-
       text-align: center;
-
       border-top: 1px solid #222;
-
       margin-top: 40px;
     }
-
-    /* =========================
-       MOBILE
-    ========================= */
 
     @media (max-width: 700px) {
 
       header {
         height: 60px;
-
         padding: 0 18px;
       }
 
@@ -678,21 +668,17 @@
 
       .search {
         width: 90px;
-
         padding: 7px;
       }
 
       .signin {
         padding: 8px 12px;
-
         font-size: 12px;
       }
 
       .hero {
         height: 75vh;
-
         min-height: 500px;
-
         padding: 0 20px;
       }
 
@@ -714,19 +700,16 @@
 
       .card {
         min-width: 170px;
-
         height: 100px;
       }
 
       .youtube-card {
-        min-width: 240px;
-
-        height: 135px;
+        min-width: 220px;
+        height: 124px;
       }
 
       .portrait-card {
         min-width: 140px;
-
         height: 210px;
       }
 
@@ -738,17 +721,18 @@
         display: none;
       }
 
+      .youtube-player iframe {
+        width: 95%;
+      }
     }
-
   </style>
-
 </head>
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================= -->
+  <!-- =========================================
+       NAVIGATION
+  ========================================= -->
 
   <header>
 
@@ -791,7 +775,7 @@
         id="search"
         type="text"
         placeholder="Search"
-      >
+      />
 
       <button
         class="signin"
@@ -822,9 +806,9 @@
   </header>
 
 
-  <!-- =========================
+  <!-- =========================================
        HERO
-  ========================= -->
+  ========================================= -->
 
   <section class="hero">
 
@@ -841,9 +825,8 @@
       </h1>
 
       <p>
-        Discover original African stories, films,
-        series, documentaries and creative work
-        from BRENZKafrica.
+        Discover original African stories, films, series,
+        documentaries and creative work from BRENZKafrica.
       </p>
 
       <div class="hero-buttons">
@@ -869,14 +852,16 @@
   </section>
 
 
-  <!-- =========================
-       MAIN CONTENT
-  ========================= -->
+  <!-- =========================================
+       CONTENT
+  ========================================= -->
 
   <main>
 
 
-    <!-- ORIGINALS -->
+    <!-- =======================================
+         ORIGINALS
+    ======================================== -->
 
     <section
       class="section"
@@ -907,7 +892,7 @@
           <img
             src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
             alt="BRENZKafrica Cinema"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -923,12 +908,13 @@
 
         </div>
 
+
         <div class="card">
 
           <img
             src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=800&q=80"
             alt="African Stories"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -944,12 +930,13 @@
 
         </div>
 
+
         <div class="card">
 
           <img
             src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80"
             alt="Behind The Vision"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -970,9 +957,9 @@
     </section>
 
 
-    <!-- =========================
-         YOUTUBE
-    ========================= -->
+    <!-- =======================================
+         BRENZKAFRICA YOUTUBE
+    ======================================== -->
 
     <section
       class="section"
@@ -980,12 +967,11 @@
     >
 
       <h2 class="section-title">
-        Latest from BRENZKafrica
+        BRENZKafrica on YouTube
       </h2>
 
       <p class="section-subtitle">
-        Watch the latest videos from the official
-        BRENZKafrica YouTube channel.
+        Latest videos from the official BRENZKafrica channel.
       </p>
 
       <div
@@ -993,8 +979,8 @@
         id="youtubeRow"
       >
 
-        <div class="youtube-loading">
-          Loading BRENZKafrica videos...
+        <div class="youtube-status">
+          YouTube videos will appear here once the connection is completed.
         </div>
 
       </div>
@@ -1002,7 +988,9 @@
     </section>
 
 
-    <!-- SERIES -->
+    <!-- =======================================
+         SERIES
+    ======================================== -->
 
     <section
       class="section"
@@ -1020,7 +1008,7 @@
           <img
             src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80"
             alt="BRENZKafrica Series"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -1032,12 +1020,13 @@
 
         </div>
 
+
         <div class="card portrait-card">
 
           <img
             src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80"
             alt="Cinema Stories"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -1049,12 +1038,13 @@
 
         </div>
 
+
         <div class="card portrait-card">
 
           <img
             src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80"
             alt="Africa Unseen"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -1071,7 +1061,9 @@
     </section>
 
 
-    <!-- FILMS -->
+    <!-- =======================================
+         FILMS
+    ======================================== -->
 
     <section
       class="section"
@@ -1089,7 +1081,7 @@
           <img
             src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80"
             alt="African Cinema"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -1105,12 +1097,13 @@
 
         </div>
 
+
         <div class="card">
 
           <img
             src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80"
             alt="The Journey"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -1131,7 +1124,9 @@
     </section>
 
 
-    <!-- DOCUMENTARIES -->
+    <!-- =======================================
+         DOCUMENTARIES
+    ======================================== -->
 
     <section
       class="section"
@@ -1149,7 +1144,7 @@
           <img
             src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80"
             alt="African Vision"
-          >
+          />
 
           <div class="card-overlay">
 
@@ -1172,9 +1167,9 @@
   </main>
 
 
-  <!-- =========================
-       VIDEO PLAYER
-  ========================= -->
+  <!-- =========================================
+       SUPABASE VIDEO PLAYER
+  ========================================= -->
 
   <div
     class="player"
@@ -1187,14 +1182,6 @@
     >
       ×
     </button>
-
-    <iframe
-      id="youtubePlayer"
-      class="youtube-frame"
-      title="BRENZKafrica YouTube Player"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      allowfullscreen
-    ></iframe>
 
     <video
       id="video"
@@ -1210,9 +1197,39 @@
   </div>
 
 
-  <!-- =========================
+  <!-- =========================================
+       YOUTUBE PLAYER
+  ========================================= -->
+
+  <div
+    class="youtube-player"
+    id="youtubePlayer"
+  >
+
+    <button
+      class="close-youtube"
+      onclick="closeYouTube()"
+    >
+      ×
+    </button>
+
+    <iframe
+      id="youtubeFrame"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    ></iframe>
+
+    <div
+      class="youtube-player-title"
+      id="youtubePlayerTitle"
+    ></div>
+
+  </div>
+
+
+  <!-- =========================================
        AUTHENTICATION
-  ========================= -->
+  ========================================= -->
 
   <div
     id="auth-section"
@@ -1242,14 +1259,14 @@
         id="email"
         placeholder="Email address"
         autocomplete="email"
-      >
+      />
 
       <input
         type="password"
         id="password"
         placeholder="Password"
         autocomplete="current-password"
-      >
+      />
 
       <button
         id="auth-button"
@@ -1261,7 +1278,6 @@
       <p id="auth-message"></p>
 
       <p class="auth-switch">
-
         Don't have an account?
 
         <button
@@ -1277,9 +1293,9 @@
   </div>
 
 
-  <!-- =========================
+  <!-- =========================================
        FOOTER
-  ========================= -->
+  ========================================= -->
 
   <footer>
 
@@ -1291,7 +1307,7 @@
       African Creativity. Unlimited Vision.
     </p>
 
-    <br>
+    <br />
 
     <p>
       © 2026 BRENZKafrica. All rights reserved.
@@ -1300,14 +1316,14 @@
   </footer>
 
 
-  <!-- =========================
+  <!-- =========================================
        JAVASCRIPT
-  ========================= -->
+  ========================================= -->
 
   <script>
 
     /* ==========================================
-       SUPABASE
+       SUPABASE CONNECTION
     ========================================== */
 
     const SUPABASE_URL =
@@ -1331,276 +1347,97 @@
 
 
     /* ==========================================
-       YOUTUBE
+       YOUTUBE CHANNEL
     ========================================== */
 
     const YOUTUBE_CHANNEL_ID =
       "UCdWMS9WN8NCtB_Iddw-270Q";
 
-    const youtubeRow =
-      document.getElementById(
-        "youtubeRow"
-      );
-
 
     /*
-      IMPORTANT:
+      DO NOT PUT THE GOOGLE API KEY HERE.
 
-      The API key is NOT placed here.
+      The Google YouTube Data API v3 key is stored
+      in Vercel Environment Variables.
 
-      The website will request:
-
-      /api/youtube
-
-      The Vercel API endpoint will use
-      YOUTUBE_API_KEY from Environment Variables.
+      We will connect it through a secure backend
+      endpoint in the next step.
     */
 
 
-    async function loadYouTubeVideos() {
-
-      youtubeRow.innerHTML =
-        '<div class="youtube-loading">' +
-        'Loading BRENZKafrica videos...' +
-        '</div>';
-
-      try {
-
-        const response =
-          await fetch(
-            "/api/youtube"
-          );
-
-        if (!response.ok) {
-
-          throw new Error(
-            "YouTube API request failed"
-          );
-
-        }
-
-        const data =
-          await response.json();
-
-
-        if (
-          !data.items ||
-          data.items.length === 0
-        ) {
-
-          youtubeRow.innerHTML =
-            '<div class="youtube-loading">' +
-            'No videos found.' +
-            '</div>';
-
-          return;
-
-        }
-
-
-        youtubeRow.innerHTML =
-          "";
-
-
-        data.items.forEach(
-          function(item) {
-
-            const videoId =
-              item.id;
-
-            const title =
-              item.title ||
-              "BRENZKafrica Video";
-
-            const thumbnail =
-              item.thumbnail ||
-              "https://i.ytimg.com/vi/" +
-              videoId +
-              "/hqdefault.jpg";
-
-
-            const card =
-              document.createElement(
-                "div"
-              );
-
-
-            card.className =
-              "card youtube-card";
-
-
-            card.innerHTML =
-
-              '<div class="youtube-badge">' +
-              'YOUTUBE' +
-              '</div>' +
-
-              '<img src="' +
-              thumbnail +
-              '" alt="BRENZKafrica">' +
-
-              '<div class="card-overlay">' +
-
-                '<div class="card-title">' +
-                  escapeHtml(title) +
-                '</div>' +
-
-                '<div class="card-type">' +
-                  'BRENZKafrica YouTube' +
-                '</div>' +
-
-              '</div>';
-
-
-            card.onclick =
-              function() {
-
-                playYouTube(
-                  videoId,
-                  title
-                );
-
-              };
-
-
-            youtubeRow.appendChild(
-              card
-            );
-
-          }
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "YouTube error:",
-          error
-        );
-
-
-        youtubeRow.innerHTML =
-          '<div class="youtube-loading">' +
-          'YouTube videos will appear here once the connection is completed.' +
-          '</div>';
-
-      }
-
-    }
-
-
     /* ==========================================
-       ESCAPE HTML
-    ========================================== */
-
-    function escapeHtml(
-      text
-    ) {
-
-      const element =
-        document.createElement(
-          "div"
-        );
-
-      element.textContent =
-        text;
-
-      return element.innerHTML;
-
-    }
-
-
-    /* ==========================================
-       VIDEO PLAYER
+       ELEMENTS
     ========================================== */
 
     const player =
-      document.getElementById(
-        "player"
-      );
+      document.getElementById("player");
 
     const video =
-      document.getElementById(
-        "video"
-      );
-
-    const youtubePlayer =
-      document.getElementById(
-        "youtubePlayer"
-      );
+      document.getElementById("video");
 
     const playerTitle =
-      document.getElementById(
-        "playerTitle"
-      );
+      document.getElementById("playerTitle");
+
+    const youtubePlayer =
+      document.getElementById("youtubePlayer");
+
+    const youtubeFrame =
+      document.getElementById("youtubeFrame");
+
+    const youtubePlayerTitle =
+      document.getElementById("youtubePlayerTitle");
+
+    const youtubeRow =
+      document.getElementById("youtubeRow");
+
+    const authSection =
+      document.getElementById("auth-section");
+
+    const authTitle =
+      document.getElementById("auth-title");
+
+    const authButton =
+      document.getElementById("auth-button");
+
+    const authMessage =
+      document.getElementById("auth-message");
+
+    const emailInput =
+      document.getElementById("email");
+
+    const passwordInput =
+      document.getElementById("password");
+
+    const signinButton =
+      document.getElementById("signinButton");
+
+    const accountStatus =
+      document.getElementById("accountStatus");
+
+    const userEmail =
+      document.getElementById("userEmail");
 
 
-    function playVideo(
-      name,
-      url
-    ) {
+    /* ==========================================
+       SUPABASE VIDEO PLAYER
+    ========================================== */
 
-      youtubePlayer.src =
-        "";
+    function playVideo(name, url) {
 
-      youtubePlayer.style.display =
-        "none";
+      playerTitle.textContent = name;
 
-      video.style.display =
-        "block";
+      video.src = url;
 
-      playerTitle.textContent =
-        name;
+      player.classList.add("active");
 
-      video.src =
-        url;
+      video.play().catch(function(error) {
 
-      player.classList.add(
-        "active"
-      );
+        console.log(
+          "Video autoplay prevented:",
+          error
+        );
 
-
-      video.play().catch(
-        function(error) {
-
-          console.log(
-            "Autoplay prevented:",
-            error
-          );
-
-        }
-      );
-
-    }
-
-
-    function playYouTube(
-      videoId,
-      title
-    ) {
-
-      video.pause();
-
-      video.src =
-        "";
-
-      video.style.display =
-        "none";
-
-      youtubePlayer.style.display =
-        "block";
-
-      youtubePlayer.src =
-        "https://www.youtube.com/embed/" +
-        videoId +
-        "?autoplay=1&rel=0";
-
-      playerTitle.textContent =
-        title;
-
-      player.classList.add(
-        "active"
-      );
+      });
 
     }
 
@@ -1620,80 +1457,85 @@
 
       video.pause();
 
-      video.src =
-        "";
+      video.src = "";
 
-      youtubePlayer.src =
-        "";
+      player.classList.remove("active");
 
-      player.classList.remove(
+    }
+
+
+    /* ==========================================
+       YOUTUBE PLAYER
+    ========================================== */
+
+    function playYouTubeVideo(
+      videoId,
+      title
+    ) {
+
+      youtubePlayerTitle.textContent =
+        title;
+
+      youtubeFrame.src =
+        "https://www.youtube.com/embed/" +
+        videoId +
+        "?autoplay=1&rel=0";
+
+      youtubePlayer.classList.add(
         "active"
       );
 
     }
 
 
-    function showInfo() {
+    function closeYouTube() {
 
-      alert(
-        "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
+      youtubeFrame.src = "";
+
+      youtubePlayer.classList.remove(
+        "active"
       );
 
     }
 
 
     /* ==========================================
-       AUTH ELEMENTS
+       YOUTUBE LOADING
     ========================================== */
 
-    const authSection =
-      document.getElementById(
-        "auth-section"
+    function showYouTubeWaiting() {
+
+      youtubeRow.innerHTML = "";
+
+      const message =
+        document.createElement("div");
+
+      message.className =
+        "youtube-status";
+
+      message.textContent =
+        "YouTube videos will appear here once the connection is completed.";
+
+      youtubeRow.appendChild(
+        message
       );
 
-    const authTitle =
-      document.getElementById(
-        "auth-title"
-      );
+    }
 
-    const authButton =
-      document.getElementById(
-        "auth-button"
-      );
 
-    const authMessage =
-      document.getElementById(
-        "auth-message"
-      );
+    /*
+      The actual YouTube API loading will be
+      connected after this HTML is installed.
 
-    const emailInput =
-      document.getElementById(
-        "email"
-      );
+      We intentionally leave the API key out
+      of the browser code.
+    */
 
-    const passwordInput =
-      document.getElementById(
-        "password"
-      );
-
-    const signinButton =
-      document.getElementById(
-        "signinButton"
-      );
-
-    const accountStatus =
-      document.getElementById(
-        "accountStatus"
-      );
-
-    const userEmail =
-      document.getElementById(
-        "userEmail"
-      );
+    showYouTubeWaiting();
 
 
     /* ==========================================
-       ACCOUNT
+       ACCOUNT PANEL
     ========================================== */
 
     function openAccount() {
@@ -1713,14 +1555,16 @@
         "active"
       );
 
-      authMessage.textContent =
-        "";
+      authMessage.textContent = "";
 
-      authButton.disabled =
-        false;
+      authButton.disabled = false;
 
     }
 
+
+    /* ==========================================
+       AUTH MESSAGE
+    ========================================== */
 
     function showAuthMessage(
       message
@@ -1731,6 +1575,10 @@
 
     }
 
+
+    /* ==========================================
+       AUTH LOADING
+    ========================================== */
 
     function setAuthLoading(
       loading,
@@ -1759,7 +1607,7 @@
 
 
     /* ==========================================
-       SIGN UP
+       CREATE ACCOUNT
     ========================================== */
 
     async function signUp() {
@@ -1806,15 +1654,21 @@
           error
         } =
           await supabaseClient.auth.signUp({
-            email,
-            password
+            email: email,
+            password: password
           });
 
 
         if (error) {
 
+          console.error(
+            "Supabase sign-up error:",
+            error
+          );
+
           showAuthMessage(
-            error.message
+            error.message ||
+            "Unable to create account."
           );
 
           return;
@@ -1822,44 +1676,45 @@
         }
 
 
-        if (
-          data.user &&
-          data.session
-        ) {
+        if (data.user) {
 
-          updateAccountUI(
-            data.user
-          );
+          if (data.session) {
 
-          showAuthMessage(
-            "Account created successfully!"
-          );
+            showAuthMessage(
+              "Account created successfully! You are now signed in."
+            );
 
+            updateAccountUI(
+              data.user
+            );
 
-          setTimeout(
-            closeAccount,
-            1000
-          );
+            setTimeout(
+              function() {
+                closeAccount();
+              },
+              1000
+            );
 
-        } else {
+          } else {
 
-          showAuthMessage(
-            "Account created! Please check your email to confirm your account."
-          );
+            showAuthMessage(
+              "Account created! Please check your email and confirm your account before signing in."
+            );
+
+          }
 
         }
-
 
       } catch (error) {
 
         console.error(
+          "Sign-up exception:",
           error
         );
 
         showAuthMessage(
           "Connection error. Please try again."
         );
-
 
       } finally {
 
@@ -1910,15 +1765,21 @@
           error
         } =
           await supabaseClient.auth.signInWithPassword({
-            email,
-            password
+            email: email,
+            password: password
           });
 
 
         if (error) {
 
+          console.error(
+            "Supabase sign-in error:",
+            error
+          );
+
           showAuthMessage(
-            error.message
+            error.message ||
+            "Unable to sign in."
           );
 
           return;
@@ -1926,7 +1787,7 @@
         }
 
 
-        if (data.user) {
+        if (data && data.user) {
 
           updateAccountUI(
             data.user
@@ -1936,25 +1797,25 @@
             "Welcome to BRENZKafrica Plus!"
           );
 
-
           setTimeout(
-            closeAccount,
+            function() {
+              closeAccount();
+            },
             800
           );
 
         }
 
-
       } catch (error) {
 
         console.error(
+          "Sign-in exception:",
           error
         );
 
         showAuthMessage(
           "Connection error. Please try again."
         );
-
 
       } finally {
 
@@ -1969,7 +1830,7 @@
 
 
     /* ==========================================
-       SIGN UP / SIGN IN SWITCH
+       SWITCH TO SIGN UP
     ========================================== */
 
     function showSignUp() {
@@ -1990,8 +1851,22 @@
         'Already have an account? ' +
         '<button onclick="showSignIn()">Sign In</button>';
 
+
+      authMessage.textContent =
+        "";
+
+      emailInput.autocomplete =
+        "email";
+
+      passwordInput.autocomplete =
+        "new-password";
+
     }
 
+
+    /* ==========================================
+       SWITCH TO SIGN IN
+    ========================================== */
 
     function showSignIn() {
 
@@ -2011,11 +1886,21 @@
         'Don\'t have an account? ' +
         '<button onclick="showSignUp()">Create Account</button>';
 
+
+      authMessage.textContent =
+        "";
+
+      emailInput.autocomplete =
+        "email";
+
+      passwordInput.autocomplete =
+        "current-password";
+
     }
 
 
     /* ==========================================
-       ACCOUNT UI
+       UPDATE ACCOUNT UI
     ========================================== */
 
     function updateAccountUI(
@@ -2031,8 +1916,7 @@
           "flex";
 
         userEmail.textContent =
-          user.email ||
-          "Viewer";
+          user.email || "Viewer";
 
       } else {
 
@@ -2056,64 +1940,96 @@
 
     async function signOut() {
 
-      const {
-        error
-      } =
-        await supabaseClient.auth.signOut();
+      try {
+
+        const {
+          error
+        } =
+          await supabaseClient.auth.signOut();
 
 
-      if (error) {
+        if (error) {
+
+          console.error(
+            "Sign-out error:",
+            error
+          );
+
+          return;
+
+        }
+
+
+        updateAccountUI(
+          null
+        );
+
+      } catch (error) {
 
         console.error(
+          "Sign-out exception:",
           error
         );
 
-        return;
-
       }
-
-
-      updateAccountUI(
-        null
-      );
 
     }
 
 
     /* ==========================================
-       SESSION
+       CHECK SESSION
     ========================================== */
 
     async function checkSession() {
 
-      const {
-        data,
-        error
-      } =
-        await supabaseClient.auth.getSession();
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.getSession();
 
 
-      if (error) {
+        if (error) {
+
+          console.error(
+            "Session error:",
+            error
+          );
+
+          updateAccountUI(
+            null
+          );
+
+          return;
+
+        }
+
+
+        if (
+          data &&
+          data.session
+        ) {
+
+          updateAccountUI(
+            data.session.user
+          );
+
+        } else {
+
+          updateAccountUI(
+            null
+          );
+
+        }
+
+      } catch (error) {
 
         console.error(
+          "Session exception:",
           error
         );
-
-        return;
-
-      }
-
-
-      if (
-        data &&
-        data.session
-      ) {
-
-        updateAccountUI(
-          data.session.user
-        );
-
-      } else {
 
         updateAccountUI(
           null
@@ -2124,11 +2040,21 @@
     }
 
 
+    /* ==========================================
+       AUTH STATE CHANGE
+    ========================================== */
+
     supabaseClient.auth.onAuthStateChange(
       function(
         event,
         session
       ) {
+
+        console.log(
+          "Auth event:",
+          event
+        );
+
 
         if (session) {
 
@@ -2205,7 +2131,7 @@
 
 
     /* ==========================================
-       KEYBOARD
+       ENTER KEY LOGIN
     ========================================== */
 
     passwordInput.addEventListener(
@@ -2227,6 +2153,10 @@
     );
 
 
+    /* ==========================================
+       ESCAPE
+    ========================================== */
+
     document.addEventListener(
       "keydown",
       function(event) {
@@ -2237,6 +2167,8 @@
         ) {
 
           closePlayer();
+
+          closeYouTube();
 
           closeAccount();
 
@@ -2251,8 +2183,6 @@
     ========================================== */
 
     checkSession();
-
-    loadYouTubeVideos();
 
   </script>
 
