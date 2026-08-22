@@ -270,19 +270,6 @@
       height: 270px;
     }
 
-    .licensed-badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-      background: rgba(0,0,0,0.78);
-      color: #ddd;
-      padding: 4px 7px;
-      border-radius: 3px;
-      font-size: 9px;
-      font-weight: bold;
-      z-index: 3;
-    }
-
     .youtube-card {
       min-width: 260px;
       height: 146px;
@@ -708,8 +695,6 @@
 
 <main>
 
-  <!-- ORIGINALS -->
-
   <section class="section" id="originals">
 
     <h2 class="section-title">
@@ -721,17 +706,13 @@
     </p>
 
     <div class="row" id="originalsRow">
-
       <div class="loading">
         Loading originals...
       </div>
-
     </div>
 
   </section>
 
-
-  <!-- YOUTUBE -->
 
   <section class="section" id="youtube">
 
@@ -744,17 +725,13 @@
     </p>
 
     <div class="row" id="youtubeRow">
-
       <div class="loading">
         Loading BRENZKafrica videos...
       </div>
-
     </div>
 
   </section>
 
-
-  <!-- SERIES -->
 
   <section class="section" id="series">
 
@@ -767,17 +744,13 @@
     </p>
 
     <div class="row" id="seriesRow">
-
       <div class="loading">
         Loading series...
       </div>
-
     </div>
 
   </section>
 
-
-  <!-- FILMS -->
 
   <section class="section" id="films">
 
@@ -790,17 +763,13 @@
     </p>
 
     <div class="row" id="filmsRow">
-
       <div class="loading">
         Loading films...
       </div>
-
     </div>
 
   </section>
 
-
-  <!-- DOCUMENTARIES -->
 
   <section class="section" id="documentaries">
 
@@ -813,19 +782,15 @@
     </p>
 
     <div class="row" id="documentariesRow">
-
       <div class="loading">
         Loading documentaries...
       </div>
-
     </div>
 
   </section>
 
 </main>
 
-
-<!-- VIDEO PLAYER -->
 
 <div
   class="player"
@@ -861,8 +826,6 @@
 
 </div>
 
-
-<!-- AUTHENTICATION -->
 
 <div
   id="auth-section"
@@ -903,7 +866,7 @@
 
     <button
       id="auth-button"
-      onclick="signIn()"
+      onclick="submitAuth()"
     >
       Sign In
     </button>
@@ -1045,108 +1008,137 @@ const youtubeRow =
    DATABASE HELPERS
 ========================================================= */
 
+function getValue(item, names) {
+
+  for (const name of names) {
+
+    if (
+      item &&
+      item[name] !== undefined &&
+      item[name] !== null &&
+      String(item[name]).trim() !== ""
+    ) {
+
+      return item[name];
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
 function getTitle(item) {
 
-  return (
-    item["Tittle"] ||
-    item["Title"] ||
-    item["title"] ||
-    "Untitled"
-  );
+  return getValue(item, [
+    "title",
+    "Title",
+    "Tittle"
+  ]) || "Untitled";
 
 }
 
 
 function getDescription(item) {
 
-  return (
-    item["Description"] ||
-    item["description"] ||
-    ""
-  );
+  return getValue(item, [
+    "description",
+    "Description"
+  ]);
 
 }
 
 
 function getContentType(item) {
 
-  return (
-    item["Content_type"] ||
-    item["content_type"] ||
-    ""
-  );
+  return getValue(item, [
+    "content_type",
+    "Content_type",
+    "Content Type"
+  ]);
 
 }
 
 
 function getCategory(item) {
 
-  return (
-    item["Category"] ||
-    item["category"] ||
-    ""
-  );
+  return getValue(item, [
+    "category",
+    "Category"
+  ]);
 
 }
 
 
 function getCountry(item) {
 
-  return (
-    item["Country"] ||
-    item["country"] ||
-    ""
-  );
+  return getValue(item, [
+    "country",
+    "Country"
+  ]);
 
 }
 
 
 function getThumbnail(item) {
 
-  return (
-    item["Thumb nail_url"] ||
-    item["Thumbnail_url"] ||
-    item["thumbnail_url"] ||
-    item["thumb nail_url"] ||
-    item["image_url"] ||
-    item["poster_url"] ||
-    ""
-  );
+  return getValue(item, [
+    "thumbnail",
+    "Thumbnail",
+    "thumbnail_url",
+    "Thumbnail_url",
+    "Thumb nail_url",
+    "thumb nail_url",
+    "image_url",
+    "poster_url"
+  ]);
 
 }
 
 
 function getVideoUrl(item) {
 
-  return (
-    item["Video_url"] ||
-    item["video_url"] ||
-    item["youtube_url"] ||
-    item["YouTube_url"] ||
-    ""
-  );
+  return getValue(item, [
+    "video_url",
+    "Video_url",
+    "youtube_url",
+    "YouTube_url",
+    "source_url",
+    "Source_url"
+  ]);
 
 }
 
 
 function getSourceType(item) {
 
-  return (
-    item["Source_type"] ||
-    item["source_type"] ||
-    ""
-  );
+  return getValue(item, [
+    "source_type",
+    "Source_type"
+  ]);
 
 }
 
 
 function getContentGroup(item) {
 
-  return (
-    item["Content_group"] ||
-    item["content_group"] ||
-    ""
-  );
+  return getValue(item, [
+    "content_group",
+    "Content_group"
+  ]);
+
+}
+
+
+function getOriginal(item) {
+
+  return getValue(item, [
+    "is_original",
+    "Is_original",
+    "original"
+  ]);
 
 }
 
@@ -1170,16 +1162,46 @@ function normalize(value) {
    CONTENT FILTERS
 ========================================================= */
 
+function matchesValue(value, values) {
+
+  const normalized =
+    normalize(value);
+
+  return values.some(
+    function(valueItem) {
+
+      return normalized ===
+        normalize(valueItem);
+
+    }
+  );
+
+}
+
+
 function isSeries(item) {
 
-  const group =
-    normalize(
-      getContentGroup(item)
-    );
-
   return (
-    group === "series" ||
-    normalize(getCategory(item)) === "series"
+    matchesValue(
+      getContentGroup(item),
+      [
+        "series"
+      ]
+    ) ||
+
+    matchesValue(
+      getCategory(item),
+      [
+        "series"
+      ]
+    ) ||
+
+    matchesValue(
+      getContentType(item),
+      [
+        "series"
+      ]
+    )
   );
 
 }
@@ -1187,21 +1209,30 @@ function isSeries(item) {
 
 function isFilm(item) {
 
-  const group =
-    normalize(
-      getContentGroup(item)
-    );
-
-  const category =
-    normalize(
-      getCategory(item)
-    );
-
   return (
-    group === "film" ||
-    group === "films" ||
-    category === "film" ||
-    category === "films"
+    matchesValue(
+      getContentGroup(item),
+      [
+        "film",
+        "films"
+      ]
+    ) ||
+
+    matchesValue(
+      getCategory(item),
+      [
+        "film",
+        "films"
+      ]
+    ) ||
+
+    matchesValue(
+      getContentType(item),
+      [
+        "film",
+        "films"
+      ]
+    )
   );
 
 }
@@ -1209,6 +1240,75 @@ function isFilm(item) {
 
 function isDocumentary(item) {
 
+  return (
+    matchesValue(
+      getContentGroup(item),
+      [
+        "documentary",
+        "documentaries"
+      ]
+    ) ||
+
+    matchesValue(
+      getCategory(item),
+      [
+        "documentary",
+        "documentaries"
+      ]
+    ) ||
+
+    matchesValue(
+      getContentType(item),
+      [
+        "documentary",
+        "documentaries"
+      ]
+    )
+  );
+
+}
+
+
+function isYouTube(item) {
+
+  return (
+    matchesValue(
+      getSourceType(item),
+      [
+        "youtube",
+        "youtube video"
+      ]
+    ) ||
+
+    matchesValue(
+      getCategory(item),
+      [
+        "youtube"
+      ]
+    ) ||
+
+    matchesValue(
+      getContentGroup(item),
+      [
+        "youtube"
+      ]
+    )
+  );
+
+}
+
+
+/* =========================================================
+   ORIGINAL FILTER
+========================================================= */
+
+function isOriginal(item) {
+
+  const source =
+    normalize(
+      getSourceType(item)
+    );
+
   const group =
     normalize(
       getContentGroup(item)
@@ -1219,11 +1319,44 @@ function isDocumentary(item) {
       getCategory(item)
     );
 
+  const original =
+    String(
+      getOriginal(item)
+    ).toLowerCase();
+
+
+  if (
+    source === "youtube" ||
+    source === "youtube video" ||
+    group === "youtube" ||
+    category === "youtube"
+  ) {
+
+    return false;
+
+  }
+
+
+  if (
+    source === "original" ||
+    source === "brenzkafrica" ||
+    source === "brenzkafrica original" ||
+    group === "original" ||
+    group === "brenzkafrica" ||
+    group === "brenzkafrica original" ||
+    original === "true" ||
+    original === "1"
+  ) {
+
+    return true;
+
+  }
+
+
   return (
-    group === "documentary" ||
-    group === "documentaries" ||
-    category === "documentary" ||
-    category === "documentaries"
+    !isSeries(item) &&
+    !isFilm(item) &&
+    !isDocumentary(item)
   );
 
 }
@@ -1257,17 +1390,15 @@ const DEFAULT_THUMBNAIL =
    EMPTY
 ========================================================= */
 
-function showEmptyContent(
-  row,
-  message
-) {
+function showEmptyContent(row, message) {
 
   row.innerHTML = "";
 
   const empty =
     document.createElement("div");
 
-  empty.className = "empty";
+  empty.className =
+    "empty";
 
   empty.textContent =
     message;
@@ -1281,17 +1412,15 @@ function showEmptyContent(
    ERROR
 ========================================================= */
 
-function showErrorContent(
-  row,
-  message
-) {
+function showErrorContent(row, message) {
 
   row.innerHTML = "";
 
   const error =
     document.createElement("div");
 
-  error.className = "error";
+  error.className =
+    "error";
 
   error.textContent =
     message;
@@ -1343,16 +1472,7 @@ function createContentCard(
     };
 
 
-  const sourceType =
-    normalize(
-      getSourceType(item)
-    );
-
-
-  if (
-    sourceType === "youtube" ||
-    sourceType === "youtube video"
-  ) {
+  if (isYouTube(item)) {
 
     const badge =
       document.createElement("span");
@@ -1384,6 +1504,8 @@ function createContentCard(
 
   image.onerror =
     function() {
+
+      image.onerror = null;
 
       image.src =
         DEFAULT_THUMBNAIL;
@@ -1567,10 +1689,7 @@ async function loadContent() {
     const result =
       await supabaseClient
         .from("content")
-        .select("*")
-        .order("id", {
-          ascending: false
-        });
+        .select("*");
 
 
     if (result.error) {
@@ -1635,21 +1754,7 @@ async function loadContent() {
 
     const originals =
       allContent.filter(
-        function(item) {
-
-          const source =
-            normalize(
-              getSourceType(item)
-            );
-
-          return (
-            source === "" ||
-            source === "brenzkafrica" ||
-            source === "original" ||
-            source === "brenzkafrica original"
-          );
-
-        }
+        isOriginal
       );
 
 
@@ -1738,7 +1843,7 @@ async function loadContent() {
 
 
 /* =========================================================
-   YOUTUBE API
+   YOUTUBE
 ========================================================= */
 
 async function loadYouTubeVideos() {
@@ -1748,13 +1853,6 @@ async function loadYouTubeVideos() {
 
 
   try {
-
-    /*
-      The API key is NOT placed in this HTML.
-
-      The request goes through your
-      Supabase Edge Function.
-    */
 
     const response =
       await fetch(
@@ -1768,9 +1866,20 @@ async function loadYouTubeVideos() {
       );
 
 
-    if (!response.ok) {
+    const data =
+      await response.json();
+
+
+    console.log(
+      "YouTube Edge Function response:",
+      data
+    );
+
+
+    if (!response.ok || data.success === false) {
 
       throw new Error(
+        data.error ||
         "YouTube service returned HTTP " +
         response.status
       );
@@ -1778,59 +1887,13 @@ async function loadYouTubeVideos() {
     }
 
 
-    const data =
-      await response.json();
-
-
-    console.log(
-      "YouTube API response:",
-      data
-    );
-
-
-    /*
-      Support several possible response formats
-      from the Edge Function.
-    */
-
-    let videos = [];
-
-
-    if (
-      Array.isArray(data)
-    ) {
-
-      videos =
-        data;
-
-    } else if (
-      Array.isArray(data.items)
-    ) {
-
-      videos =
-        data.items;
-
-    } else if (
+    let videos =
       Array.isArray(data.videos)
-    ) {
-
-      videos =
-        data.videos;
-
-    } else if (
-      data.data &&
-      Array.isArray(data.data.items)
-    ) {
-
-      videos =
-        data.data.items;
-
-    }
+        ? data.videos
+        : [];
 
 
-    if (
-      !videos.length
-    ) {
+    if (!videos.length) {
 
       showEmptyContent(
         youtubeRow,
@@ -1842,7 +1905,8 @@ async function loadYouTubeVideos() {
     }
 
 
-    youtubeRow.innerHTML = "";
+    youtubeRow.innerHTML =
+      "";
 
 
     videos.forEach(
@@ -1886,94 +1950,56 @@ async function loadYouTubeVideos() {
 
 function normalizeYouTubeItem(item) {
 
-  /*
-    Handles normal YouTube Data API
-    search.list responses.
-  */
-
-  const snippet =
-    item.snippet ||
-    item;
-
-
-  let videoId =
+  const videoId =
+    item.id ||
+    item.videoId ||
     "";
 
 
-  if (
-    item.id &&
-    typeof item.id === "object"
-  ) {
-
-    videoId =
-      item.id.videoId ||
-      "";
-
-  } else {
-
-    videoId =
-      item.videoId ||
-      item.id ||
-      "";
-
-  }
-
-
-  let thumbnail =
-    "";
-
-
-  if (
-    snippet.thumbnails
-  ) {
-
-    thumbnail =
-      (
-        snippet.thumbnails.high ||
-        snippet.thumbnails.medium ||
-        snippet.thumbnails.default ||
-        {}
-      ).url || "";
-
-  }
+  const thumbnail =
+    item.thumbnail_url ||
+    (
+      videoId
+        ? "https://i.ytimg.com/vi/" +
+          videoId +
+          "/hqdefault.jpg"
+        : DEFAULT_THUMBNAIL
+    );
 
 
   return {
 
-    Title:
-      snippet.title ||
+    title:
+      item.title ||
       "BRENZKafrica YouTube Video",
 
-    Description:
-      snippet.description ||
+    description:
+      item.description ||
       "",
 
-    Category:
+    category:
       "YouTube",
 
-    Content_group:
+    content_group:
       "YouTube",
 
-    Country:
+    country:
       "Uganda",
 
-    Source_type:
-      "YouTube",
+    source_type:
+      "youtube",
 
-    Video_url:
-      videoId
-        ? "https://www.youtube.com/watch?v=" + videoId
-        : "",
-
-    "Thumb nail_url":
-      thumbnail ||
+    video_url:
+      item.video_url ||
       (
         videoId
-          ? "https://i.ytimg.com/vi/" +
-            videoId +
-            "/hqdefault.jpg"
-          : DEFAULT_THUMBNAIL
-      )
+          ? "https://www.youtube.com/watch?v=" +
+            videoId
+          : ""
+      ),
+
+    thumbnail_url:
+      thumbnail
 
   };
 
@@ -2031,11 +2057,6 @@ function extractYouTubeId(url) {
   }
 
 
-  /*
-    If the value itself looks like
-    a YouTube video ID.
-  */
-
   if (
     /^[A-Za-z0-9_-]{11}$/.test(value)
   ) {
@@ -2070,7 +2091,8 @@ function playVideo(
   }
 
 
-  youtubeFrame.src = "";
+  youtubeFrame.src =
+    "";
 
   youtubeFrame.style.display =
     "none";
@@ -2127,20 +2149,14 @@ function playLicensedVideo(item) {
   }
 
 
-  const source =
-    normalize(
-      getSourceType(item)
-    );
+  const videoId =
+    extractYouTubeId(url);
 
 
   if (
-    source === "youtube" ||
-    source === "youtube video"
+    isYouTube(item) ||
+    videoId
   ) {
-
-    const videoId =
-      extractYouTubeId(url);
-
 
     if (videoId) {
 
@@ -2431,7 +2447,11 @@ function showSignUp() {
 }
 
 
-async function signIn() {
+/* =========================================================
+   AUTH
+========================================================= */
+
+async function submitAuth() {
 
   const email =
     emailInput.value.trim();
@@ -2463,8 +2483,11 @@ async function signIn() {
       const result =
         await supabaseClient.auth.signUp(
           {
-            email: email,
-            password: password
+            email:
+              email,
+
+            password:
+              password
           }
         );
 
@@ -2490,8 +2513,11 @@ async function signIn() {
     const result =
       await supabaseClient.auth.signInWithPassword(
         {
-          email: email,
-          password: password
+          email:
+            email,
+
+          password:
+            password
         }
       );
 
@@ -2536,7 +2562,21 @@ async function signIn() {
 
 async function signOut() {
 
-  await supabaseClient.auth.signOut();
+  const result =
+    await supabaseClient.auth.signOut();
+
+
+  if (result.error) {
+
+    console.error(
+      "Sign out error:",
+      result.error
+    );
+
+    return;
+
+  }
+
 
   updateAccountUI(
     null
@@ -2637,7 +2677,7 @@ supabaseClient.auth.onAuthStateChange(
 
 
 /* =========================================================
-   START APPLICATION
+   START
 ========================================================= */
 
 document.addEventListener(
