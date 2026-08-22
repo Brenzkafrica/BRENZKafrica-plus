@@ -1,725 +1,610 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>BRENZKafrica Plus</title>
-
-  <!-- SUPABASE -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      background: #080808;
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
-      overflow-x: hidden;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      z-index: 1000;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 5%;
-
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.95),
-        rgba(0,0,0,0)
-      );
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: -1px;
-      white-space: nowrap;
-    }
-
-    .logo span {
-      color: #e50914;
-    }
-
-    nav {
-      display: flex;
-      gap: 25px;
-      margin-left: 30px;
-      flex: 1;
-    }
-
-    nav a {
-      color: #ddd;
-      text-decoration: none;
-      font-size: 14px;
-      transition: 0.3s;
-    }
-
-    nav a:hover {
-      color: white;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .search {
-      background: rgba(0,0,0,0.7);
-      border: 1px solid #555;
-      color: white;
-      padding: 9px 12px;
-      border-radius: 4px;
-      outline: none;
-      width: 150px;
-    }
-
-    .signin {
-      background: #e50914;
-      border: none;
-      color: white;
-      padding: 9px 18px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .signin:hover {
-      transform: scale(1.04);
-    }
-
-    .hero {
-      height: 90vh;
-      min-height: 600px;
-
-      position: relative;
-
-      display: flex;
-      align-items: center;
-
-      padding: 0 5%;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(0,0,0,0.95) 0%,
-          rgba(0,0,0,0.65) 45%,
-          rgba(0,0,0,0.1) 100%
-        ),
-        linear-gradient(
-          0deg,
-          #080808 0%,
-          transparent 30%
-        ),
-        url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg");
-
-      background-size: cover;
-      background-position: center;
-    }
-
-    .hero-content {
-      max-width: 650px;
-      padding-top: 100px;
-    }
-
-    .hero-label {
-      color: #e50914;
-      font-weight: bold;
-      letter-spacing: 3px;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
-    .hero h1 {
-      font-size: clamp(45px, 7vw, 85px);
-      line-height: 0.95;
-      margin-bottom: 20px;
-      font-weight: 900;
-    }
-
-    .hero p {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #ddd;
-      max-width: 600px;
-      margin-bottom: 25px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-    }
-
-    .play-btn,
-    .info-btn {
-      border: none;
-      padding: 13px 25px;
-      border-radius: 4px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .play-btn {
-      background: white;
-      color: black;
-    }
-
-    .info-btn {
-      background: rgba(100,100,100,0.7);
-      color: white;
-    }
-
-    .play-btn:hover,
-    .info-btn:hover {
-      transform: scale(1.04);
-    }
-
-    main {
-      margin-top: -80px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .section {
-      padding: 20px 5%;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 22px;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
-
-    .section-subtitle {
-      color: #999;
-      margin-top: -10px;
-      margin-bottom: 18px;
-    }
-
-    .row {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 15px;
-      scrollbar-width: none;
-    }
-
-    .row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .card {
-      min-width: 220px;
-      height: 125px;
-
-      border-radius: 5px;
-      overflow: hidden;
-
-      position: relative;
-
-      background: #181818;
-
-      cursor: pointer;
-
-      transition: 0.3s;
-
-      flex-shrink: 0;
-    }
-
-    .card:hover {
-      transform: scale(1.08);
-      z-index: 10;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-
-      padding: 35px 10px 10px;
-
-      background: linear-gradient(
-        transparent,
-        rgba(0,0,0,0.95)
-      );
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .card-type {
-      font-size: 11px;
-      color: #bbb;
-      margin-top: 4px;
-    }
-
-    .portrait-card {
-      min-width: 180px;
-      height: 270px;
-    }
-
-    .licensed-card {
-      min-width: 220px;
-      height: 125px;
-    }
-
-    .licensed-badge {
-      position: absolute;
-      top: 8px;
-      left: 8px;
-
-      background: rgba(0,0,0,0.78);
-      color: #ddd;
-
-      padding: 4px 7px;
-
-      border-radius: 3px;
-
-      font-size: 9px;
-      font-weight: bold;
-
-      z-index: 3;
-    }
-
-    .youtube-card {
-      min-width: 260px;
-      height: 146px;
-    }
-
-    .youtube-card::after {
-      content: "▶";
-
-      position: absolute;
-      top: 50%;
-      left: 50%;
-
-      transform: translate(-50%, -50%);
-
-      width: 46px;
-      height: 46px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      background: rgba(229,9,20,0.92);
-      border-radius: 50%;
-
-      font-size: 18px;
-      padding-left: 3px;
-
-      opacity: 0;
-      transition: 0.25s;
-    }
-
-    .youtube-card:hover::after {
-      opacity: 1;
-    }
-
-    .loading {
-      color: #777;
-      padding: 20px 0;
-      font-size: 14px;
-    }
-
-    .empty {
-      color: #666;
-      padding: 20px 0;
-      font-size: 14px;
-    }
-
-    .error {
-      color: #e50914;
-      padding: 20px 0;
-      font-size: 14px;
-    }
-
-    .player {
-      display: none;
-
-      position: fixed;
-      inset: 0;
-
-      background: #000;
-
-      z-index: 5000;
-
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-
-      padding: 20px;
-    }
-
-    .player.active {
-      display: flex;
-    }
-
-    .player video {
-      width: 90%;
-      max-height: 80vh;
-      background: black;
-    }
-
-    .youtube-frame {
-      width: 90%;
-      height: 75vh;
-
-      border: none;
-
-      background: black;
-
-      display: none;
-    }
-
-    .close-player {
-      position: absolute;
-
-      top: 25px;
-      right: 30px;
-
-      background: rgba(255,255,255,0.15);
-
-      color: white;
-
-      border: none;
-
-      border-radius: 50%;
-
-      width: 45px;
-      height: 45px;
-
-      font-size: 22px;
-
-      cursor: pointer;
-
-      z-index: 10;
-    }
-
-    .player-title {
-      margin-top: 15px;
-
-      font-size: 18px;
-
-      font-weight: bold;
-
-      max-width: 90%;
-
-      text-align: center;
-    }
-
-    .player-source {
-      color: #888;
-      font-size: 12px;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .player-source a {
-      color: #aaa;
-      text-decoration: underline;
-    }
-
-    .auth-section {
-      display: none;
-
-      position: fixed;
-      inset: 0;
-
-      background: rgba(0,0,0,0.88);
-
-      z-index: 10000;
-
-      align-items: center;
-      justify-content: center;
-
-      padding: 20px;
-    }
-
-    .auth-section.active {
-      display: flex;
-    }
-
-    .auth-box {
-      width: 100%;
-      max-width: 420px;
-
-      background: #111;
-
-      border: 1px solid #333;
-
-      border-radius: 12px;
-
-      padding: 30px;
-
-      position: relative;
-
-      box-shadow: 0 20px 70px rgba(0,0,0,0.8);
-    }
-
-    .auth-box h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .auth-description {
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 22px;
-      line-height: 1.5;
-    }
-
-    .auth-box input {
-      width: 100%;
-
-      background: #050505;
-
-      color: white;
-
-      border: 1px solid #333;
-
-      padding: 14px;
-
-      border-radius: 6px;
-
-      margin-bottom: 12px;
-
-      outline: none;
-    }
-
-    #auth-button {
-      width: 100%;
-
-      padding: 13px;
-
-      border: none;
-
-      border-radius: 6px;
-
-      background: #e50914;
-
-      color: white;
-
-      font-weight: bold;
-
-      cursor: pointer;
-
-      margin-top: 5px;
-    }
-
-    #auth-message {
-      min-height: 20px;
-
-      margin-top: 15px;
-
-      color: #aaa;
-
-      font-size: 13px;
-
-      line-height: 1.4;
-
-      text-align: center;
-    }
-
-    .auth-switch {
-      margin-top: 20px;
-
-      color: #888;
-
-      font-size: 13px;
-
-      text-align: center;
-    }
-
-    .auth-switch button {
-      background: none;
-
-      border: none;
-
-      color: white;
-
-      cursor: pointer;
-
-      font-weight: bold;
-    }
-
-    .auth-close {
-      position: absolute;
-
-      top: 12px;
-      right: 15px;
-
-      background: none;
-
-      border: none;
-
-      color: #aaa;
-
-      font-size: 26px;
-
-      cursor: pointer;
-    }
-
-    .account-status {
-      display: none;
-
-      align-items: center;
-
-      gap: 10px;
-    }
-
-    .account-status span {
-      color: #ccc;
-
-      font-size: 13px;
-
-      max-width: 150px;
-
-      overflow: hidden;
-
-      text-overflow: ellipsis;
-
-      white-space: nowrap;
-    }
-
-    .signout {
-      background: #222;
-
-      border: 1px solid #444;
-
-      color: white;
-
-      padding: 8px 12px;
-
-      border-radius: 4px;
-
-      cursor: pointer;
-
-      font-size: 12px;
-    }
-
-    footer {
-      padding: 60px 5%;
-
-      color: #777;
-
-      text-align: center;
-
-      border-top: 1px solid #222;
-
-      margin-top: 40px;
-    }
-
-    @media (max-width: 700px) {
-
-      header {
-        height: 60px;
-        padding: 0 18px;
-      }
-
-      .logo {
-        font-size: 19px;
-      }
-
-      nav {
-        display: none;
-      }
-
-      .search {
-        width: 90px;
-        padding: 7px;
-      }
-
-      .signin {
-        padding: 8px 12px;
-        font-size: 12px;
-      }
-
-      .hero {
-        height: 75vh;
-        min-height: 500px;
-        padding: 0 20px;
-      }
-
-      .hero-content {
-        padding-top: 80px;
-      }
-
-      .hero h1 {
-        font-size: 48px;
-      }
-
-      .hero p {
-        font-size: 15px;
-      }
-
-      .section {
-        padding: 15px 20px;
-      }
-
-      .card {
-        min-width: 170px;
-        height: 100px;
-      }
-
-      .portrait-card {
-        min-width: 140px;
-        height: 210px;
-      }
-
-      .youtube-card {
-        min-width: 220px;
-        height: 124px;
-      }
-
-      .auth-box {
-        padding: 25px 20px;
-      }
-
-      .account-status span {
-        display: none;
-      }
-
-      .youtube-frame {
-        width: 95%;
-        height: 55vh;
-      }
-
-      .player video {
-        width: 95%;
-      }
-
-      .player-title {
-        font-size: 16px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>BRENZKafrica Plus</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#080808;
+  color:white;
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
+}
+
+header{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:70px;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 5%;
+  background:linear-gradient(to bottom,rgba(0,0,0,.95),rgba(0,0,0,0));
+}
+
+.logo{
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:-1px;
+  white-space:nowrap;
+}
+
+.logo span{
+  color:#e50914;
+}
+
+nav{
+  display:flex;
+  gap:25px;
+  margin-left:30px;
+  flex:1;
+}
+
+nav a{
+  color:#ddd;
+  text-decoration:none;
+  font-size:14px;
+  transition:.3s;
+}
+
+nav a:hover{
+  color:white;
+}
+
+.nav-right{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.search{
+  background:rgba(0,0,0,.7);
+  border:1px solid #555;
+  color:white;
+  padding:9px 12px;
+  border-radius:4px;
+  outline:none;
+  width:150px;
+}
+
+.signin{
+  background:#e50914;
+  border:none;
+  color:white;
+  padding:9px 18px;
+  border-radius:4px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.signin:hover{
+  transform:scale(1.04);
+}
+
+.hero{
+  height:90vh;
+  min-height:600px;
+  position:relative;
+  display:flex;
+  align-items:center;
+  padding:0 5%;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.95) 0%,
+      rgba(0,0,0,.65) 45%,
+      rgba(0,0,0,.1) 100%
+    ),
+    linear-gradient(
+      0deg,
+      #080808 0%,
+      transparent 30%
+    ),
+    url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg");
+
+  background-size:cover;
+  background-position:center;
+  transition:background-image .5s ease;
+}
+
+.hero-content{
+  max-width:650px;
+  padding-top:100px;
+}
+
+.hero-label{
+  color:#e50914;
+  font-weight:bold;
+  letter-spacing:3px;
+  font-size:14px;
+  margin-bottom:15px;
+}
+
+.hero h1{
+  font-size:clamp(45px,7vw,85px);
+  line-height:.95;
+  margin-bottom:20px;
+  font-weight:900;
+}
+
+.hero p{
+  font-size:18px;
+  line-height:1.6;
+  color:#ddd;
+  max-width:600px;
+  margin-bottom:25px;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:12px;
+}
+
+.play-btn,
+.info-btn{
+  border:none;
+  padding:13px 25px;
+  border-radius:4px;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.play-btn{
+  background:white;
+  color:black;
+}
+
+.info-btn{
+  background:rgba(100,100,100,.7);
+  color:white;
+}
+
+.play-btn:hover,
+.info-btn:hover{
+  transform:scale(1.04);
+}
+
+main{
+  margin-top:-80px;
+  position:relative;
+  z-index:2;
+}
+
+.section{
+  padding:20px 5%;
+  margin-bottom:20px;
+}
+
+.section-title{
+  font-size:22px;
+  margin-bottom:15px;
+  font-weight:bold;
+}
+
+.section-subtitle{
+  color:#999;
+  margin-top:-10px;
+  margin-bottom:18px;
+}
+
+.row{
+  display:flex;
+  gap:12px;
+  overflow-x:auto;
+  padding-bottom:15px;
+  scrollbar-width:none;
+}
+
+.row::-webkit-scrollbar{
+  display:none;
+}
+
+.card{
+  min-width:220px;
+  height:125px;
+  border-radius:5px;
+  overflow:hidden;
+  position:relative;
+  background:#181818;
+  cursor:pointer;
+  transition:.3s;
+  flex-shrink:0;
+}
+
+.card:hover{
+  transform:scale(1.08);
+  z-index:10;
+}
+
+.card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.card-overlay{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:35px 10px 10px;
+  background:linear-gradient(transparent,rgba(0,0,0,.95));
+}
+
+.card-title{
+  font-size:14px;
+  font-weight:bold;
+}
+
+.card-type{
+  font-size:11px;
+  color:#bbb;
+  margin-top:4px;
+}
+
+.portrait-card{
+  min-width:180px;
+  height:270px;
+}
+
+.licensed-card{
+  min-width:220px;
+  height:125px;
+}
+
+.licensed-badge{
+  position:absolute;
+  top:8px;
+  left:8px;
+  background:rgba(0,0,0,.78);
+  color:#ddd;
+  padding:4px 7px;
+  border-radius:3px;
+  font-size:9px;
+  font-weight:bold;
+  z-index:3;
+}
+
+.youtube-card{
+  min-width:260px;
+  height:146px;
+}
+
+.youtube-card::after{
+  content:"▶";
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:46px;
+  height:46px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(229,9,20,.92);
+  border-radius:50%;
+  font-size:18px;
+  padding-left:3px;
+  opacity:0;
+  transition:.25s;
+}
+
+.youtube-card:hover::after{
+  opacity:1;
+}
+
+.loading{
+  color:#777;
+  padding:20px 0;
+  font-size:14px;
+}
+
+.empty{
+  color:#666;
+  padding:20px 0;
+  font-size:14px;
+}
+
+.error{
+  color:#e50914;
+  padding:20px 0;
+  font-size:14px;
+}
+
+.player{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:5000;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  padding:20px;
+}
+
+.player.active{
+  display:flex;
+}
+
+.player video{
+  width:90%;
+  max-height:80vh;
+  background:black;
+}
+
+.youtube-frame{
+  width:90%;
+  height:75vh;
+  border:none;
+  background:black;
+  display:none;
+}
+
+.close-player{
+  position:absolute;
+  top:25px;
+  right:30px;
+  background:rgba(255,255,255,.15);
+  color:white;
+  border:none;
+  border-radius:50%;
+  width:45px;
+  height:45px;
+  font-size:22px;
+  cursor:pointer;
+  z-index:10;
+}
+
+.player-title{
+  margin-top:15px;
+  font-size:18px;
+  font-weight:bold;
+  max-width:90%;
+  text-align:center;
+}
+
+.player-source{
+  color:#888;
+  font-size:12px;
+  margin-top:6px;
+  line-height:1.5;
+}
+
+.player-source a{
+  color:#aaa;
+  text-decoration:underline;
+}
+
+.auth-section{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.88);
+  z-index:10000;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.auth-section.active{
+  display:flex;
+}
+
+.auth-box{
+  width:100%;
+  max-width:420px;
+  background:#111;
+  border:1px solid #333;
+  border-radius:12px;
+  padding:30px;
+  position:relative;
+  box-shadow:0 20px 70px rgba(0,0,0,.8);
+}
+
+.auth-box h2{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.auth-description{
+  color:#888;
+  font-size:14px;
+  margin-bottom:22px;
+  line-height:1.5;
+}
+
+.auth-box input{
+  width:100%;
+  background:#050505;
+  color:white;
+  border:1px solid #333;
+  padding:14px;
+  border-radius:6px;
+  margin-bottom:12px;
+  outline:none;
+}
+
+#auth-button{
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:6px;
+  background:#e50914;
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:5px;
+}
+
+#auth-message{
+  min-height:20px;
+  margin-top:15px;
+  color:#aaa;
+  font-size:13px;
+  line-height:1.4;
+  text-align:center;
+}
+
+.auth-switch{
+  margin-top:20px;
+  color:#888;
+  font-size:13px;
+  text-align:center;
+}
+
+.auth-switch button{
+  background:none;
+  border:none;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.auth-close{
+  position:absolute;
+  top:12px;
+  right:15px;
+  background:none;
+  border:none;
+  color:#aaa;
+  font-size:26px;
+  cursor:pointer;
+}
+
+.account-status{
+  display:none;
+  align-items:center;
+  gap:10px;
+}
+
+.account-status span{
+  color:#ccc;
+  font-size:13px;
+  max-width:150px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.signout{
+  background:#222;
+  border:1px solid #444;
+  color:white;
+  padding:8px 12px;
+  border-radius:4px;
+  cursor:pointer;
+  font-size:12px;
+}
+
+footer{
+  padding:60px 5%;
+  color:#777;
+  text-align:center;
+  border-top:1px solid #222;
+  margin-top:40px;
+}
+
+@media(max-width:700px){
+
+  header{
+    height:60px;
+    padding:0 18px;
+  }
+
+  .logo{
+    font-size:19px;
+  }
+
+  nav{
+    display:none;
+  }
+
+  .search{
+    width:90px;
+    padding:7px;
+  }
+
+  .signin{
+    padding:8px 12px;
+    font-size:12px;
+  }
+
+  .hero{
+    height:75vh;
+    min-height:500px;
+    padding:0 20px;
+  }
+
+  .hero-content{
+    padding-top:80px;
+  }
+
+  .hero h1{
+    font-size:48px;
+  }
+
+  .hero p{
+    font-size:15px;
+  }
+
+  .section{
+    padding:15px 20px;
+  }
+
+  .card{
+    min-width:170px;
+    height:100px;
+  }
+
+  .portrait-card{
+    min-width:140px;
+    height:210px;
+  }
+
+  .youtube-card{
+    min-width:220px;
+    height:124px;
+  }
+
+  .auth-box{
+    padding:25px 20px;
+  }
+
+  .account-status span{
+    display:none;
+  }
+
+  .youtube-frame{
+    width:95%;
+    height:55vh;
+  }
+
+  .player video{
+    width:95%;
+  }
+
+  .player-title{
+    font-size:16px;
+  }
+}
+</style>
 </head>
 
 <body>
@@ -746,7 +631,7 @@
       id="search"
       type="text"
       placeholder="Search"
-    />
+    >
 
     <button
       class="signin"
@@ -775,21 +660,24 @@
 </header>
 
 
-<section class="hero">
+<section class="hero" id="hero">
 
   <div class="hero-content">
 
-    <div class="hero-label">
+    <div
+      class="hero-label"
+      id="heroLabel"
+    >
       BRENZKAFRICA ORIGINAL
     </div>
 
-    <h1>
+    <h1 id="heroTitle">
       Stories.<br>
       Creativity.<br>
       Unlimited Vision.
     </h1>
 
-    <p>
+    <p id="heroDescription">
       Discover original African stories, films, series,
       documentaries and creative work from BRENZKafrica.
     </p>
@@ -819,152 +707,134 @@
 
 <main>
 
-  <!-- ORIGINALS -->
+<section
+  class="section"
+  id="originals"
+>
 
-  <section
-    class="section"
-    id="originals"
+  <h2 class="section-title">
+    BRENZKafrica Originals
+  </h2>
+
+  <p class="section-subtitle">
+    Stories created by Africa. For the world.
+  </p>
+
+  <div
+    class="row"
+    id="originalsRow"
   >
-
-    <h2 class="section-title">
-      BRENZKafrica Originals
-    </h2>
-
-    <p class="section-subtitle">
-      Stories created by Africa. For the world.
-    </p>
-
-    <div
-      class="row"
-      id="originalsRow"
-    >
-      <div class="loading">
-        Loading originals...
-      </div>
+    <div class="loading">
+      Loading originals...
     </div>
+  </div>
 
-  </section>
+</section>
 
 
-  <!-- YOUTUBE -->
+<section
+  class="section"
+  id="youtube"
+>
 
-  <section
-    class="section"
-    id="youtube"
+  <h2 class="section-title">
+    BRENZKafrica YouTube
+  </h2>
+
+  <p class="section-subtitle">
+    Latest tutorials, creative insights and videos from BRENZKafrica.
+  </p>
+
+  <div
+    class="row"
+    id="youtubeRow"
   >
-
-    <h2 class="section-title">
-      BRENZKafrica YouTube
-    </h2>
-
-    <p class="section-subtitle">
-      Latest tutorials, creative insights and videos from BRENZKafrica.
-    </p>
-
-    <div
-      class="row"
-      id="youtubeRow"
-    >
-
-      <div class="loading">
-        Loading BRENZKafrica videos...
-      </div>
-
+    <div class="loading">
+      Loading BRENZKafrica videos...
     </div>
+  </div>
 
-  </section>
+</section>
 
 
-  <!-- SERIES -->
+<section
+  class="section"
+  id="series"
+>
 
-  <section
-    class="section"
-    id="series"
+  <h2 class="section-title">
+    Series
+  </h2>
+
+  <p class="section-subtitle">
+    African stories, journeys and creative voices.
+  </p>
+
+  <div
+    class="row"
+    id="seriesRow"
   >
-
-    <h2 class="section-title">
-      Series
-    </h2>
-
-    <p class="section-subtitle">
-      African stories, journeys and creative voices.
-    </p>
-
-    <div
-      class="row"
-      id="seriesRow"
-    >
-
-      <div class="loading">
-        Loading series...
-      </div>
-
+    <div class="loading">
+      Loading series...
     </div>
+  </div>
 
-  </section>
+</section>
 
 
-  <!-- FILMS -->
+<section
+  class="section"
+  id="films"
+>
 
-  <section
-    class="section"
-    id="films"
+  <h2 class="section-title">
+    Films
+  </h2>
+
+  <p class="section-subtitle">
+    Independent African stories and visual journeys.
+  </p>
+
+  <div
+    class="row"
+    id="filmsRow"
   >
-
-    <h2 class="section-title">
-      Films
-    </h2>
-
-    <p class="section-subtitle">
-      Independent African stories and visual journeys.
-    </p>
-
-    <div
-      class="row"
-      id="filmsRow"
-    >
-
-      <div class="loading">
-        Loading films...
-      </div>
-
+    <div class="loading">
+      Loading films...
     </div>
+  </div>
 
-  </section>
+</section>
 
 
-  <!-- DOCUMENTARIES -->
+<section
+  class="section"
+  id="documentaries"
+>
 
-  <section
-    class="section"
-    id="documentaries"
+  <h2 class="section-title">
+    Documentaries
+  </h2>
+
+  <p class="section-subtitle">
+    Real people. Real places. African perspectives.
+  </p>
+
+  <div
+    class="row"
+    id="documentariesRow"
   >
-
-    <h2 class="section-title">
-      Documentaries
-    </h2>
-
-    <p class="section-subtitle">
-      Real people. Real places. African perspectives.
-    </p>
-
-    <div
-      class="row"
-      id="documentariesRow"
-    >
-
-      <div class="loading">
-        Loading documentaries...
-      </div>
-
+    <div class="loading">
+      Loading documentaries...
     </div>
+  </div>
 
-  </section>
+</section>
 
 </main>
 
 
-<!-- VIDEO PLAYER -->
+<!-- PLAYER -->
 
 <div
   class="player"
@@ -1001,7 +871,7 @@
 </div>
 
 
-<!-- AUTHENTICATION -->
+<!-- AUTH -->
 
 <div
   id="auth-section"
@@ -1031,14 +901,14 @@
       id="email"
       placeholder="Email address"
       autocomplete="email"
-    />
+    >
 
     <input
       type="password"
       id="password"
       placeholder="Password"
       autocomplete="current-password"
-    />
+    >
 
     <button
       id="auth-button"
@@ -1055,7 +925,6 @@
       <button onclick="showSignUp()">
         Create Account
       </button>
-
     </p>
 
   </div>
@@ -1083,27 +952,27 @@
 <script>
 
 /* =====================================================
-   SUPABASE CONNECTION
+   SUPABASE
 ===================================================== */
 
 const SUPABASE_URL =
-  "https://fcddfmfpzbilagphpsxs.supabase.co";
+"https://fcddfmfpzbilagphpsxs.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u";
+"sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u";
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY,
-    {
-      auth: {
-        persistSession: true,
-        autoRefreshToken: true,
-        detectSessionInUrl: true
-      }
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY,
+  {
+    auth:{
+      persistSession:true,
+      autoRefreshToken:true,
+      detectSessionInUrl:true
     }
-  );
+  }
+);
 
 
 /* =====================================================
@@ -1111,207 +980,349 @@ const supabaseClient =
 ===================================================== */
 
 const player =
-  document.getElementById("player");
+document.getElementById("player");
 
 const video =
-  document.getElementById("video");
+document.getElementById("video");
 
 const youtubeFrame =
-  document.getElementById("youtubeFrame");
+document.getElementById("youtubeFrame");
 
 const playerTitle =
-  document.getElementById("playerTitle");
+document.getElementById("playerTitle");
 
 const authSection =
-  document.getElementById("auth-section");
+document.getElementById("auth-section");
 
 const authTitle =
-  document.getElementById("auth-title");
+document.getElementById("auth-title");
 
 const authButton =
-  document.getElementById("auth-button");
+document.getElementById("auth-button");
 
 const authMessage =
-  document.getElementById("auth-message");
+document.getElementById("auth-message");
 
 const emailInput =
-  document.getElementById("email");
+document.getElementById("email");
 
 const passwordInput =
-  document.getElementById("password");
+document.getElementById("password");
 
 const signinButton =
-  document.getElementById("signinButton");
+document.getElementById("signinButton");
 
 const accountStatus =
-  document.getElementById("accountStatus");
+document.getElementById("accountStatus");
 
 const userEmail =
-  document.getElementById("userEmail");
+document.getElementById("userEmail");
 
 const search =
-  document.getElementById("search");
+document.getElementById("search");
+
+const hero =
+document.getElementById("hero");
+
+const heroLabel =
+document.getElementById("heroLabel");
+
+const heroTitle =
+document.getElementById("heroTitle");
+
+const heroDescription =
+document.getElementById("heroDescription");
 
 
 /* =====================================================
-   CONTENT ROWS
+   ROWS
 ===================================================== */
 
 const originalsRow =
-  document.getElementById("originalsRow");
+document.getElementById("originalsRow");
 
 const seriesRow =
-  document.getElementById("seriesRow");
+document.getElementById("seriesRow");
 
 const filmsRow =
-  document.getElementById("filmsRow");
+document.getElementById("filmsRow");
 
 const documentariesRow =
-  document.getElementById("documentariesRow");
+document.getElementById("documentariesRow");
 
 const youtubeRow =
-  document.getElementById("youtubeRow");
+document.getElementById("youtubeRow");
+
+
+/* =====================================================
+   DEFAULT IMAGE
+===================================================== */
+
+const FALLBACK_IMAGE =
+"https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=1200&q=80";
 
 
 /* =====================================================
    ESCAPE HTML
 ===================================================== */
 
-function escapeHtml(text) {
+function escapeHtml(text){
 
   return String(text || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 }
 
 
 /* =====================================================
-   GET FALLBACK IMAGE
+   NORMALIZE
 ===================================================== */
 
-function getThumbnail(item) {
+function normalize(value){
 
-  if (item.thumbnail_url) {
-    return item.thumbnail_url;
+  return String(value || "")
+    .toLowerCase()
+    .trim();
+}
+
+
+/* =====================================================
+   THUMBNAIL
+===================================================== */
+
+function getThumbnail(item){
+
+  return (
+    item.thumbnail_url ||
+    item.image_url ||
+    item.poster_url ||
+    FALLBACK_IMAGE
+  );
+}
+
+
+/* =====================================================
+   YOUTUBE ID
+===================================================== */
+
+function getYouTubeId(url){
+
+  if(!url) return null;
+
+  try{
+
+    const parsed =
+      new URL(url);
+
+    if(
+      parsed.hostname.includes("youtube.com")
+    ){
+
+      if(
+        parsed.pathname === "/watch"
+      ){
+
+        return parsed.searchParams.get("v");
+
+      }
+
+      if(
+        parsed.pathname.startsWith("/shorts/")
+      ){
+
+        return parsed.pathname
+          .split("/")[2];
+
+      }
+
+      if(
+        parsed.pathname.startsWith("/embed/")
+      ){
+
+        return parsed.pathname
+          .split("/")[2];
+
+      }
+
+    }
+
+    if(
+      parsed.hostname === "youtu.be"
+    ){
+
+      return parsed.pathname
+        .replace("/","");
+
+    }
+
+  }catch(error){
+
+    console.log(error);
+
   }
 
-  return "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
-
+  return null;
 }
 
 
 /* =====================================================
-   PLAY SUPABASE / DIRECT VIDEO
+   PLAY CONTENT
 ===================================================== */
 
-function playVideo(name, url, sourceInfo = "") {
+function playVideo(
+  name,
+  url,
+  sourceInfo=""
+){
 
-  if (!url) {
+  if(!url){
 
-    alert("This video is not available yet.");
+    alert(
+      "This video is not available yet."
+    );
 
     return;
-
   }
 
-  youtubeFrame.src = "";
+  youtubeFrame.src="";
+  youtubeFrame.style.display="none";
 
-  youtubeFrame.style.display =
-    "none";
-
-  video.style.display =
-    "block";
+  video.style.display="block";
 
   playerTitle.innerHTML =
     escapeHtml(name) +
     sourceInfo;
 
-  video.src =
-    url;
+  video.src=url;
 
   player.classList.add("active");
 
   video.play().catch(
-    function(error) {
-
+    error =>
       console.log(
         "Autoplay prevented:",
         error
-      );
-
-    }
+      )
   );
-
 }
 
 
 /* =====================================================
-   PLAY LICENSED CONTENT
+   PLAY CONTENT CARD
 ===================================================== */
 
-function playLicensedVideo(
-  item
-) {
+function playContent(item){
 
-  let sourceInfo = "";
+  if(!item){
 
-  if (
+    return;
+  }
+
+  /*
+     If the content uses YouTube,
+     automatically open YouTube player.
+  */
+
+  const youtubeId =
+    getYouTubeId(
+      item.video_url ||
+      item.source_url
+    );
+
+  if(
+    youtubeId &&
+    (
+      normalize(item.source_type)
+        .includes("youtube") ||
+      normalize(item.video_url)
+        .includes("youtube") ||
+      normalize(item.video_url)
+        .includes("youtu.be")
+    )
+  ){
+
+    playYouTubeVideo(
+      youtubeId,
+      item.title || "BRENZKafrica"
+    );
+
+    return;
+  }
+
+
+  let sourceInfo="";
+
+  if(
     item.creator ||
     item.license ||
     item.source_url
-  ) {
+  ){
 
     sourceInfo =
       '<div class="player-source">' +
-      (item.creator
+
+      (
+        item.creator
         ? "Creator: " +
           escapeHtml(item.creator)
-        : "") +
-      (item.license
+        : ""
+      ) +
+
+      (
+        item.license
         ? " • " +
           escapeHtml(item.license)
-        : "") +
-      (item.source_url
+        : ""
+      ) +
+
+      (
+        item.source_url
         ? '<br><a href="' +
           escapeHtml(item.source_url) +
           '" target="_blank" rel="noopener noreferrer">' +
-          'View original source & license' +
+          'View original source' +
           '</a>'
-        : "") +
-      "</div>";
+        : ""
+      ) +
 
+      "</div>";
   }
 
+
   playVideo(
-    item.title,
+    item.title || "BRENZKafrica",
     item.video_url,
     sourceInfo
   );
-
 }
 
 
 /* =====================================================
-   PLAY YOUTUBE
+   YOUTUBE PLAYER
 ===================================================== */
 
 function playYouTubeVideo(
   videoId,
   title
-) {
+){
+
+  if(!videoId){
+
+    alert(
+      "YouTube video is not available."
+    );
+
+    return;
+  }
 
   video.pause();
-
   video.removeAttribute("src");
-
   video.load();
 
-  video.style.display =
-    "none";
+  video.style.display="none";
 
   playerTitle.textContent =
     title;
@@ -1324,10 +1335,7 @@ function playYouTubeVideo(
     encodeURIComponent(videoId) +
     "?autoplay=1&rel=0&playsinline=1";
 
-  player.classList.add(
-    "active"
-  );
-
+  player.classList.add("active");
 }
 
 
@@ -1335,7 +1343,7 @@ function playYouTubeVideo(
    CLOSE PLAYER
 ===================================================== */
 
-function closePlayer() {
+function closePlayer(){
 
   video.pause();
 
@@ -1343,21 +1351,15 @@ function closePlayer() {
 
   video.load();
 
-  youtubeFrame.src = "";
+  youtubeFrame.src="";
 
-  youtubeFrame.style.display =
-    "none";
+  youtubeFrame.style.display="none";
 
-  video.style.display =
-    "block";
+  video.style.display="block";
 
-  player.classList.remove(
-    "active"
-  );
+  player.classList.remove("active");
 
-  playerTitle.innerHTML =
-    "";
-
+  playerTitle.innerHTML="";
 }
 
 
@@ -1367,16 +1369,17 @@ function closePlayer() {
 
 function createContentCard(
   item,
-  portrait = false
-) {
+  portrait=false
+){
 
   const card =
     document.createElement("div");
 
   card.className =
     portrait
-      ? "card portrait-card"
-      : "card";
+    ? "card portrait-card"
+    : "card";
+
 
   card.dataset.search =
     (
@@ -1391,21 +1394,20 @@ function createContentCard(
       (item.creator || "")
     ).toLowerCase();
 
+
   card.onclick =
-    function() {
-
-      playLicensedVideo(item);
-
-    };
+    () => playContent(item);
 
 
-  /* LICENSE BADGE */
+  /*
+     SOURCE BADGE
+  */
 
-  if (
+  if(
     item.source_type &&
-    item.source_type !==
-      "BRENZKafrica"
-  ) {
+    normalize(item.source_type)
+      !== "brenzkafrica"
+  ){
 
     const badge =
       document.createElement("span");
@@ -1414,16 +1416,22 @@ function createContentCard(
       "licensed-badge";
 
     badge.textContent =
-      item.license
-        ? "LICENSED"
-        : "SOURCE";
+      normalize(item.source_type)
+        .includes("youtube")
+      ? "YOUTUBE"
+      : (
+          item.license
+          ? "LICENSED"
+          : "SOURCE"
+        );
 
     card.appendChild(badge);
-
   }
 
 
-  /* IMAGE */
+  /*
+     IMAGE
+  */
 
   const image =
     document.createElement("img");
@@ -1432,23 +1440,24 @@ function createContentCard(
     getThumbnail(item);
 
   image.alt =
-    item.title || "BRENZKafrica content";
+    item.title ||
+    "BRENZKafrica content";
 
-  image.loading =
-    "lazy";
+  image.loading="lazy";
 
   image.onerror =
-    function() {
+    function(){
 
       image.src =
-        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
-
+        FALLBACK_IMAGE;
     };
 
   card.appendChild(image);
 
 
-  /* OVERLAY */
+  /*
+     OVERLAY
+  */
 
   const overlay =
     document.createElement("div");
@@ -1467,8 +1476,6 @@ function createContentCard(
     item.title ||
     "Untitled";
 
-  overlay.appendChild(title);
-
 
   const type =
     document.createElement("div");
@@ -1480,38 +1487,77 @@ function createContentCard(
     item.category ||
     "Video";
 
-  if (item.country) {
+  if(item.country){
 
     typeText +=
       " • " +
       item.country;
-
   }
 
-  overlay.appendChild(
-    Object.assign(
-      type,
-      {
-        textContent: typeText
-      }
-    )
-  );
+  type.textContent =
+    typeText;
 
 
-  card.appendChild(
-    overlay
-  );
+  overlay.appendChild(title);
+  overlay.appendChild(type);
+
+  card.appendChild(overlay);
 
   return card;
-
 }
 
 
 /* =====================================================
-   LOAD ALL CONTENT FROM SUPABASE
+   RENDER ROW
 ===================================================== */
 
-async function loadSupabaseContent() {
+function renderContent(
+  row,
+  items,
+  portrait,
+  emptyMessage
+){
+
+  row.innerHTML="";
+
+  if(
+    !items ||
+    items.length===0
+  ){
+
+    row.innerHTML =
+      '<div class="empty">' +
+      escapeHtml(emptyMessage) +
+      '</div>';
+
+    return;
+  }
+
+  items.forEach(
+    item => {
+
+      row.appendChild(
+        createContentCard(
+          item,
+          portrait
+        )
+      );
+
+    }
+  );
+}
+
+
+/* =====================================================
+   LOAD SUPABASE CONTENT
+===================================================== */
+
+async function loadSupabaseContent(){
+
+  console.log(
+    "Loading BRENZKafrica content..."
+  );
+
 
   originalsRow.innerHTML =
     '<div class="loading">Loading originals...</div>';
@@ -1525,7 +1571,8 @@ async function loadSupabaseContent() {
   documentariesRow.innerHTML =
     '<div class="loading">Loading documentaries...</div>';
 
-  try {
+
+  try{
 
     const {
       data,
@@ -1541,12 +1588,12 @@ async function loadSupabaseContent() {
         .order(
           "created_at",
           {
-            ascending: false
+            ascending:false
           }
         );
 
 
-    if (error) {
+    if(error){
 
       console.error(
         "Supabase content error:",
@@ -1554,55 +1601,62 @@ async function loadSupabaseContent() {
       );
 
       throw error;
-
     }
 
 
     console.log(
-      "BRENZKafrica content:",
+      "Loaded content:",
       data
     );
 
 
-    if (
+    if(
       !data ||
-      data.length === 0
-    ) {
+      data.length===0
+    ){
 
-      showEmptyContent(
+      renderContent(
         originalsRow,
-        "No original content yet."
+        [],
+        false,
+        "No BRENZKafrica Originals yet."
       );
 
-      showEmptyContent(
+      renderContent(
         seriesRow,
+        [],
+        true,
         "No series available yet."
       );
 
-      showEmptyContent(
+      renderContent(
         filmsRow,
+        [],
+        false,
         "No films available yet."
       );
 
-      showEmptyContent(
+      renderContent(
         documentariesRow,
+        [],
+        false,
         "No documentaries available yet."
       );
 
       return;
-
     }
 
 
-    /* ==============================================
+    /*
        ORIGINALS
-    ============================================== */
+    */
 
     const originals =
       data.filter(
         item =>
           item.is_original === true
       );
+
 
     renderContent(
       originalsRow,
@@ -1612,16 +1666,18 @@ async function loadSupabaseContent() {
     );
 
 
-    /* ==============================================
+    /*
        SERIES
-    ============================================== */
+    */
 
     const series =
       data.filter(
         item =>
-          normalize(item.category)
-            .includes("series")
+          normalize(
+            item.category
+          ).includes("series")
       );
+
 
     renderContent(
       seriesRow,
@@ -1631,16 +1687,18 @@ async function loadSupabaseContent() {
     );
 
 
-    /* ==============================================
+    /*
        FILMS
-    ============================================== */
+    */
 
     const films =
       data.filter(
         item =>
-          normalize(item.category)
-            .includes("film")
+          normalize(
+            item.category
+          ).includes("film")
       );
+
 
     renderContent(
       filmsRow,
@@ -1650,16 +1708,18 @@ async function loadSupabaseContent() {
     );
 
 
-    /* ==============================================
+    /*
        DOCUMENTARIES
-    ============================================== */
+    */
 
     const documentaries =
       data.filter(
         item =>
-          normalize(item.category)
-            .includes("document")
+          normalize(
+            item.category
+          ).includes("document")
       );
+
 
     renderContent(
       documentariesRow,
@@ -1669,147 +1729,144 @@ async function loadSupabaseContent() {
     );
 
 
-    /* ==============================================
-       HERO FEATURE
-    ============================================== */
+    /*
+       FEATURED CONTENT
+    */
 
     const featured =
       data.find(
         item =>
-          item.is_featured === true &&
+          item.is_featured === true
+      );
+
+
+    const firstPlayable =
+      data.find(
+        item =>
           item.video_url
       );
 
-    if (featured) {
 
-      window.featuredContent =
-        featured;
+    window.featuredContent =
+      featured ||
+      firstPlayable ||
+      null;
 
-    } else {
 
-      window.featuredContent =
-        data.find(
-          item =>
-            item.video_url
-        ) || null;
+    /*
+       AUTOMATIC HERO
+    */
+
+    if(featured){
+
+      updateHero(
+        featured
+      );
+
+    }else if(firstPlayable){
+
+      updateHero(
+        firstPlayable
+      );
 
     }
 
-
-  } catch (error) {
+  }catch(error){
 
     console.error(
       "Could not load Supabase content:",
       error
     );
 
-    showError(
-      originalsRow
-    );
-
-    showError(
-      seriesRow
-    );
-
-    showError(
-      filmsRow
-    );
-
-    showError(
-      documentariesRow
-    );
-
+    showError(originalsRow);
+    showError(seriesRow);
+    showError(filmsRow);
+    showError(documentariesRow);
   }
-
 }
 
 
 /* =====================================================
-   NORMALIZE
+   UPDATE HERO FROM SUPABASE
 ===================================================== */
 
-function normalize(value) {
+function updateHero(item){
 
-  return String(
-    value || ""
-  )
-    .toLowerCase()
-    .trim();
-
-}
-
-
-/* =====================================================
-   RENDER CONTENT
-===================================================== */
-
-function renderContent(
-  row,
-  items,
-  portrait,
-  emptyMessage
-) {
-
-  row.innerHTML = "";
-
-  if (
-    !items ||
-    items.length === 0
-  ) {
-
-    showEmptyContent(
-      row,
-      emptyMessage
-    );
+  if(!item){
 
     return;
-
   }
 
-  items.forEach(
-    function(item) {
 
-      row.appendChild(
-        createContentCard(
-          item,
-          portrait
-        )
+  const image =
+    getThumbnail(item);
+
+
+  if(image){
+
+    hero.style.backgroundImage =
+      `
+      linear-gradient(
+        90deg,
+        rgba(0,0,0,.95) 0%,
+        rgba(0,0,0,.65) 45%,
+        rgba(0,0,0,.1) 100%
+      ),
+      linear-gradient(
+        0deg,
+        #080808 0%,
+        transparent 30%
+      ),
+      url("${image}")
+      `;
+  }
+
+
+  if(item.title){
+
+    /*
+       Keep the original visual layout
+       while using the database title.
+    */
+
+    heroTitle.innerHTML =
+      escapeHtml(
+        item.title
       );
+  }
 
-    }
-  );
 
+  if(item.description){
+
+    heroDescription.textContent =
+      item.description;
+  }
+
+
+  if(item.category){
+
+    heroLabel.textContent =
+      (
+        item.is_original
+        ? "BRENZKAFRICA ORIGINAL"
+        : String(
+            item.category
+          ).toUpperCase()
+      );
+  }
 }
 
 
 /* =====================================================
-   EMPTY
+   EMPTY / ERROR
 ===================================================== */
 
-function showEmptyContent(
-  row,
-  message
-) {
-
-  row.innerHTML =
-    '<div class="empty">' +
-    escapeHtml(message) +
-    '</div>';
-
-}
-
-
-/* =====================================================
-   ERROR
-===================================================== */
-
-function showError(row) {
+function showError(row){
 
   row.innerHTML =
     '<div class="error">' +
     'Unable to load content. Please try again.' +
     '</div>';
-
 }
 
 
@@ -1817,29 +1874,29 @@ function showError(row) {
    FEATURED PLAY
 ===================================================== */
 
-function playFeatured() {
+function playFeatured(){
 
-  if (
+  if(
     window.featuredContent
-  ) {
+  ){
 
-    playLicensedVideo(
+    playContent(
       window.featuredContent
     );
 
     return;
-
   }
 
 
-  /* FALLBACK TO ORIGINAL BRENZKAFRICA VIDEO */
+  /*
+     ORIGINAL FALLBACK
+  */
 
   playVideo(
     "BRENZKafrica Cinema",
 
     "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
   );
-
 }
 
 
@@ -1847,12 +1904,30 @@ function playFeatured() {
    INFO
 ===================================================== */
 
-function showInfo() {
+function showInfo(){
+
+  const item =
+    window.featuredContent;
+
+
+  if(item){
+
+    alert(
+      (item.title || "BRENZKafrica Plus") +
+      "\n\n" +
+      (
+        item.description ||
+        "African stories, creativity and unlimited vision."
+      )
+    );
+
+    return;
+  }
+
 
   alert(
     "BRENZKafrica Plus — African stories, creativity and unlimited vision."
   );
-
 }
 
 
@@ -1860,62 +1935,154 @@ function showInfo() {
    YOUTUBE
 ===================================================== */
 
-async function loadYouTubeVideos() {
+async function loadYouTubeVideos(){
 
   youtubeRow.innerHTML =
     '<div class="loading">' +
     'Loading BRENZKafrica videos...' +
     '</div>';
 
-  try {
 
-    const response =
-      await fetch(
-        "/api/youtube"
-      );
+  /*
+     FIRST:
+     Look for YouTube content inside Supabase.
 
-    if (!response.ok) {
+     This means YouTube videos can also be
+     managed from the content table.
+  */
 
-      throw new Error(
-        "YouTube API unavailable"
-      );
+  try{
 
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("content")
+        .select("*")
+        .eq(
+          "is_published",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending:false
+          }
+        );
+
+
+    if(error){
+
+      throw error;
     }
 
-    const data =
-      await response.json();
 
-    if (
-      !data.success ||
-      !Array.isArray(
-        data.videos
-      )
-    ) {
+    const youtubeContent =
+      (data || [])
+        .filter(
+          item => {
 
-      throw new Error(
-        "Invalid YouTube response"
-      );
+            const url =
+              item.video_url ||
+              item.source_url ||
+              "";
 
-    }
+            const source =
+              normalize(
+                item.source_type
+              );
 
-    youtubeRow.innerHTML =
-      "";
+            return (
+              source.includes("youtube") ||
+              getYouTubeId(url)
+            );
+          }
+        );
 
-    if (
-      data.videos.length === 0
-    ) {
+
+    youtubeRow.innerHTML="";
+
+
+    if(
+      youtubeContent.length === 0
+    ){
+
+      /*
+         SECOND:
+         Try the existing Vercel
+         /api/youtube endpoint.
+      */
+
+      try{
+
+        const response =
+          await fetch(
+            "/api/youtube"
+          );
+
+
+        if(
+          response.ok
+        ){
+
+          const result =
+            await response.json();
+
+
+          if(
+            result.success &&
+            Array.isArray(
+              result.videos
+            ) &&
+            result.videos.length
+          ){
+
+            renderApiYouTube(
+              result.videos
+            );
+
+            return;
+          }
+        }
+
+      }catch(apiError){
+
+        console.log(
+          "YouTube API not active:",
+          apiError
+        );
+      }
+
 
       youtubeRow.innerHTML =
         '<div class="empty">' +
-        'No YouTube videos found.' +
+        'YouTube videos will appear here when they are added to Supabase.' +
         '</div>';
 
       return;
-
     }
 
-    data.videos.forEach(
-      function(item) {
+
+    /*
+       RENDER YOUTUBE FROM SUPABASE
+    */
+
+    youtubeContent.forEach(
+      item => {
+
+        const videoId =
+          getYouTubeId(
+            item.video_url ||
+            item.source_url
+          );
+
+
+        if(!videoId){
+
+          return;
+        }
+
 
         const card =
           document.createElement(
@@ -1925,19 +2092,22 @@ async function loadYouTubeVideos() {
         card.className =
           "card youtube-card";
 
+
         card.dataset.search =
           (
-            item.title || ""
+            item.title ||
+            ""
           ).toLowerCase();
 
+
         card.onclick =
-          function() {
+          function(){
 
             playYouTubeVideo(
-              item.id,
-              item.title
+              videoId,
+              item.title ||
+              "BRENZKafrica"
             );
-
           };
 
 
@@ -1946,20 +2116,25 @@ async function loadYouTubeVideos() {
             "img"
           );
 
+
         image.src =
-          item.thumbnail;
+          item.thumbnail_url ||
+          `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
 
         image.alt =
-          item.title;
+          item.title ||
+          "BRENZKafrica YouTube";
 
-        image.loading =
-          "lazy";
+
+        image.loading="lazy";
 
 
         const overlay =
           document.createElement(
             "div"
           );
+
 
         overlay.className =
           "card-overlay";
@@ -1970,11 +2145,14 @@ async function loadYouTubeVideos() {
             "div"
           );
 
+
         title.className =
           "card-title";
 
+
         title.textContent =
-          item.title;
+          item.title ||
+          "BRENZKafrica";
 
 
         const type =
@@ -1982,124 +2160,201 @@ async function loadYouTubeVideos() {
             "div"
           );
 
+
         type.className =
           "card-type";
+
 
         type.textContent =
           "BRENZKafrica • YouTube";
 
 
-        overlay.appendChild(
-          title
-        );
+        overlay.appendChild(title);
+        overlay.appendChild(type);
 
-        overlay.appendChild(
-          type
-        );
+        card.appendChild(image);
+        card.appendChild(overlay);
 
-        card.appendChild(
-          image
-        );
-
-        card.appendChild(
-          overlay
-        );
-
-        youtubeRow.appendChild(
-          card
-        );
-
+        youtubeRow.appendChild(card);
       }
     );
 
-  } catch (error) {
+  }catch(error){
 
-    console.log(
-      "YouTube API not available:",
+    console.error(
+      "YouTube loading error:",
       error
     );
 
     youtubeRow.innerHTML =
       '<div class="empty">' +
-      'YouTube videos will appear here when the YouTube connection is active.' +
+      'YouTube videos will appear here when the connection is active.' +
       '</div>';
-
   }
-
 }
 
 
 /* =====================================================
-   AUTHENTICATION
+   API YOUTUBE FALLBACK
 ===================================================== */
 
-function openAccount() {
+function renderApiYouTube(
+  videos
+){
+
+  youtubeRow.innerHTML="";
+
+
+  videos.forEach(
+    item => {
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+      card.className =
+        "card youtube-card";
+
+
+      card.dataset.search =
+        (
+          item.title ||
+          ""
+        ).toLowerCase();
+
+
+      card.onclick =
+        function(){
+
+          playYouTubeVideo(
+            item.id,
+            item.title
+          );
+        };
+
+
+      const image =
+        document.createElement(
+          "img"
+        );
+
+
+      image.src =
+        item.thumbnail ||
+        `https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`;
+
+
+      image.alt =
+        item.title ||
+        "BRENZKafrica YouTube";
+
+
+      const overlay =
+        document.createElement(
+          "div"
+        );
+
+
+      overlay.className =
+        "card-overlay";
+
+
+      const title =
+        document.createElement(
+          "div"
+        );
+
+
+      title.className =
+        "card-title";
+
+      title.textContent =
+        item.title;
+
+
+      const type =
+        document.createElement(
+          "div"
+        );
+
+
+      type.className =
+        "card-type";
+
+      type.textContent =
+        "BRENZKafrica • YouTube";
+
+
+      overlay.appendChild(title);
+      overlay.appendChild(type);
+
+      card.appendChild(image);
+      card.appendChild(overlay);
+
+      youtubeRow.appendChild(card);
+    }
+  );
+}
+
+
+/* =====================================================
+   AUTH
+===================================================== */
+
+function openAccount(){
 
   authSection.classList.add(
     "active"
   );
 
   emailInput.focus();
-
 }
 
 
-function closeAccount() {
+function closeAccount(){
 
   authSection.classList.remove(
     "active"
   );
 
-  authMessage.textContent =
-    "";
+  authMessage.textContent="";
 
-  authButton.disabled =
-    false;
-
+  authButton.disabled=false;
 }
 
-
-/* =====================================================
-   AUTH MESSAGE
-===================================================== */
 
 function showAuthMessage(
   message
-) {
+){
 
   authMessage.textContent =
     message;
-
 }
 
-
-/* =====================================================
-   AUTH LOADING
-===================================================== */
 
 function setAuthLoading(
   loading,
   text
-) {
+){
 
   authButton.disabled =
     loading;
 
-  if (loading) {
+
+  if(loading){
 
     authButton.textContent =
       text;
 
-  } else {
+  }else{
 
     authButton.textContent =
       authTitle.textContent ===
       "Sign In"
-        ? "Sign In"
-        : "Create Account";
-
+      ? "Sign In"
+      : "Create Account";
   }
-
 }
 
 
@@ -2107,7 +2362,7 @@ function setAuthLoading(
    SIGN UP
 ===================================================== */
 
-async function signUp() {
+async function signUp(){
 
   const email =
     emailInput.value.trim();
@@ -2116,30 +2371,28 @@ async function signUp() {
     passwordInput.value;
 
 
-  if (
+  if(
     !email ||
     !password
-  ) {
+  ){
 
     showAuthMessage(
       "Please enter your email and password."
     );
 
     return;
-
   }
 
 
-  if (
+  if(
     password.length < 6
-  ) {
+  ){
 
     showAuthMessage(
       "Password must be at least 6 characters."
     );
 
     return;
-
   }
 
 
@@ -2149,7 +2402,7 @@ async function signUp() {
   );
 
 
-  try {
+  try{
 
     const {
       data,
@@ -2157,30 +2410,26 @@ async function signUp() {
     } =
       await supabaseClient.auth.signUp({
 
-        email:
-          email,
-
-        password:
-          password
+        email,
+        password
 
       });
 
 
-    if (error) {
+    if(error){
 
       showAuthMessage(
         error.message
       );
 
       return;
-
     }
 
 
-    if (
+    if(
       data.user &&
       data.session
-    ) {
+    ){
 
       updateAccountUI(
         data.user
@@ -2190,38 +2439,34 @@ async function signUp() {
         "Account created successfully!"
       );
 
+
       setTimeout(
         closeAccount,
         1000
       );
 
-    } else {
+    }else{
 
       showAuthMessage(
         "Account created! Please check your email to confirm your account."
       );
-
     }
 
-  } catch (error) {
+  }catch(error){
 
-    console.error(
-      error
-    );
+    console.error(error);
 
     showAuthMessage(
       "Connection error. Please try again."
     );
 
-  } finally {
+  }finally{
 
     setAuthLoading(
       false,
       ""
     );
-
   }
-
 }
 
 
@@ -2229,7 +2474,7 @@ async function signUp() {
    SIGN IN
 ===================================================== */
 
-async function signIn() {
+async function signIn(){
 
   const email =
     emailInput.value.trim();
@@ -2238,17 +2483,16 @@ async function signIn() {
     passwordInput.value;
 
 
-  if (
+  if(
     !email ||
     !password
-  ) {
+  ){
 
     showAuthMessage(
       "Please enter your email and password."
     );
 
     return;
-
   }
 
 
@@ -2258,7 +2502,7 @@ async function signIn() {
   );
 
 
-  try {
+  try{
 
     const {
       data,
@@ -2266,30 +2510,26 @@ async function signIn() {
     } =
       await supabaseClient.auth.signInWithPassword({
 
-        email:
-          email,
-
-        password:
-          password
+        email,
+        password
 
       });
 
 
-    if (error) {
+    if(error){
 
       showAuthMessage(
         error.message
       );
 
       return;
-
     }
 
 
-    if (
+    if(
       data &&
       data.user
-    ) {
+    ){
 
       updateAccountUI(
         data.user
@@ -2299,40 +2539,36 @@ async function signIn() {
         "Welcome to BRENZKafrica Plus!"
       );
 
+
       setTimeout(
         closeAccount,
         800
       );
-
     }
 
-  } catch (error) {
+  }catch(error){
 
-    console.error(
-      error
-    );
+    console.error(error);
 
     showAuthMessage(
       "Connection error. Please try again."
     );
 
-  } finally {
+  }finally{
 
     setAuthLoading(
       false,
       ""
     );
-
   }
-
 }
 
 
 /* =====================================================
-   SWITCH SIGN UP
+   SIGN UP / SIGN IN SWITCH
 ===================================================== */
 
-function showSignUp() {
+function showSignUp(){
 
   authTitle.textContent =
     "Create Account";
@@ -2343,23 +2579,19 @@ function showSignUp() {
   authButton.onclick =
     signUp;
 
+
   document.querySelector(
     ".auth-switch"
   ).innerHTML =
     'Already have an account? ' +
     '<button onclick="showSignIn()">Sign In</button>';
 
-  authMessage.textContent =
-    "";
 
+  authMessage.textContent="";
 }
 
 
-/* =====================================================
-   SWITCH SIGN IN
-===================================================== */
-
-function showSignIn() {
+function showSignIn(){
 
   authTitle.textContent =
     "Sign In";
@@ -2370,15 +2602,15 @@ function showSignIn() {
   authButton.onclick =
     signIn;
 
+
   document.querySelector(
     ".auth-switch"
   ).innerHTML =
     'Don\'t have an account? ' +
     '<button onclick="showSignUp()">Create Account</button>';
 
-  authMessage.textContent =
-    "";
 
+  authMessage.textContent="";
 }
 
 
@@ -2388,9 +2620,9 @@ function showSignIn() {
 
 function updateAccountUI(
   user
-) {
+){
 
-  if (user) {
+  if(user){
 
     signinButton.style.display =
       "none";
@@ -2402,7 +2634,7 @@ function updateAccountUI(
       user.email ||
       "Viewer";
 
-  } else {
+  }else{
 
     signinButton.style.display =
       "block";
@@ -2410,11 +2642,8 @@ function updateAccountUI(
     accountStatus.style.display =
       "none";
 
-    userEmail.textContent =
-      "";
-
+    userEmail.textContent="";
   }
-
 }
 
 
@@ -2422,27 +2651,23 @@ function updateAccountUI(
    SIGN OUT
 ===================================================== */
 
-async function signOut() {
+async function signOut(){
 
   const {
     error
   } =
     await supabaseClient.auth.signOut();
 
-  if (error) {
 
-    console.error(
-      error
-    );
+  if(error){
+
+    console.error(error);
 
     return;
-
   }
 
-  updateAccountUI(
-    null
-  );
 
+  updateAccountUI(null);
 }
 
 
@@ -2450,9 +2675,9 @@ async function signOut() {
    SESSION
 ===================================================== */
 
-async function checkSession() {
+async function checkSession(){
 
-  try {
+  try{
 
     const {
       data,
@@ -2460,45 +2685,35 @@ async function checkSession() {
     } =
       await supabaseClient.auth.getSession();
 
-    if (error) {
 
-      updateAccountUI(
-        null
-      );
+    if(error){
+
+      updateAccountUI(null);
 
       return;
-
     }
 
-    if (
+
+    if(
       data &&
       data.session
-    ) {
+    ){
 
       updateAccountUI(
         data.session.user
       );
 
-    } else {
+    }else{
 
-      updateAccountUI(
-        null
-      );
-
+      updateAccountUI(null);
     }
 
-  } catch (error) {
+  }catch(error){
 
-    console.error(
-      error
-    );
+    console.error(error);
 
-    updateAccountUI(
-      null
-    );
-
+    updateAccountUI(null);
   }
-
 }
 
 
@@ -2510,22 +2725,18 @@ supabaseClient.auth.onAuthStateChange(
   function(
     event,
     session
-  ) {
+  ){
 
-    if (session) {
+    if(session){
 
       updateAccountUI(
         session.user
       );
 
-    } else {
+    }else{
 
-      updateAccountUI(
-        null
-      );
-
+      updateAccountUI(null);
     }
-
   }
 );
 
@@ -2536,20 +2747,22 @@ supabaseClient.auth.onAuthStateChange(
 
 search.addEventListener(
   "input",
-  function() {
+  function(){
 
     const query =
       search.value
         .toLowerCase()
         .trim();
 
+
     const cards =
       document.querySelectorAll(
         ".card"
       );
 
+
     cards.forEach(
-      function(card) {
+      function(card){
 
         const text =
           (
@@ -2558,24 +2771,16 @@ search.addEventListener(
             ""
           ).toLowerCase();
 
-        if (
-          !query ||
-          text.includes(query)
-        ) {
 
-          card.style.display =
-            "";
-
-        } else {
-
-          card.style.display =
-            "none";
-
-        }
-
+        card.style.display =
+          (
+            !query ||
+            text.includes(query)
+          )
+          ? ""
+          : "none";
       }
     );
-
   }
 );
 
@@ -2586,49 +2791,60 @@ search.addEventListener(
 
 passwordInput.addEventListener(
   "keydown",
-  function(event) {
+  function(event){
 
-    if (
+    if(
       event.key === "Enter"
-    ) {
+    ){
 
       event.preventDefault();
 
       authButton.click();
-
     }
-
   }
 );
 
 
 document.addEventListener(
   "keydown",
-  function(event) {
+  function(event){
 
-    if (
+    if(
       event.key === "Escape"
-    ) {
+    ){
 
       closePlayer();
-
       closeAccount();
-
     }
-
   }
 );
 
 
 /* =====================================================
-   START
+   START APPLICATION
 ===================================================== */
 
-checkSession();
+async function startApp(){
 
-loadSupabaseContent();
+  console.log(
+    "BRENZKafrica Plus starting..."
+  );
 
-loadYouTubeVideos();
+
+  await checkSession();
+
+  await loadSupabaseContent();
+
+  await loadYouTubeVideos();
+
+
+  console.log(
+    "BRENZKafrica Plus ready."
+  );
+}
+
+
+startApp();
 
 </script>
 
