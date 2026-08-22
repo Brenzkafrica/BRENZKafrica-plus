@@ -30,13 +30,10 @@
       right: 0;
       height: 70px;
       z-index: 1000;
-
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       padding: 0 5%;
-
       background: linear-gradient(
         to bottom,
         rgba(0,0,0,0.95),
@@ -106,14 +103,10 @@
     .hero {
       height: 90vh;
       min-height: 600px;
-
       position: relative;
-
       display: flex;
       align-items: center;
-
       padding: 0 5%;
-
       background:
         linear-gradient(
           90deg,
@@ -127,7 +120,6 @@
           transparent 30%
         ),
         url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg");
-
       background-size: cover;
       background-position: center;
     }
@@ -228,18 +220,12 @@
     .card {
       min-width: 220px;
       height: 125px;
-
       border-radius: 5px;
       overflow: hidden;
-
       position: relative;
-
       background: #181818;
-
       cursor: pointer;
-
       transition: 0.3s;
-
       flex-shrink: 0;
     }
 
@@ -259,9 +245,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-
       padding: 35px 10px 10px;
-
       background: linear-gradient(
         transparent,
         rgba(0,0,0,0.95)
@@ -293,17 +277,12 @@
       position: absolute;
       top: 8px;
       left: 8px;
-
       background: rgba(0,0,0,0.78);
       color: #ddd;
-
       padding: 4px 7px;
-
       border-radius: 3px;
-
       font-size: 9px;
       font-weight: bold;
-
       z-index: 3;
     }
 
@@ -314,26 +293,19 @@
 
     .youtube-card::after {
       content: "▶";
-
       position: absolute;
       top: 50%;
       left: 50%;
-
       transform: translate(-50%, -50%);
-
       width: 46px;
       height: 46px;
-
       display: flex;
       align-items: center;
       justify-content: center;
-
       background: rgba(229,9,20,0.92);
       border-radius: 50%;
-
       font-size: 18px;
       padding-left: 3px;
-
       opacity: 0;
       transition: 0.25s;
     }
@@ -362,18 +334,13 @@
 
     .player {
       display: none;
-
       position: fixed;
       inset: 0;
-
       background: #000;
-
       z-index: 5000;
-
       align-items: center;
       justify-content: center;
       flex-direction: column;
-
       padding: 20px;
     }
 
@@ -390,47 +357,31 @@
     .youtube-frame {
       width: 90%;
       height: 75vh;
-
       border: none;
-
       background: black;
-
       display: none;
     }
 
     .close-player {
       position: absolute;
-
       top: 25px;
       right: 30px;
-
       background: rgba(255,255,255,0.15);
-
       color: white;
-
       border: none;
-
       border-radius: 50%;
-
       width: 45px;
       height: 45px;
-
       font-size: 22px;
-
       cursor: pointer;
-
       z-index: 10;
     }
 
     .player-title {
       margin-top: 15px;
-
       font-size: 18px;
-
       font-weight: bold;
-
       max-width: 90%;
-
       text-align: center;
     }
 
@@ -448,17 +399,12 @@
 
     .auth-section {
       display: none;
-
       position: fixed;
       inset: 0;
-
       background: rgba(0,0,0,0.88);
-
       z-index: 10000;
-
       align-items: center;
       justify-content: center;
-
       padding: 20px;
     }
 
@@ -469,17 +415,11 @@
     .auth-box {
       width: 100%;
       max-width: 420px;
-
       background: #111;
-
       border: 1px solid #333;
-
       border-radius: 12px;
-
       padding: 30px;
-
       position: relative;
-
       box-shadow: 0 20px 70px rgba(0,0,0,0.8);
     }
 
@@ -497,142 +437,92 @@
 
     .auth-box input {
       width: 100%;
-
       background: #050505;
-
       color: white;
-
       border: 1px solid #333;
-
       padding: 14px;
-
       border-radius: 6px;
-
       margin-bottom: 12px;
-
       outline: none;
     }
 
     #auth-button {
       width: 100%;
-
       padding: 13px;
-
       border: none;
-
       border-radius: 6px;
-
       background: #e50914;
-
       color: white;
-
       font-weight: bold;
-
       cursor: pointer;
-
       margin-top: 5px;
     }
 
     #auth-message {
       min-height: 20px;
-
       margin-top: 15px;
-
       color: #aaa;
-
       font-size: 13px;
-
       line-height: 1.4;
-
       text-align: center;
     }
 
     .auth-switch {
       margin-top: 20px;
-
       color: #888;
-
       font-size: 13px;
-
       text-align: center;
     }
 
     .auth-switch button {
       background: none;
-
       border: none;
-
       color: white;
-
       cursor: pointer;
-
       font-weight: bold;
     }
 
     .auth-close {
       position: absolute;
-
       top: 12px;
       right: 15px;
-
       background: none;
-
       border: none;
-
       color: #aaa;
-
       font-size: 26px;
-
       cursor: pointer;
     }
 
     .account-status {
       display: none;
-
       align-items: center;
-
       gap: 10px;
     }
 
     .account-status span {
       color: #ccc;
-
       font-size: 13px;
-
       max-width: 150px;
-
       overflow: hidden;
-
       text-overflow: ellipsis;
-
       white-space: nowrap;
     }
 
     .signout {
       background: #222;
-
       border: 1px solid #444;
-
       color: white;
-
       padding: 8px 12px;
-
       border-radius: 4px;
-
       cursor: pointer;
-
       font-size: 12px;
     }
 
     footer {
       padding: 60px 5%;
-
       color: #777;
-
       text-align: center;
-
       border-top: 1px solid #222;
-
       margin-top: 40px;
     }
 
@@ -865,11 +755,9 @@
       class="row"
       id="youtubeRow"
     >
-
       <div class="loading">
         Loading BRENZKafrica videos...
       </div>
-
     </div>
 
   </section>
@@ -894,11 +782,9 @@
       class="row"
       id="seriesRow"
     >
-
       <div class="loading">
         Loading series...
       </div>
-
     </div>
 
   </section>
@@ -923,11 +809,9 @@
       class="row"
       id="filmsRow"
     >
-
       <div class="loading">
         Loading films...
       </div>
-
     </div>
 
   </section>
@@ -952,11 +836,9 @@
       class="row"
       id="documentariesRow"
     >
-
       <div class="loading">
         Loading documentaries...
       </div>
-
     </div>
 
   </section>
@@ -1153,10 +1035,6 @@ const search =
   document.getElementById("search");
 
 
-/* =====================================================
-   CONTENT ROWS
-===================================================== */
-
 const originalsRow =
   document.getElementById("originalsRow");
 
@@ -1190,13 +1068,98 @@ function escapeHtml(text) {
 
 
 /* =====================================================
-   FALLBACK IMAGE
+   NORMALIZE CATEGORY
+===================================================== */
+
+function normalize(value) {
+
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/[_-]+/g, " ")
+    .replace(/\s+/g, " ");
+
+}
+
+
+/* =====================================================
+   CATEGORY MATCHING
+===================================================== */
+
+function categoryMatches(value, type) {
+
+  const category =
+    normalize(value);
+
+  if (!category) {
+    return false;
+  }
+
+
+  if (type === "series") {
+
+    return (
+      category === "series" ||
+      category === "tv series" ||
+      category === "tv show" ||
+      category === "tv shows" ||
+      category.includes("series")
+    );
+
+  }
+
+
+  if (type === "film") {
+
+    return (
+      category === "film" ||
+      category === "films" ||
+      category === "movie" ||
+      category === "movies" ||
+      category.includes("film") ||
+      category.includes("movie")
+    );
+
+  }
+
+
+  if (type === "documentary") {
+
+    return (
+      category === "documentary" ||
+      category === "documentaries" ||
+      category.includes("documentary") ||
+      category.includes("documentaries")
+    );
+
+  }
+
+
+  return false;
+
+}
+
+
+/* =====================================================
+   THUMBNAIL
 ===================================================== */
 
 function getThumbnail(item) {
 
   if (item.thumbnail_url) {
     return item.thumbnail_url;
+  }
+
+  if (item.image_url) {
+    return item.image_url;
+  }
+
+  if (item.poster_url) {
+    return item.poster_url;
+  }
+
+  if (item.cover_url) {
+    return item.cover_url;
   }
 
   return "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
@@ -1225,17 +1188,23 @@ function playVideo(
   }
 
   youtubeFrame.src = "";
-  youtubeFrame.style.display = "none";
 
-  video.style.display = "block";
+  youtubeFrame.style.display =
+    "none";
+
+  video.style.display =
+    "block";
 
   playerTitle.innerHTML =
     escapeHtml(name) +
     sourceInfo;
 
-  video.src = url;
+  video.src =
+    url;
 
-  player.classList.add("active");
+  player.classList.add(
+    "active"
+  );
 
   video.play().catch(
     function(error) {
@@ -1255,7 +1224,9 @@ function playVideo(
    PLAY CONTENT
 ===================================================== */
 
-function playLicensedVideo(item) {
+function playLicensedVideo(
+  item
+) {
 
   let sourceInfo = "";
 
@@ -1287,8 +1258,8 @@ function playLicensedVideo(item) {
           ? '<br><a href="' +
             escapeHtml(item.source_url) +
             '" target="_blank" rel="noopener noreferrer">' +
-            "View original source & license" +
-            "</a>"
+            'View original source & license' +
+            '</a>'
           : ""
       ) +
 
@@ -1316,7 +1287,9 @@ function playYouTubeVideo(
 
   video.pause();
 
-  video.removeAttribute("src");
+  video.removeAttribute(
+    "src"
+  );
 
   video.load();
 
@@ -1349,7 +1322,9 @@ function closePlayer() {
 
   video.pause();
 
-  video.removeAttribute("src");
+  video.removeAttribute(
+    "src"
+  );
 
   video.load();
 
@@ -1381,12 +1356,15 @@ function createContentCard(
 ) {
 
   const card =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   card.className =
     portrait
       ? "card portrait-card"
       : "card";
+
 
   card.dataset.search =
     (
@@ -1401,21 +1379,29 @@ function createContentCard(
       (item.creator || "")
     ).toLowerCase();
 
+
   card.onclick =
     function() {
 
-      playLicensedVideo(item);
+      playLicensedVideo(
+        item
+      );
 
     };
 
 
   if (
     item.source_type &&
-    item.source_type !== "BRENZKafrica"
+    normalize(
+      item.source_type
+    ) !==
+      "brenzkafrica"
   ) {
 
     const badge =
-      document.createElement("span");
+      document.createElement(
+        "span"
+      );
 
     badge.className =
       "licensed-badge";
@@ -1425,13 +1411,17 @@ function createContentCard(
         ? "LICENSED"
         : "SOURCE";
 
-    card.appendChild(badge);
+    card.appendChild(
+      badge
+    );
 
   }
 
 
   const image =
-    document.createElement("img");
+    document.createElement(
+      "img"
+    );
 
   image.src =
     getThumbnail(item);
@@ -1443,6 +1433,7 @@ function createContentCard(
   image.loading =
     "lazy";
 
+
   image.onerror =
     function() {
 
@@ -1451,18 +1442,25 @@ function createContentCard(
 
     };
 
-  card.appendChild(image);
+
+  card.appendChild(
+    image
+  );
 
 
   const overlay =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   overlay.className =
     "card-overlay";
 
 
   const title =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   title.className =
     "card-title";
@@ -1471,11 +1469,15 @@ function createContentCard(
     item.title ||
     "Untitled";
 
-  overlay.appendChild(title);
+  overlay.appendChild(
+    title
+  );
 
 
   const type =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   type.className =
     "card-type";
@@ -1483,6 +1485,7 @@ function createContentCard(
   let typeText =
     item.category ||
     "Video";
+
 
   if (item.country) {
 
@@ -1492,310 +1495,22 @@ function createContentCard(
 
   }
 
+
   type.textContent =
     typeText;
 
-  overlay.appendChild(type);
 
-  card.appendChild(overlay);
+  overlay.appendChild(
+    type
+  );
+
+
+  card.appendChild(
+    overlay
+  );
+
 
   return card;
-
-}
-
-
-/* =====================================================
-   NORMALIZE CATEGORY
-===================================================== */
-
-function categoryText(item) {
-
-  return (
-    String(item.category || "") +
-    " " +
-    String(item.type || "") +
-    " " +
-    String(item.content_type || "") +
-    " " +
-    String(item.genre || "")
-  )
-    .toLowerCase()
-    .trim();
-
-}
-
-
-/* =====================================================
-   LOAD ALL CONTENT FROM SUPABASE
-===================================================== */
-
-async function loadSupabaseContent() {
-
-  originalsRow.innerHTML =
-    '<div class="loading">Loading originals...</div>';
-
-  seriesRow.innerHTML =
-    '<div class="loading">Loading series...</div>';
-
-  filmsRow.innerHTML =
-    '<div class="loading">Loading films...</div>';
-
-  documentariesRow.innerHTML =
-    '<div class="loading">Loading documentaries...</div>';
-
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("content")
-        .select("*")
-        .eq(
-          "is_published",
-          true
-        )
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        "Supabase content error:",
-        error
-      );
-
-      throw error;
-
-    }
-
-
-    console.log(
-      "BRENZKafrica content loaded:",
-      data
-    );
-
-
-    if (
-      !data ||
-      data.length === 0
-    ) {
-
-      showEmptyContent(
-        originalsRow,
-        "No original content yet."
-      );
-
-      showEmptyContent(
-        seriesRow,
-        "No series available yet."
-      );
-
-      showEmptyContent(
-        filmsRow,
-        "No films available yet."
-      );
-
-      showEmptyContent(
-        documentariesRow,
-        "No documentaries available yet."
-      );
-
-      return;
-
-    }
-
-
-    /* ==============================================
-       ORIGINALS
-    ============================================== */
-
-    const originals =
-      data.filter(
-        item => {
-
-          const category =
-            categoryText(item);
-
-          return (
-            item.is_original === true ||
-            category.includes("original")
-          );
-
-        }
-      );
-
-
-    renderContent(
-      originalsRow,
-      originals,
-      false,
-      "No BRENZKafrica Originals yet."
-    );
-
-
-    /* ==============================================
-       SERIES
-    ============================================== */
-
-    const series =
-      data.filter(
-        item => {
-
-          const category =
-            categoryText(item);
-
-          return (
-            category.includes("series") ||
-            category.includes("show") ||
-            category.includes("tv")
-          );
-
-        }
-      );
-
-
-    renderContent(
-      seriesRow,
-      series,
-      true,
-      "No series available yet."
-    );
-
-
-    /* ==============================================
-       FILMS
-    ============================================== */
-
-    const films =
-      data.filter(
-        item => {
-
-          const category =
-            categoryText(item);
-
-          return (
-            category.includes("film") ||
-            category.includes("movie") ||
-            category.includes("cinema")
-          );
-
-        }
-      );
-
-
-    renderContent(
-      filmsRow,
-      films,
-      false,
-      "No films available yet."
-    );
-
-
-    /* ==============================================
-       DOCUMENTARIES
-    ============================================== */
-
-    const documentaries =
-      data.filter(
-        item => {
-
-          const category =
-            categoryText(item);
-
-          return (
-            category.includes("document") ||
-            category.includes("doc")
-          );
-
-        }
-      );
-
-
-    renderContent(
-      documentariesRow,
-      documentaries,
-      false,
-      "No documentaries available yet."
-    );
-
-
-    /* ==============================================
-       FEATURED CONTENT
-    ============================================== */
-
-    window.featuredContent =
-      data.find(
-        item =>
-          item.is_featured === true &&
-          item.video_url
-      ) ||
-
-      data.find(
-        item =>
-          item.video_url
-      ) ||
-
-      null;
-
-
-    /*
-      SAFETY FALLBACK
-
-      If your existing rows have content but
-      don't yet have a category matching one
-      of the sections, they will still appear
-      under Originals instead of disappearing.
-    */
-
-    if (
-      originals.length === 0 &&
-      series.length === 0 &&
-      films.length === 0 &&
-      documentaries.length === 0
-    ) {
-
-      renderContent(
-        originalsRow,
-        data,
-        false,
-        "No content available yet."
-      );
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      "Could not load Supabase content:",
-      error
-    );
-
-    showError(
-      originalsRow
-    );
-
-    showError(
-      seriesRow
-    );
-
-    showError(
-      filmsRow
-    );
-
-    showError(
-      documentariesRow
-    );
-
-  }
 
 }
 
@@ -1845,7 +1560,7 @@ function renderContent(
 
 
 /* =====================================================
-   EMPTY CONTENT
+   EMPTY
 ===================================================== */
 
 function showEmptyContent(
@@ -1869,8 +1584,307 @@ function showError(row) {
 
   row.innerHTML =
     '<div class="error">' +
-    "Unable to load content. Please try again." +
-    "</div>";
+    'Unable to load content. Please try again.' +
+    '</div>';
+
+}
+
+
+/* =====================================================
+   LOAD SUPABASE CONTENT
+===================================================== */
+
+async function loadSupabaseContent() {
+
+  originalsRow.innerHTML =
+    '<div class="loading">Loading originals...</div>';
+
+  seriesRow.innerHTML =
+    '<div class="loading">Loading series...</div>';
+
+  filmsRow.innerHTML =
+    '<div class="loading">Loading films...</div>';
+
+  documentariesRow.innerHTML =
+    '<div class="loading">Loading documentaries...</div>';
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("content")
+        .select("*")
+        .eq(
+          "is_published",
+          true
+        )
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        "SUPABASE ERROR:",
+        error
+      );
+
+      throw error;
+
+    }
+
+
+    console.log(
+      "BRENZKAFRICA CONTENT:",
+      data
+    );
+
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
+
+      showEmptyContent(
+        originalsRow,
+        "No original content yet."
+      );
+
+      showEmptyContent(
+        seriesRow,
+        "No series available yet."
+      );
+
+      showEmptyContent(
+        filmsRow,
+        "No films available yet."
+      );
+
+      showEmptyContent(
+        documentariesRow,
+        "No documentaries available yet."
+      );
+
+      return;
+
+    }
+
+
+    /*
+       IMPORTANT:
+       We now inspect several possible
+       fields for the content type.
+    */
+
+    const getCategory =
+      function(item) {
+
+        return (
+          item.category ||
+          item.content_type ||
+          item.type ||
+          item.genre ||
+          ""
+        );
+
+      };
+
+
+    /* ORIGINALS */
+
+    const originals =
+      data.filter(
+        function(item) {
+
+          const originalFlag =
+            item.is_original;
+
+          const source =
+            normalize(
+              getCategory(item)
+            );
+
+          return (
+            originalFlag === true ||
+            source.includes(
+              "original"
+            )
+          );
+
+        }
+      );
+
+
+    renderContent(
+      originalsRow,
+      originals,
+      false,
+      "No BRENZKafrica Originals yet."
+    );
+
+
+    /* SERIES */
+
+    const series =
+      data.filter(
+        function(item) {
+
+          return categoryMatches(
+            getCategory(item),
+            "series"
+          );
+
+        }
+      );
+
+
+    renderContent(
+      seriesRow,
+      series,
+      true,
+      "No series available yet."
+    );
+
+
+    /* FILMS */
+
+    const films =
+      data.filter(
+        function(item) {
+
+          return categoryMatches(
+            getCategory(item),
+            "film"
+          );
+
+        }
+      );
+
+
+    renderContent(
+      filmsRow,
+      films,
+      false,
+      "No films available yet."
+    );
+
+
+    /* DOCUMENTARIES */
+
+    const documentaries =
+      data.filter(
+        function(item) {
+
+          return categoryMatches(
+            getCategory(item),
+            "documentary"
+          );
+
+        }
+      );
+
+
+    renderContent(
+      documentariesRow,
+      documentaries,
+      false,
+      "No documentaries available yet."
+    );
+
+
+    /* FEATURED */
+
+    const featured =
+      data.find(
+        function(item) {
+
+          return (
+            item.is_featured === true &&
+            item.video_url
+          );
+
+        }
+      );
+
+
+    if (featured) {
+
+      window.featuredContent =
+        featured;
+
+    } else {
+
+      window.featuredContent =
+        data.find(
+          function(item) {
+
+            return item.video_url;
+
+          }
+        ) || null;
+
+    }
+
+
+    /*
+       DEBUG INFORMATION
+       Open browser console to see
+       exactly what Supabase returned.
+    */
+
+    console.log(
+      "TOTAL CONTENT:",
+      data.length
+    );
+
+    console.log(
+      "SERIES FOUND:",
+      series.length
+    );
+
+    console.log(
+      "FILMS FOUND:",
+      films.length
+    );
+
+    console.log(
+      "DOCUMENTARIES FOUND:",
+      documentaries.length
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Could not load Supabase content:",
+      error
+    );
+
+    showError(
+      originalsRow
+    );
+
+    showError(
+      seriesRow
+    );
+
+    showError(
+      filmsRow
+    );
+
+    showError(
+      documentariesRow
+    );
+
+  }
 
 }
 
@@ -1924,8 +1938,8 @@ async function loadYouTubeVideos() {
 
   youtubeRow.innerHTML =
     '<div class="loading">' +
-    "Loading BRENZKafrica videos..." +
-    "</div>";
+    'Loading BRENZKafrica videos...' +
+    '</div>';
 
 
   try {
@@ -1973,8 +1987,8 @@ async function loadYouTubeVideos() {
 
       youtubeRow.innerHTML =
         '<div class="empty">' +
-        "No YouTube videos found." +
-        "</div>";
+        'No YouTube videos found.' +
+        '</div>';
 
       return;
 
@@ -1992,10 +2006,12 @@ async function loadYouTubeVideos() {
         card.className =
           "card youtube-card";
 
+
         card.dataset.search =
           (
             item.title || ""
           ).toLowerCase();
+
 
         card.onclick =
           function() {
@@ -2064,6 +2080,7 @@ async function loadYouTubeVideos() {
           type
         );
 
+
         card.appendChild(
           image
         );
@@ -2071,6 +2088,7 @@ async function loadYouTubeVideos() {
         card.appendChild(
           overlay
         );
+
 
         youtubeRow.appendChild(
           card
@@ -2089,8 +2107,8 @@ async function loadYouTubeVideos() {
 
     youtubeRow.innerHTML =
       '<div class="empty">' +
-      "YouTube videos will appear here when the YouTube connection is active." +
-      "</div>";
+      'YouTube videos will appear here when the YouTube connection is active.' +
+      '</div>';
 
   }
 
@@ -2152,6 +2170,7 @@ function setAuthLoading(
 
   authButton.disabled =
     loading;
+
 
   if (loading) {
 
@@ -2419,7 +2438,7 @@ function showSignUp() {
   document.querySelector(
     ".auth-switch"
   ).innerHTML =
-    "Already have an account? " +
+    'Already have an account? ' +
     '<button onclick="showSignIn()">Sign In</button>';
 
 
@@ -2448,7 +2467,7 @@ function showSignIn() {
   document.querySelector(
     ".auth-switch"
   ).innerHTML =
-    "Don't have an account? " +
+    'Don\'t have an account? ' +
     '<button onclick="showSignUp()">Create Account</button>';
 
 
