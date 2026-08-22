@@ -1033,6 +1033,129 @@ const youtubeRow =
 
 
 /* =====================================================
+   DATABASE FIELD HELPERS
+===================================================== */
+
+/*
+   EXACT SUPABASE COLUMNS:
+
+   id
+   Tittle
+   Description
+   Content_type
+   Category
+   Country
+   Thumb nail_url
+   Video_url
+   Source_type
+   Content_group
+*/
+
+function getTitle(item) {
+
+  return (
+    item["Tittle"] ||
+    item["Title"] ||
+    item["title"] ||
+    "Untitled"
+  );
+
+}
+
+
+function getDescription(item) {
+
+  return (
+    item["Description"] ||
+    item["description"] ||
+    ""
+  );
+
+}
+
+
+function getContentType(item) {
+
+  return (
+    item["Content_type"] ||
+    item["content_type"] ||
+    ""
+  );
+
+}
+
+
+function getCategory(item) {
+
+  return (
+    item["Category"] ||
+    item["category"] ||
+    ""
+  );
+
+}
+
+
+function getCountry(item) {
+
+  return (
+    item["Country"] ||
+    item["country"] ||
+    ""
+  );
+
+}
+
+
+function getThumbnail(item) {
+
+  return (
+    item["Thumb nail_url"] ||
+    item["Thumbnail_url"] ||
+    item["thumbnail_url"] ||
+    item["thumb nail_url"] ||
+    item["image_url"] ||
+    item["poster_url"] ||
+    "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80"
+  );
+
+}
+
+
+function getVideoUrl(item) {
+
+  return (
+    item["Video_url"] ||
+    item["video_url"] ||
+    ""
+  );
+
+}
+
+
+function getSourceType(item) {
+
+  return (
+    item["Source_type"] ||
+    item["source_type"] ||
+    ""
+  );
+
+}
+
+
+function getContentGroup(item) {
+
+  return (
+    item["Content_group"] ||
+    item["content_group"] ||
+    ""
+  );
+
+}
+
+
+/* =====================================================
    ESCAPE HTML
 ===================================================== */
 
@@ -1064,49 +1187,19 @@ function normalize(value) {
 
 
 /* =====================================================
-   GET CATEGORY FROM ANY COMMON FIELD
-===================================================== */
-
-function getCategory(item) {
-
-  const values = [
-
-    item.category,
-    item.type,
-    item.content_type,
-    item.contentType,
-    item.genre,
-    item.kind
-
-  ];
-
-  return values
-    .filter(
-      value =>
-        value !== null &&
-        value !== undefined &&
-        String(value).trim() !== ""
-    )
-    .map(normalize)
-    .join(" ");
-
-}
-
-
-/* =====================================================
-   CATEGORY MATCHING
+   CONTENT GROUP FILTERS
 ===================================================== */
 
 function isSeries(item) {
 
-  const category =
-    getCategory(item);
+  const group =
+    normalize(
+      getContentGroup(item)
+    );
 
   return (
-    category.includes("series") ||
-    category.includes("tv series") ||
-    category.includes("web series") ||
-    category.includes("show")
+    group === "series" ||
+    group.includes("series")
   );
 
 }
@@ -1114,16 +1207,16 @@ function isSeries(item) {
 
 function isFilm(item) {
 
-  const category =
-    getCategory(item);
+  const group =
+    normalize(
+      getContentGroup(item)
+    );
 
   return (
-    category === "film" ||
-    category.includes(" film ") ||
-    category.startsWith("film ") ||
-    category.endsWith(" film") ||
-    category.includes("films") ||
-    category.includes("movie")
+    group === "film" ||
+    group === "films" ||
+    group === "movie" ||
+    group === "movies"
   );
 
 }
@@ -1131,20 +1224,21 @@ function isFilm(item) {
 
 function isDocumentary(item) {
 
-  const category =
-    getCategory(item);
+  const group =
+    normalize(
+      getContentGroup(item)
+    );
 
   return (
-    category.includes("documentary") ||
-    category.includes("documentaries") ||
-    category.includes("docu")
+    group === "documentary" ||
+    group === "documentaries"
   );
 
 }
 
 
 /* =====================================================
-   DEBUG CONTENT
+   DEBUG
 ===================================================== */
 
 function debugContent(data) {
@@ -1166,18 +1260,34 @@ function debugContent(data) {
     function(item, index) {
 
       console.log(
-        "ITEM",
-        index + 1,
+        "ITEM " + (index + 1),
         {
-          id: item.id,
-          title: item.title,
-          category: item.category,
-          type: item.type,
-          content_type: item.content_type,
-          genre: item.genre,
-          is_published: item.is_published,
-          is_original: item.is_original,
-          video_url: item.video_url
+          id:
+            item.id,
+
+          title:
+            getTitle(item),
+
+          content_type:
+            getContentType(item),
+
+          category:
+            getCategory(item),
+
+          country:
+            getCountry(item),
+
+          content_group:
+            getContentGroup(item),
+
+          video_url:
+            getVideoUrl(item),
+
+          thumbnail_url:
+            getThumbnail(item),
+
+          source_type:
+            getSourceType(item)
         }
       );
 
@@ -1187,44 +1297,6 @@ function debugContent(data) {
   console.log(
     "===================================="
   );
-
-}
-
-
-/* =====================================================
-   THUMBNAIL
-===================================================== */
-
-function getThumbnail(item) {
-
-  if (
-    item.thumbnail_url &&
-    String(item.thumbnail_url).trim() !== ""
-  ) {
-
-    return item.thumbnail_url;
-
-  }
-
-  if (
-    item.image_url &&
-    String(item.image_url).trim() !== ""
-  ) {
-
-    return item.image_url;
-
-  }
-
-  if (
-    item.poster_url &&
-    String(item.poster_url).trim() !== ""
-  ) {
-
-    return item.poster_url;
-
-  }
-
-  return "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
 
 }
 
@@ -1249,7 +1321,8 @@ function playVideo(
 
   }
 
-  youtubeFrame.src = "";
+  youtubeFrame.src =
+    "";
 
   youtubeFrame.style.display =
     "none";
@@ -1288,7 +1361,10 @@ function playVideo(
 
 function playLicensedVideo(item) {
 
-  if (!item.video_url) {
+  const url =
+    getVideoUrl(item);
+
+  if (!url) {
 
     alert(
       "This content does not have a video URL yet."
@@ -1298,49 +1374,9 @@ function playLicensedVideo(item) {
 
   }
 
-  let sourceInfo = "";
-
-  if (
-    item.creator ||
-    item.license ||
-    item.source_url
-  ) {
-
-    sourceInfo =
-      '<div class="player-source">' +
-
-      (
-        item.creator
-          ? "Creator: " +
-            escapeHtml(item.creator)
-          : ""
-      ) +
-
-      (
-        item.license
-          ? " • " +
-            escapeHtml(item.license)
-          : ""
-      ) +
-
-      (
-        item.source_url
-          ? '<br><a href="' +
-            escapeHtml(item.source_url) +
-            '" target="_blank" rel="noopener noreferrer">' +
-            "View original source" +
-            "</a>"
-          : ""
-      ) +
-
-      "</div>";
-
-  }
-
   playVideo(
-    item.title || "BRENZKafrica",
-    item.video_url,
-    sourceInfo
+    getTitle(item),
+    url
   );
 
 }
@@ -1357,7 +1393,9 @@ function playYouTubeVideo(
 
   video.pause();
 
-  video.removeAttribute("src");
+  video.removeAttribute(
+    "src"
+  );
 
   video.load();
 
@@ -1390,11 +1428,14 @@ function closePlayer() {
 
   video.pause();
 
-  video.removeAttribute("src");
+  video.removeAttribute(
+    "src"
+  );
 
   video.load();
 
-  youtubeFrame.src = "";
+  youtubeFrame.src =
+    "";
 
   youtubeFrame.style.display =
     "none";
@@ -1422,57 +1463,64 @@ function createContentCard(
 ) {
 
   const card =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   card.className =
     portrait
       ? "card portrait-card"
       : "card";
 
+
   card.dataset.search =
     (
-      (item.title || "") +
+      getTitle(item) +
       " " +
-      (item.description || "") +
+      getDescription(item) +
       " " +
-      (item.category || "") +
+      getCategory(item) +
       " " +
-      (item.type || "") +
+      getContentType(item) +
       " " +
-      (item.content_type || "") +
+      getContentGroup(item) +
       " " +
-      (item.genre || "") +
-      " " +
-      (item.country || "") +
-      " " +
-      (item.creator || "")
+      getCountry(item)
     ).toLowerCase();
 
 
   card.onclick =
     function() {
 
-      playLicensedVideo(item);
+      playLicensedVideo(
+        item
+      );
 
     };
 
 
+  const sourceType =
+    normalize(
+      getSourceType(item)
+    );
+
+
   if (
-    item.source_type &&
-    normalize(item.source_type) !==
+    sourceType &&
+    sourceType !==
       "brenzkafrica"
   ) {
 
     const badge =
-      document.createElement("span");
+      document.createElement(
+        "span"
+      );
 
     badge.className =
       "licensed-badge";
 
     badge.textContent =
-      item.license
-        ? "LICENSED"
-        : "SOURCE";
+      "SOURCE";
 
     card.appendChild(
       badge
@@ -1482,17 +1530,19 @@ function createContentCard(
 
 
   const image =
-    document.createElement("img");
+    document.createElement(
+      "img"
+    );
 
   image.src =
     getThumbnail(item);
 
   image.alt =
-    item.title ||
-    "BRENZKafrica content";
+    getTitle(item);
 
   image.loading =
     "lazy";
+
 
   image.onerror =
     function() {
@@ -1502,27 +1552,31 @@ function createContentCard(
 
     };
 
+
   card.appendChild(
     image
   );
 
 
   const overlay =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   overlay.className =
     "card-overlay";
 
 
   const title =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   title.className =
     "card-title";
 
   title.textContent =
-    item.title ||
-    "Untitled";
+    getTitle(item);
 
   overlay.appendChild(
     title
@@ -1530,27 +1584,35 @@ function createContentCard(
 
 
   const type =
-    document.createElement("div");
+    document.createElement(
+      "div"
+    );
 
   type.className =
     "card-type";
 
+
   let typeText =
-    item.category ||
-    item.type ||
-    item.content_type ||
+    getCategory(item) ||
+    getContentGroup(item) ||
+    getContentType(item) ||
     "Video";
 
-  if (item.country) {
+
+  if (
+    getCountry(item)
+  ) {
 
     typeText +=
       " • " +
-      item.country;
+      getCountry(item);
 
   }
 
+
   type.textContent =
     typeText;
+
 
   overlay.appendChild(
     type
@@ -1560,6 +1622,7 @@ function createContentCard(
   card.appendChild(
     overlay
   );
+
 
   return card;
 
@@ -1577,7 +1640,9 @@ function renderContent(
   emptyMessage
 ) {
 
-  row.innerHTML = "";
+  row.innerHTML =
+    "";
+
 
   if (
     !items ||
@@ -1593,6 +1658,7 @@ function renderContent(
 
   }
 
+
   items.forEach(
     function(item) {
 
@@ -1600,1184 +1666,3 @@ function renderContent(
         createContentCard(
           item,
           portrait
-        )
-      );
-
-    }
-  );
-
-}
-
-
-/* =====================================================
-   EMPTY
-===================================================== */
-
-function showEmptyContent(
-  row,
-  message
-) {
-
-  row.innerHTML =
-    '<div class="empty">' +
-    escapeHtml(message) +
-    "</div>";
-
-}
-
-
-/* =====================================================
-   ERROR
-===================================================== */
-
-function showError(
-  row,
-  message
-) {
-
-  row.innerHTML =
-    '<div class="error">' +
-    escapeHtml(
-      message ||
-      "Unable to load content."
-    ) +
-    "</div>";
-
-}
-
-
-/* =====================================================
-   LOAD SUPABASE CONTENT
-===================================================== */
-
-async function loadSupabaseContent() {
-
-  originalsRow.innerHTML =
-    '<div class="loading">Loading originals...</div>';
-
-  seriesRow.innerHTML =
-    '<div class="loading">Loading series...</div>';
-
-  filmsRow.innerHTML =
-    '<div class="loading">Loading films...</div>';
-
-  documentariesRow.innerHTML =
-    '<div class="loading">Loading documentaries...</div>';
-
-
-  try {
-
-    /*
-      IMPORTANT:
-
-      We first get ALL rows.
-
-      We deliberately do NOT filter category
-      inside Supabase.
-
-      JavaScript handles the categories afterward.
-    */
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("content")
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
-
-
-    if (error) {
-
-      console.error(
-        "SUPABASE ERROR:",
-        error
-      );
-
-      throw error;
-
-    }
-
-
-    console.log(
-      "SUPABASE RETURNED:",
-      data
-    );
-
-
-    if (
-      !data ||
-      data.length === 0
-    ) {
-
-      showEmptyContent(
-        originalsRow,
-        "No published content found."
-      );
-
-      showEmptyContent(
-        seriesRow,
-        "No series available yet."
-      );
-
-      showEmptyContent(
-        filmsRow,
-        "No films available yet."
-      );
-
-      showEmptyContent(
-        documentariesRow,
-        "No documentaries available yet."
-      );
-
-      return;
-
-    }
-
-
-    /*
-      DEBUGGING
-
-      This lets us see the REAL category
-      values in the browser console.
-    */
-
-    debugContent(data);
-
-
-    /* ==============================================
-       ONLY DISPLAY PUBLISHED CONTENT
-    ============================================== */
-
-    const published =
-      data.filter(
-        function(item) {
-
-          /*
-            If is_published exists,
-            require it to be true.
-
-            If the column doesn't exist,
-            don't reject the item.
-          */
-
-          if (
-            Object.prototype.hasOwnProperty.call(
-              item,
-              "is_published"
-            )
-          ) {
-
-            return (
-              item.is_published === true
-            );
-
-          }
-
-          return true;
-
-        }
-      );
-
-
-    console.log(
-      "PUBLISHED CONTENT:",
-      published
-    );
-
-
-    /* ==============================================
-       ORIGINALS
-    ============================================== */
-
-    const originals =
-      published.filter(
-        function(item) {
-
-          return (
-            item.is_original === true ||
-            normalize(
-              item.category
-            ).includes("original")
-          );
-
-        }
-      );
-
-
-    renderContent(
-      originalsRow,
-      originals,
-      false,
-      "No BRENZKafrica Originals yet."
-    );
-
-
-    /* ==============================================
-       SERIES
-    ============================================== */
-
-    const series =
-      published.filter(
-        function(item) {
-
-          return isSeries(item);
-
-        }
-      );
-
-
-    console.log(
-      "SERIES FOUND:",
-      series
-    );
-
-
-    renderContent(
-      seriesRow,
-      series,
-      true,
-      "No series available yet."
-    );
-
-
-    /* ==============================================
-       FILMS
-    ============================================== */
-
-    const films =
-      published.filter(
-        function(item) {
-
-          return isFilm(item);
-
-        }
-      );
-
-
-    console.log(
-      "FILMS FOUND:",
-      films
-    );
-
-
-    renderContent(
-      filmsRow,
-      films,
-      false,
-      "No films available yet."
-    );
-
-
-    /* ==============================================
-       DOCUMENTARIES
-    ============================================== */
-
-    const documentaries =
-      published.filter(
-        function(item) {
-
-          return isDocumentary(item);
-
-        }
-      );
-
-
-    console.log(
-      "DOCUMENTARIES FOUND:",
-      documentaries
-    );
-
-
-    renderContent(
-      documentariesRow,
-      documentaries,
-      false,
-      "No documentaries available yet."
-    );
-
-
-    /* ==============================================
-       FEATURED
-    ============================================== */
-
-    window.featuredContent =
-      published.find(
-        function(item) {
-
-          return (
-            item.is_featured === true &&
-            item.video_url
-          );
-
-        }
-      ) ||
-
-      published.find(
-        function(item) {
-
-          return item.video_url;
-
-        }
-      ) ||
-
-      null;
-
-
-  } catch (error) {
-
-    console.error(
-      "CONTENT LOAD FAILED:",
-      error
-    );
-
-
-    showError(
-      originalsRow,
-      "Supabase content error."
-    );
-
-    showError(
-      seriesRow,
-      "Supabase content error."
-    );
-
-    showError(
-      filmsRow,
-      "Supabase content error."
-    );
-
-    showError(
-      documentariesRow,
-      "Supabase content error."
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   FEATURED PLAY
-===================================================== */
-
-function playFeatured() {
-
-  if (
-    window.featuredContent
-  ) {
-
-    playLicensedVideo(
-      window.featuredContent
-    );
-
-    return;
-
-  }
-
-  playVideo(
-    "BRENZKafrica Cinema",
-
-    "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
-  );
-
-}
-
-
-/* =====================================================
-   INFO
-===================================================== */
-
-function showInfo() {
-
-  alert(
-    "BRENZKafrica Plus — African stories, creativity and unlimited vision."
-  );
-
-}
-
-
-/* =====================================================
-   YOUTUBE
-===================================================== */
-
-async function loadYouTubeVideos() {
-
-  youtubeRow.innerHTML =
-    '<div class="loading">Loading BRENZKafrica videos...</div>';
-
-  try {
-
-    const response =
-      await fetch(
-        "/api/youtube"
-      );
-
-
-    if (!response.ok) {
-
-      throw new Error(
-        "YouTube API unavailable"
-      );
-
-    }
-
-
-    const data =
-      await response.json();
-
-
-    if (
-      !data.success ||
-      !Array.isArray(
-        data.videos
-      )
-    ) {
-
-      throw new Error(
-        "Invalid YouTube response"
-      );
-
-    }
-
-
-    youtubeRow.innerHTML =
-      "";
-
-
-    if (
-      data.videos.length === 0
-    ) {
-
-      youtubeRow.innerHTML =
-        '<div class="empty">' +
-        "No YouTube videos found." +
-        "</div>";
-
-      return;
-
-    }
-
-
-    data.videos.forEach(
-      function(item) {
-
-        const card =
-          document.createElement(
-            "div"
-          );
-
-        card.className =
-          "card youtube-card";
-
-        card.dataset.search =
-          (
-            item.title || ""
-          ).toLowerCase();
-
-
-        card.onclick =
-          function() {
-
-            playYouTubeVideo(
-              item.id,
-              item.title
-            );
-
-          };
-
-
-        const image =
-          document.createElement(
-            "img"
-          );
-
-        image.src =
-          item.thumbnail;
-
-        image.alt =
-          item.title ||
-          "BRENZKafrica YouTube";
-
-        image.loading =
-          "lazy";
-
-
-        const overlay =
-          document.createElement(
-            "div"
-          );
-
-        overlay.className =
-          "card-overlay";
-
-
-        const title =
-          document.createElement(
-            "div"
-          );
-
-        title.className =
-          "card-title";
-
-        title.textContent =
-          item.title;
-
-
-        const type =
-          document.createElement(
-            "div"
-          );
-
-        type.className =
-          "card-type";
-
-        type.textContent =
-          "BRENZKafrica • YouTube";
-
-
-        overlay.appendChild(
-          title
-        );
-
-        overlay.appendChild(
-          type
-        );
-
-        card.appendChild(
-          image
-        );
-
-        card.appendChild(
-          overlay
-        );
-
-        youtubeRow.appendChild(
-          card
-        );
-
-      }
-    );
-
-
-  } catch (error) {
-
-    console.log(
-      "YouTube API not available:",
-      error
-    );
-
-    youtubeRow.innerHTML =
-      '<div class="empty">' +
-      "YouTube videos will appear here when the YouTube connection is active." +
-      "</div>";
-
-  }
-
-}
-
-
-/* =====================================================
-   AUTHENTICATION
-===================================================== */
-
-function openAccount() {
-
-  authSection.classList.add(
-    "active"
-  );
-
-  emailInput.focus();
-
-}
-
-
-function closeAccount() {
-
-  authSection.classList.remove(
-    "active"
-  );
-
-  authMessage.textContent =
-    "";
-
-  authButton.disabled =
-    false;
-
-}
-
-
-/* =====================================================
-   AUTH MESSAGE
-===================================================== */
-
-function showAuthMessage(
-  message
-) {
-
-  authMessage.textContent =
-    message;
-
-}
-
-
-/* =====================================================
-   AUTH LOADING
-===================================================== */
-
-function setAuthLoading(
-  loading,
-  text
-) {
-
-  authButton.disabled =
-    loading;
-
-  if (loading) {
-
-    authButton.textContent =
-      text;
-
-  } else {
-
-    authButton.textContent =
-      authTitle.textContent ===
-      "Sign In"
-        ? "Sign In"
-        : "Create Account";
-
-  }
-
-}
-
-
-/* =====================================================
-   SIGN UP
-===================================================== */
-
-async function signUp() {
-
-  const email =
-    emailInput.value.trim();
-
-  const password =
-    passwordInput.value;
-
-
-  if (
-    !email ||
-    !password
-  ) {
-
-    showAuthMessage(
-      "Please enter your email and password."
-    );
-
-    return;
-
-  }
-
-
-  if (
-    password.length < 6
-  ) {
-
-    showAuthMessage(
-      "Password must be at least 6 characters."
-    );
-
-    return;
-
-  }
-
-
-  setAuthLoading(
-    true,
-    "Creating account..."
-  );
-
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.auth.signUp({
-
-        email:
-          email,
-
-        password:
-          password
-
-      });
-
-
-    if (error) {
-
-      showAuthMessage(
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    if (
-      data.user &&
-      data.session
-    ) {
-
-      updateAccountUI(
-        data.user
-      );
-
-      showAuthMessage(
-        "Account created successfully!"
-      );
-
-      setTimeout(
-        closeAccount,
-        1000
-      );
-
-    } else {
-
-      showAuthMessage(
-        "Account created! Please check your email to confirm your account."
-      );
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    showAuthMessage(
-      "Connection error. Please try again."
-    );
-
-  } finally {
-
-    setAuthLoading(
-      false,
-      ""
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   SIGN IN
-===================================================== */
-
-async function signIn() {
-
-  const email =
-    emailInput.value.trim();
-
-  const password =
-    passwordInput.value;
-
-
-  if (
-    !email ||
-    !password
-  ) {
-
-    showAuthMessage(
-      "Please enter your email and password."
-    );
-
-    return;
-
-  }
-
-
-  setAuthLoading(
-    true,
-    "Signing in..."
-  );
-
-
-  try {
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.auth.signInWithPassword({
-
-        email:
-          email,
-
-        password:
-          password
-
-      });
-
-
-    if (error) {
-
-      showAuthMessage(
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    if (
-      data &&
-      data.user
-    ) {
-
-      updateAccountUI(
-        data.user
-      );
-
-      showAuthMessage(
-        "Welcome to BRENZKafrica Plus!"
-      );
-
-      setTimeout(
-        closeAccount,
-        800
-      );
-
-    }
-
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    showAuthMessage(
-      "Connection error. Please try again."
-    );
-
-  } finally {
-
-    setAuthLoading(
-      false,
-      ""
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   SIGN UP / SIGN IN SWITCH
-===================================================== */
-
-function showSignUp() {
-
-  authTitle.textContent =
-    "Create Account";
-
-  authButton.textContent =
-    "Create Account";
-
-  authButton.onclick =
-    signUp;
-
-  document.querySelector(
-    ".auth-switch"
-  ).innerHTML =
-    'Already have an account? ' +
-    '<button onclick="showSignIn()">Sign In</button>';
-
-  authMessage.textContent =
-    "";
-
-}
-
-
-function showSignIn() {
-
-  authTitle.textContent =
-    "Sign In";
-
-  authButton.textContent =
-    "Sign In";
-
-  authButton.onclick =
-    signIn;
-
-  document.querySelector(
-    ".auth-switch"
-  ).innerHTML =
-    'Don\'t have an account? ' +
-    '<button onclick="showSignUp()">Create Account</button>';
-
-  authMessage.textContent =
-    "";
-
-}
-
-
-/* =====================================================
-   ACCOUNT UI
-===================================================== */
-
-function updateAccountUI(
-  user
-) {
-
-  if (user) {
-
-    signinButton.style.display =
-      "none";
-
-    accountStatus.style.display =
-      "flex";
-
-    userEmail.textContent =
-      user.email ||
-      "Viewer";
-
-  } else {
-
-    signinButton.style.display =
-      "block";
-
-    accountStatus.style.display =
-      "none";
-
-    userEmail.textContent =
-      "";
-
-  }
-
-}
-
-
-/* =====================================================
-   SIGN OUT
-===================================================== */
-
-async function signOut() {
-
-  const {
-    error
-  } =
-    await supabaseClient.auth.signOut();
-
-
-  if (error) {
-
-    console.error(
-      error
-    );
-
-    return;
-
-  }
-
-
-  updateAccountUI(
-    null
-  );
-
-}
-
-
-/* =====================================================
-   SESSION
-===================================================== */
-
-async function checkSession() {
-
-  try {
-
-    const {
-      data
-    } =
-      await supabaseClient.auth.getSession();
-
-
-    if (
-      data &&
-      data.session
-    ) {
-
-      updateAccountUI(
-        data.session.user
-      );
-
-    } else {
-
-      updateAccountUI(
-        null
-      );
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      error
-    );
-
-    updateAccountUI(
-      null
-    );
-
-  }
-
-}
-
-
-/* =====================================================
-   AUTH STATE
-===================================================== */
-
-supabaseClient.auth.onAuthStateChange(
-  function(
-    event,
-    session
-  ) {
-
-    if (session) {
-
-      updateAccountUI(
-        session.user
-      );
-
-    } else {
-
-      updateAccountUI(
-        null
-      );
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-search.addEventListener(
-  "input",
-  function() {
-
-    const query =
-      search.value
-        .toLowerCase()
-        .trim();
-
-
-    const cards =
-      document.querySelectorAll(
-        ".card"
-      );
-
-
-    cards.forEach(
-      function(card) {
-
-        const text =
-          (
-            card.dataset.search ||
-            card.innerText ||
-            ""
-          ).toLowerCase();
-
-
-        if (
-          !query ||
-          text.includes(query)
-        ) {
-
-          card.style.display =
-            "";
-
-        } else {
-
-          card.style.display =
-            "none";
-
-        }
-
-      }
-    );
-
-  }
-);
-
-
-/* =====================================================
-   KEYBOARD
-===================================================== */
-
-passwordInput.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      event.key === "Enter"
-    ) {
-
-      event.preventDefault();
-
-      authButton.click();
-
-    }
-
-  }
-);
-
-
-document.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      event.key === "Escape"
-    ) {
-
-      closePlayer();
-
-      closeAccount();
-
-    }
-
-  }
-);
-
-
-/* =====================================================
-   START APP
-===================================================== */
-
-checkSession();
-
-loadSupabaseContent();
-
-loadYouTubeVideos();
-
-</script>
-
-</body>
-</html>
