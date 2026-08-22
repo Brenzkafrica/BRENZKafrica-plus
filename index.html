@@ -311,6 +311,19 @@
       opacity: 1;
     }
 
+    .youtube-label {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #e50914;
+      color: white;
+      padding: 4px 7px;
+      border-radius: 3px;
+      font-size: 9px;
+      font-weight: bold;
+      z-index: 3;
+    }
+
     .loading,
     .empty,
     .error {
@@ -695,6 +708,8 @@
 
 <main>
 
+  <!-- ORIGINALS -->
+
   <section class="section" id="originals">
 
     <h2 class="section-title">
@@ -706,13 +721,17 @@
     </p>
 
     <div class="row" id="originalsRow">
+
       <div class="loading">
         Loading originals...
       </div>
+
     </div>
 
   </section>
 
+
+  <!-- YOUTUBE -->
 
   <section class="section" id="youtube">
 
@@ -725,13 +744,17 @@
     </p>
 
     <div class="row" id="youtubeRow">
+
       <div class="loading">
         Loading BRENZKafrica videos...
       </div>
+
     </div>
 
   </section>
 
+
+  <!-- SERIES -->
 
   <section class="section" id="series">
 
@@ -744,13 +767,17 @@
     </p>
 
     <div class="row" id="seriesRow">
+
       <div class="loading">
         Loading series...
       </div>
+
     </div>
 
   </section>
 
+
+  <!-- FILMS -->
 
   <section class="section" id="films">
 
@@ -763,13 +790,17 @@
     </p>
 
     <div class="row" id="filmsRow">
+
       <div class="loading">
         Loading films...
       </div>
+
     </div>
 
   </section>
 
+
+  <!-- DOCUMENTARIES -->
 
   <section class="section" id="documentaries">
 
@@ -782,9 +813,11 @@
     </p>
 
     <div class="row" id="documentariesRow">
+
       <div class="loading">
         Loading documentaries...
       </div>
+
     </div>
 
   </section>
@@ -794,7 +827,10 @@
 
 <!-- VIDEO PLAYER -->
 
-<div class="player" id="player">
+<div
+  class="player"
+  id="player"
+>
 
   <button
     class="close-player"
@@ -875,10 +911,13 @@
     <p id="auth-message"></p>
 
     <p class="auth-switch">
+
       Don't have an account?
+
       <button onclick="showSignUp()">
         Create Account
       </button>
+
     </p>
 
   </div>
@@ -888,7 +927,9 @@
 
 <footer>
 
-  <h3>BRENZKafrica+</h3>
+  <h3>
+    BRENZKafrica+
+  </h3>
 
   <p>
     African Creativity. Unlimited Vision.
@@ -905,9 +946,9 @@
 
 <script>
 
-/* =====================================================
+/* =========================================================
    SUPABASE
-===================================================== */
+========================================================= */
 
 const SUPABASE_URL =
   "https://fcddfmfpzbilagphpsxs.supabase.co";
@@ -929,9 +970,18 @@ const supabaseClient =
   );
 
 
-/* =====================================================
+/* =========================================================
+   YOUTUBE EDGE FUNCTION
+========================================================= */
+
+const YOUTUBE_FUNCTION_URL =
+  SUPABASE_URL +
+  "/functions/v1/smooth-responder";
+
+
+/* =========================================================
    ELEMENTS
-===================================================== */
+========================================================= */
 
 const player =
   document.getElementById("player");
@@ -991,9 +1041,9 @@ const youtubeRow =
   document.getElementById("youtubeRow");
 
 
-/* =====================================================
-   DATABASE FIELD HELPERS
-===================================================== */
+/* =========================================================
+   DATABASE HELPERS
+========================================================= */
 
 function getTitle(item) {
 
@@ -1060,7 +1110,7 @@ function getThumbnail(item) {
     item["thumb nail_url"] ||
     item["image_url"] ||
     item["poster_url"] ||
-    "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80"
+    ""
   );
 
 }
@@ -1071,6 +1121,8 @@ function getVideoUrl(item) {
   return (
     item["Video_url"] ||
     item["video_url"] ||
+    item["youtube_url"] ||
+    item["YouTube_url"] ||
     ""
   );
 
@@ -1088,20 +1140,6 @@ function getSourceType(item) {
 }
 
 
-/*
-   IMPORTANT:
-
-   This is the new column we added:
-
-   Content_group
-
-   It controls:
-
-   Series
-   Film
-   Documentary
-*/
-
 function getContentGroup(item) {
 
   return (
@@ -1113,9 +1151,9 @@ function getContentGroup(item) {
 }
 
 
-/* =====================================================
+/* =========================================================
    NORMALIZE
-===================================================== */
+========================================================= */
 
 function normalize(value) {
 
@@ -1128,9 +1166,9 @@ function normalize(value) {
 }
 
 
-/* =====================================================
-   CONTENT GROUP FILTERS
-===================================================== */
+/* =========================================================
+   CONTENT FILTERS
+========================================================= */
 
 function isSeries(item) {
 
@@ -1139,7 +1177,10 @@ function isSeries(item) {
       getContentGroup(item)
     );
 
-  return group === "series";
+  return (
+    group === "series" ||
+    normalize(getCategory(item)) === "series"
+  );
 
 }
 
@@ -1151,9 +1192,16 @@ function isFilm(item) {
       getContentGroup(item)
     );
 
+  const category =
+    normalize(
+      getCategory(item)
+    );
+
   return (
     group === "film" ||
-    group === "films"
+    group === "films" ||
+    category === "film" ||
+    category === "films"
   );
 
 }
@@ -1166,17 +1214,24 @@ function isDocumentary(item) {
       getContentGroup(item)
     );
 
+  const category =
+    normalize(
+      getCategory(item)
+    );
+
   return (
     group === "documentary" ||
-    group === "documentaries"
+    group === "documentaries" ||
+    category === "documentary" ||
+    category === "documentaries"
   );
 
 }
 
 
-/* =====================================================
+/* =========================================================
    HTML ESCAPE
-===================================================== */
+========================================================= */
 
 function escapeHtml(text) {
 
@@ -1190,9 +1245,17 @@ function escapeHtml(text) {
 }
 
 
-/* =====================================================
-   EMPTY CONTENT
-===================================================== */
+/* =========================================================
+   DEFAULT THUMBNAIL
+========================================================= */
+
+const DEFAULT_THUMBNAIL =
+  "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
 
 function showEmptyContent(
   row,
@@ -1206,16 +1269,17 @@ function showEmptyContent(
 
   empty.className = "empty";
 
-  empty.textContent = message;
+  empty.textContent =
+    message;
 
   row.appendChild(empty);
 
 }
 
 
-/* =====================================================
-   ERROR CONTENT
-===================================================== */
+/* =========================================================
+   ERROR
+========================================================= */
 
 function showErrorContent(
   row,
@@ -1229,16 +1293,17 @@ function showErrorContent(
 
   error.className = "error";
 
-  error.textContent = message;
+  error.textContent =
+    message;
 
   row.appendChild(error);
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CREATE CONTENT CARD
-===================================================== */
+========================================================= */
 
 function createContentCard(
   item,
@@ -1285,19 +1350,18 @@ function createContentCard(
 
 
   if (
-    sourceType &&
-    sourceType !== "brenzkafrica" &&
-    sourceType !== "youtube"
+    sourceType === "youtube" ||
+    sourceType === "youtube video"
   ) {
 
     const badge =
       document.createElement("span");
 
     badge.className =
-      "licensed-badge";
+      "youtube-label";
 
     badge.textContent =
-      "SOURCE";
+      "YOUTUBE";
 
     card.appendChild(badge);
 
@@ -1308,7 +1372,8 @@ function createContentCard(
     document.createElement("img");
 
   image.src =
-    getThumbnail(item);
+    getThumbnail(item) ||
+    DEFAULT_THUMBNAIL;
 
   image.alt =
     getTitle(item);
@@ -1321,7 +1386,7 @@ function createContentCard(
     function() {
 
       image.src =
-        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
+        DEFAULT_THUMBNAIL;
 
     };
 
@@ -1374,7 +1439,6 @@ function createContentCard(
   type.textContent =
     typeText;
 
-
   overlay.appendChild(type);
 
   card.appendChild(overlay);
@@ -1385,9 +1449,9 @@ function createContentCard(
 }
 
 
-/* =====================================================
-   CREATE YOUTUBE CARD
-===================================================== */
+/* =========================================================
+   YOUTUBE CARD
+========================================================= */
 
 function createYouTubeCard(item) {
 
@@ -1398,14 +1462,43 @@ function createYouTubeCard(item) {
     "youtube-card"
   );
 
+
+  card.onclick =
+    function() {
+
+      const url =
+        getVideoUrl(item);
+
+      const videoId =
+        extractYouTubeId(url);
+
+
+      if (videoId) {
+
+        playYouTubeVideo(
+          videoId,
+          getTitle(item)
+        );
+
+      } else {
+
+        alert(
+          "This YouTube video does not have a valid YouTube link."
+        );
+
+      }
+
+    };
+
+
   return card;
 
 }
 
 
-/* =====================================================
+/* =========================================================
    RENDER CONTENT
-===================================================== */
+========================================================= */
 
 function renderContent(
   row,
@@ -1447,9 +1540,9 @@ function renderContent(
 }
 
 
-/* =====================================================
-   LOAD CONTENT
-===================================================== */
+/* =========================================================
+   LOAD SUPABASE CONTENT
+========================================================= */
 
 let allContent = [];
 
@@ -1467,9 +1560,6 @@ async function loadContent() {
 
   documentariesRow.innerHTML =
     '<div class="loading">Loading documentaries...</div>';
-
-  youtubeRow.innerHTML =
-    '<div class="loading">Loading BRENZKafrica videos...</div>';
 
 
   try {
@@ -1510,11 +1600,6 @@ async function loadContent() {
         "Unable to load documentaries."
       );
 
-      showErrorContent(
-        youtubeRow,
-        "Unable to load videos."
-      );
-
       return;
 
     }
@@ -1530,54 +1615,23 @@ async function loadContent() {
     );
 
 
-    /*
-       SERIES
-    */
-
     const series =
       allContent.filter(
-        function(item) {
-
-          return isSeries(item);
-
-        }
+        isSeries
       );
 
-
-    /*
-       FILMS
-    */
 
     const films =
       allContent.filter(
-        function(item) {
-
-          return isFilm(item);
-
-        }
+        isFilm
       );
 
-
-    /*
-       DOCUMENTARIES
-    */
 
     const documentaries =
       allContent.filter(
-        function(item) {
-
-          return isDocumentary(item);
-
-        }
+        isDocumentary
       );
 
-
-    /*
-       ORIGINALS
-
-       Original BRENZKafrica content
-       excluding YouTube videos.
-    */
 
     const originals =
       allContent.filter(
@@ -1597,57 +1651,6 @@ async function loadContent() {
 
         }
       );
-
-
-    /*
-       YOUTUBE
-
-       Anything whose Source_type
-       identifies it as YouTube.
-    */
-
-    const youtube =
-      allContent.filter(
-        function(item) {
-
-          const source =
-            normalize(
-              getSourceType(item)
-            );
-
-          return (
-            source === "youtube" ||
-            source === "youtube video"
-          );
-
-        }
-      );
-
-
-    console.log(
-      "Series:",
-      series.length
-    );
-
-    console.log(
-      "Films:",
-      films.length
-    );
-
-    console.log(
-      "Documentaries:",
-      documentaries.length
-    );
-
-    console.log(
-      "Originals:",
-      originals.length
-    );
-
-    console.log(
-      "YouTube:",
-      youtube.length
-    );
 
 
     renderContent(
@@ -1682,15 +1685,30 @@ async function loadContent() {
     );
 
 
-    renderYouTubeContent(
-      youtube
+    console.log(
+      "Series:",
+      series.length
     );
 
+    console.log(
+      "Films:",
+      films.length
+    );
+
+    console.log(
+      "Documentaries:",
+      documentaries.length
+    );
+
+    console.log(
+      "Originals:",
+      originals.length
+    );
 
   } catch (error) {
 
     console.error(
-      "Unexpected loading error:",
+      "Unexpected content error:",
       error
     );
 
@@ -1714,90 +1732,264 @@ async function loadContent() {
       "Unable to load documentaries."
     );
 
-    showErrorContent(
-      youtubeRow,
-      "Unable to load YouTube videos."
-    );
-
   }
 
 }
 
 
-/* =====================================================
-   YOUTUBE CONTENT
-===================================================== */
+/* =========================================================
+   YOUTUBE API
+========================================================= */
 
-function renderYouTubeContent(items) {
+async function loadYouTubeVideos() {
 
-  youtubeRow.innerHTML = "";
-
-  if (
-    !items ||
-    items.length === 0
-  ) {
-
-    showEmptyContent(
-      youtubeRow,
-      "No BRENZKafrica YouTube videos available yet."
-    );
-
-    return;
-
-  }
+  youtubeRow.innerHTML =
+    '<div class="loading">Loading BRENZKafrica YouTube videos...</div>';
 
 
-  items.forEach(
-    function(item) {
+  try {
 
-      const card =
-        createYouTubeCard(item);
+    /*
+      The API key is NOT placed in this HTML.
 
-      card.onclick =
-        function() {
+      The request goes through your
+      Supabase Edge Function.
+    */
 
-          const url =
-            getVideoUrl(item);
-
-          const videoId =
-            extractYouTubeId(url);
-
-          if (videoId) {
-
-            playYouTubeVideo(
-              videoId,
-              getTitle(item)
-            );
-
-          } else {
-
-            playLicensedVideo(
-              item
-            );
-
+    const response =
+      await fetch(
+        YOUTUBE_FUNCTION_URL,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json"
           }
+        }
+      );
 
-        };
 
+    if (!response.ok) {
 
-      youtubeRow.appendChild(
-        card
+      throw new Error(
+        "YouTube service returned HTTP " +
+        response.status
       );
 
     }
-  );
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "YouTube API response:",
+      data
+    );
+
+
+    /*
+      Support several possible response formats
+      from the Edge Function.
+    */
+
+    let videos = [];
+
+
+    if (
+      Array.isArray(data)
+    ) {
+
+      videos =
+        data;
+
+    } else if (
+      Array.isArray(data.items)
+    ) {
+
+      videos =
+        data.items;
+
+    } else if (
+      Array.isArray(data.videos)
+    ) {
+
+      videos =
+        data.videos;
+
+    } else if (
+      data.data &&
+      Array.isArray(data.data.items)
+    ) {
+
+      videos =
+        data.data.items;
+
+    }
+
+
+    if (
+      !videos.length
+    ) {
+
+      showEmptyContent(
+        youtubeRow,
+        "No BRENZKafrica YouTube videos available yet."
+      );
+
+      return;
+
+    }
+
+
+    youtubeRow.innerHTML = "";
+
+
+    videos.forEach(
+      function(item) {
+
+        const normalized =
+          normalizeYouTubeItem(item);
+
+
+        youtubeRow.appendChild(
+          createYouTubeCard(
+            normalized
+          )
+        );
+
+      }
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "YouTube loading error:",
+      error
+    );
+
+
+    showErrorContent(
+      youtubeRow,
+      "Unable to load BRENZKafrica YouTube videos."
+    );
+
+  }
 
 }
 
 
-/* =====================================================
+/* =========================================================
+   NORMALIZE YOUTUBE RESPONSE
+========================================================= */
+
+function normalizeYouTubeItem(item) {
+
+  /*
+    Handles normal YouTube Data API
+    search.list responses.
+  */
+
+  const snippet =
+    item.snippet ||
+    item;
+
+
+  let videoId =
+    "";
+
+
+  if (
+    item.id &&
+    typeof item.id === "object"
+  ) {
+
+    videoId =
+      item.id.videoId ||
+      "";
+
+  } else {
+
+    videoId =
+      item.videoId ||
+      item.id ||
+      "";
+
+  }
+
+
+  let thumbnail =
+    "";
+
+
+  if (
+    snippet.thumbnails
+  ) {
+
+    thumbnail =
+      (
+        snippet.thumbnails.high ||
+        snippet.thumbnails.medium ||
+        snippet.thumbnails.default ||
+        {}
+      ).url || "";
+
+  }
+
+
+  return {
+
+    Title:
+      snippet.title ||
+      "BRENZKafrica YouTube Video",
+
+    Description:
+      snippet.description ||
+      "",
+
+    Category:
+      "YouTube",
+
+    Content_group:
+      "YouTube",
+
+    Country:
+      "Uganda",
+
+    Source_type:
+      "YouTube",
+
+    Video_url:
+      videoId
+        ? "https://www.youtube.com/watch?v=" + videoId
+        : "",
+
+    "Thumb nail_url":
+      thumbnail ||
+      (
+        videoId
+          ? "https://i.ytimg.com/vi/" +
+            videoId +
+            "/hqdefault.jpg"
+          : DEFAULT_THUMBNAIL
+      )
+
+  };
+
+}
+
+
+/* =========================================================
    YOUTUBE ID
-===================================================== */
+========================================================= */
 
 function extractYouTubeId(url) {
 
   if (!url) {
+
     return null;
+
   }
 
 
@@ -1829,6 +2021,7 @@ function extractYouTubeId(url) {
         patterns[i]
       );
 
+
     if (match) {
 
       return match[1];
@@ -1838,14 +2031,28 @@ function extractYouTubeId(url) {
   }
 
 
+  /*
+    If the value itself looks like
+    a YouTube video ID.
+  */
+
+  if (
+    /^[A-Za-z0-9_-]{11}$/.test(value)
+  ) {
+
+    return value;
+
+  }
+
+
   return null;
 
 }
 
 
-/* =====================================================
-   PLAY VIDEO
-===================================================== */
+/* =========================================================
+   PLAY NORMAL VIDEO
+========================================================= */
 
 function playVideo(
   name,
@@ -1899,9 +2106,9 @@ function playVideo(
 }
 
 
-/* =====================================================
+/* =========================================================
    PLAY CONTENT
-===================================================== */
+========================================================= */
 
 function playLicensedVideo(item) {
 
@@ -1925,11 +2132,6 @@ function playLicensedVideo(item) {
       getSourceType(item)
     );
 
-
-  /*
-     If this is a YouTube video,
-     open the YouTube player.
-  */
 
   if (
     source === "youtube" ||
@@ -1962,14 +2164,25 @@ function playLicensedVideo(item) {
 }
 
 
-/* =====================================================
+/* =========================================================
    YOUTUBE PLAYER
-===================================================== */
+========================================================= */
 
 function playYouTubeVideo(
   videoId,
   title
 ) {
+
+  if (!videoId) {
+
+    alert(
+      "Invalid YouTube video."
+    );
+
+    return;
+
+  }
+
 
   video.pause();
 
@@ -1978,6 +2191,7 @@ function playYouTubeVideo(
   );
 
   video.load();
+
 
   video.style.display =
     "none";
@@ -2004,9 +2218,9 @@ function playYouTubeVideo(
 }
 
 
-/* =====================================================
+/* =========================================================
    CLOSE PLAYER
-===================================================== */
+========================================================= */
 
 function closePlayer() {
 
@@ -2042,9 +2256,9 @@ function closePlayer() {
 }
 
 
-/* =====================================================
-   FEATURED PLAY
-===================================================== */
+/* =========================================================
+   FEATURED
+========================================================= */
 
 function playFeatured() {
 
@@ -2066,7 +2280,7 @@ function playFeatured() {
     allContent.find(
       function(item) {
 
-        return (
+        return Boolean(
           getVideoUrl(item)
         );
 
@@ -2091,9 +2305,9 @@ function playFeatured() {
 }
 
 
-/* =====================================================
+/* =========================================================
    MORE INFO
-===================================================== */
+========================================================= */
 
 function showInfo() {
 
@@ -2104,9 +2318,9 @@ function showInfo() {
 }
 
 
-/* =====================================================
+/* =========================================================
    SEARCH
-===================================================== */
+========================================================= */
 
 search.addEventListener(
   "input",
@@ -2155,9 +2369,9 @@ search.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================================================
    ACCOUNT
-===================================================== */
+========================================================= */
 
 let isSignUp =
   false;
@@ -2316,9 +2530,9 @@ async function signIn() {
 }
 
 
-/* =====================================================
+/* =========================================================
    SIGN OUT
-===================================================== */
+========================================================= */
 
 async function signOut() {
 
@@ -2331,9 +2545,9 @@ async function signOut() {
 }
 
 
-/* =====================================================
+/* =========================================================
    ACCOUNT UI
-===================================================== */
+========================================================= */
 
 function updateAccountUI(user) {
 
@@ -2364,9 +2578,9 @@ function updateAccountUI(user) {
 }
 
 
-/* =====================================================
-   CHECK AUTH SESSION
-===================================================== */
+/* =========================================================
+   CHECK AUTH
+========================================================= */
 
 async function checkAuth() {
 
@@ -2394,9 +2608,9 @@ async function checkAuth() {
 }
 
 
-/* =====================================================
-   AUTH STATE CHANGES
-===================================================== */
+/* =========================================================
+   AUTH STATE
+========================================================= */
 
 supabaseClient.auth.onAuthStateChange(
   function(
@@ -2422,9 +2636,9 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 
-/* =====================================================
+/* =========================================================
    START APPLICATION
-===================================================== */
+========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -2434,13 +2648,15 @@ document.addEventListener(
 
     await loadContent();
 
+    await loadYouTubeVideos();
+
   }
 );
 
 
-/* =====================================================
+/* =========================================================
    ESC KEY
-===================================================== */
+========================================================= */
 
 document.addEventListener(
   "keydown",
@@ -2459,6 +2675,7 @@ document.addEventListener(
         closePlayer();
 
       }
+
 
       if (
         authSection.classList.contains(
