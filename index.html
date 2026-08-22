@@ -383,18 +383,6 @@
       text-align: center;
     }
 
-    .player-source {
-      color: #888;
-      font-size: 12px;
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-
-    .player-source a {
-      color: #aaa;
-      text-decoration: underline;
-    }
-
     .auth-section {
       display: none;
       position: fixed;
@@ -707,10 +695,7 @@
 
 <main>
 
-  <section
-    class="section"
-    id="originals"
-  >
+  <section class="section" id="originals">
 
     <h2 class="section-title">
       BRENZKafrica Originals
@@ -720,10 +705,7 @@
       Stories created by Africa. For the world.
     </p>
 
-    <div
-      class="row"
-      id="originalsRow"
-    >
+    <div class="row" id="originalsRow">
       <div class="loading">
         Loading originals...
       </div>
@@ -732,10 +714,7 @@
   </section>
 
 
-  <section
-    class="section"
-    id="youtube"
-  >
+  <section class="section" id="youtube">
 
     <h2 class="section-title">
       BRENZKafrica YouTube
@@ -745,10 +724,7 @@
       Latest tutorials, creative insights and videos from BRENZKafrica.
     </p>
 
-    <div
-      class="row"
-      id="youtubeRow"
-    >
+    <div class="row" id="youtubeRow">
       <div class="loading">
         Loading BRENZKafrica videos...
       </div>
@@ -757,10 +733,7 @@
   </section>
 
 
-  <section
-    class="section"
-    id="series"
-  >
+  <section class="section" id="series">
 
     <h2 class="section-title">
       Series
@@ -770,10 +743,7 @@
       African stories, journeys and creative voices.
     </p>
 
-    <div
-      class="row"
-      id="seriesRow"
-    >
+    <div class="row" id="seriesRow">
       <div class="loading">
         Loading series...
       </div>
@@ -782,10 +752,7 @@
   </section>
 
 
-  <section
-    class="section"
-    id="films"
-  >
+  <section class="section" id="films">
 
     <h2 class="section-title">
       Films
@@ -795,10 +762,7 @@
       Independent African stories and visual journeys.
     </p>
 
-    <div
-      class="row"
-      id="filmsRow"
-    >
+    <div class="row" id="filmsRow">
       <div class="loading">
         Loading films...
       </div>
@@ -807,10 +771,7 @@
   </section>
 
 
-  <section
-    class="section"
-    id="documentaries"
-  >
+  <section class="section" id="documentaries">
 
     <h2 class="section-title">
       Documentaries
@@ -820,10 +781,7 @@
       Real people. Real places. African perspectives.
     </p>
 
-    <div
-      class="row"
-      id="documentariesRow"
-    >
+    <div class="row" id="documentariesRow">
       <div class="loading">
         Loading documentaries...
       </div>
@@ -834,10 +792,9 @@
 </main>
 
 
-<div
-  class="player"
-  id="player"
->
+<!-- VIDEO PLAYER -->
+
+<div class="player" id="player">
 
   <button
     class="close-player"
@@ -868,6 +825,8 @@
 
 </div>
 
+
+<!-- AUTHENTICATION -->
 
 <div
   id="auth-section"
@@ -1036,21 +995,6 @@ const youtubeRow =
    DATABASE FIELD HELPERS
 ===================================================== */
 
-/*
-   EXACT SUPABASE COLUMNS:
-
-   id
-   Tittle
-   Description
-   Content_type
-   Category
-   Country
-   Thumb nail_url
-   Video_url
-   Source_type
-   Content_group
-*/
-
 function getTitle(item) {
 
   return (
@@ -1144,6 +1088,20 @@ function getSourceType(item) {
 }
 
 
+/*
+   IMPORTANT:
+
+   This is the new column we added:
+
+   Content_group
+
+   It controls:
+
+   Series
+   Film
+   Documentary
+*/
+
 function getContentGroup(item) {
 
   return (
@@ -1151,22 +1109,6 @@ function getContentGroup(item) {
     item["content_group"] ||
     ""
   );
-
-}
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
-
-function escapeHtml(text) {
-
-  return String(text || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 
 }
 
@@ -1197,10 +1139,7 @@ function isSeries(item) {
       getContentGroup(item)
     );
 
-  return (
-    group === "series" ||
-    group.includes("series")
-  );
+  return group === "series";
 
 }
 
@@ -1214,9 +1153,7 @@ function isFilm(item) {
 
   return (
     group === "film" ||
-    group === "films" ||
-    group === "movie" ||
-    group === "movies"
+    group === "films"
   );
 
 }
@@ -1238,65 +1175,670 @@ function isDocumentary(item) {
 
 
 /* =====================================================
-   DEBUG
+   HTML ESCAPE
 ===================================================== */
 
-function debugContent(data) {
+function escapeHtml(text) {
 
-  console.log(
-    "===================================="
+  return String(text || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+
+}
+
+
+/* =====================================================
+   EMPTY CONTENT
+===================================================== */
+
+function showEmptyContent(
+  row,
+  message
+) {
+
+  row.innerHTML = "";
+
+  const empty =
+    document.createElement("div");
+
+  empty.className = "empty";
+
+  empty.textContent = message;
+
+  row.appendChild(empty);
+
+}
+
+
+/* =====================================================
+   ERROR CONTENT
+===================================================== */
+
+function showErrorContent(
+  row,
+  message
+) {
+
+  row.innerHTML = "";
+
+  const error =
+    document.createElement("div");
+
+  error.className = "error";
+
+  error.textContent = message;
+
+  row.appendChild(error);
+
+}
+
+
+/* =====================================================
+   CREATE CONTENT CARD
+===================================================== */
+
+function createContentCard(
+  item,
+  portrait = false
+) {
+
+  const card =
+    document.createElement("div");
+
+  card.className =
+    portrait
+      ? "card portrait-card"
+      : "card";
+
+
+  card.dataset.search =
+    (
+      getTitle(item) +
+      " " +
+      getDescription(item) +
+      " " +
+      getCategory(item) +
+      " " +
+      getContentType(item) +
+      " " +
+      getContentGroup(item) +
+      " " +
+      getCountry(item)
+    ).toLowerCase();
+
+
+  card.onclick =
+    function() {
+
+      playLicensedVideo(item);
+
+    };
+
+
+  const sourceType =
+    normalize(
+      getSourceType(item)
+    );
+
+
+  if (
+    sourceType &&
+    sourceType !== "brenzkafrica" &&
+    sourceType !== "youtube"
+  ) {
+
+    const badge =
+      document.createElement("span");
+
+    badge.className =
+      "licensed-badge";
+
+    badge.textContent =
+      "SOURCE";
+
+    card.appendChild(badge);
+
+  }
+
+
+  const image =
+    document.createElement("img");
+
+  image.src =
+    getThumbnail(item);
+
+  image.alt =
+    getTitle(item);
+
+  image.loading =
+    "lazy";
+
+
+  image.onerror =
+    function() {
+
+      image.src =
+        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
+
+    };
+
+
+  card.appendChild(image);
+
+
+  const overlay =
+    document.createElement("div");
+
+  overlay.className =
+    "card-overlay";
+
+
+  const title =
+    document.createElement("div");
+
+  title.className =
+    "card-title";
+
+  title.textContent =
+    getTitle(item);
+
+  overlay.appendChild(title);
+
+
+  const type =
+    document.createElement("div");
+
+  type.className =
+    "card-type";
+
+
+  let typeText =
+    getCategory(item) ||
+    getContentGroup(item) ||
+    getContentType(item) ||
+    "Video";
+
+
+  if (getCountry(item)) {
+
+    typeText +=
+      " • " +
+      getCountry(item);
+
+  }
+
+
+  type.textContent =
+    typeText;
+
+
+  overlay.appendChild(type);
+
+  card.appendChild(overlay);
+
+
+  return card;
+
+}
+
+
+/* =====================================================
+   CREATE YOUTUBE CARD
+===================================================== */
+
+function createYouTubeCard(item) {
+
+  const card =
+    createContentCard(item);
+
+  card.classList.add(
+    "youtube-card"
   );
 
-  console.log(
-    "BRENZKAFRICA SUPABASE CONTENT"
-  );
+  return card;
 
-  console.log(
-    "TOTAL CONTENT:",
-    data.length
-  );
+}
 
-  data.forEach(
-    function(item, index) {
 
-      console.log(
-        "ITEM " + (index + 1),
-        {
-          id:
-            item.id,
+/* =====================================================
+   RENDER CONTENT
+===================================================== */
 
-          title:
-            getTitle(item),
+function renderContent(
+  row,
+  items,
+  portrait,
+  emptyMessage
+) {
 
-          content_type:
-            getContentType(item),
+  row.innerHTML = "";
 
-          category:
-            getCategory(item),
+  if (
+    !items ||
+    items.length === 0
+  ) {
 
-          country:
-            getCountry(item),
+    showEmptyContent(
+      row,
+      emptyMessage
+    );
 
-          content_group:
-            getContentGroup(item),
+    return;
 
-          video_url:
-            getVideoUrl(item),
+  }
 
-          thumbnail_url:
-            getThumbnail(item),
 
-          source_type:
-            getSourceType(item)
-        }
+  items.forEach(
+    function(item) {
+
+      row.appendChild(
+        createContentCard(
+          item,
+          portrait
+        )
       );
 
     }
   );
 
-  console.log(
-    "===================================="
+}
+
+
+/* =====================================================
+   LOAD CONTENT
+===================================================== */
+
+let allContent = [];
+
+
+async function loadContent() {
+
+  originalsRow.innerHTML =
+    '<div class="loading">Loading originals...</div>';
+
+  seriesRow.innerHTML =
+    '<div class="loading">Loading series...</div>';
+
+  filmsRow.innerHTML =
+    '<div class="loading">Loading films...</div>';
+
+  documentariesRow.innerHTML =
+    '<div class="loading">Loading documentaries...</div>';
+
+  youtubeRow.innerHTML =
+    '<div class="loading">Loading BRENZKafrica videos...</div>';
+
+
+  try {
+
+    const result =
+      await supabaseClient
+        .from("content")
+        .select("*")
+        .order("id", {
+          ascending: false
+        });
+
+
+    if (result.error) {
+
+      console.error(
+        "Supabase content error:",
+        result.error
+      );
+
+      showErrorContent(
+        originalsRow,
+        "Unable to load content."
+      );
+
+      showErrorContent(
+        seriesRow,
+        "Unable to load series."
+      );
+
+      showErrorContent(
+        filmsRow,
+        "Unable to load films."
+      );
+
+      showErrorContent(
+        documentariesRow,
+        "Unable to load documentaries."
+      );
+
+      showErrorContent(
+        youtubeRow,
+        "Unable to load videos."
+      );
+
+      return;
+
+    }
+
+
+    allContent =
+      result.data || [];
+
+
+    console.log(
+      "BRENZKafrica Plus content:",
+      allContent
+    );
+
+
+    /*
+       SERIES
+    */
+
+    const series =
+      allContent.filter(
+        function(item) {
+
+          return isSeries(item);
+
+        }
+      );
+
+
+    /*
+       FILMS
+    */
+
+    const films =
+      allContent.filter(
+        function(item) {
+
+          return isFilm(item);
+
+        }
+      );
+
+
+    /*
+       DOCUMENTARIES
+    */
+
+    const documentaries =
+      allContent.filter(
+        function(item) {
+
+          return isDocumentary(item);
+
+        }
+      );
+
+
+    /*
+       ORIGINALS
+
+       Original BRENZKafrica content
+       excluding YouTube videos.
+    */
+
+    const originals =
+      allContent.filter(
+        function(item) {
+
+          const source =
+            normalize(
+              getSourceType(item)
+            );
+
+          return (
+            source === "" ||
+            source === "brenzkafrica" ||
+            source === "original" ||
+            source === "brenzkafrica original"
+          );
+
+        }
+      );
+
+
+    /*
+       YOUTUBE
+
+       Anything whose Source_type
+       identifies it as YouTube.
+    */
+
+    const youtube =
+      allContent.filter(
+        function(item) {
+
+          const source =
+            normalize(
+              getSourceType(item)
+            );
+
+          return (
+            source === "youtube" ||
+            source === "youtube video"
+          );
+
+        }
+      );
+
+
+    console.log(
+      "Series:",
+      series.length
+    );
+
+    console.log(
+      "Films:",
+      films.length
+    );
+
+    console.log(
+      "Documentaries:",
+      documentaries.length
+    );
+
+    console.log(
+      "Originals:",
+      originals.length
+    );
+
+    console.log(
+      "YouTube:",
+      youtube.length
+    );
+
+
+    renderContent(
+      originalsRow,
+      originals,
+      false,
+      "No BRENZKafrica Originals available yet."
+    );
+
+
+    renderContent(
+      seriesRow,
+      series,
+      false,
+      "No series available yet."
+    );
+
+
+    renderContent(
+      filmsRow,
+      films,
+      false,
+      "No films available yet."
+    );
+
+
+    renderContent(
+      documentariesRow,
+      documentaries,
+      false,
+      "No documentaries available yet."
+    );
+
+
+    renderYouTubeContent(
+      youtube
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "Unexpected loading error:",
+      error
+    );
+
+    showErrorContent(
+      originalsRow,
+      "Unable to load content."
+    );
+
+    showErrorContent(
+      seriesRow,
+      "Unable to load series."
+    );
+
+    showErrorContent(
+      filmsRow,
+      "Unable to load films."
+    );
+
+    showErrorContent(
+      documentariesRow,
+      "Unable to load documentaries."
+    );
+
+    showErrorContent(
+      youtubeRow,
+      "Unable to load YouTube videos."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   YOUTUBE CONTENT
+===================================================== */
+
+function renderYouTubeContent(items) {
+
+  youtubeRow.innerHTML = "";
+
+  if (
+    !items ||
+    items.length === 0
+  ) {
+
+    showEmptyContent(
+      youtubeRow,
+      "No BRENZKafrica YouTube videos available yet."
+    );
+
+    return;
+
+  }
+
+
+  items.forEach(
+    function(item) {
+
+      const card =
+        createYouTubeCard(item);
+
+      card.onclick =
+        function() {
+
+          const url =
+            getVideoUrl(item);
+
+          const videoId =
+            extractYouTubeId(url);
+
+          if (videoId) {
+
+            playYouTubeVideo(
+              videoId,
+              getTitle(item)
+            );
+
+          } else {
+
+            playLicensedVideo(
+              item
+            );
+
+          }
+
+        };
+
+
+      youtubeRow.appendChild(
+        card
+      );
+
+    }
   );
+
+}
+
+
+/* =====================================================
+   YOUTUBE ID
+===================================================== */
+
+function extractYouTubeId(url) {
+
+  if (!url) {
+    return null;
+  }
+
+
+  const value =
+    String(url).trim();
+
+
+  const patterns = [
+
+    /youtube\.com\/watch\?v=([^&]+)/i,
+
+    /youtu\.be\/([^?&]+)/i,
+
+    /youtube\.com\/embed\/([^?&]+)/i,
+
+    /youtube\.com\/shorts\/([^?&]+)/i
+
+  ];
+
+
+  for (
+    let i = 0;
+    i < patterns.length;
+    i++
+  ) {
+
+    const match =
+      value.match(
+        patterns[i]
+      );
+
+    if (match) {
+
+      return match[1];
+
+    }
+
+  }
+
+
+  return null;
 
 }
 
@@ -1307,8 +1849,7 @@ function debugContent(data) {
 
 function playVideo(
   name,
-  url,
-  sourceInfo = ""
+  url
 ) {
 
   if (!url) {
@@ -1321,8 +1862,8 @@ function playVideo(
 
   }
 
-  youtubeFrame.src =
-    "";
+
+  youtubeFrame.src = "";
 
   youtubeFrame.style.display =
     "none";
@@ -1330,16 +1871,19 @@ function playVideo(
   video.style.display =
     "block";
 
-  playerTitle.innerHTML =
-    escapeHtml(name) +
-    sourceInfo;
+
+  playerTitle.textContent =
+    name;
+
 
   video.src =
     url;
 
+
   player.classList.add(
     "active"
   );
+
 
   video.play().catch(
     function(error) {
@@ -1364,6 +1908,7 @@ function playLicensedVideo(item) {
   const url =
     getVideoUrl(item);
 
+
   if (!url) {
 
     alert(
@@ -1373,6 +1918,41 @@ function playLicensedVideo(item) {
     return;
 
   }
+
+
+  const source =
+    normalize(
+      getSourceType(item)
+    );
+
+
+  /*
+     If this is a YouTube video,
+     open the YouTube player.
+  */
+
+  if (
+    source === "youtube" ||
+    source === "youtube video"
+  ) {
+
+    const videoId =
+      extractYouTubeId(url);
+
+
+    if (videoId) {
+
+      playYouTubeVideo(
+        videoId,
+        getTitle(item)
+      );
+
+      return;
+
+    }
+
+  }
+
 
   playVideo(
     getTitle(item),
@@ -1402,16 +1982,20 @@ function playYouTubeVideo(
   video.style.display =
     "none";
 
+
   playerTitle.textContent =
     title;
 
+
   youtubeFrame.style.display =
     "block";
+
 
   youtubeFrame.src =
     "https://www.youtube.com/embed/" +
     encodeURIComponent(videoId) +
     "?autoplay=1&rel=0&playsinline=1";
+
 
   player.classList.add(
     "active"
@@ -1434,224 +2018,43 @@ function closePlayer() {
 
   video.load();
 
+
   youtubeFrame.src =
     "";
+
 
   youtubeFrame.style.display =
     "none";
 
+
   video.style.display =
     "block";
+
 
   player.classList.remove(
     "active"
   );
 
-  playerTitle.innerHTML =
+
+  playerTitle.textContent =
     "";
 
 }
 
 
 /* =====================================================
-   CREATE CONTENT CARD
+   FEATURED PLAY
 ===================================================== */
 
-function createContentCard(
-  item,
-  portrait = false
-) {
-
-  const card =
-    document.createElement(
-      "div"
-    );
-
-  card.className =
-    portrait
-      ? "card portrait-card"
-      : "card";
-
-
-  card.dataset.search =
-    (
-      getTitle(item) +
-      " " +
-      getDescription(item) +
-      " " +
-      getCategory(item) +
-      " " +
-      getContentType(item) +
-      " " +
-      getContentGroup(item) +
-      " " +
-      getCountry(item)
-    ).toLowerCase();
-
-
-  card.onclick =
-    function() {
-
-      playLicensedVideo(
-        item
-      );
-
-    };
-
-
-  const sourceType =
-    normalize(
-      getSourceType(item)
-    );
-
+function playFeatured() {
 
   if (
-    sourceType &&
-    sourceType !==
-      "brenzkafrica"
+    !allContent ||
+    allContent.length === 0
   ) {
 
-    const badge =
-      document.createElement(
-        "span"
-      );
-
-    badge.className =
-      "licensed-badge";
-
-    badge.textContent =
-      "SOURCE";
-
-    card.appendChild(
-      badge
-    );
-
-  }
-
-
-  const image =
-    document.createElement(
-      "img"
-    );
-
-  image.src =
-    getThumbnail(item);
-
-  image.alt =
-    getTitle(item);
-
-  image.loading =
-    "lazy";
-
-
-  image.onerror =
-    function() {
-
-      image.src =
-        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=800&q=80";
-
-    };
-
-
-  card.appendChild(
-    image
-  );
-
-
-  const overlay =
-    document.createElement(
-      "div"
-    );
-
-  overlay.className =
-    "card-overlay";
-
-
-  const title =
-    document.createElement(
-      "div"
-    );
-
-  title.className =
-    "card-title";
-
-  title.textContent =
-    getTitle(item);
-
-  overlay.appendChild(
-    title
-  );
-
-
-  const type =
-    document.createElement(
-      "div"
-    );
-
-  type.className =
-    "card-type";
-
-
-  let typeText =
-    getCategory(item) ||
-    getContentGroup(item) ||
-    getContentType(item) ||
-    "Video";
-
-
-  if (
-    getCountry(item)
-  ) {
-
-    typeText +=
-      " • " +
-      getCountry(item);
-
-  }
-
-
-  type.textContent =
-    typeText;
-
-
-  overlay.appendChild(
-    type
-  );
-
-
-  card.appendChild(
-    overlay
-  );
-
-
-  return card;
-
-}
-
-
-/* =====================================================
-   RENDER CONTENT
-===================================================== */
-
-function renderContent(
-  row,
-  items,
-  portrait,
-  emptyMessage
-) {
-
-  row.innerHTML =
-    "";
-
-
-  if (
-    !items ||
-    items.length === 0
-  ) {
-
-    showEmptyContent(
-      row,
-      emptyMessage
+    alert(
+      "Featured content is not available yet."
     );
 
     return;
@@ -1659,10 +2062,420 @@ function renderContent(
   }
 
 
-  items.forEach(
-    function(item) {
+  const featured =
+    allContent.find(
+      function(item) {
 
-      row.appendChild(
-        createContentCard(
-          item,
-          portrait
+        return (
+          getVideoUrl(item)
+        );
+
+      }
+    );
+
+
+  if (featured) {
+
+    playLicensedVideo(
+      featured
+    );
+
+  } else {
+
+    alert(
+      "Featured content is not available yet."
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   MORE INFO
+===================================================== */
+
+function showInfo() {
+
+  alert(
+    "BRENZKafrica Plus brings you African stories, films, series, documentaries and creative work."
+  );
+
+}
+
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+search.addEventListener(
+  "input",
+  function() {
+
+    const query =
+      normalize(
+        search.value
+      );
+
+
+    const cards =
+      document.querySelectorAll(
+        ".card"
+      );
+
+
+    cards.forEach(
+      function(card) {
+
+        const searchable =
+          normalize(
+            card.dataset.search
+          );
+
+
+        if (
+          !query ||
+          searchable.includes(query)
+        ) {
+
+          card.style.display =
+            "";
+
+        } else {
+
+          card.style.display =
+            "none";
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   ACCOUNT
+===================================================== */
+
+let isSignUp =
+  false;
+
+
+function openAccount() {
+
+  authSection.classList.add(
+    "active"
+  );
+
+  showSignIn();
+
+}
+
+
+function closeAccount() {
+
+  authSection.classList.remove(
+    "active"
+  );
+
+}
+
+
+function showSignIn() {
+
+  isSignUp =
+    false;
+
+  authTitle.textContent =
+    "Sign In";
+
+  authButton.textContent =
+    "Sign In";
+
+  authMessage.textContent =
+    "";
+
+}
+
+
+function showSignUp() {
+
+  isSignUp =
+    true;
+
+  authTitle.textContent =
+    "Create Account";
+
+  authButton.textContent =
+    "Create Account";
+
+  authMessage.textContent =
+    "";
+
+}
+
+
+async function signIn() {
+
+  const email =
+    emailInput.value.trim();
+
+  const password =
+    passwordInput.value;
+
+
+  if (!email || !password) {
+
+    authMessage.textContent =
+      "Please enter your email and password.";
+
+    return;
+
+  }
+
+
+  authMessage.textContent =
+    isSignUp
+      ? "Creating your account..."
+      : "Signing in...";
+
+
+  try {
+
+    if (isSignUp) {
+
+      const result =
+        await supabaseClient.auth.signUp(
+          {
+            email: email,
+            password: password
+          }
+        );
+
+
+      if (result.error) {
+
+        authMessage.textContent =
+          result.error.message;
+
+        return;
+
+      }
+
+
+      authMessage.textContent =
+        "Account created. Please check your email if confirmation is required.";
+
+      return;
+
+    }
+
+
+    const result =
+      await supabaseClient.auth.signInWithPassword(
+        {
+          email: email,
+          password: password
+        }
+      );
+
+
+    if (result.error) {
+
+      authMessage.textContent =
+        result.error.message;
+
+      return;
+
+    }
+
+
+    authMessage.textContent =
+      "Signed in successfully.";
+
+    closeAccount();
+
+    updateAccountUI(
+      result.data.user
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      error
+    );
+
+    authMessage.textContent =
+      "Something went wrong. Please try again.";
+
+  }
+
+}
+
+
+/* =====================================================
+   SIGN OUT
+===================================================== */
+
+async function signOut() {
+
+  await supabaseClient.auth.signOut();
+
+  updateAccountUI(
+    null
+  );
+
+}
+
+
+/* =====================================================
+   ACCOUNT UI
+===================================================== */
+
+function updateAccountUI(user) {
+
+  if (user) {
+
+    signinButton.style.display =
+      "none";
+
+    accountStatus.style.display =
+      "flex";
+
+    userEmail.textContent =
+      user.email || "";
+
+  } else {
+
+    signinButton.style.display =
+      "block";
+
+    accountStatus.style.display =
+      "none";
+
+    userEmail.textContent =
+      "";
+
+  }
+
+}
+
+
+/* =====================================================
+   CHECK AUTH SESSION
+===================================================== */
+
+async function checkAuth() {
+
+  const result =
+    await supabaseClient.auth.getSession();
+
+
+  if (
+    result.data &&
+    result.data.session
+  ) {
+
+    updateAccountUI(
+      result.data.session.user
+    );
+
+  } else {
+
+    updateAccountUI(
+      null
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   AUTH STATE CHANGES
+===================================================== */
+
+supabaseClient.auth.onAuthStateChange(
+  function(
+    event,
+    session
+  ) {
+
+    if (session) {
+
+      updateAccountUI(
+        session.user
+      );
+
+    } else {
+
+      updateAccountUI(
+        null
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   START APPLICATION
+===================================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  async function() {
+
+    await checkAuth();
+
+    await loadContent();
+
+  }
+);
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Escape"
+    ) {
+
+      if (
+        player.classList.contains(
+          "active"
+        )
+      ) {
+
+        closePlayer();
+
+      }
+
+      if (
+        authSection.classList.contains(
+          "active"
+        )
+      ) {
+
+        closeAccount();
+
+      }
+
+    }
+
+  }
+);
+
+</script>
+
+</body>
+</html>
