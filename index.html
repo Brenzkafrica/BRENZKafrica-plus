@@ -290,6 +290,7 @@
 
     .youtube-card::after {
       content: "▶";
+
       position: absolute;
       top: 50%;
       left: 50%;
@@ -355,20 +356,26 @@
     .youtube-frame {
       width: 90%;
       height: 75vh;
+
       border: none;
+
       background: black;
+
       display: none;
     }
 
     .close-player {
       position: absolute;
+
       top: 25px;
       right: 30px;
 
       background: rgba(255,255,255,0.15);
+
       color: white;
 
       border: none;
+
       border-radius: 50%;
 
       width: 45px;
@@ -383,9 +390,13 @@
 
     .player-title {
       margin-top: 15px;
+
       font-size: 18px;
+
       font-weight: bold;
+
       max-width: 90%;
+
       text-align: center;
     }
 
@@ -556,26 +567,39 @@
 
     .account-status {
       display: none;
+
       align-items: center;
+
       gap: 10px;
     }
 
     .account-status span {
       color: #ccc;
+
       font-size: 13px;
+
       max-width: 150px;
+
       overflow: hidden;
+
       text-overflow: ellipsis;
+
       white-space: nowrap;
     }
 
     .signout {
       background: #222;
+
       border: 1px solid #444;
+
       color: white;
+
       padding: 8px 12px;
+
       border-radius: 4px;
+
       cursor: pointer;
+
       font-size: 12px;
     }
 
@@ -585,9 +609,13 @@
 
     footer {
       padding: 60px 5%;
+
       color: #777;
+
       text-align: center;
+
       border-top: 1px solid #222;
+
       margin-top: 40px;
     }
 
@@ -671,7 +699,9 @@
 
 <body>
 
-  <!-- NAVIGATION -->
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
   <header>
 
@@ -726,7 +756,9 @@
   </header>
 
 
-  <!-- HERO -->
+  <!-- =========================
+       HERO
+  ========================== -->
 
   <section class="hero">
 
@@ -770,7 +802,9 @@
   </section>
 
 
-  <!-- CONTENT -->
+  <!-- =========================
+       CONTENT
+  ========================== -->
 
   <main>
 
@@ -870,7 +904,9 @@
     </section>
 
 
-    <!-- YOUTUBE VIDEOS -->
+    <!-- =========================
+         YOUTUBE
+    ========================== -->
 
     <section
       class="section"
@@ -899,7 +935,9 @@
     </section>
 
 
-    <!-- SERIES -->
+    <!-- =========================
+         SERIES
+    ========================== -->
 
     <section
       class="section"
@@ -970,7 +1008,9 @@
     </section>
 
 
-    <!-- FILMS -->
+    <!-- =========================
+         FILMS
+    ========================== -->
 
     <section
       class="section"
@@ -1031,7 +1071,9 @@
     </section>
 
 
-    <!-- DOCUMENTARIES -->
+    <!-- =========================
+         DOCUMENTARIES
+    ========================== -->
 
     <section
       class="section"
@@ -1072,7 +1114,9 @@
   </main>
 
 
-  <!-- VIDEO PLAYER -->
+  <!-- =========================
+       VIDEO PLAYER
+  ========================== -->
 
   <div
     class="player"
@@ -1086,7 +1130,7 @@
       ×
     </button>
 
-    <!-- SUPABASE / NORMAL VIDEO -->
+    <!-- SUPABASE VIDEO -->
 
     <video
       id="video"
@@ -1100,8 +1144,9 @@
       id="youtubeFrame"
       class="youtube-frame"
       title="BRENZKafrica YouTube Video"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
       allowfullscreen
+      referrerpolicy="strict-origin-when-cross-origin"
     ></iframe>
 
     <div
@@ -1112,7 +1157,9 @@
   </div>
 
 
-  <!-- AUTHENTICATION -->
+  <!-- =========================
+       AUTHENTICATION
+  ========================== -->
 
   <div
     id="auth-section"
@@ -1176,7 +1223,9 @@
   </div>
 
 
-  <!-- FOOTER -->
+  <!-- =========================
+       FOOTER
+  ========================== -->
 
   <footer>
 
@@ -1195,7 +1244,9 @@
   </footer>
 
 
-  <!-- JAVASCRIPT -->
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
 
   <script>
 
@@ -1271,13 +1322,14 @@
 
 
     /* ==========================================
-       NORMAL VIDEO PLAYER
+       NORMAL SUPABASE VIDEO PLAYER
     ========================================== */
 
     function playVideo(name, url) {
 
-      youtubeFrame.style.display = "none";
       youtubeFrame.src = "";
+
+      youtubeFrame.style.display = "none";
 
       video.style.display = "block";
 
@@ -1320,20 +1372,64 @@
 
     function playYouTubeVideo(videoId, title) {
 
+      console.log(
+        "Opening YouTube video:",
+        videoId
+      );
+
+      /* Stop Supabase video */
+
       video.pause();
 
-      video.src = "";
+      video.removeAttribute("src");
+
+      video.load();
 
       video.style.display = "none";
 
+
+      /* Set title */
+
       playerTitle.textContent = title;
+
+
+      /* Show YouTube */
 
       youtubeFrame.style.display = "block";
 
-      youtubeFrame.src =
-        "https://www.youtube.com/embed/" +
-        encodeURIComponent(videoId) +
-        "?autoplay=1&rel=0";
+
+      /* Clear previous YouTube video */
+
+      youtubeFrame.src = "";
+
+
+      /*
+       * Wait briefly before loading the new
+       * YouTube video. This prevents the previous
+       * iframe from interfering.
+       */
+
+      setTimeout(function() {
+
+        const origin =
+          window.location.origin;
+
+
+        youtubeFrame.src =
+          "https://www.youtube.com/embed/" +
+          encodeURIComponent(videoId) +
+          "?autoplay=1" +
+          "&rel=0" +
+          "&playsinline=1" +
+          "&modestbranding=1" +
+          "&enablejsapi=1" +
+          "&origin=" +
+          encodeURIComponent(origin);
+
+      }, 100);
+
+
+      /* Open player */
 
       player.classList.add("active");
 
@@ -1346,17 +1442,33 @@
 
     function closePlayer() {
 
+      /* Stop Supabase video */
+
       video.pause();
 
-      video.src = "";
+      video.removeAttribute("src");
+
+      video.load();
+
+
+      /* Stop YouTube */
 
       youtubeFrame.src = "";
 
       youtubeFrame.style.display = "none";
 
+
+      /* Restore normal video element */
+
       video.style.display = "block";
 
+
+      /* Close player */
+
       player.classList.remove("active");
+
+
+      playerTitle.textContent = "";
 
     }
 
@@ -1385,13 +1497,21 @@
         'Loading BRENZKafrica videos...' +
         '</div>';
 
+
       try {
 
         const response =
           await fetch("/api/youtube");
 
+
         const data =
           await response.json();
+
+
+        console.log(
+          "YouTube API response:",
+          data
+        );
 
 
         if (!response.ok) {
@@ -1422,7 +1542,9 @@
         }
 
 
-        if (data.videos.length === 0) {
+        if (
+          data.videos.length === 0
+        ) {
 
           youtubeRow.innerHTML =
             '<div class="youtube-empty">' +
@@ -1437,80 +1559,108 @@
         youtubeRow.innerHTML = "";
 
 
-        data.videos.forEach(function(item) {
+        data.videos.forEach(
+          function(item) {
 
-          const card =
-            document.createElement("div");
-
-          card.className =
-            "card youtube-card";
-
-          card.dataset.search =
-            item.title.toLowerCase();
+            const card =
+              document.createElement("div");
 
 
-          card.onclick =
-            function() {
-
-              playYouTubeVideo(
-                item.id,
-                item.title
-              );
-
-            };
+            card.className =
+              "card youtube-card";
 
 
-          const image =
-            document.createElement("img");
-
-          image.src =
-            item.thumbnail;
-
-          image.alt =
-            item.title;
-
-          image.loading =
-            "lazy";
+            card.dataset.search =
+              (
+                item.title || ""
+              ).toLowerCase();
 
 
-          const overlay =
-            document.createElement("div");
+            card.onclick =
+              function() {
 
-          overlay.className =
-            "card-overlay";
+                playYouTubeVideo(
+                  item.id,
+                  item.title
+                );
 
-
-          const title =
-            document.createElement("div");
-
-          title.className =
-            "card-title";
-
-          title.textContent =
-            item.title;
+              };
 
 
-          const type =
-            document.createElement("div");
-
-          type.className =
-            "card-type";
-
-          type.textContent =
-            "BRENZKafrica • YouTube";
+            const image =
+              document.createElement("img");
 
 
-          overlay.appendChild(title);
+            image.src =
+              item.thumbnail;
 
-          overlay.appendChild(type);
 
-          card.appendChild(image);
+            image.alt =
+              item.title;
 
-          card.appendChild(overlay);
 
-          youtubeRow.appendChild(card);
+            image.loading =
+              "lazy";
 
-        });
+
+            const overlay =
+              document.createElement("div");
+
+
+            overlay.className =
+              "card-overlay";
+
+
+            const title =
+              document.createElement("div");
+
+
+            title.className =
+              "card-title";
+
+
+            title.textContent =
+              item.title;
+
+
+            const type =
+              document.createElement("div");
+
+
+            type.className =
+              "card-type";
+
+
+            type.textContent =
+              "BRENZKafrica • YouTube";
+
+
+            overlay.appendChild(
+              title
+            );
+
+
+            overlay.appendChild(
+              type
+            );
+
+
+            card.appendChild(
+              image
+            );
+
+
+            card.appendChild(
+              overlay
+            );
+
+
+            youtubeRow.appendChild(
+              card
+            );
+
+          }
+        );
 
 
       } catch (error) {
@@ -1519,6 +1669,7 @@
           "Failed to load YouTube videos:",
           error
         );
+
 
         youtubeRow.innerHTML =
           '<div class="youtube-error">' +
@@ -1536,7 +1687,9 @@
 
     function openAccount() {
 
-      authSection.classList.add("active");
+      authSection.classList.add(
+        "active"
+      );
 
       emailInput.focus();
 
@@ -1545,42 +1698,56 @@
 
     function closeAccount() {
 
-      authSection.classList.remove("active");
+      authSection.classList.remove(
+        "active"
+      );
 
-      authMessage.textContent = "";
+      authMessage.textContent =
+        "";
 
-      authButton.disabled = false;
-
-    }
-
-
-    /* ==========================================
-       MESSAGE HELPER
-    ========================================== */
-
-    function showAuthMessage(message) {
-
-      authMessage.textContent = message;
+      authButton.disabled =
+        false;
 
     }
 
 
     /* ==========================================
-       BUTTON LOADING
+       AUTH MESSAGE
     ========================================== */
 
-    function setAuthLoading(loading, text) {
+    function showAuthMessage(
+      message
+    ) {
 
-      authButton.disabled = loading;
+      authMessage.textContent =
+        message;
+
+    }
+
+
+    /* ==========================================
+       AUTH LOADING
+    ========================================== */
+
+    function setAuthLoading(
+      loading,
+      text
+    ) {
+
+      authButton.disabled =
+        loading;
+
 
       if (loading) {
 
-        authButton.textContent = text;
+        authButton.textContent =
+          text;
 
       } else {
 
         authButton.textContent =
-          authTitle.textContent === "Sign In"
+          authTitle.textContent ===
+          "Sign In"
             ? "Sign In"
             : "Create Account";
 
@@ -1602,7 +1769,10 @@
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Please enter your email and password."
@@ -1613,7 +1783,9 @@
       }
 
 
-      if (password.length < 6) {
+      if (
+        password.length < 6
+      ) {
 
         showAuthMessage(
           "Password must be at least 6 characters."
@@ -1642,8 +1814,13 @@
           error
         } =
           await supabaseClient.auth.signUp({
-            email: email,
-            password: password
+
+            email:
+              email,
+
+            password:
+              password
+
           });
 
 
@@ -1653,6 +1830,7 @@
             "Supabase sign-up error:",
             error
           );
+
 
           showAuthMessage(
             error.message ||
@@ -1672,16 +1850,20 @@
               "Account created successfully! You are now signed in."
             );
 
+
             updateAccountUI(
               data.user
             );
 
 
-            setTimeout(function() {
+            setTimeout(
+              function() {
 
-              closeAccount();
+                closeAccount();
 
-            }, 1000);
+              },
+              1000
+            );
 
           } else {
 
@@ -1705,6 +1887,7 @@
           "Sign-up exception:",
           error
         );
+
 
         showAuthMessage(
           "Connection error. Please check your internet connection and try again."
@@ -1735,7 +1918,10 @@
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Please enter your email and password."
@@ -1764,8 +1950,13 @@
           error
         } =
           await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
+
+            email:
+              email,
+
+            password:
+              password
+
           });
 
 
@@ -1781,7 +1972,9 @@
             error.message &&
             error.message
               .toLowerCase()
-              .includes("email not confirmed")
+              .includes(
+                "email not confirmed"
+              )
           ) {
 
             showAuthMessage(
@@ -1802,7 +1995,10 @@
         }
 
 
-        if (data && data.user) {
+        if (
+          data &&
+          data.user
+        ) {
 
           updateAccountUI(
             data.user
@@ -1814,11 +2010,14 @@
           );
 
 
-          setTimeout(function() {
+          setTimeout(
+            function() {
 
-            closeAccount();
+              closeAccount();
 
-          }, 800);
+            },
+            800
+          );
 
         } else {
 
@@ -1834,6 +2033,7 @@
           "Sign-in exception:",
           error
         );
+
 
         showAuthMessage(
           "Connection error. Please try again."
@@ -1860,8 +2060,10 @@
       authTitle.textContent =
         "Create Account";
 
+
       authButton.textContent =
         "Create Account";
+
 
       authButton.onclick =
         signUp;
@@ -1877,8 +2079,10 @@
       authMessage.textContent =
         "";
 
+
       emailInput.autocomplete =
         "email";
+
 
       passwordInput.autocomplete =
         "new-password";
@@ -1895,8 +2099,10 @@
       authTitle.textContent =
         "Sign In";
 
+
       authButton.textContent =
         "Sign In";
+
 
       authButton.onclick =
         signIn;
@@ -1912,8 +2118,10 @@
       authMessage.textContent =
         "";
 
+
       emailInput.autocomplete =
         "email";
+
 
       passwordInput.autocomplete =
         "current-password";
@@ -1922,29 +2130,36 @@
 
 
     /* ==========================================
-       UPDATE ACCOUNT UI
+       ACCOUNT UI
     ========================================== */
 
-    function updateAccountUI(user) {
+    function updateAccountUI(
+      user
+    ) {
 
       if (user) {
 
         signinButton.style.display =
           "none";
 
+
         accountStatus.style.display =
           "flex";
 
+
         userEmail.textContent =
-          user.email || "Viewer";
+          user.email ||
+          "Viewer";
 
       } else {
 
         signinButton.style.display =
           "block";
 
+
         accountStatus.style.display =
           "none";
+
 
         userEmail.textContent =
           "";
@@ -1980,7 +2195,9 @@
         }
 
 
-        updateAccountUI(null);
+        updateAccountUI(
+          null
+        );
 
       } catch (error) {
 
@@ -1995,7 +2212,7 @@
 
 
     /* ==========================================
-       CHECK EXISTING SESSION
+       CHECK SESSION
     ========================================== */
 
     async function checkSession() {
@@ -2016,14 +2233,20 @@
             error
           );
 
-          updateAccountUI(null);
+
+          updateAccountUI(
+            null
+          );
 
           return;
 
         }
 
 
-        if (data && data.session) {
+        if (
+          data &&
+          data.session
+        ) {
 
           updateAccountUI(
             data.session.user
@@ -2031,7 +2254,9 @@
 
         } else {
 
-          updateAccountUI(null);
+          updateAccountUI(
+            null
+          );
 
         }
 
@@ -2042,7 +2267,10 @@
           error
         );
 
-        updateAccountUI(null);
+
+        updateAccountUI(
+          null
+        );
 
       }
 
@@ -2054,7 +2282,10 @@
     ========================================== */
 
     supabaseClient.auth.onAuthStateChange(
-      function(event, session) {
+      function(
+        event,
+        session
+      ) {
 
         console.log(
           "Auth event:",
@@ -2070,7 +2301,9 @@
 
         } else {
 
-          updateAccountUI(null);
+          updateAccountUI(
+            null
+          );
 
         }
 
@@ -2083,7 +2316,9 @@
     ========================================== */
 
     const search =
-      document.getElementById("search");
+      document.getElementById(
+        "search"
+      );
 
 
     search.addEventListener(
@@ -2097,7 +2332,9 @@
 
 
         const cards =
-          document.querySelectorAll(".card");
+          document.querySelectorAll(
+            ".card"
+          );
 
 
         cards.forEach(
