@@ -350,8 +350,11 @@
 
       border: 1px solid #292929;
       border-radius: 8px;
+
       padding: 18px;
+
       cursor: pointer;
+
       transition: 0.3s;
 
       display: flex;
@@ -425,9 +428,7 @@
       color: white;
     }
 
-    /* ==========================================
-       VIDEO PLAYER
-    ========================================== */
+    /* VIDEO PLAYER */
 
     .player {
       display: none;
@@ -454,15 +455,12 @@
       position: absolute;
       top: 25px;
       right: 30px;
-
       background: rgba(255,255,255,0.15);
       color: white;
       border: none;
       border-radius: 50%;
-
       width: 45px;
       height: 45px;
-
       font-size: 22px;
       cursor: pointer;
     }
@@ -473,9 +471,7 @@
       font-weight: bold;
     }
 
-    /* ==========================================
-       AUTHENTICATION
-    ========================================== */
+    /* AUTHENTICATION */
 
     .auth-section {
       display: none;
@@ -483,7 +479,6 @@
       inset: 0;
       background: rgba(0,0,0,0.88);
       z-index: 10000;
-
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -496,12 +491,10 @@
     .auth-box {
       width: 100%;
       max-width: 420px;
-
       background: #111;
       border: 1px solid #333;
       border-radius: 12px;
       padding: 30px;
-
       position: relative;
       box-shadow: 0 20px 70px rgba(0,0,0,0.8);
     }
@@ -586,11 +579,9 @@
       position: absolute;
       top: 12px;
       right: 15px;
-
       background: none;
       border: none;
       color: #aaa;
-
       font-size: 26px;
       cursor: pointer;
     }
@@ -599,9 +590,7 @@
       color: white;
     }
 
-    /* ==========================================
-       ACCOUNT
-    ========================================== */
+    /* ACCOUNT */
 
     .account-status {
       display: none;
@@ -632,9 +621,7 @@
       background: #333;
     }
 
-    /* ==========================================
-       NEWSLETTER
-    ========================================== */
+    /* NEWSLETTER */
 
     .newsletter {
       margin: 60px 5% 20px;
@@ -649,6 +636,7 @@
 
       border: 1px solid #292929;
       border-radius: 10px;
+
       text-align: center;
     }
 
@@ -678,11 +666,15 @@
       min-width: 0;
 
       background: #050505;
+
       border: 1px solid #444;
+
       color: white;
 
       padding: 14px;
+
       border-radius: 5px;
+
       outline: none;
     }
 
@@ -694,10 +686,8 @@
       background: #e50914;
       color: white;
       border: none;
-
       padding: 14px 22px;
       border-radius: 5px;
-
       font-weight: bold;
       cursor: pointer;
     }
@@ -725,10 +715,6 @@
       border-top: 1px solid #222;
       margin-top: 40px;
     }
-
-    /* ==========================================
-       MOBILE
-    ========================================== */
 
     @media (max-width: 700px) {
 
@@ -838,9 +824,7 @@
 
 <body>
 
-  <!-- ==========================================
-       NAVIGATION
-  ========================================== -->
+  <!-- NAVIGATION -->
 
   <header>
 
@@ -878,7 +862,6 @@
         class="account-status"
         id="accountStatus"
       >
-
         <span id="userEmail"></span>
 
         <button
@@ -887,7 +870,6 @@
         >
           Sign Out
         </button>
-
       </div>
 
     </div>
@@ -895,9 +877,7 @@
   </header>
 
 
-  <!-- ==========================================
-       HERO
-  ========================================== -->
+  <!-- HERO -->
 
   <section class="hero">
 
@@ -941,9 +921,7 @@
   </section>
 
 
-  <!-- ==========================================
-       CONTENT
-  ========================================== -->
+  <!-- CONTENT -->
 
   <main>
 
@@ -1043,9 +1021,7 @@
     </section>
 
 
-    <!-- ==========================================
-         BREAKING NEWS
-    ========================================== -->
+    <!-- BREAKING NEWS -->
 
     <section
       class="breaking-news"
@@ -1066,7 +1042,7 @@
           class="breaking-news-status"
           id="newsStatus"
         >
-          Loading latest African news...
+          Connecting to BRENZKafrica News...
         </div>
 
         <button
@@ -1084,7 +1060,7 @@
       >
 
         <div class="news-loading">
-          Loading breaking news...
+          Loading latest African news...
         </div>
 
       </div>
@@ -1265,9 +1241,7 @@
   </main>
 
 
-  <!-- ==========================================
-       VIDEO PLAYER
-  ========================================== -->
+  <!-- VIDEO PLAYER -->
 
   <div
     class="player"
@@ -1295,9 +1269,7 @@
   </div>
 
 
-  <!-- ==========================================
-       AUTHENTICATION
-  ========================================== -->
+  <!-- AUTHENTICATION -->
 
   <div
     id="auth-section"
@@ -1359,9 +1331,7 @@
   </div>
 
 
-  <!-- ==========================================
-       NEWSLETTER
-  ========================================== -->
+  <!-- NEWSLETTER -->
 
   <section class="newsletter">
 
@@ -1401,9 +1371,7 @@
   </section>
 
 
-  <!-- ==========================================
-       FOOTER
-  ========================================== -->
+  <!-- FOOTER -->
 
   <footer>
 
@@ -1422,9 +1390,7 @@
   </footer>
 
 
-  <!-- ==========================================
-       JAVASCRIPT
-  ========================================== -->
+  <!-- JAVASCRIPT -->
 
   <script>
 
@@ -1453,14 +1419,126 @@
 
 
     /* ==========================================
-       BRENZKAFRICA NEWS API
-       
+       NEWS API
        IMPORTANT:
-       We use /api/news so this always points
-       to the current BRENZKafrica Plus Vercel site.
+       Use the production BRENZKafrica domain.
     ========================================== */
 
-    const NEWS_API_URL = "/api/news";
+    const NEWS_API_URL =
+      "https://brenz-kafrica-plus.vercel.app/api/news";
+
+
+    /* ==========================================
+       FALLBACK NEWS
+       These are only used if the API temporarily
+       cannot be reached.
+    ========================================== */
+
+    const FALLBACK_NEWS = [
+
+      {
+        title:
+          "Youth caravan steps up Ebola awareness amid attacks on response teams",
+
+        link:
+          "http://www.africanews.com/2026/08/23/youth-caravan-steps-up-ebola-awareness-amid-attacks-on-response-teams/",
+
+        description:
+          "Response teams in Ituri and North Kivu provinces have faced intense mistrust, fueled by rumors and misinformation, in a region also torn by violence from multiple armed groups.",
+
+        source:
+          "Africanews",
+
+        date:
+          "Sun, 23 Aug 2026 10:52:19 +0000"
+      },
+
+      {
+        title:
+          "Former world champion boxer Zolani Tete killed in South Africa",
+
+        link:
+          "http://www.africanews.com/2026/08/23/former-world-champion-boxer-zolani-tete-killed-in-south-africa/",
+
+        description:
+          "Former world champion boxer Zolani Tete has been shot and killed at his home in South Africa, government officials said Friday.",
+
+        source:
+          "Africanews",
+
+        date:
+          "Sun, 23 Aug 2026 09:35:26 +0000"
+      },
+
+      {
+        title:
+          "Ethiopia: Tigrayan women celebrate Ashenda amid fears of new war",
+
+        link:
+          "http://www.africanews.com/2026/08/23/ethiopia-tigrayan-women-celebrate-ashenda-amid-fears-of-new-war/",
+
+        description:
+          "In Addis Ababa, Tigrayan women gather to celebrate Ashenda, while expressing hopes for lasting peace in Ethiopia's Tigray region.",
+
+        source:
+          "Africanews",
+
+        date:
+          "Sun, 23 Aug 2026 08:25:06 +0000"
+      },
+
+      {
+        title:
+          "DRC: Ex-president Kabila challenges US sanctions in court",
+
+        link:
+          "http://www.africanews.com/2026/08/23/drc-ex-president-kabila-challenges-us-sanctions-in-court/",
+
+        description:
+          "Joseph Kabila, who led Congo from 2001 to 2019, is challenging US sanctions in court.",
+
+        source:
+          "Africanews",
+
+        date:
+          "Sun, 23 Aug 2026 07:15:08 +0000"
+      },
+
+      {
+        title:
+          "Ebola gathering ban stalls cultural revival in eastern Congo’s Goma",
+
+        link:
+          "http://www.africanews.com/2026/08/22/ebola-gathering-ban-stalls-cultural-revival-in-eastern-congos-goma/",
+
+        description:
+          "Goma's cultural scene has faced another shutdown following an Ebola outbreak and restrictions on gatherings.",
+
+        source:
+          "Africanews",
+
+        date:
+          "Sat, 22 Aug 2026 14:59:17 +0000"
+      },
+
+      {
+        title:
+          "Sudan farms lie barren as El Nino leaves Nile banks dry",
+
+        link:
+          "http://www.africanews.com/2026/08/22/sudan-farms-lie-barren-as-el-nino-leaves-nile-banks-dry/",
+
+        description:
+          "Across Sudan, farmland lies fallow as farmers struggle with destruction and difficult conditions.",
+
+        source:
+          "Africanews",
+
+        date:
+          "Sat, 22 Aug 2026 14:00:00 +0000"
+      }
+
+    ];
 
 
     /* ==========================================
@@ -1516,10 +1594,6 @@
 
     function playVideo(name, url) {
 
-      if (!url) {
-        return;
-      }
-
       playerTitle.textContent = name;
 
       video.src = url;
@@ -1527,11 +1601,14 @@
       player.classList.add("active");
 
       video.play().catch(function(error) {
+
         console.log(
           "Video autoplay prevented:",
           error
         );
+
       });
+
     }
 
 
@@ -1539,6 +1616,7 @@
 
       playVideo(
         "BRENZKafrica Cinema",
+
         "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
       );
 
@@ -1566,7 +1644,7 @@
 
 
     /* ==========================================
-       BREAKING NEWS
+       NEWS HELPERS
     ========================================== */
 
     function escapeHTML(value) {
@@ -1575,7 +1653,9 @@
         value === null ||
         value === undefined
       ) {
+
         return "";
+
       }
 
       return String(value)
@@ -1591,19 +1671,25 @@
     function formatNewsDate(dateValue) {
 
       if (!dateValue) {
+
         return "";
+
       }
 
       const date =
         new Date(dateValue);
+
 
       if (
         Number.isNaN(
           date.getTime()
         )
       ) {
+
         return dateValue;
+
       }
+
 
       return date.toLocaleString(
         undefined,
@@ -1622,7 +1708,9 @@
     function openNewsArticle(url) {
 
       if (!url) {
+
         return;
+
       }
 
       window.open(
@@ -1634,7 +1722,14 @@
     }
 
 
-    function renderBreakingNews(news) {
+    /* ==========================================
+       RENDER NEWS
+    ========================================== */
+
+    function renderBreakingNews(
+      news,
+      usingFallback = false
+    ) {
 
       if (
         !Array.isArray(news) ||
@@ -1650,6 +1745,7 @@
           "No updates available";
 
         return;
+
       }
 
 
@@ -1657,10 +1753,14 @@
         news.map(function(item) {
 
           const title =
-            escapeHTML(item.title);
+            escapeHTML(
+              item.title
+            );
 
           const description =
-            escapeHTML(item.description);
+            escapeHTML(
+              item.description
+            );
 
           const source =
             escapeHTML(
@@ -1669,22 +1769,25 @@
 
           const date =
             escapeHTML(
-              formatNewsDate(item.date)
+              formatNewsDate(
+                item.date
+              )
             );
 
 
-          /*
-            Store the URL safely on the element
-            instead of putting it directly into
-            an onclick HTML attribute.
-          */
-
-          const articleURL =
-            item.link || "";
+          const safeLink =
+            String(
+              item.link || "#"
+            )
+            .replace(/'/g, "%27");
 
 
           return `
-            <article class="news-card">
+
+            <article
+              class="news-card"
+              onclick="openNewsArticle('${safeLink}')"
+            >
 
               <div>
 
@@ -1707,59 +1810,36 @@
               </div>
 
             </article>
+
           `;
 
         }).join("");
 
 
-      /*
-        Attach the article links after rendering.
-      */
+      if (usingFallback) {
 
-      const cards =
-        newsRow.querySelectorAll(
-          ".news-card"
-        );
+        newsStatus.textContent =
+          "Latest available African news";
 
+      } else {
 
-      cards.forEach(
-        function(card, index) {
+        newsStatus.textContent =
+          "Live African news";
 
-          const item =
-            news[index];
-
-          if (
-            item &&
-            item.link
-          ) {
-
-            card.addEventListener(
-              "click",
-              function() {
-
-                openNewsArticle(
-                  item.link
-                );
-
-              }
-            );
-
-          }
-
-        }
-      );
-
-
-      newsStatus.textContent =
-        "Live African news";
+      }
 
     }
 
+
+    /* ==========================================
+       LOAD BREAKING NEWS
+    ========================================== */
 
     async function loadBreakingNews() {
 
       newsStatus.textContent =
         "Updating...";
+
 
       newsRow.innerHTML =
         '<div class="news-loading">' +
@@ -1769,6 +1849,21 @@
 
       try {
 
+        const controller =
+          new AbortController();
+
+
+        const timeout =
+          setTimeout(
+            function() {
+
+              controller.abort();
+
+            },
+            10000
+          );
+
+
         const response =
           await fetch(
             NEWS_API_URL,
@@ -1776,16 +1871,22 @@
               method: "GET",
               cache: "no-store",
               headers: {
-                "Accept": "application/json"
-              }
+                "Accept":
+                  "application/json"
+              },
+              signal:
+                controller.signal
             }
           );
+
+
+        clearTimeout(timeout);
 
 
         if (!response.ok) {
 
           throw new Error(
-            "News API returned HTTP " +
+            "News API HTTP " +
             response.status
           );
 
@@ -1802,39 +1903,79 @@
         );
 
 
+        let news = null;
+
+
+        /*
+          Accept the normal API structure:
+          { success:true, news:[...] }
+        */
+
         if (
-          !data ||
-          data.success !== true
+          data &&
+          Array.isArray(data.news)
+        ) {
+
+          news =
+            data.news;
+
+        }
+
+        /*
+          Also accept a plain array if the
+          API ever returns one.
+        */
+
+        else if (
+          Array.isArray(data)
+        ) {
+
+          news =
+            data;
+
+        }
+
+
+        if (
+          !Array.isArray(news) ||
+          news.length === 0
         ) {
 
           throw new Error(
-            "News API returned an invalid response."
+            "News API returned no news."
           );
 
         }
 
 
         renderBreakingNews(
-          data.news
+          news,
+          false
         );
 
 
       } catch (error) {
 
         console.error(
-          "Breaking news error:",
+          "Breaking news API error:",
           error
         );
 
 
-        newsRow.innerHTML =
-          '<div class="news-error">' +
-          'Unable to load breaking news right now. ' +
-          'Please try again.' +
-          '</div>';
+        /*
+          IMPORTANT:
+          Do not leave the user with a
+          permanent loading screen.
 
-        newsStatus.textContent =
-          "News unavailable";
+          Show the latest news we already
+          have if the API is temporarily
+          unavailable.
+        */
+
+        renderBreakingNews(
+          FALLBACK_NEWS,
+          true
+        );
 
       }
 
@@ -1842,7 +1983,7 @@
 
 
     /* ==========================================
-       LOAD NEWS
+       START NEWS
     ========================================== */
 
     loadBreakingNews();
@@ -1859,12 +2000,14 @@
 
 
     /* ==========================================
-       ACCOUNT
+       ACCOUNT PANEL
     ========================================== */
 
     function openAccount() {
 
-      authSection.classList.add("active");
+      authSection.classList.add(
+        "active"
+      );
 
       emailInput.focus();
 
@@ -1873,18 +2016,25 @@
 
     function closeAccount() {
 
-      authSection.classList.remove("active");
+      authSection.classList.remove(
+        "active"
+      );
 
-      authMessage.textContent = "";
+      authMessage.textContent =
+        "";
 
-      authButton.disabled = false;
+      authButton.disabled =
+        false;
 
     }
 
 
-    function showAuthMessage(message) {
+    function showAuthMessage(
+      message
+    ) {
 
-      authMessage.textContent = message;
+      authMessage.textContent =
+        message;
 
     }
 
@@ -1896,6 +2046,7 @@
 
       authButton.disabled =
         loading;
+
 
       if (loading) {
 
@@ -1922,7 +2073,8 @@
     async function signUp() {
 
       const email =
-        emailInput.value.trim();
+        emailInput.value
+          .trim();
 
       const password =
         passwordInput.value;
@@ -1938,6 +2090,7 @@
         );
 
         return;
+
       }
 
 
@@ -1950,6 +2103,7 @@
         );
 
         return;
+
       }
 
 
@@ -1970,10 +2124,12 @@
           data,
           error
         } =
-          await supabaseClient.auth.signUp({
-            email: email,
-            password: password
-          });
+          await supabaseClient.auth.signUp(
+            {
+              email: email,
+              password: password
+            }
+          );
 
 
         if (error) {
@@ -1983,12 +2139,14 @@
             error
           );
 
+
           showAuthMessage(
             error.message ||
             "Unable to create account."
           );
 
           return;
+
         }
 
 
@@ -2000,6 +2158,7 @@
               "Account created successfully! You are now signed in."
             );
 
+
             updateAccountUI(
               data.user
             );
@@ -2007,7 +2166,9 @@
 
             setTimeout(
               function() {
+
                 closeAccount();
+
               },
               1000
             );
@@ -2035,6 +2196,7 @@
           error
         );
 
+
         showAuthMessage(
           "Connection error. Please check your internet connection and try again."
         );
@@ -2058,7 +2220,8 @@
     async function signIn() {
 
       const email =
-        emailInput.value.trim();
+        emailInput.value
+          .trim();
 
       const password =
         passwordInput.value;
@@ -2074,6 +2237,7 @@
         );
 
         return;
+
       }
 
 
@@ -2094,10 +2258,12 @@
           data,
           error
         } =
-          await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
+          await supabaseClient.auth.signInWithPassword(
+            {
+              email: email,
+              password: password
+            }
+          );
 
 
         if (error) {
@@ -2131,6 +2297,7 @@
           }
 
           return;
+
         }
 
 
@@ -2151,7 +2318,9 @@
 
           setTimeout(
             function() {
+
               closeAccount();
+
             },
             800
           );
@@ -2170,6 +2339,7 @@
           "Sign-in exception:",
           error
         );
+
 
         showAuthMessage(
           "Connection error. Please try again."
@@ -2196,8 +2366,10 @@
       authTitle.textContent =
         "Create Account";
 
+
       authButton.textContent =
         "Create Account";
+
 
       authButton.onclick =
         signUp;
@@ -2213,8 +2385,10 @@
       authMessage.textContent =
         "";
 
+
       emailInput.autocomplete =
         "email";
+
 
       passwordInput.autocomplete =
         "new-password";
@@ -2231,8 +2405,10 @@
       authTitle.textContent =
         "Sign In";
 
+
       authButton.textContent =
         "Sign In";
+
 
       authButton.onclick =
         signIn;
@@ -2248,8 +2424,10 @@
       authMessage.textContent =
         "";
 
+
       emailInput.autocomplete =
         "email";
+
 
       passwordInput.autocomplete =
         "current-password";
@@ -2261,26 +2439,33 @@
        ACCOUNT UI
     ========================================== */
 
-    function updateAccountUI(user) {
+    function updateAccountUI(
+      user
+    ) {
 
       if (user) {
 
         signinButton.style.display =
           "none";
 
+
         accountStatus.style.display =
           "flex";
 
+
         userEmail.textContent =
-          user.email || "Viewer";
+          user.email ||
+          "Viewer";
 
       } else {
 
         signinButton.style.display =
           "block";
 
+
         accountStatus.style.display =
           "none";
+
 
         userEmail.textContent =
           "";
@@ -2312,6 +2497,7 @@
           );
 
           return;
+
         }
 
 
@@ -2353,11 +2539,13 @@
             error
           );
 
+
           updateAccountUI(
             null
           );
 
           return;
+
         }
 
 
@@ -2384,6 +2572,7 @@
           "Session exception:",
           error
         );
+
 
         updateAccountUI(
           null
@@ -2593,8 +2782,10 @@
         newsletterButton.disabled =
           true;
 
+
         newsletterButton.textContent =
           "Subscribing...";
+
 
         newsletterMessage.textContent =
           "";
@@ -2625,7 +2816,8 @@
 
 
             if (
-              error.code === "23505"
+              error.code ===
+              "23505"
             ) {
 
               newsletterMessage.textContent =
@@ -2646,6 +2838,7 @@
           newsletterMessage.textContent =
             "You're subscribed! Welcome to BRENZKafrica Plus.";
 
+
           newsletterEmail.value =
             "";
 
@@ -2657,6 +2850,7 @@
             error
           );
 
+
           newsletterMessage.textContent =
             "Connection error. Please try again.";
 
@@ -2664,6 +2858,7 @@
 
           newsletterButton.disabled =
             false;
+
 
           newsletterButton.textContent =
             "Subscribe";
