@@ -1,2820 +1,446 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+export default async function handler(req, res) {
 
-  <title>BRENZKafrica Plus</title>
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      success: false,
+      error: "Method not allowed"
+    });
+  }
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  try {
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    const feeds = [
 
-    body {
-      background: #080808;
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
-      overflow-x: hidden;
-    }
-
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.95),
-        rgba(0,0,0,0)
-      );
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 900;
-      letter-spacing: -1px;
-    }
-
-    .logo span {
-      color: #e50914;
-    }
-
-    nav {
-      display: flex;
-      gap: 22px;
-      margin-left: 30px;
-      flex: 1;
-    }
-
-    nav a {
-      color: #ddd;
-      text-decoration: none;
-      font-size: 14px;
-      transition: .3s;
-    }
-
-    nav a:hover {
-      color: white;
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .search {
-      background: rgba(0,0,0,.7);
-      border: 1px solid #555;
-      color: white;
-      padding: 9px 12px;
-      border-radius: 4px;
-      outline: none;
-      width: 150px;
-    }
-
-    .signin {
-      background: #e50914;
-      border: none;
-      color: white;
-      padding: 9px 18px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .hero {
-      height: 90vh;
-      min-height: 600px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      padding: 0 5%;
-
-      background:
-        linear-gradient(
-          90deg,
-          rgba(0,0,0,.95) 0%,
-          rgba(0,0,0,.65) 45%,
-          rgba(0,0,0,.1) 100%
-        ),
-        linear-gradient(
-          0deg,
-          #080808 0%,
-          transparent 30%
-        ),
-        url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg");
-
-      background-size: cover;
-      background-position: center;
-    }
-
-    .hero-content {
-      max-width: 650px;
-      padding-top: 100px;
-    }
-
-    .hero-label {
-      color: #e50914;
-      font-weight: bold;
-      letter-spacing: 3px;
-      font-size: 14px;
-      margin-bottom: 15px;
-    }
-
-    .hero h1 {
-      font-size: clamp(45px,7vw,85px);
-      line-height: .95;
-      margin-bottom: 20px;
-      font-weight: 900;
-    }
-
-    .hero p {
-      font-size: 18px;
-      line-height: 1.6;
-      color: #ddd;
-      max-width: 600px;
-      margin-bottom: 25px;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-    }
-
-    .play-btn,
-    .info-btn {
-      border: none;
-      padding: 13px 25px;
-      border-radius: 4px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .play-btn {
-      background: white;
-      color: black;
-    }
-
-    .info-btn {
-      background: rgba(100,100,100,.7);
-      color: white;
-    }
-
-    main {
-      margin-top: -80px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .section {
-      padding: 20px 5%;
-      margin-bottom: 20px;
-    }
-
-    .section-title {
-      font-size: 22px;
-      margin-bottom: 15px;
-      font-weight: bold;
-    }
-
-    .section-subtitle {
-      color: #999;
-      margin-top: -10px;
-      margin-bottom: 18px;
-    }
-
-    .row {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      padding-bottom: 15px;
-      scrollbar-width: none;
-    }
-
-    .row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .card {
-      min-width: 220px;
-      height: 125px;
-      border-radius: 5px;
-      overflow: hidden;
-      position: relative;
-      background: #181818;
-      cursor: pointer;
-      transition: .3s;
-    }
-
-    .card:hover {
-      transform: scale(1.06);
-      z-index: 10;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .card-overlay {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 35px 10px 10px;
-      background: linear-gradient(
-        transparent,
-        rgba(0,0,0,.95)
-      );
-    }
-
-    .card-title {
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    .card-type {
-      font-size: 11px;
-      color: #bbb;
-      margin-top: 4px;
-    }
-
-    .portrait-card {
-      min-width: 180px;
-      height: 270px;
-    }
-
-    /* =========================
-       LIVE
-    ========================= */
-
-    .live-section {
-      padding: 30px 5%;
-      margin-bottom: 20px;
-    }
-
-    .live-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 18px;
-    }
-
-    .live-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    .live-dot {
-      width: 11px;
-      height: 11px;
-      background: #e50914;
-      border-radius: 50%;
-      box-shadow: 0 0 14px rgba(229,9,20,.8);
-      animation: livePulse 1.3s infinite;
-    }
-
-    @keyframes livePulse {
-      0% {
-        transform: scale(1);
-        opacity: 1;
-      }
-
-      50% {
-        transform: scale(.65);
-        opacity: .45;
-      }
-
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
-
-    .live-status {
-      color: #777;
-      font-size: 12px;
-    }
-
-    .live-row {
-      display: flex;
-      gap: 15px;
-      overflow-x: auto;
-      padding-bottom: 15px;
-      scrollbar-width: none;
-    }
-
-    .live-row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .live-card {
-      min-width: 320px;
-      max-width: 320px;
-      height: 190px;
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
-      background: #111;
-      border: 1px solid #292929;
-      cursor: pointer;
-      transition: .3s;
-    }
-
-    .live-card:hover {
-      transform: scale(1.04);
-      border-color: #555;
-    }
-
-    .live-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .live-card::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        transparent 35%,
-        rgba(0,0,0,.9)
-      );
-    }
-
-    .live-badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      z-index: 2;
-      background: #e50914;
-      color: white;
-      padding: 5px 9px;
-      border-radius: 4px;
-      font-size: 10px;
-      font-weight: bold;
-    }
-
-    .upcoming-badge {
-      background: #333;
-    }
-
-    .live-card-info {
-      position: absolute;
-      z-index: 3;
-      bottom: 12px;
-      left: 14px;
-      right: 14px;
-    }
-
-    .live-card-title {
-      font-size: 17px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .live-card-description {
-      color: #bbb;
-      font-size: 12px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .live-card-time {
-      color: #aaa;
-      font-size: 11px;
-      margin-top: 6px;
-    }
-
-    .live-empty {
-      color: #777;
-      padding: 25px 0;
-    }
-
-    .live-refresh {
-      background: #222;
-      border: 1px solid #444;
-      color: #ddd;
-      padding: 7px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 11px;
-    }
-
-    /* =========================
-       NEWS
-    ========================= */
-
-    .breaking-news {
-      padding: 25px 5%;
-      margin-bottom: 20px;
-    }
-
-    .breaking-news-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 15px;
-      gap: 15px;
-    }
-
-    .breaking-news-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 22px;
-      font-weight: bold;
-    }
-
-    .breaking-dot {
-      width: 10px;
-      height: 10px;
-      background: #e50914;
-      border-radius: 50%;
-    }
-
-    .breaking-news-status {
-      color: #777;
-      font-size: 12px;
-    }
-
-    .news-row {
-      display: flex;
-      gap: 15px;
-      overflow-x: auto;
-      padding: 5px 0 18px;
-      scrollbar-width: none;
-    }
-
-    .news-row::-webkit-scrollbar {
-      display: none;
-    }
-
-    .news-card {
-      min-width: 310px;
-      max-width: 310px;
-      min-height: 180px;
-      background: linear-gradient(145deg,#181818,#0e0e0e);
-      border: 1px solid #292929;
-      border-radius: 8px;
-      padding: 18px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .news-source {
-      color: #e50914;
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      margin-bottom: 10px;
-    }
-
-    .news-title {
-      font-size: 17px;
-      line-height: 1.35;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    .news-description {
-      color: #999;
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .news-date {
-      color: #666;
-      font-size: 11px;
-      margin-top: 15px;
-    }
-
-    .news-loading,
-    .news-error,
-    .news-empty {
-      color: #777;
-      padding: 25px 0;
-    }
-
-    .news-refresh {
-      background: #222;
-      border: 1px solid #444;
-      color: #ddd;
-      padding: 7px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 11px;
-    }
-
-    /* =========================
-       PLAYER
-    ========================= */
-
-    .player {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #000;
-      z-index: 5000;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding: 20px;
-    }
-
-    .player.active {
-      display: flex;
-    }
-
-    .player video,
-    .youtube-player {
-      width: 90%;
-      max-width: 1100px;
-      height: 70vh;
-      background: black;
-      border: none;
-    }
-
-    .player video {
-      object-fit: contain;
-    }
-
-    .close-player {
-      position: absolute;
-      top: 25px;
-      right: 30px;
-      z-index: 10;
-      background: rgba(255,255,255,.15);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 45px;
-      height: 45px;
-      font-size: 22px;
-      cursor: pointer;
-    }
-
-    .player-title {
-      margin-top: 15px;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    /* =========================
-       AUTH
-    ========================= */
-
-    .auth-section {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.88);
-      z-index: 10000;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .auth-section.active {
-      display: flex;
-    }
-
-    .auth-box {
-      width: 100%;
-      max-width: 420px;
-      background: #111;
-      border: 1px solid #333;
-      border-radius: 12px;
-      padding: 30px;
-      position: relative;
-    }
-
-    .auth-box h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .auth-description {
-      color: #888;
-      font-size: 14px;
-      margin-bottom: 22px;
-      line-height: 1.5;
-    }
-
-    .auth-box input {
-      width: 100%;
-      background: #050505;
-      color: white;
-      border: 1px solid #333;
-      padding: 14px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-      outline: none;
-    }
-
-    #auth-button {
-      width: 100%;
-      padding: 13px;
-      border: none;
-      border-radius: 6px;
-      background: #e50914;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    #auth-message {
-      min-height: 20px;
-      margin-top: 15px;
-      color: #aaa;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .auth-switch {
-      margin-top: 20px;
-      color: #888;
-      font-size: 13px;
-      text-align: center;
-    }
-
-    .auth-switch button {
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    .auth-close {
-      position: absolute;
-      top: 12px;
-      right: 15px;
-      background: none;
-      border: none;
-      color: #aaa;
-      font-size: 26px;
-      cursor: pointer;
-    }
-
-    .account-status {
-      display: none;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .account-status span {
-      color: #ccc;
-      font-size: 13px;
-      max-width: 150px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .signout {
-      background: #222;
-      border: 1px solid #444;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    /* =========================
-       NEWSLETTER / FOOTER
-    ========================= */
-
-    .newsletter {
-      margin: 60px 5% 20px;
-      padding: 45px 30px;
-      background: linear-gradient(135deg,#151515,#0d0d0d);
-      border: 1px solid #292929;
-      border-radius: 10px;
-      text-align: center;
-    }
-
-    .newsletter h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-
-    .newsletter p {
-      color: #999;
-      max-width: 600px;
-      margin: 0 auto 25px;
-      line-height: 1.6;
-    }
-
-    .newsletter-form {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .newsletter-form input {
-      flex: 1;
-      background: #050505;
-      border: 1px solid #444;
-      color: white;
-      padding: 14px;
-      border-radius: 5px;
-      outline: none;
-    }
-
-    .newsletter-form button {
-      background: #e50914;
-      color: white;
-      border: none;
-      padding: 14px 22px;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    footer {
-      padding: 60px 5%;
-      color: #777;
-      text-align: center;
-      border-top: 1px solid #222;
-      margin-top: 40px;
-    }
-
-    @media(max-width:700px) {
-
-      header {
-        height: 60px;
-        padding: 0 18px;
-      }
-
-      .logo {
-        font-size: 19px;
-      }
-
-      nav {
-        display: none;
-      }
-
-      .search {
-        width: 90px;
-      }
-
-      .signin {
-        padding: 8px 12px;
-        font-size: 12px;
-      }
-
-      .hero {
-        height: 75vh;
-        min-height: 500px;
-        padding: 0 20px;
-      }
-
-      .hero-content {
-        padding-top: 80px;
-      }
-
-      .hero h1 {
-        font-size: 48px;
-      }
-
-      .hero p {
-        font-size: 15px;
-      }
-
-      .section,
-      .breaking-news,
-      .live-section {
-        padding-left: 20px;
-        padding-right: 20px;
-      }
-
-      .card {
-        min-width: 170px;
-        height: 100px;
-      }
-
-      .portrait-card {
-        min-width: 140px;
-        height: 210px;
-      }
-
-      .live-card {
-        min-width: 280px;
-        max-width: 280px;
-      }
-
-      .breaking-news-status {
-        display: none;
-      }
-
-      .news-card {
-        min-width: 280px;
-        max-width: 280px;
-      }
-
-      .youtube-player,
-      .player video {
-        width: 100%;
-        height: 55vh;
-      }
-
-      .newsletter {
-        margin: 40px 20px 20px;
-        padding: 35px 20px;
-      }
-
-      .newsletter-form {
-        flex-direction: column;
-      }
-
-      .newsletter-form button {
-        width: 100%;
-      }
-
-      .account-status span {
-        display: none;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<header>
-
-  <div class="logo">
-    BRENZK<span>africa</span>+
-  </div>
-
-  <nav>
-    <a href="#">Home</a>
-    <a href="#originals">Originals</a>
-    <a href="#live">🔴 Live</a>
-    <a href="#news">News</a>
-    <a href="#series">Series</a>
-    <a href="#films">Films</a>
-    <a href="#documentaries">Documentaries</a>
-  </nav>
-
-  <div class="nav-right">
-
-    <input
-      class="search"
-      id="search"
-      type="text"
-      placeholder="Search"
-    />
-
-    <button
-      class="signin"
-      id="signinButton"
-      onclick="openAccount()"
-    >
-      Sign In
-    </button>
-
-    <div
-      class="account-status"
-      id="accountStatus"
-    >
-      <span id="userEmail"></span>
-
-      <button
-        class="signout"
-        onclick="signOut()"
-      >
-        Sign Out
-      </button>
-    </div>
-
-  </div>
-
-</header>
-
-
-<section class="hero">
-
-  <div class="hero-content">
-
-    <div class="hero-label">
-      BRENZKAFRICA ORIGINAL
-    </div>
-
-    <h1>
-      Stories.<br>
-      Creativity.<br>
-      Unlimited Vision.
-    </h1>
-
-    <p>
-      Discover original African stories, films, series,
-      documentaries and creative work from BRENZKafrica.
-    </p>
-
-    <div class="hero-buttons">
-
-      <button
-        class="play-btn"
-        onclick="playFeatured()"
-      >
-        ▶ Play
-      </button>
-
-      <button
-        class="info-btn"
-        onclick="showInfo()"
-      >
-        ⓘ More Info
-      </button>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<main>
-
-  <!-- ORIGINALS -->
-
-  <section
-    class="section"
-    id="originals"
-  >
-
-    <h2 class="section-title">
-      BRENZKafrica Originals
-    </h2>
-
-    <p class="section-subtitle">
-      Stories created by Africa. For the world.
-    </p>
-
-    <div class="row">
-
-      <div
-        class="card"
-        onclick="playVideo(
-          'BRENZKafrica Cinema',
-          'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov'
-        )"
-      >
-
-        <img
-          src="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
-          alt="BRENZKafrica Cinema"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            BRENZKafrica Cinema
-          </div>
-
-          <div class="card-type">
-            Original • Film
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <img
-          src="https://images.unsplash.com/photo-1533929736458-ca588d08c8be?auto=format&fit=crop&w=800&q=80"
-          alt="African Stories"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            African Stories
-          </div>
-
-          <div class="card-type">
-            Original Series
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <img
-          src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80"
-          alt="Behind The Vision"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            Behind The Vision
-          </div>
-
-          <div class="card-type">
-            Documentary
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- LIVE -->
-
-  <section
-    class="live-section"
-    id="live"
-  >
-
-    <div class="live-header">
-
-      <div class="live-title">
-
-        <span class="live-dot"></span>
-
-        Live
-
-      </div>
-
-      <div
-        class="live-status"
-        id="liveStatus"
-      >
-        Loading live events...
-      </div>
-
-      <button
-        class="live-refresh"
-        onclick="loadLiveEvents()"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <p class="section-subtitle">
-      Watch BRENZKafrica live events and broadcasts.
-    </p>
-
-    <div
-      class="live-row"
-      id="liveRow"
-    >
-
-      <div class="live-empty">
-        Loading live events...
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- NEWS -->
-
-  <section
-    class="breaking-news"
-    id="news"
-  >
-
-    <div class="breaking-news-header">
-
-      <div class="breaking-news-title">
-
-        <span class="breaking-dot"></span>
-
-        Breaking News
-
-      </div>
-
-      <div
-        class="breaking-news-status"
-        id="newsStatus"
-      >
-        Loading latest African news...
-      </div>
-
-      <button
-        class="news-refresh"
-        onclick="loadBreakingNews()"
-      >
-        Refresh
-      </button>
-
-    </div>
-
-    <div
-      class="news-row"
-      id="newsRow"
-    >
-
-      <div class="news-loading">
-        Loading breaking news...
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- SERIES -->
-
-  <section
-    class="section"
-    id="series"
-  >
-
-    <h2 class="section-title">
-      Series
-    </h2>
-
-    <div class="row">
-
-      <div class="card portrait-card">
-
-        <img
-          src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80"
-          alt="BRENZKafrica Series"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            BRENZKafrica Series
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card portrait-card">
-
-        <img
-          src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=600&q=80"
-          alt="Cinema Stories"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            Cinema Stories
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card portrait-card">
-
-        <img
-          src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80"
-          alt="Africa Unseen"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            Africa Unseen
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- FILMS -->
-
-  <section
-    class="section"
-    id="films"
-  >
-
-    <h2 class="section-title">
-      Films
-    </h2>
-
-    <div class="row">
-
-      <div class="card">
-
-        <img
-          src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80"
-          alt="African Cinema"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            African Cinema
-          </div>
-
-          <div class="card-type">
-            Film
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="card">
-
-        <img
-          src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=800&q=80"
-          alt="The Journey"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            The Journey
-          </div>
-
-          <div class="card-type">
-            Film
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- DOCUMENTARIES -->
-
-  <section
-    class="section"
-    id="documentaries"
-  >
-
-    <h2 class="section-title">
-      Documentaries
-    </h2>
-
-    <div class="row">
-
-      <div class="card">
-
-        <img
-          src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80"
-          alt="African Vision"
-        >
-
-        <div class="card-overlay">
-
-          <div class="card-title">
-            African Vision
-          </div>
-
-          <div class="card-type">
-            Documentary
-          </div>
-
-        </div>
-
-      </div>
-
-    </div>
-
-  </section>
-
-</main>
-
-
-<!-- PLAYER -->
-
-<div
-  class="player"
-  id="player"
->
-
-  <button
-    class="close-player"
-    onclick="closePlayer()"
-  >
-    ×
-  </button>
-
-  <video
-    id="video"
-    controls
-    playsinline
-  ></video>
-
-  <iframe
-    id="youtubePlayer"
-    class="youtube-player"
-    style="display:none;"
-    allow="autoplay; encrypted-media; picture-in-picture"
-    allowfullscreen
-  ></iframe>
-
-  <div
-    class="player-title"
-    id="playerTitle"
-  ></div>
-
-</div>
-
-
-<!-- AUTH -->
-
-<div
-  id="auth-section"
-  class="auth-section"
->
-
-  <div class="auth-box">
-
-    <button
-      class="auth-close"
-      onclick="closeAccount()"
-    >
-      ×
-    </button>
-
-    <h2 id="auth-title">
-      Sign In
-    </h2>
-
-    <p class="auth-description">
-      Sign in to your BRENZKafrica Plus account
-      or create a new viewer account.
-    </p>
-
-    <input
-      type="email"
-      id="email"
-      placeholder="Email address"
-    />
-
-    <input
-      type="password"
-      id="password"
-      placeholder="Password"
-    />
-
-    <button
-      id="auth-button"
-      onclick="signIn()"
-    >
-      Sign In
-    </button>
-
-    <p id="auth-message"></p>
-
-    <p class="auth-switch">
-      Don't have an account?
-      <button onclick="showSignUp()">
-        Create Account
-      </button>
-    </p>
-
-  </div>
-
-</div>
-
-
-<!-- NEWSLETTER -->
-
-<section class="newsletter">
-
-  <h2>
-    Stay in the loop
-  </h2>
-
-  <p>
-    Get the latest African stories, films, series,
-    documentaries and creative updates from BRENZKafrica.
-  </p>
-
-  <form
-    class="newsletter-form"
-    id="newsletterForm"
-  >
-
-    <input
-      type="email"
-      id="newsletterEmail"
-      placeholder="Enter your email address"
-      required
-    />
-
-    <button
-      type="submit"
-      id="newsletterButton"
-    >
-      Subscribe
-    </button>
-
-  </form>
-
-  <p id="newsletter-message"></p>
-
-</section>
-
-
-<footer>
-
-  <h3>BRENZKafrica+</h3>
-
-  <p>
-    African Creativity. Unlimited Vision.
-  </p>
-
-  <br>
-
-  <p>
-    © 2026 BRENZKafrica. All rights reserved.
-  </p>
-
-</footer>
-
-
-<script>
-
-  /* ==========================================
-     SUPABASE
-  ========================================== */
-
-  const SUPABASE_URL =
-    "https://fcddfmfpzbilagphpsxs.supabase.co";
-
-  const SUPABASE_KEY =
-    "sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u";
-
-  const supabaseClient =
-    window.supabase.createClient(
-      SUPABASE_URL,
-      SUPABASE_KEY,
       {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true
+        name: "Google News",
+        url:
+          "https://news.google.com/rss/search?q=Africa%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+
+      {
+        name: "Google News — Uganda",
+        url:
+          "https://news.google.com/rss/search?q=Uganda%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+
+      {
+        name: "Google News — Kenya",
+        url:
+          "https://news.google.com/rss/search?q=Kenya%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+
+      {
+        name: "Google News — Tanzania",
+        url:
+          "https://news.google.com/rss/search?q=Tanzania%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+
+      {
+        name: "Google News — Rwanda",
+        url:
+          "https://news.google.com/rss/search?q=Rwanda%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+
+      {
+        name: "Google News — South Africa",
+        url:
+          "https://news.google.com/rss/search?q=South%20Africa%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      },
+
+      {
+        name: "Google News — Nigeria",
+        url:
+          "https://news.google.com/rss/search?q=Nigeria%20when%3A1d&hl=en-US&gl=US&ceid=US%3Aen"
+      }
+
+    ];
+
+
+    const responses =
+      await Promise.allSettled(
+        feeds.map(
+          async function(feed) {
+
+            const response =
+              await fetch(
+                feed.url,
+                {
+                  headers: {
+                    "User-Agent":
+                      "Mozilla/5.0 BRENZKafricaPlus-News/1.0"
+                  }
+                }
+              );
+
+            if (!response.ok) {
+
+              throw new Error(
+                feed.name +
+                ": HTTP " +
+                response.status
+              );
+
+            }
+
+            const xml =
+              await response.text();
+
+            return {
+              feed,
+              xml
+            };
+
+          }
+        )
+      );
+
+
+    function decodeXML(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      return String(value)
+        .replace(
+          /<!\[CDATA\[([\s\S]*?)\]\]>/g,
+          "$1"
+        )
+        .replace(/&amp;/g, "&")
+        .replace(/&lt;/g, "<")
+        .replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&#x27;/gi, "'")
+        .replace(/&#x2F;/gi, "/")
+        .replace(
+          /&#(\d+);/g,
+          function(_, code) {
+            return String.fromCharCode(
+              Number(code)
+            );
+          }
+        );
+
+    }
+
+
+    function stripHTML(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      return decodeXML(value)
+        .replace(
+          /<script[\s\S]*?<\/script>/gi,
+          ""
+        )
+        .replace(
+          /<style[\s\S]*?<\/style>/gi,
+          ""
+        )
+        .replace(
+          /<[^>]+>/g,
+          " "
+        )
+        .replace(
+          /\s+/g,
+          " "
+        )
+        .trim();
+
+    }
+
+
+    function getTag(item, tag) {
+
+      const regex =
+        new RegExp(
+          `<${tag}(?:\\s[^>]*)?>([\\s\\S]*?)<\\/${tag}>`,
+          "i"
+        );
+
+      const match =
+        item.match(regex);
+
+      return match
+        ? decodeXML(
+            match[1]
+          ).trim()
+        : "";
+
+    }
+
+
+    function getLink(item) {
+
+      const link =
+        getTag(
+          item,
+          "link"
+        );
+
+      if (link) {
+        return link;
+      }
+
+      const guid =
+        getTag(
+          item,
+          "guid"
+        );
+
+      if (
+        guid &&
+        /^https?:\/\//i.test(guid)
+      ) {
+        return guid;
+      }
+
+      return "";
+
+    }
+
+
+    function parseRSS(
+      xml,
+      feedName
+    ) {
+
+      if (!xml) {
+        return [];
+      }
+
+      const items =
+        xml.match(
+          /<item[\s\S]*?<\/item>/gi
+        ) || [];
+
+
+      return items.map(
+        function(item) {
+
+          const title =
+            stripHTML(
+              getTag(
+                item,
+                "title"
+              )
+            );
+
+          const description =
+            stripHTML(
+              getTag(
+                item,
+                "description"
+              )
+            );
+
+          const pubDate =
+            getTag(
+              item,
+              "pubDate"
+            );
+
+          const link =
+            getLink(item);
+
+          let source =
+            getTag(
+              item,
+              "source"
+            );
+
+          source =
+            stripHTML(source);
+
+          if (!source) {
+            source = feedName;
+          }
+
+          return {
+            title,
+            description,
+            date:
+              pubDate || null,
+            link,
+            source
+          };
+
         }
+      );
+
+    }
+
+
+    let allNews = [];
+
+
+    for (
+      const result of responses
+    ) {
+
+      if (
+        result.status !==
+        "fulfilled"
+      ) {
+        continue;
+      }
+
+      const parsed =
+        parseRSS(
+          result.value.xml,
+          result.value.feed.name
+        );
+
+      allNews =
+        allNews.concat(parsed);
+
+    }
+
+
+    allNews =
+      allNews.filter(
+        function(item) {
+
+          return (
+            item.title &&
+            item.link
+          );
+
+        }
+      );
+
+
+    const seenTitles =
+      new Set();
+
+
+    allNews =
+      allNews.filter(
+        function(item) {
+
+          const normalized =
+            item.title
+              .toLowerCase()
+              .replace(
+                /\s+/g,
+                " "
+              )
+              .trim();
+
+          if (
+            seenTitles.has(
+              normalized
+            )
+          ) {
+            return false;
+          }
+
+          seenTitles.add(
+            normalized
+          );
+
+          return true;
+
+        }
+      );
+
+
+    allNews.sort(
+      function(a, b) {
+
+        const dateA =
+          a.date
+            ? new Date(
+                a.date
+              ).getTime()
+            : 0;
+
+        const dateB =
+          b.date
+            ? new Date(
+                b.date
+              ).getTime()
+            : 0;
+
+        return dateB - dateA;
+
       }
     );
 
 
-  /* ==========================================
-     NEWS
-  ========================================== */
-
-  const NEWS_API_URL = "/api/news";
-
-
-  /* ==========================================
-     ELEMENTS
-  ========================================== */
-
-  const player =
-    document.getElementById("player");
-
-  const video =
-    document.getElementById("video");
-
-  const youtubePlayer =
-    document.getElementById("youtubePlayer");
-
-  const playerTitle =
-    document.getElementById("playerTitle");
-
-  const liveRow =
-    document.getElementById("liveRow");
-
-  const liveStatus =
-    document.getElementById("liveStatus");
-
-
-  /* ==========================================
-     VIDEO PLAYER
-  ========================================== */
-
-  function playVideo(name, url) {
-
-    youtubePlayer.style.display = "none";
-    youtubePlayer.src = "";
-
-    video.style.display = "block";
-
-    playerTitle.textContent = name;
-
-    video.src = url;
-
-    player.classList.add("active");
-
-    video.play().catch(function(error) {
-      console.log(
-        "Autoplay prevented:",
-        error
+    const news =
+      allNews.slice(
+        0,
+        20
       );
+
+
+    res.setHeader(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
+
+    res.setHeader(
+      "Pragma",
+      "no-cache"
+    );
+
+    res.setHeader(
+      "Expires",
+      "0"
+    );
+
+    res.setHeader(
+      "Content-Type",
+      "application/json; charset=utf-8"
+    );
+
+
+    return res.status(200).json({
+
+      success: true,
+
+      updatedAt:
+        new Date().toISOString(),
+
+      count:
+        news.length,
+
+      news
+
+    });
+
+
+  } catch(error) {
+
+    console.error(
+      "BRENZKafrica News API Error:",
+      error
+    );
+
+    res.setHeader(
+      "Cache-Control",
+      "no-store"
+    );
+
+    return res.status(500).json({
+
+      success: false,
+
+      error:
+        "Unable to fetch breaking news.",
+
+      message:
+        error.message ||
+        "Unknown error",
+
+      news: []
+
     });
 
   }
 
-
-  function extractYouTubeId(url) {
-
-    if (!url) {
-      return null;
-    }
-
-    try {
-
-      const parsed =
-        new URL(url);
-
-      if (
-        parsed.hostname.includes("youtube.com")
-      ) {
-
-        if (
-          parsed.pathname === "/watch"
-        ) {
-          return parsed.searchParams.get("v");
-        }
-
-        if (
-          parsed.pathname.startsWith("/live/")
-        ) {
-          return parsed.pathname
-            .split("/live/")[1]
-            .split("/")[0];
-        }
-
-        if (
-          parsed.pathname.startsWith("/embed/")
-        ) {
-          return parsed.pathname
-            .split("/embed/")[1]
-            .split("/")[0];
-        }
-
-      }
-
-      if (
-        parsed.hostname === "youtu.be"
-      ) {
-
-        return parsed.pathname
-          .replace("/", "")
-          .split("/")[0];
-
-      }
-
-    } catch(error) {
-
-      console.error(
-        "YouTube URL error:",
-        error
-      );
-
-    }
-
-    return null;
-
-  }
-
-
-  function playLiveEvent(title, streamUrl) {
-
-    if (!streamUrl) {
-
-      alert(
-        "This live event is upcoming. The broadcast stream will be available when the event goes live."
-      );
-
-      return;
-
-    }
-
-    const youtubeId =
-      extractYouTubeId(streamUrl);
-
-    playerTitle.textContent =
-      title || "Live";
-
-
-    if (youtubeId) {
-
-      video.pause();
-
-      video.src = "";
-
-      video.style.display =
-        "none";
-
-      youtubePlayer.style.display =
-        "block";
-
-      youtubePlayer.src =
-        "https://www.youtube.com/embed/" +
-        youtubeId +
-        "?autoplay=1";
-
-      player.classList.add(
-        "active"
-      );
-
-      return;
-
-    }
-
-
-    youtubePlayer.style.display =
-      "none";
-
-    youtubePlayer.src = "";
-
-    video.style.display =
-      "block";
-
-    video.src =
-      streamUrl;
-
-    player.classList.add(
-      "active"
-    );
-
-    video.play().catch(
-      function(error) {
-        console.log(
-          "Live autoplay prevented:",
-          error
-        );
-      }
-    );
-
-  }
-
-
-  function playFeatured() {
-
-    playVideo(
-      "BRENZKafrica Cinema",
-      "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
-    );
-
-  }
-
-
-  function closePlayer() {
-
-    video.pause();
-
-    video.src = "";
-
-    youtubePlayer.src = "";
-
-    youtubePlayer.style.display =
-      "none";
-
-    video.style.display =
-      "block";
-
-    player.classList.remove(
-      "active"
-    );
-
-  }
-
-
-  function showInfo() {
-
-    alert(
-      "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
-    );
-
-  }
-
-
-  /* ==========================================
-     SECURITY
-  ========================================== */
-
-  function escapeHTML(value) {
-
-    if (
-      value === null ||
-      value === undefined
-    ) {
-      return "";
-    }
-
-    return String(value)
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;")
-      .replace(/'/g,"&#039;");
-
-  }
-
-
-  /* ==========================================
-     DATE
-  ========================================== */
-
-  function formatDate(value) {
-
-    if (!value) {
-      return "";
-    }
-
-    const date =
-      new Date(value);
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return "";
-    }
-
-    return date.toLocaleString(
-      undefined,
-      {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      }
-    );
-
-  }
-
-
-  /* ==========================================
-     LIVE EVENTS
-     
-     IMPORTANT:
-     We ONLY request columns that you confirmed
-     exist in your live_events table.
-
-     We DO NOT use:
-     created
-     created_at
-     stream_url
-  ========================================== */
-
-  async function loadLiveEvents() {
-
-    liveStatus.textContent =
-      "Updating...";
-
-    liveRow.innerHTML =
-      '<div class="live-empty">' +
-      'Loading live events...' +
-      '</div>';
-
-
-    try {
-
-      const {
-        data,
-        error
-      } =
-        await supabaseClient
-          .from("live_events")
-          .select(
-            "id,title,description,thumbnail,status,start_time,end_time,is_featured"
-          );
-
-
-      if (error) {
-
-        console.error(
-          "LIVE DATABASE ERROR:",
-          error
-        );
-
-        throw error;
-
-      }
-
-
-      console.log(
-        "LIVE EVENTS:",
-        data
-      );
-
-
-      renderLiveEvents(
-        data || []
-      );
-
-
-    } catch(error) {
-
-      console.error(
-        "Unable to load Live:",
-        error
-      );
-
-      liveRow.innerHTML =
-        '<div class="live-empty">' +
-        'Unable to load Live right now.<br>' +
-        '<small>' +
-        escapeHTML(
-          error.message ||
-          "Database error"
-        ) +
-        '</small>' +
-        '</div>';
-
-      liveStatus.textContent =
-        "Live unavailable";
-
-    }
-
-  }
-
-
-  /* ==========================================
-     RENDER LIVE
-  ========================================== */
-
-  function renderLiveEvents(events) {
-
-    if (
-      !events ||
-      events.length === 0
-    ) {
-
-      liveRow.innerHTML =
-        '<div class="live-empty">' +
-        'No live events are available right now.' +
-        '</div>';
-
-      liveStatus.textContent =
-        "No live events";
-
-      return;
-
-    }
-
-
-    liveRow.innerHTML =
-      events.map(function(event) {
-
-        const title =
-          escapeHTML(
-            event.title ||
-            "BRENZKafrica Live"
-          );
-
-        const description =
-          escapeHTML(
-            event.description ||
-            "BRENZKafrica Live broadcast"
-          );
-
-        const thumbnail =
-          event.thumbnail ||
-          "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
-
-        const safeThumbnail =
-          escapeHTML(
-            thumbnail
-          );
-
-        const status =
-          String(
-            event.status ||
-            "upcoming"
-          )
-          .toLowerCase()
-          .trim();
-
-
-        const isLive =
-          status === "live" ||
-          status === "live_now" ||
-          status === "active";
-
-
-        const badge =
-          isLive
-            ? "🔴 LIVE NOW"
-            : "UPCOMING";
-
-
-        const startTime =
-          formatDate(
-            event.start_time
-          );
-
-
-        /*
-          IMPORTANT:
-          Your current table does not have
-          stream_url, so we deliberately do
-          NOT use one here.
-        */
-
-        return `
-          <article
-            class="live-card"
-            data-title="${title}"
-            data-status="${escapeHTML(status)}"
-            onclick="handleLiveCard(this)"
-          >
-
-            <img
-              src="${safeThumbnail}"
-              alt="${title}"
-            >
-
-            <div class="live-badge ${
-              isLive ? "" : "upcoming-badge"
-            }">
-              ${badge}
-            </div>
-
-            <div class="live-card-info">
-
-              <div class="live-card-title">
-                ${title}
-              </div>
-
-              <div class="live-card-description">
-                ${description}
-              </div>
-
-              ${
-                startTime
-                  ? `
-                    <div class="live-card-time">
-                      ${escapeHTML(startTime)}
-                    </div>
-                  `
-                  : ""
-              }
-
-            </div>
-
-          </article>
-        `;
-
-      }).join("");
-
-
-    const liveCount =
-      events.filter(function(event) {
-
-        const status =
-          String(
-            event.status ||
-            ""
-          )
-          .toLowerCase()
-          .trim();
-
-        return (
-          status === "live" ||
-          status === "live_now" ||
-          status === "active"
-        );
-
-      }).length;
-
-
-    liveStatus.textContent =
-      liveCount > 0
-        ? liveCount + " live now"
-        : "Upcoming broadcasts";
-
-  }
-
-
-  /* ==========================================
-     LIVE CARD
-  ========================================== */
-
-  function handleLiveCard(card) {
-
-    if (!card) {
-      return;
-    }
-
-
-    const status =
-      card.getAttribute(
-        "data-status"
-      );
-
-
-    const title =
-      card.getAttribute(
-        "data-title"
-      );
-
-
-    if (
-      status === "upcoming"
-    ) {
-
-      alert(
-        "This event is currently upcoming. The live broadcast will become available when it goes live."
-      );
-
-      return;
-
-    }
-
-
-    /*
-      We don't have a stream URL column yet.
-      Therefore, even a live event cannot be
-      played until we add the streaming source.
-    */
-
-    alert(
-      "This live event is ready, but a broadcast stream has not been connected yet."
-    );
-
-  }
-
-
-  /* ==========================================
-     LOAD LIVE
-  ========================================== */
-
-  loadLiveEvents();
-
-
-  /* ==========================================
-     AUTO REFRESH LIVE
-  ========================================== */
-
-  setInterval(
-    loadLiveEvents,
-    30 * 1000
-  );
-
-
-  /* ==========================================
-     BREAKING NEWS
-  ========================================== */
-
-  const newsRow =
-    document.getElementById("newsRow");
-
-  const newsStatus =
-    document.getElementById("newsStatus");
-
-
-  function formatNewsDate(value) {
-
-    if (!value) {
-      return "";
-    }
-
-    const date =
-      new Date(value);
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return value;
-    }
-
-    return date.toLocaleString(
-      undefined,
-      {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-      }
-    );
-
-  }
-
-
-  async function loadBreakingNews() {
-
-    newsStatus.textContent =
-      "Updating...";
-
-    newsRow.innerHTML =
-      '<div class="news-loading">' +
-      'Loading latest African news...' +
-      '</div>';
-
-
-    try {
-
-      const response =
-        await fetch(
-          NEWS_API_URL,
-          {
-            cache: "no-store"
-          }
-        );
-
-
-      if (!response.ok) {
-
-        throw new Error(
-          "News API error " +
-          response.status
-        );
-
-      }
-
-
-      const data =
-        await response.json();
-
-
-      if (
-        !data ||
-        data.success !== true
-      ) {
-
-        throw new Error(
-          "Invalid news response"
-        );
-
-      }
-
-
-      if (
-        !data.news ||
-        data.news.length === 0
-      ) {
-
-        newsRow.innerHTML =
-          '<div class="news-empty">' +
-          'No breaking news available right now.' +
-          '</div>';
-
-        newsStatus.textContent =
-          "No updates";
-
-        return;
-
-      }
-
-
-      newsRow.innerHTML =
-        data.news.map(function(item) {
-
-          return `
-            <article
-              class="news-card"
-              onclick="openNewsArticle('${encodeURIComponent(item.link || "")}')"
-            >
-
-              <div>
-
-                <div class="news-source">
-                  ${escapeHTML(item.source || "News")}
-                </div>
-
-                <div class="news-title">
-                  ${escapeHTML(item.title || "")}
-                </div>
-
-                <div class="news-description">
-                  ${escapeHTML(item.description || "")}
-                </div>
-
-              </div>
-
-              <div class="news-date">
-                ${escapeHTML(
-                  formatNewsDate(item.date)
-                )}
-              </div>
-
-            </article>
-          `;
-
-        }).join("");
-
-
-      newsStatus.textContent =
-        "Live African news";
-
-
-    } catch(error) {
-
-      console.error(
-        "Breaking news error:",
-        error
-      );
-
-      newsRow.innerHTML =
-        '<div class="news-error">' +
-        'Unable to load breaking news right now.' +
-        '</div>';
-
-      newsStatus.textContent =
-        "News unavailable";
-
-    }
-
-  }
-
-
-  function openNewsArticle(encoded) {
-
-    if (!encoded) {
-      return;
-    }
-
-    try {
-
-      const url =
-        decodeURIComponent(
-          encoded
-        );
-
-      if (url) {
-
-        window.open(
-          url,
-          "_blank",
-          "noopener,noreferrer"
-        );
-
-      }
-
-    } catch(error) {
-
-      console.error(error);
-
-    }
-
-  }
-
-
-  loadBreakingNews();
-
-
-  setInterval(
-    loadBreakingNews,
-    10 * 60 * 1000
-  );
-
-
-  /* ==========================================
-     AUTHENTICATION
-  ========================================== */
-
-  const authSection =
-    document.getElementById(
-      "auth-section"
-    );
-
-  const authTitle =
-    document.getElementById(
-      "auth-title"
-    );
-
-  const authButton =
-    document.getElementById(
-      "auth-button"
-    );
-
-  const authMessage =
-    document.getElementById(
-      "auth-message"
-    );
-
-  const emailInput =
-    document.getElementById(
-      "email"
-    );
-
-  const passwordInput =
-    document.getElementById(
-      "password"
-    );
-
-  const signinButton =
-    document.getElementById(
-      "signinButton"
-    );
-
-  const accountStatus =
-    document.getElementById(
-      "accountStatus"
-    );
-
-  const userEmail =
-    document.getElementById(
-      "userEmail"
-    );
-
-
-  function openAccount() {
-
-    authSection.classList.add(
-      "active"
-    );
-
-    emailInput.focus();
-
-  }
-
-
-  function closeAccount() {
-
-    authSection.classList.remove(
-      "active"
-    );
-
-    authMessage.textContent =
-      "";
-
-  }
-
-
-  function showAuthMessage(message) {
-
-    authMessage.textContent =
-      message;
-
-  }
-
-
-  async function signIn() {
-
-    const email =
-      emailInput.value.trim();
-
-    const password =
-      passwordInput.value;
-
-
-    if (!email || !password) {
-
-      showAuthMessage(
-        "Please enter your email and password."
-      );
-
-      return;
-
-    }
-
-
-    authButton.disabled =
-      true;
-
-    authButton.textContent =
-      "Signing in...";
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.auth
-        .signInWithPassword({
-          email,
-          password
-        });
-
-
-    authButton.disabled =
-      false;
-
-    authButton.textContent =
-      "Sign In";
-
-
-    if (error) {
-
-      showAuthMessage(
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    if (data.user) {
-
-      updateAccountUI(
-        data.user
-      );
-
-      closeAccount();
-
-    }
-
-  }
-
-
-  async function signUp() {
-
-    const email =
-      emailInput.value.trim();
-
-    const password =
-      passwordInput.value;
-
-
-    if (!email || !password) {
-
-      showAuthMessage(
-        "Please enter your email and password."
-      );
-
-      return;
-
-    }
-
-
-    if (password.length < 6) {
-
-      showAuthMessage(
-        "Password must be at least 6 characters."
-      );
-
-      return;
-
-    }
-
-
-    authButton.disabled =
-      true;
-
-    authButton.textContent =
-      "Creating account...";
-
-
-    const {
-      data,
-      error
-    } =
-      await supabaseClient.auth
-        .signUp({
-          email,
-          password
-        });
-
-
-    authButton.disabled =
-      false;
-
-    authButton.textContent =
-      "Create Account";
-
-
-    if (error) {
-
-      showAuthMessage(
-        error.message
-      );
-
-      return;
-
-    }
-
-
-    if (
-      data.session &&
-      data.user
-    ) {
-
-      updateAccountUI(
-        data.user
-      );
-
-      closeAccount();
-
-    } else {
-
-      showAuthMessage(
-        "Account created. Please check your email to confirm your account."
-      );
-
-    }
-
-  }
-
-
-  function showSignUp() {
-
-    authTitle.textContent =
-      "Create Account";
-
-    authButton.textContent =
-      "Create Account";
-
-    authButton.onclick =
-      signUp;
-
-    document.querySelector(
-      ".auth-switch"
-    ).innerHTML =
-      'Already have an account? ' +
-      '<button onclick="showSignIn()">Sign In</button>';
-
-  }
-
-
-  function showSignIn() {
-
-    authTitle.textContent =
-      "Sign In";
-
-    authButton.textContent =
-      "Sign In";
-
-    authButton.onclick =
-      signIn;
-
-    document.querySelector(
-      ".auth-switch"
-    ).innerHTML =
-      'Don\'t have an account? ' +
-      '<button onclick="showSignUp()">Create Account</button>';
-
-  }
-
-
-  function updateAccountUI(user) {
-
-    if (user) {
-
-      signinButton.style.display =
-        "none";
-
-      accountStatus.style.display =
-        "flex";
-
-      userEmail.textContent =
-        user.email || "Viewer";
-
-    } else {
-
-      signinButton.style.display =
-        "block";
-
-      accountStatus.style.display =
-        "none";
-
-      userEmail.textContent =
-        "";
-
-    }
-
-  }
-
-
-  async function signOut() {
-
-    await supabaseClient.auth.signOut();
-
-    updateAccountUI(null);
-
-  }
-
-
-  async function checkSession() {
-
-    const {
-      data
-    } =
-      await supabaseClient.auth
-        .getSession();
-
-
-    if (
-      data &&
-      data.session
-    ) {
-
-      updateAccountUI(
-        data.session.user
-      );
-
-    } else {
-
-      updateAccountUI(null);
-
-    }
-
-  }
-
-
-  supabaseClient.auth.onAuthStateChange(
-    function(event, session) {
-
-      updateAccountUI(
-        session
-          ? session.user
-          : null
-      );
-
-    }
-  );
-
-
-  checkSession();
-
-
-  /* ==========================================
-     SEARCH
-  ========================================== */
-
-  const search =
-    document.getElementById(
-      "search"
-    );
-
-
-  search.addEventListener(
-    "input",
-    function() {
-
-      const query =
-        search.value
-          .toLowerCase()
-          .trim();
-
-
-      document
-        .querySelectorAll(
-          ".card, .live-card, .news-card"
-        )
-        .forEach(function(card) {
-
-          const text =
-            card.innerText
-              .toLowerCase();
-
-          card.style.display =
-            !query ||
-            text.includes(query)
-              ? ""
-              : "none";
-
-        });
-
-    }
-  );
-
-
-  /* ==========================================
-     NEWSLETTER
-  ========================================== */
-
-  document
-    .getElementById(
-      "newsletterForm"
-    )
-    .addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-
-        const email =
-          document
-            .getElementById(
-              "newsletterEmail"
-            )
-            .value
-            .trim()
-            .toLowerCase();
-
-
-        const button =
-          document.getElementById(
-            "newsletterButton"
-          );
-
-        const message =
-          document.getElementById(
-            "newsletter-message"
-          );
-
-
-        button.disabled =
-          true;
-
-        button.textContent =
-          "Subscribing...";
-
-
-        const {
-          error
-        } =
-          await supabaseClient
-            .from(
-              "newsletter_subscribers"
-            )
-            .insert([
-              {
-                email
-              }
-            ]);
-
-
-        if (error) {
-
-          message.textContent =
-            error.code === "23505"
-              ? "This email is already subscribed."
-              : "Unable to subscribe right now.";
-
-        } else {
-
-          message.textContent =
-            "You're subscribed! Welcome to BRENZKafrica Plus.";
-
-          document
-            .getElementById(
-              "newsletterEmail"
-            )
-            .value = "";
-
-        }
-
-
-        button.disabled =
-          false;
-
-        button.textContent =
-          "Subscribe";
-
-      }
-    );
-
-
-  /* ==========================================
-     ESCAPE KEY
-  ========================================== */
-
-  document.addEventListener(
-    "keydown",
-    function(event) {
-
-      if (
-        event.key === "Escape"
-      ) {
-
-        closePlayer();
-        closeAccount();
-
-      }
-
-    }
-  );
-
-</script>
-
-</body>
-</html>
+}
