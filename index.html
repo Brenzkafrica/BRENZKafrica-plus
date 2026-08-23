@@ -871,10 +871,7 @@
     <nav>
       <a href="#">Home</a>
       <a href="#originals">Originals</a>
-
-      <!-- NEW LIVE LINK -->
       <a href="#live">🔴 Live</a>
-
       <a href="#news">News</a>
       <a href="#series">Series</a>
       <a href="#films">Films</a>
@@ -1553,7 +1550,7 @@
 
 
     /* ==========================================
-       VIDEO / LIVE PLAYER
+       VIDEO PLAYER
     ========================================== */
 
     function playVideo(name, url) {
@@ -1578,6 +1575,10 @@
 
     }
 
+
+    /* ==========================================
+       YOUTUBE ID
+    ========================================== */
 
     function extractYouTubeId(url) {
 
@@ -1648,6 +1649,10 @@
     }
 
 
+    /* ==========================================
+       LIVE PLAYER
+    ========================================== */
+
     function playLiveEvent(title, streamUrl) {
 
       if (!streamUrl) {
@@ -1663,10 +1668,8 @@
       const youtubeId =
         extractYouTubeId(streamUrl);
 
-
       playerTitle.textContent =
         title || "Live";
-
 
       if (youtubeId) {
 
@@ -1692,7 +1695,6 @@
         return;
 
       }
-
 
       youtubePlayer.style.display =
         "none";
@@ -1724,6 +1726,10 @@
     }
 
 
+    /* ==========================================
+       FEATURED
+    ========================================== */
+
     function playFeatured() {
 
       playVideo(
@@ -1733,6 +1739,10 @@
 
     }
 
+
+    /* ==========================================
+       CLOSE PLAYER
+    ========================================== */
 
     function closePlayer() {
 
@@ -1755,6 +1765,10 @@
     }
 
 
+    /* ==========================================
+       INFO
+    ========================================== */
+
     function showInfo() {
 
       alert(
@@ -1765,7 +1779,7 @@
 
 
     /* ==========================================
-       LIVE EVENTS
+       ESCAPE HTML
     ========================================== */
 
     function escapeHTML(value) {
@@ -1786,6 +1800,10 @@
 
     }
 
+
+    /* ==========================================
+       FORMAT DATE
+    ========================================== */
 
     function formatDate(value) {
 
@@ -1817,6 +1835,10 @@
 
     }
 
+
+    /* ==========================================
+       LIVE EVENTS
+    ========================================== */
 
     function renderLiveEvents(events) {
 
@@ -1853,31 +1875,71 @@
               "BRENZKafrica Live"
             );
 
+
           const thumbnail =
             event.thumbnail ||
             "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
+
 
           const safeThumbnail =
             escapeHTML(
               thumbnail
             );
 
+
+          /*
+             Your Supabase table currently
+             does not necessarily have stream_url.
+
+             We support several possible names
+             so we can connect the stream later.
+          */
+
           const streamUrl =
             event.stream_url ||
+            event.youtube_url ||
+            event.video_url ||
             "";
+
 
           const encodedUrl =
             encodeURIComponent(
               streamUrl
             );
 
-          const isLive =
-            event.is_live === true;
 
-          const badge =
-            isLive
-              ? "🔴 LIVE NOW"
-              : "UPCOMING";
+          /*
+             Your database uses "status"
+             rather than "is_live".
+          */
+
+          const status =
+            String(
+              event.status || ""
+            ).toLowerCase();
+
+
+          const isLive =
+            status === "live" ||
+            status === "live_now" ||
+            status === "broadcasting";
+
+
+          const isUpcoming =
+            status === "upcoming";
+
+
+          let badge = "UPCOMING";
+
+
+          if (isLive) {
+            badge = "🔴 LIVE NOW";
+          } else if (
+            status === "ended" ||
+            status === "completed"
+          ) {
+            badge = "ENDED";
+          }
 
 
           return `
@@ -1917,17 +1979,54 @@
 
       const liveCount =
         events.filter(function(event) {
-          return event.is_live === true;
+
+          const status =
+            String(
+              event.status || ""
+            ).toLowerCase();
+
+          return (
+            status === "live" ||
+            status === "live_now" ||
+            status === "broadcasting"
+          );
+
         }).length;
 
 
-      liveStatus.textContent =
-        liveCount > 0
-          ? liveCount + " live now"
-          : "Upcoming broadcasts";
+      if (liveCount > 0) {
+
+        liveStatus.textContent =
+          liveCount +
+          " live now";
+
+      } else {
+
+        const upcomingCount =
+          events.filter(function(event) {
+
+            return String(
+              event.status || ""
+            ).toLowerCase() === "upcoming";
+
+          }).length;
+
+
+        liveStatus.textContent =
+          upcomingCount > 0
+            ? upcomingCount +
+              " upcoming broadcast" +
+              (upcomingCount === 1 ? "" : "s")
+            : "No live broadcasts";
+
+      }
 
     }
 
+
+    /* ==========================================
+       OPEN LIVE CARD
+    ========================================== */
 
     function openLiveCard(card) {
 
@@ -1935,17 +2034,21 @@
         return;
       }
 
+
       const title =
         card.getAttribute(
           "data-title"
         );
+
 
       const encoded =
         card.getAttribute(
           "data-stream"
         );
 
+
       let streamUrl = "";
+
 
       try {
 
@@ -1960,6 +2063,7 @@
 
       }
 
+
       playLiveEvent(
         title,
         streamUrl
@@ -1968,10 +2072,19 @@
     }
 
 
+    /* ==========================================
+       LOAD LIVE EVENTS
+       
+       IMPORTANT:
+       Your table uses "created",
+       NOT "created_at".
+    ========================================== */
+
     async function loadLiveEvents() {
 
       liveStatus.textContent =
         "Updating...";
+
 
       liveRow.innerHTML =
         '<div class="live-empty">' +
@@ -1989,7 +2102,7 @@
             .from("live_events")
             .select("*")
             .order(
-              "created_at",
+              "created",
               {
                 ascending: false
               }
@@ -2008,8 +2121,37 @@
         }
 
 
+        /*
+           This helps us see exactly what
+           Supabase is returning.
+        */
+
+        console.log(
+          "LIVE EVENTS FROM SUPABASE:",
+          data
+        );
+
+
+        if (
+          !data ||
+          data.length === 0
+        ) {
+
+          liveRow.innerHTML =
+            '<div class="live-empty">' +
+            'No live events are available right now.' +
+            '</div>';
+
+          liveStatus.textContent =
+            "No live events";
+
+          return;
+
+        }
+
+
         renderLiveEvents(
-          data || []
+          data
         );
 
 
@@ -2020,10 +2162,12 @@
           error
         );
 
+
         liveRow.innerHTML =
           '<div class="live-empty">' +
           'Unable to load Live right now. Check your Supabase table permissions.' +
           '</div>';
+
 
         liveStatus.textContent =
           "Live unavailable";
@@ -2033,12 +2177,16 @@
     }
 
 
-    /* Load Live immediately */
+    /* ==========================================
+       LOAD LIVE IMMEDIATELY
+    ========================================== */
 
     loadLiveEvents();
 
 
-    /* Refresh Live every 30 seconds */
+    /* ==========================================
+       REFRESH LIVE EVERY 30 SECONDS
+    ========================================== */
 
     setInterval(
       loadLiveEvents,
@@ -2051,10 +2199,14 @@
     ========================================== */
 
     const newsRow =
-      document.getElementById("newsRow");
+      document.getElementById(
+        "newsRow"
+      );
 
     const newsStatus =
-      document.getElementById("newsStatus");
+      document.getElementById(
+        "newsStatus"
+      );
 
 
     function formatNewsDate(value) {
@@ -2092,6 +2244,7 @@
 
       newsStatus.textContent =
         "Updating...";
+
 
       newsRow.innerHTML =
         '<div class="news-loading">' +
@@ -2200,10 +2353,12 @@
           error
         );
 
+
         newsRow.innerHTML =
           '<div class="news-error">' +
           'Unable to load breaking news right now.' +
           '</div>';
+
 
         newsStatus.textContent =
           "News unavailable";
@@ -2219,12 +2374,14 @@
         return;
       }
 
+
       try {
 
         const url =
           decodeURIComponent(
             encoded
           );
+
 
         if (url) {
 
@@ -2263,40 +2420,48 @@
         "auth-section"
       );
 
+
     const authTitle =
       document.getElementById(
         "auth-title"
       );
+
 
     const authButton =
       document.getElementById(
         "auth-button"
       );
 
+
     const authMessage =
       document.getElementById(
         "auth-message"
       );
+
 
     const emailInput =
       document.getElementById(
         "email"
       );
 
+
     const passwordInput =
       document.getElementById(
         "password"
       );
+
 
     const signinButton =
       document.getElementById(
         "signinButton"
       );
 
+
     const accountStatus =
       document.getElementById(
         "accountStatus"
       );
+
 
     const userEmail =
       document.getElementById(
@@ -2498,11 +2663,14 @@
       authTitle.textContent =
         "Create Account";
 
+
       authButton.textContent =
         "Create Account";
 
+
       authButton.onclick =
         signUp;
+
 
       document.querySelector(
         ".auth-switch"
@@ -2518,11 +2686,14 @@
       authTitle.textContent =
         "Sign In";
 
+
       authButton.textContent =
         "Sign In";
 
+
       authButton.onclick =
         signIn;
+
 
       document.querySelector(
         ".auth-switch"
@@ -2644,6 +2815,7 @@
               card.innerText
                 .toLowerCase();
 
+
             card.style.display =
               !query ||
               text.includes(query)
@@ -2686,6 +2858,7 @@
               "newsletterButton"
             );
 
+
           const message =
             document.getElementById(
               "newsletter-message"
@@ -2694,6 +2867,7 @@
 
           button.disabled =
             true;
+
 
           button.textContent =
             "Subscribing...";
@@ -2725,6 +2899,7 @@
             message.textContent =
               "You're subscribed! Welcome to BRENZKafrica Plus.";
 
+
             document
               .getElementById(
                 "newsletterEmail"
@@ -2737,6 +2912,7 @@
           button.disabled =
             false;
 
+
           button.textContent =
             "Subscribe";
 
@@ -2745,7 +2921,7 @@
 
 
     /* ==========================================
-       ESCAPE
+       ESCAPE KEY
     ========================================== */
 
     document.addEventListener(
@@ -2757,6 +2933,7 @@
         ) {
 
           closePlayer();
+
           closeAccount();
 
         }
