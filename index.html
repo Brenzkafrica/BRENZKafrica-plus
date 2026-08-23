@@ -6,7 +6,6 @@
 
   <title>BRENZKafrica Plus</title>
 
-  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -53,7 +52,7 @@
 
     nav {
       display: flex;
-      gap: 25px;
+      gap: 22px;
       margin-left: 30px;
       flex: 1;
     }
@@ -62,45 +61,11 @@
       color: #ddd;
       text-decoration: none;
       font-size: 14px;
-      transition: 0.3s;
+      transition: .3s;
     }
 
     nav a:hover {
       color: white;
-    }
-
-    /* LIVE NAV */
-    .live-nav {
-      color: #ff3b3b !important;
-      font-weight: bold;
-    }
-
-    .live-nav::before {
-      content: "";
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      background: #e50914;
-      border-radius: 50%;
-      margin-right: 5px;
-      animation: livePulse 1.5s infinite;
-    }
-
-    @keyframes livePulse {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.45;
-        transform: scale(0.75);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
     }
 
     .nav-right {
@@ -110,7 +75,7 @@
     }
 
     .search {
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,.7);
       border: 1px solid #555;
       color: white;
       padding: 9px 12px;
@@ -129,10 +94,6 @@
       font-weight: bold;
     }
 
-    .signin:hover {
-      transform: scale(1.04);
-    }
-
     .hero {
       height: 90vh;
       min-height: 600px;
@@ -144,9 +105,9 @@
       background:
         linear-gradient(
           90deg,
-          rgba(0,0,0,0.95) 0%,
-          rgba(0,0,0,0.65) 45%,
-          rgba(0,0,0,0.1) 100%
+          rgba(0,0,0,.95) 0%,
+          rgba(0,0,0,.65) 45%,
+          rgba(0,0,0,.1) 100%
         ),
         linear-gradient(
           0deg,
@@ -173,8 +134,8 @@
     }
 
     .hero h1 {
-      font-size: clamp(45px, 7vw, 85px);
-      line-height: 0.95;
+      font-size: clamp(45px,7vw,85px);
+      line-height: .95;
       margin-bottom: 20px;
       font-weight: 900;
     }
@@ -208,13 +169,8 @@
     }
 
     .info-btn {
-      background: rgba(100,100,100,0.7);
+      background: rgba(100,100,100,.7);
       color: white;
-    }
-
-    .play-btn:hover,
-    .info-btn:hover {
-      transform: scale(1.04);
     }
 
     main {
@@ -260,11 +216,11 @@
       position: relative;
       background: #181818;
       cursor: pointer;
-      transition: 0.3s;
+      transition: .3s;
     }
 
     .card:hover {
-      transform: scale(1.08);
+      transform: scale(1.06);
       z-index: 10;
     }
 
@@ -282,7 +238,7 @@
       padding: 35px 10px 10px;
       background: linear-gradient(
         transparent,
-        rgba(0,0,0,0.95)
+        rgba(0,0,0,.95)
       );
     }
 
@@ -302,29 +258,27 @@
       height: 270px;
     }
 
-    /* ==========================================
+    /* =========================
        LIVE
-    ========================================== */
+    ========================= */
 
     .live-section {
       padding: 30px 5%;
       margin-bottom: 20px;
-      scroll-margin-top: 80px;
     }
 
     .live-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
       margin-bottom: 18px;
     }
 
-    .live-heading {
+    .live-title {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
     }
 
@@ -333,97 +287,33 @@
       height: 11px;
       background: #e50914;
       border-radius: 50%;
-      box-shadow: 0 0 15px rgba(229,9,20,0.9);
-      animation: newsPulse 1.3s infinite;
+      box-shadow: 0 0 14px rgba(229,9,20,.8);
+      animation: livePulse 1.3s infinite;
     }
 
-    .live-status-text {
+    @keyframes livePulse {
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(.65);
+        opacity: .45;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .live-status {
       color: #777;
       font-size: 12px;
     }
 
-    .live-feature {
-      display: none;
-      background: #111;
-      border: 1px solid #292929;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .live-feature.active {
-      display: block;
-    }
-
-    .live-player-wrap {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      background: #000;
-    }
-
-    .live-player-wrap iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-      display: block;
-    }
-
-    .live-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      z-index: 5;
-      background: #e50914;
-      color: white;
-      padding: 7px 10px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-    }
-
-    .live-info {
-      padding: 20px;
-    }
-
-    .live-info h3 {
-      font-size: 22px;
-      margin-bottom: 8px;
-    }
-
-    .live-info p {
-      color: #999;
-      line-height: 1.5;
-      font-size: 14px;
-    }
-
-    .live-empty {
-      background: #111;
-      border: 1px solid #292929;
-      border-radius: 10px;
-      padding: 45px 20px;
-      text-align: center;
-      color: #777;
-    }
-
-    .live-empty strong {
-      display: block;
-      color: #ddd;
-      font-size: 20px;
-      margin-bottom: 8px;
-    }
-
-    .upcoming-live {
-      margin-top: 25px;
-    }
-
-    .upcoming-live h3 {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
-
-    .live-card-row {
+    .live-row {
       display: flex;
       gap: 15px;
       overflow-x: auto;
@@ -431,54 +321,101 @@
       scrollbar-width: none;
     }
 
-    .live-card-row::-webkit-scrollbar {
+    .live-row::-webkit-scrollbar {
       display: none;
     }
 
     .live-card {
-      min-width: 280px;
+      min-width: 320px;
+      max-width: 320px;
+      height: 190px;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
       background: #111;
       border: 1px solid #292929;
-      border-radius: 8px;
-      padding: 18px;
-      transition: 0.3s;
+      cursor: pointer;
+      transition: .3s;
     }
 
     .live-card:hover {
-      transform: translateY(-4px);
+      transform: scale(1.04);
       border-color: #555;
     }
 
-    .live-card-status {
-      color: #e50914;
-      font-size: 11px;
+    .live-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .live-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        transparent 35%,
+        rgba(0,0,0,.9)
+      );
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 2;
+      background: #e50914;
+      color: white;
+      padding: 5px 9px;
+      border-radius: 4px;
+      font-size: 10px;
       font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
+    }
+
+    .upcoming-badge {
+      background: #333;
+    }
+
+    .live-card-info {
+      position: absolute;
+      z-index: 3;
+      bottom: 12px;
+      left: 14px;
+      right: 14px;
     }
 
     .live-card-title {
-      font-size: 16px;
+      font-size: 17px;
       font-weight: bold;
-      margin-bottom: 8px;
+      margin-bottom: 5px;
     }
 
     .live-card-description {
-      color: #888;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-bottom: 12px;
+      color: #bbb;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .live-card-date {
-      color: #666;
+    .live-empty {
+      color: #777;
+      padding: 25px 0;
+    }
+
+    .live-refresh {
+      background: #222;
+      border: 1px solid #444;
+      color: #ddd;
+      padding: 7px 12px;
+      border-radius: 4px;
+      cursor: pointer;
       font-size: 11px;
     }
 
-    /* ==========================================
-       BREAKING NEWS
-    ========================================== */
+    /* =========================
+       NEWS
+    ========================= */
 
     .breaking-news {
       padding: 25px 5%;
@@ -506,25 +443,6 @@
       height: 10px;
       background: #e50914;
       border-radius: 50%;
-      box-shadow: 0 0 12px rgba(229,9,20,0.8);
-      animation: newsPulse 1.5s infinite;
-    }
-
-    @keyframes newsPulse {
-      0% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
-      50% {
-        opacity: 0.4;
-        transform: scale(0.7);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
     }
 
     .breaking-news-status {
@@ -548,29 +466,14 @@
       min-width: 310px;
       max-width: 310px;
       min-height: 180px;
-
-      background:
-        linear-gradient(
-          145deg,
-          #181818,
-          #0e0e0e
-        );
-
+      background: linear-gradient(145deg,#181818,#0e0e0e);
       border: 1px solid #292929;
       border-radius: 8px;
       padding: 18px;
       cursor: pointer;
-      transition: 0.3s;
-
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-
-    .news-card:hover {
-      transform: translateY(-4px);
-      border-color: #555;
-      background: #1b1b1b;
     }
 
     .news-source {
@@ -578,7 +481,6 @@
       font-size: 11px;
       font-weight: bold;
       text-transform: uppercase;
-      letter-spacing: 1px;
       margin-bottom: 10px;
     }
 
@@ -593,11 +495,6 @@
       color: #999;
       font-size: 13px;
       line-height: 1.5;
-
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
 
     .news-date {
@@ -611,11 +508,6 @@
     .news-empty {
       color: #777;
       padding: 25px 0;
-      font-size: 14px;
-    }
-
-    .news-error {
-      color: #999;
     }
 
     .news-refresh {
@@ -628,14 +520,9 @@
       font-size: 11px;
     }
 
-    .news-refresh:hover {
-      background: #333;
-      color: white;
-    }
-
-    /* ==========================================
-       VIDEO PLAYER
-    ========================================== */
+    /* =========================
+       PLAYER
+    ========================= */
 
     .player {
       display: none;
@@ -646,23 +533,32 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
+      padding: 20px;
     }
 
     .player.active {
       display: flex;
     }
 
-    .player video {
+    .player video,
+    .youtube-player {
       width: 90%;
-      max-height: 80vh;
+      max-width: 1100px;
+      height: 70vh;
       background: black;
+      border: none;
+    }
+
+    .player video {
+      object-fit: contain;
     }
 
     .close-player {
       position: absolute;
       top: 25px;
       right: 30px;
-      background: rgba(255,255,255,0.15);
+      z-index: 10;
+      background: rgba(255,255,255,.15);
       color: white;
       border: none;
       border-radius: 50%;
@@ -678,15 +574,15 @@
       font-weight: bold;
     }
 
-    /* ==========================================
-       AUTHENTICATION
-    ========================================== */
+    /* =========================
+       AUTH
+    ========================= */
 
     .auth-section {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.88);
+      background: rgba(0,0,0,.88);
       z-index: 10000;
       align-items: center;
       justify-content: center;
@@ -705,7 +601,6 @@
       border-radius: 12px;
       padding: 30px;
       position: relative;
-      box-shadow: 0 20px 70px rgba(0,0,0,0.8);
     }
 
     .auth-box h2 {
@@ -731,10 +626,6 @@
       outline: none;
     }
 
-    .auth-box input:focus {
-      border-color: #777;
-    }
-
     #auth-button {
       width: 100%;
       padding: 13px;
@@ -744,16 +635,6 @@
       color: white;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 5px;
-    }
-
-    #auth-button:hover {
-      background: #f40612;
-    }
-
-    #auth-button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
     }
 
     #auth-message {
@@ -761,7 +642,6 @@
       margin-top: 15px;
       color: #aaa;
       font-size: 13px;
-      line-height: 1.4;
       text-align: center;
     }
 
@@ -780,10 +660,6 @@
       font-weight: bold;
     }
 
-    .auth-switch button:hover {
-      text-decoration: underline;
-    }
-
     .auth-close {
       position: absolute;
       top: 12px;
@@ -794,14 +670,6 @@
       font-size: 26px;
       cursor: pointer;
     }
-
-    .auth-close:hover {
-      color: white;
-    }
-
-    /* ==========================================
-       ACCOUNT
-    ========================================== */
 
     .account-status {
       display: none;
@@ -828,25 +696,14 @@
       font-size: 12px;
     }
 
-    .signout:hover {
-      background: #333;
-    }
-
-    /* ==========================================
-       NEWSLETTER
-    ========================================== */
+    /* =========================
+       NEWSLETTER / FOOTER
+    ========================= */
 
     .newsletter {
       margin: 60px 5% 20px;
       padding: 45px 30px;
-
-      background:
-        linear-gradient(
-          135deg,
-          #151515,
-          #0d0d0d
-        );
-
+      background: linear-gradient(135deg,#151515,#0d0d0d);
       border: 1px solid #292929;
       border-radius: 10px;
       text-align: center;
@@ -874,17 +731,12 @@
 
     .newsletter-form input {
       flex: 1;
-      min-width: 0;
       background: #050505;
       border: 1px solid #444;
       color: white;
       padding: 14px;
       border-radius: 5px;
       outline: none;
-    }
-
-    .newsletter-form input:focus {
-      border-color: #e50914;
     }
 
     .newsletter-form button {
@@ -897,22 +749,6 @@
       cursor: pointer;
     }
 
-    .newsletter-form button:hover {
-      background: #f40612;
-    }
-
-    .newsletter-form button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    #newsletter-message {
-      margin-top: 15px;
-      min-height: 20px;
-      font-size: 13px;
-      color: #aaa;
-    }
-
     footer {
       padding: 60px 5%;
       color: #777;
@@ -921,7 +757,7 @@
       margin-top: 40px;
     }
 
-    @media (max-width: 700px) {
+    @media(max-width:700px) {
 
       header {
         height: 60px;
@@ -938,7 +774,6 @@
 
       .search {
         width: 90px;
-        padding: 7px;
       }
 
       .signin {
@@ -964,8 +799,11 @@
         font-size: 15px;
       }
 
-      .section {
-        padding: 15px 20px;
+      .section,
+      .breaking-news,
+      .live-section {
+        padding-left: 20px;
+        padding-right: 20px;
       }
 
       .card {
@@ -978,28 +816,9 @@
         height: 210px;
       }
 
-      .live-section {
-        padding: 20px;
-      }
-
-      .live-header {
-        align-items: flex-start;
-      }
-
-      .live-status-text {
-        display: none;
-      }
-
-      .breaking-news {
-        padding: 20px;
-      }
-
-      .breaking-news-header {
-        align-items: flex-start;
-      }
-
-      .breaking-news-title {
-        font-size: 20px;
+      .live-card {
+        min-width: 280px;
+        max-width: 280px;
       }
 
       .breaking-news-status {
@@ -1011,21 +830,15 @@
         max-width: 280px;
       }
 
-      .auth-box {
-        padding: 25px 20px;
-      }
-
-      .account-status span {
-        display: none;
+      .youtube-player,
+      .player video {
+        width: 100%;
+        height: 55vh;
       }
 
       .newsletter {
         margin: 40px 20px 20px;
         padding: 35px 20px;
-      }
-
-      .newsletter h2 {
-        font-size: 24px;
       }
 
       .newsletter-form {
@@ -1035,13 +848,19 @@
       .newsletter-form button {
         width: 100%;
       }
+
+      .account-status span {
+        display: none;
+      }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- NAVIGATION -->
+  <!-- =========================
+       NAVIGATION
+  ========================== -->
 
   <header>
 
@@ -1053,10 +872,8 @@
       <a href="#">Home</a>
       <a href="#originals">Originals</a>
 
-      <!-- LIVE -->
-      <a href="#live" class="live-nav">
-        LIVE
-      </a>
+      <!-- NEW LIVE LINK -->
+      <a href="#live">🔴 Live</a>
 
       <a href="#news">News</a>
       <a href="#series">Series</a>
@@ -1085,7 +902,6 @@
         class="account-status"
         id="accountStatus"
       >
-
         <span id="userEmail"></span>
 
         <button
@@ -1094,7 +910,6 @@
         >
           Sign Out
         </button>
-
       </div>
 
     </div>
@@ -1102,7 +917,9 @@
   </header>
 
 
-  <!-- HERO -->
+  <!-- =========================
+       HERO
+  ========================== -->
 
   <section class="hero">
 
@@ -1146,117 +963,11 @@
   </section>
 
 
-  <!-- CONTENT -->
-
   <main>
 
-    <!-- ==========================================
-         LIVE
-    ========================================== -->
-
-    <section
-      class="live-section"
-      id="live"
-    >
-
-      <div class="live-header">
-
-        <div class="live-heading">
-
-          <span class="live-dot"></span>
-
-          LIVE
-
-        </div>
-
-        <div
-          class="live-status-text"
-          id="liveStatus"
-        >
-          Checking live broadcasts...
-        </div>
-
-      </div>
-
-
-      <!-- CURRENT LIVE EVENT -->
-
-      <div
-        class="live-feature"
-        id="liveFeature"
-      >
-
-        <div class="live-player-wrap">
-
-          <div class="live-badge">
-            ● LIVE NOW
-          </div>
-
-          <iframe
-            id="liveIframe"
-            src=""
-            title="BRENZKafrica Live"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
-
-        </div>
-
-
-        <div class="live-info">
-
-          <h3 id="liveTitle">
-            BRENZKafrica Live
-          </h3>
-
-          <p id="liveDescription">
-            Live broadcast from BRENZKafrica Plus.
-          </p>
-
-        </div>
-
-      </div>
-
-
-      <!-- NOTHING LIVE -->
-
-      <div
-        class="live-empty"
-        id="liveEmpty"
-      >
-
-        <strong>
-          Nothing Live Right Now
-        </strong>
-
-        Check back soon for the next BRENZKafrica broadcast.
-
-      </div>
-
-
-      <!-- UPCOMING -->
-
-      <div
-        class="upcoming-live"
-        id="upcomingLive"
-        style="display:none;"
-      >
-
-        <h3>
-          Upcoming Live
-        </h3>
-
-        <div
-          class="live-card-row"
-          id="liveUpcomingRow"
-        ></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- ORIGINALS -->
+    <!-- =========================
+         ORIGINALS
+    ========================== -->
 
     <section
       class="section"
@@ -1271,10 +982,7 @@
         Stories created by Africa. For the world.
       </p>
 
-      <div
-        class="row"
-        id="originalsRow"
-      >
+      <div class="row">
 
         <div
           class="card"
@@ -1303,7 +1011,6 @@
 
         </div>
 
-
         <div class="card">
 
           <img
@@ -1324,7 +1031,6 @@
           </div>
 
         </div>
-
 
         <div class="card">
 
@@ -1352,7 +1058,62 @@
     </section>
 
 
-    <!-- BREAKING NEWS -->
+    <!-- =========================
+         LIVE
+    ========================== -->
+
+    <section
+      class="live-section"
+      id="live"
+    >
+
+      <div class="live-header">
+
+        <div class="live-title">
+
+          <span class="live-dot"></span>
+
+          Live
+
+        </div>
+
+        <div
+          class="live-status"
+          id="liveStatus"
+        >
+          Loading live events...
+        </div>
+
+        <button
+          class="live-refresh"
+          onclick="loadLiveEvents()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+      <p class="section-subtitle">
+        Watch BRENZKafrica live events and broadcasts.
+      </p>
+
+      <div
+        class="live-row"
+        id="liveRow"
+      >
+
+        <div class="live-empty">
+          Loading live events...
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         BREAKING NEWS
+    ========================== -->
 
     <section
       class="breaking-news"
@@ -1399,7 +1160,9 @@
     </section>
 
 
-    <!-- SERIES -->
+    <!-- =========================
+         SERIES
+    ========================== -->
 
     <section
       class="section"
@@ -1429,7 +1192,6 @@
 
         </div>
 
-
         <div class="card portrait-card">
 
           <img
@@ -1446,7 +1208,6 @@
           </div>
 
         </div>
-
 
         <div class="card portrait-card">
 
@@ -1470,7 +1231,9 @@
     </section>
 
 
-    <!-- FILMS -->
+    <!-- =========================
+         FILMS
+    ========================== -->
 
     <section
       class="section"
@@ -1504,7 +1267,6 @@
 
         </div>
 
-
         <div class="card">
 
           <img
@@ -1531,7 +1293,9 @@
     </section>
 
 
-    <!-- DOCUMENTARIES -->
+    <!-- =========================
+         DOCUMENTARIES
+    ========================== -->
 
     <section
       class="section"
@@ -1572,7 +1336,9 @@
   </main>
 
 
-  <!-- VIDEO PLAYER -->
+  <!-- =========================
+       PLAYER
+  ========================== -->
 
   <div
     class="player"
@@ -1592,6 +1358,14 @@
       playsinline
     ></video>
 
+    <iframe
+      id="youtubePlayer"
+      class="youtube-player"
+      style="display:none;"
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+
     <div
       class="player-title"
       id="playerTitle"
@@ -1600,7 +1374,9 @@
   </div>
 
 
-  <!-- AUTHENTICATION -->
+  <!-- =========================
+       AUTHENTICATION
+  ========================== -->
 
   <div
     id="auth-section"
@@ -1629,14 +1405,12 @@
         type="email"
         id="email"
         placeholder="Email address"
-        autocomplete="email"
       />
 
       <input
         type="password"
         id="password"
         placeholder="Password"
-        autocomplete="current-password"
       />
 
       <button
@@ -1650,11 +1424,9 @@
 
       <p class="auth-switch">
         Don't have an account?
-
         <button onclick="showSignUp()">
           Create Account
         </button>
-
       </p>
 
     </div>
@@ -1662,7 +1434,9 @@
   </div>
 
 
-  <!-- NEWSLETTER -->
+  <!-- =========================
+       NEWSLETTER
+  ========================== -->
 
   <section class="newsletter">
 
@@ -1684,7 +1458,6 @@
         type="email"
         id="newsletterEmail"
         placeholder="Enter your email address"
-        autocomplete="email"
         required
       />
 
@@ -1702,7 +1475,9 @@
   </section>
 
 
-  <!-- FOOTER -->
+  <!-- =========================
+       FOOTER
+  ========================== -->
 
   <footer>
 
@@ -1721,12 +1496,10 @@
   </footer>
 
 
-  <!-- JAVASCRIPT -->
-
   <script>
 
     /* ==========================================
-       SUPABASE CONNECTION
+       SUPABASE
     ========================================== */
 
     const SUPABASE_URL =
@@ -1766,77 +1539,29 @@
     const video =
       document.getElementById("video");
 
+    const youtubePlayer =
+      document.getElementById("youtubePlayer");
+
     const playerTitle =
       document.getElementById("playerTitle");
 
-    const authSection =
-      document.getElementById("auth-section");
-
-    const authTitle =
-      document.getElementById("auth-title");
-
-    const authButton =
-      document.getElementById("auth-button");
-
-    const authMessage =
-      document.getElementById("auth-message");
-
-    const emailInput =
-      document.getElementById("email");
-
-    const passwordInput =
-      document.getElementById("password");
-
-    const signinButton =
-      document.getElementById("signinButton");
-
-    const accountStatus =
-      document.getElementById("accountStatus");
-
-    const userEmail =
-      document.getElementById("userEmail");
-
-    const newsRow =
-      document.getElementById("newsRow");
-
-    const newsStatus =
-      document.getElementById("newsStatus");
-
-
-    /* ==========================================
-       LIVE ELEMENTS
-    ========================================== */
-
-    const liveFeature =
-      document.getElementById("liveFeature");
-
-    const liveEmpty =
-      document.getElementById("liveEmpty");
+    const liveRow =
+      document.getElementById("liveRow");
 
     const liveStatus =
       document.getElementById("liveStatus");
 
-    const liveIframe =
-      document.getElementById("liveIframe");
-
-    const liveTitle =
-      document.getElementById("liveTitle");
-
-    const liveDescription =
-      document.getElementById("liveDescription");
-
-    const upcomingLive =
-      document.getElementById("upcomingLive");
-
-    const liveUpcomingRow =
-      document.getElementById("liveUpcomingRow");
-
 
     /* ==========================================
-       VIDEO PLAYER
+       VIDEO / LIVE PLAYER
     ========================================== */
 
     function playVideo(name, url) {
+
+      youtubePlayer.style.display = "none";
+      youtubePlayer.src = "";
+
+      video.style.display = "block";
 
       playerTitle.textContent = name;
 
@@ -1845,13 +1570,156 @@
       player.classList.add("active");
 
       video.play().catch(function(error) {
-
         console.log(
-          "Video autoplay prevented:",
+          "Autoplay prevented:",
+          error
+        );
+      });
+
+    }
+
+
+    function extractYouTubeId(url) {
+
+      if (!url) {
+        return null;
+      }
+
+      try {
+
+        const parsed =
+          new URL(url);
+
+        if (
+          parsed.hostname.includes("youtube.com")
+        ) {
+
+          if (
+            parsed.pathname === "/watch"
+          ) {
+
+            return parsed.searchParams.get("v");
+
+          }
+
+          if (
+            parsed.pathname.startsWith("/live/")
+          ) {
+
+            return parsed.pathname
+              .split("/live/")[1]
+              .split("/")[0];
+
+          }
+
+          if (
+            parsed.pathname.startsWith("/embed/")
+          ) {
+
+            return parsed.pathname
+              .split("/embed/")[1]
+              .split("/")[0];
+
+          }
+
+        }
+
+        if (
+          parsed.hostname === "youtu.be"
+        ) {
+
+          return parsed.pathname
+            .replace("/", "")
+            .split("/")[0];
+
+        }
+
+      } catch(error) {
+
+        console.error(
+          "YouTube URL error:",
           error
         );
 
-      });
+      }
+
+      return null;
+
+    }
+
+
+    function playLiveEvent(title, streamUrl) {
+
+      if (!streamUrl) {
+
+        alert(
+          "This live event does not have a stream URL yet."
+        );
+
+        return;
+
+      }
+
+      const youtubeId =
+        extractYouTubeId(streamUrl);
+
+
+      playerTitle.textContent =
+        title || "Live";
+
+
+      if (youtubeId) {
+
+        video.pause();
+
+        video.src = "";
+
+        video.style.display =
+          "none";
+
+        youtubePlayer.style.display =
+          "block";
+
+        youtubePlayer.src =
+          "https://www.youtube.com/embed/" +
+          youtubeId +
+          "?autoplay=1";
+
+        player.classList.add(
+          "active"
+        );
+
+        return;
+
+      }
+
+
+      youtubePlayer.style.display =
+        "none";
+
+      youtubePlayer.src =
+        "";
+
+      video.style.display =
+        "block";
+
+      video.src =
+        streamUrl;
+
+      player.classList.add(
+        "active"
+      );
+
+      video.play().catch(
+        function(error) {
+
+          console.log(
+            "Live autoplay prevented:",
+            error
+          );
+
+        }
+      );
 
     }
 
@@ -1860,7 +1728,6 @@
 
       playVideo(
         "BRENZKafrica Cinema",
-
         "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
       );
 
@@ -1873,7 +1740,17 @@
 
       video.src = "";
 
-      player.classList.remove("active");
+      youtubePlayer.src = "";
+
+      youtubePlayer.style.display =
+        "none";
+
+      video.style.display =
+        "block";
+
+      player.classList.remove(
+        "active"
+      );
 
     }
 
@@ -1888,489 +1765,7 @@
 
 
     /* ==========================================
-       LIVE SYSTEM
-    ========================================== */
-
-    function getYouTubeVideoId(url) {
-
-      if (!url) {
-        return null;
-      }
-
-      try {
-
-        const parsed =
-          new URL(url);
-
-        if (
-          parsed.hostname.includes(
-            "youtu.be"
-          )
-        ) {
-
-          return parsed.pathname
-            .replace("/", "")
-            .trim();
-
-        }
-
-        if (
-          parsed.hostname.includes(
-            "youtube.com"
-          )
-        ) {
-
-          const videoId =
-            parsed.searchParams.get(
-              "v"
-            );
-
-          if (videoId) {
-            return videoId;
-          }
-
-          const parts =
-            parsed.pathname
-              .split("/")
-              .filter(Boolean);
-
-          const liveIndex =
-            parts.indexOf("live");
-
-          if (
-            liveIndex !== -1 &&
-            parts[liveIndex + 1]
-          ) {
-
-            return parts[
-              liveIndex + 1
-            ];
-
-          }
-
-          const embedIndex =
-            parts.indexOf("embed");
-
-          if (
-            embedIndex !== -1 &&
-            parts[embedIndex + 1]
-          ) {
-
-            return parts[
-              embedIndex + 1
-            ];
-
-          }
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "YouTube URL error:",
-          error
-        );
-
-      }
-
-      return null;
-
-    }
-
-
-    function getYouTubeEmbedUrl(url) {
-
-      const videoId =
-        getYouTubeVideoId(url);
-
-      if (!videoId) {
-        return null;
-      }
-
-      return (
-        "https://www.youtube.com/embed/" +
-        encodeURIComponent(videoId) +
-        "?autoplay=1&rel=0"
-      );
-
-    }
-
-
-    function formatLiveDate(dateValue) {
-
-      if (!dateValue) {
-        return "Date to be announced";
-      }
-
-      const date =
-        new Date(dateValue);
-
-      if (
-        Number.isNaN(
-          date.getTime()
-        )
-      ) {
-
-        return "Date to be announced";
-
-      }
-
-      return date.toLocaleString(
-        undefined,
-        {
-          weekday: "short",
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      );
-
-    }
-
-
-    function getEventStatus(event) {
-
-      const now =
-        new Date();
-
-      const start =
-        event.start_time
-          ? new Date(event.start_time)
-          : null;
-
-      const end =
-        event.end_time
-          ? new Date(event.end_time)
-          : null;
-
-
-      if (
-        start &&
-        !Number.isNaN(start.getTime()) &&
-        start > now
-      ) {
-
-        return "upcoming";
-
-      }
-
-
-      if (
-        start &&
-        !Number.isNaN(start.getTime()) &&
-        start <= now &&
-        (
-          !end ||
-          Number.isNaN(end.getTime()) ||
-          end > now
-        )
-      ) {
-
-        return "live";
-
-      }
-
-
-      if (
-        end &&
-        !Number.isNaN(end.getTime()) &&
-        end <= now
-      ) {
-
-        return "ended";
-
-      }
-
-
-      /*
-       If no start/end times have been entered,
-       we use the status field from Supabase.
-      */
-
-      return (
-        event.status ||
-        "upcoming"
-      ).toLowerCase();
-
-    }
-
-
-    function renderLiveEvent(event) {
-
-      if (!event) {
-
-        liveFeature.classList.remove(
-          "active"
-        );
-
-        liveEmpty.style.display =
-          "block";
-
-        liveStatus.textContent =
-          "Nothing live right now";
-
-        return;
-
-      }
-
-
-      const embedUrl =
-        getYouTubeEmbedUrl(
-          event.youtube_url
-        );
-
-
-      if (!embedUrl) {
-
-        liveFeature.classList.remove(
-          "active"
-        );
-
-        liveEmpty.style.display =
-          "block";
-
-        liveStatus.textContent =
-          "Live stream is not ready";
-
-        return;
-
-      }
-
-
-      liveTitle.textContent =
-        event.title ||
-        "BRENZKafrica Live";
-
-
-      liveDescription.textContent =
-        event.description ||
-        "Live broadcast from BRENZKafrica Plus.";
-
-
-      liveIframe.src =
-        embedUrl;
-
-
-      liveFeature.classList.add(
-        "active"
-      );
-
-      liveEmpty.style.display =
-        "none";
-
-
-      liveStatus.textContent =
-        "Live now";
-
-    }
-
-
-    function renderUpcomingEvents(events) {
-
-      if (
-        !Array.isArray(events) ||
-        events.length === 0
-      ) {
-
-        upcomingLive.style.display =
-          "none";
-
-        liveUpcomingRow.innerHTML =
-          "";
-
-        return;
-
-      }
-
-
-      upcomingLive.style.display =
-        "block";
-
-
-      liveUpcomingRow.innerHTML =
-        events.map(function(event) {
-
-          return `
-            <article class="live-card">
-
-              <div class="live-card-status">
-                UPCOMING
-              </div>
-
-              <div class="live-card-title">
-                ${escapeHTML(
-                  event.title ||
-                  "BRENZKafrica Live"
-                )}
-              </div>
-
-              <div class="live-card-description">
-                ${escapeHTML(
-                  event.description ||
-                  "Upcoming BRENZKafrica broadcast."
-                )}
-              </div>
-
-              <div class="live-card-date">
-                ${escapeHTML(
-                  formatLiveDate(
-                    event.start_time
-                  )
-                )}
-              </div>
-
-            </article>
-          `;
-
-        }).join("");
-
-    }
-
-
-    async function loadLiveEvents() {
-
-      liveStatus.textContent =
-        "Checking live broadcasts...";
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient
-            .from("live_events")
-            .select("*")
-            .order(
-              "start_time",
-              {
-                ascending: true
-              }
-            );
-
-
-        if (error) {
-
-          console.error(
-            "LIVE Supabase error:",
-            error
-          );
-
-          liveFeature.classList.remove(
-            "active"
-          );
-
-          liveEmpty.style.display =
-            "block";
-
-          liveEmpty.innerHTML =
-            `
-              <strong>
-                LIVE is being prepared
-              </strong>
-              Live broadcasts will appear here.
-            `;
-
-          liveStatus.textContent =
-            "LIVE unavailable";
-
-          return;
-
-        }
-
-
-        const events =
-          Array.isArray(data)
-            ? data
-            : [];
-
-
-        const liveEvents =
-          events.filter(function(event) {
-
-            return (
-              getEventStatus(event) ===
-              "live"
-            );
-
-          });
-
-
-        const upcomingEvents =
-          events.filter(function(event) {
-
-            return (
-              getEventStatus(event) ===
-              "upcoming"
-            );
-
-          });
-
-
-        /*
-          If more than one event is live,
-          the first one is featured.
-        */
-
-        if (
-          liveEvents.length > 0
-        ) {
-
-          renderLiveEvent(
-            liveEvents[0]
-          );
-
-        } else {
-
-          renderLiveEvent(null);
-
-        }
-
-
-        renderUpcomingEvents(
-          upcomingEvents
-        );
-
-
-      } catch (error) {
-
-        console.error(
-          "LIVE loading exception:",
-          error
-        );
-
-        liveStatus.textContent =
-          "LIVE unavailable";
-
-      }
-
-    }
-
-
-    /*
-      Load LIVE immediately.
-    */
-
-    loadLiveEvents();
-
-
-    /*
-      Check LIVE status every 30 seconds.
-      This allows Upcoming → LIVE → Ended
-      to update automatically.
-    */
-
-    setInterval(
-      loadLiveEvents,
-      30 * 1000
-    );
-
-
-    /* ==========================================
-       BREAKING NEWS
+       LIVE EVENTS
     ========================================== */
 
     function escapeHTML(value) {
@@ -2383,30 +1778,30 @@
       }
 
       return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
     }
 
 
-    function formatNewsDate(dateValue) {
+    function formatDate(value) {
 
-      if (!dateValue) {
+      if (!value) {
         return "";
       }
 
       const date =
-        new Date(dateValue);
+        new Date(value);
 
       if (
         Number.isNaN(
           date.getTime()
         )
       ) {
-        return dateValue;
+        return "";
       }
 
       return date.toLocaleString(
@@ -2423,92 +1818,95 @@
     }
 
 
-    function openNewsArticle(url) {
-
-      if (!url) {
-        return;
-      }
-
-      window.open(
-        url,
-        "_blank",
-        "noopener,noreferrer"
-      );
-
-    }
-
-
-    function renderBreakingNews(news) {
+    function renderLiveEvents(events) {
 
       if (
-        !Array.isArray(news) ||
-        news.length === 0
+        !events ||
+        events.length === 0
       ) {
 
-        newsRow.innerHTML =
-          '<div class="news-empty">' +
-          'No breaking news available right now.' +
+        liveRow.innerHTML =
+          '<div class="live-empty">' +
+          'No live events are available right now.' +
           '</div>';
 
-        newsStatus.textContent =
-          "No updates available";
+        liveStatus.textContent =
+          "No live events";
 
         return;
 
       }
 
 
-      newsRow.innerHTML =
-        news.map(function(item) {
+      liveRow.innerHTML =
+        events.map(function(event) {
 
           const title =
-            escapeHTML(item.title);
+            escapeHTML(
+              event.title ||
+              "Live Event"
+            );
 
           const description =
-            escapeHTML(item.description);
-
-          const source =
             escapeHTML(
-              item.source || "News"
+              event.description ||
+              "BRENZKafrica Live"
             );
 
-          const date =
+          const thumbnail =
+            event.thumbnail ||
+            "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
+
+          const safeThumbnail =
             escapeHTML(
-              formatNewsDate(item.date)
+              thumbnail
             );
 
-          const rawLink =
-            item.link || "";
+          const streamUrl =
+            event.stream_url ||
+            "";
 
-          const safeLink =
-            encodeURIComponent(rawLink);
+          const encodedUrl =
+            encodeURIComponent(
+              streamUrl
+            );
+
+          const isLive =
+            event.is_live === true;
+
+          const badge =
+            isLive
+              ? "🔴 LIVE NOW"
+              : "UPCOMING";
 
 
           return `
             <article
-              class="news-card"
-              data-news-link="${safeLink}"
-              onclick="openNewsCard(this)"
+              class="live-card"
+              data-title="${title}"
+              data-stream="${encodedUrl}"
+              onclick="openLiveCard(this)"
             >
 
-              <div>
+              <img
+                src="${safeThumbnail}"
+                alt="${title}"
+              >
 
-                <div class="news-source">
-                  ${source}
-                </div>
+              <div class="live-badge ${isLive ? "" : "upcoming-badge"}">
+                ${badge}
+              </div>
 
-                <div class="news-title">
+              <div class="live-card-info">
+
+                <div class="live-card-title">
                   ${title}
                 </div>
 
-                <div class="news-description">
+                <div class="live-card-description">
                   ${description}
                 </div>
 
-              </div>
-
-              <div class="news-date">
-                ${date}
               </div>
 
             </article>
@@ -2517,42 +1915,175 @@
         }).join("");
 
 
-      newsStatus.textContent =
-        "Live African news";
+      const liveCount =
+        events.filter(function(event) {
+          return event.is_live === true;
+        }).length;
+
+
+      liveStatus.textContent =
+        liveCount > 0
+          ? liveCount + " live now"
+          : "Upcoming broadcasts";
 
     }
 
 
-    function openNewsCard(card) {
+    function openLiveCard(card) {
 
       if (!card) {
         return;
       }
 
-      const encoded =
+      const title =
         card.getAttribute(
-          "data-news-link"
+          "data-title"
         );
 
-      if (!encoded) {
-        return;
-      }
+      const encoded =
+        card.getAttribute(
+          "data-stream"
+        );
+
+      let streamUrl = "";
 
       try {
 
-        const url =
-          decodeURIComponent(encoded);
+        streamUrl =
+          decodeURIComponent(
+            encoded || ""
+          );
 
-        openNewsArticle(url);
+      } catch(error) {
 
-      } catch (error) {
+        console.error(error);
+
+      }
+
+      playLiveEvent(
+        title,
+        streamUrl
+      );
+
+    }
+
+
+    async function loadLiveEvents() {
+
+      liveStatus.textContent =
+        "Updating...";
+
+      liveRow.innerHTML =
+        '<div class="live-empty">' +
+        'Loading live events...' +
+        '</div>';
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("live_events")
+            .select("*")
+            .order(
+              "created_at",
+              {
+                ascending: false
+              }
+            );
+
+
+        if (error) {
+
+          console.error(
+            "Live events error:",
+            error
+          );
+
+          throw error;
+
+        }
+
+
+        renderLiveEvents(
+          data || []
+        );
+
+
+      } catch(error) {
 
         console.error(
-          "News link error:",
+          "Unable to load live events:",
           error
         );
 
+        liveRow.innerHTML =
+          '<div class="live-empty">' +
+          'Unable to load Live right now. Check your Supabase table permissions.' +
+          '</div>';
+
+        liveStatus.textContent =
+          "Live unavailable";
+
       }
+
+    }
+
+
+    /* Load Live immediately */
+
+    loadLiveEvents();
+
+
+    /* Refresh Live every 30 seconds */
+
+    setInterval(
+      loadLiveEvents,
+      30 * 1000
+    );
+
+
+    /* ==========================================
+       BREAKING NEWS
+    ========================================== */
+
+    const newsRow =
+      document.getElementById("newsRow");
+
+    const newsStatus =
+      document.getElementById("newsStatus");
+
+
+    function formatNewsDate(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return value;
+      }
+
+      return date.toLocaleString(
+        undefined,
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
 
     }
 
@@ -2574,12 +2105,7 @@
           await fetch(
             NEWS_API_URL,
             {
-              method: "GET",
-              cache: "no-store",
-              headers: {
-                "Accept":
-                  "application/json"
-              }
+              cache: "no-store"
             }
           );
 
@@ -2587,7 +2113,7 @@
         if (!response.ok) {
 
           throw new Error(
-            "News API returned HTTP " +
+            "News API error " +
             response.status
           );
 
@@ -2598,45 +2124,121 @@
           await response.json();
 
 
-        console.log(
-          "BRENZKafrica News API:",
-          data
-        );
-
-
         if (
           !data ||
           data.success !== true
         ) {
 
           throw new Error(
-            "News API returned an invalid response."
+            "Invalid news response"
           );
 
         }
 
 
-        renderBreakingNews(
-          data.news
-        );
+        if (
+          !data.news ||
+          data.news.length === 0
+        ) {
+
+          newsRow.innerHTML =
+            '<div class="news-empty">' +
+            'No breaking news available right now.' +
+            '</div>';
+
+          newsStatus.textContent =
+            "No updates";
+
+          return;
+
+        }
 
 
-      } catch (error) {
+        newsRow.innerHTML =
+          data.news.map(function(item) {
+
+            return `
+              <article
+                class="news-card"
+                onclick="openNewsArticle('${encodeURIComponent(item.link || "")}')"
+              >
+
+                <div>
+
+                  <div class="news-source">
+                    ${escapeHTML(item.source || "News")}
+                  </div>
+
+                  <div class="news-title">
+                    ${escapeHTML(item.title)}
+                  </div>
+
+                  <div class="news-description">
+                    ${escapeHTML(item.description)}
+                  </div>
+
+                </div>
+
+                <div class="news-date">
+                  ${escapeHTML(formatNewsDate(item.date))}
+                </div>
+
+              </article>
+            `;
+
+          }).join("");
+
+
+        newsStatus.textContent =
+          "Live African news";
+
+
+      } catch(error) {
 
         console.error(
           "Breaking news error:",
           error
         );
 
-
         newsRow.innerHTML =
           '<div class="news-error">' +
-          'Unable to load breaking news right now. ' +
-          'Please try again.' +
+          'Unable to load breaking news right now.' +
           '</div>';
 
         newsStatus.textContent =
           "News unavailable";
+
+      }
+
+    }
+
+
+    function openNewsArticle(encoded) {
+
+      if (!encoded) {
+        return;
+      }
+
+      try {
+
+        const url =
+          decodeURIComponent(
+            encoded
+          );
+
+        if (url) {
+
+          window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+          );
+
+        }
+
+      } catch(error) {
+
+        console.error(error);
 
       }
 
@@ -2653,8 +2255,54 @@
 
 
     /* ==========================================
-       ACCOUNT PANEL
+       AUTH
     ========================================== */
+
+    const authSection =
+      document.getElementById(
+        "auth-section"
+      );
+
+    const authTitle =
+      document.getElementById(
+        "auth-title"
+      );
+
+    const authButton =
+      document.getElementById(
+        "auth-button"
+      );
+
+    const authMessage =
+      document.getElementById(
+        "auth-message"
+      );
+
+    const emailInput =
+      document.getElementById(
+        "email"
+      );
+
+    const passwordInput =
+      document.getElementById(
+        "password"
+      );
+
+    const signinButton =
+      document.getElementById(
+        "signinButton"
+      );
+
+    const accountStatus =
+      document.getElementById(
+        "accountStatus"
+      );
+
+    const userEmail =
+      document.getElementById(
+        "userEmail"
+      );
+
 
     function openAccount() {
 
@@ -2673,9 +2321,8 @@
         "active"
       );
 
-      authMessage.textContent = "";
-
-      authButton.disabled = false;
+      authMessage.textContent =
+        "";
 
     }
 
@@ -2688,35 +2335,74 @@
     }
 
 
-    function setAuthLoading(
-      loading,
-      text
-    ) {
+    async function signIn() {
+
+      const email =
+        emailInput.value.trim();
+
+      const password =
+        passwordInput.value;
+
+
+      if (!email || !password) {
+
+        showAuthMessage(
+          "Please enter your email and password."
+        );
+
+        return;
+
+      }
+
 
       authButton.disabled =
-        loading;
+        true;
 
-      if (loading) {
+      authButton.textContent =
+        "Signing in...";
 
-        authButton.textContent =
-          text;
 
-      } else {
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth
+          .signInWithPassword({
+            email,
+            password
+          });
 
-        authButton.textContent =
-          authTitle.textContent ===
-          "Sign In"
-            ? "Sign In"
-            : "Create Account";
+
+      authButton.disabled =
+        false;
+
+      authButton.textContent =
+        "Sign In";
+
+
+      if (error) {
+
+        showAuthMessage(
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      if (data.user) {
+
+        updateAccountUI(
+          data.user
+        );
+
+        closeAccount();
 
       }
 
     }
 
-
-    /* ==========================================
-       CREATE ACCOUNT
-    ========================================== */
 
     async function signUp() {
 
@@ -2749,121 +2435,35 @@
       }
 
 
-      setAuthLoading(
-        true,
-        "Creating account..."
-      );
+      authButton.disabled =
+        true;
+
+      authButton.textContent =
+        "Creating account...";
 
 
-      showAuthMessage(
-        "Creating your BRENZKafrica Plus account..."
-      );
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth.signUp({
-            email: email,
-            password: password
+      const {
+        data,
+        error
+      } =
+        await supabaseClient.auth
+          .signUp({
+            email,
+            password
           });
 
 
-        if (error) {
+      authButton.disabled =
+        false;
 
-          console.error(
-            "Supabase sign-up error:",
-            error
-          );
-
-          showAuthMessage(
-            error.message ||
-            "Unable to create account."
-          );
-
-          return;
-
-        }
+      authButton.textContent =
+        "Create Account";
 
 
-        if (data.user) {
-
-          if (data.session) {
-
-            showAuthMessage(
-              "Account created successfully! You are now signed in."
-            );
-
-            updateAccountUI(
-              data.user
-            );
-
-
-            setTimeout(function() {
-
-              closeAccount();
-
-            }, 1000);
-
-          } else {
-
-            showAuthMessage(
-              "Account created! Please check your email and confirm your account before signing in."
-            );
-
-          }
-
-        } else {
-
-          showAuthMessage(
-            "Account creation did not return a user. Please try again."
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Sign-up exception:",
-          error
-        );
+      if (error) {
 
         showAuthMessage(
-          "Connection error. Please check your internet connection and try again."
-        );
-
-      } finally {
-
-        setAuthLoading(
-          false,
-          ""
-        );
-
-      }
-
-    }
-
-
-    /* ==========================================
-       SIGN IN
-    ========================================== */
-
-    async function signIn() {
-
-      const email =
-        emailInput.value.trim();
-
-      const password =
-        passwordInput.value;
-
-
-      if (!email || !password) {
-
-        showAuthMessage(
-          "Please enter your email and password."
+          error.message
         );
 
         return;
@@ -2871,119 +2471,27 @@
       }
 
 
-      setAuthLoading(
-        true,
-        "Signing in..."
-      );
+      if (
+        data.session &&
+        data.user
+      ) {
 
-
-      showAuthMessage(
-        "Signing you in..."
-      );
-
-
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-
-        if (error) {
-
-          console.error(
-            "Supabase sign-in error:",
-            error
-          );
-
-
-          if (
-            error.message &&
-            error.message
-              .toLowerCase()
-              .includes(
-                "email not confirmed"
-              )
-          ) {
-
-            showAuthMessage(
-              "Your email has not been confirmed yet. Please check your email."
-            );
-
-          } else {
-
-            showAuthMessage(
-              error.message ||
-              "Unable to sign in."
-            );
-
-          }
-
-          return;
-
-        }
-
-
-        if (
-          data &&
+        updateAccountUI(
           data.user
-        ) {
-
-          updateAccountUI(
-            data.user
-          );
-
-
-          showAuthMessage(
-            "Welcome to BRENZKafrica Plus!"
-          );
-
-
-          setTimeout(function() {
-
-            closeAccount();
-
-          }, 800);
-
-        } else {
-
-          showAuthMessage(
-            "Login did not return a user. Please try again."
-          );
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Sign-in exception:",
-          error
         );
+
+        closeAccount();
+
+      } else {
 
         showAuthMessage(
-          "Connection error. Please try again."
-        );
-
-      } finally {
-
-        setAuthLoading(
-          false,
-          ""
+          "Account created. Please check your email to confirm your account."
         );
 
       }
 
     }
 
-
-    /* ==========================================
-       SWITCH TO SIGN UP
-    ========================================== */
 
     function showSignUp() {
 
@@ -2996,29 +2504,14 @@
       authButton.onclick =
         signUp;
 
-
       document.querySelector(
         ".auth-switch"
       ).innerHTML =
         'Already have an account? ' +
         '<button onclick="showSignIn()">Sign In</button>';
 
-
-      authMessage.textContent =
-        "";
-
-      emailInput.autocomplete =
-        "email";
-
-      passwordInput.autocomplete =
-        "new-password";
-
     }
 
-
-    /* ==========================================
-       SWITCH TO SIGN IN
-    ========================================== */
 
     function showSignIn() {
 
@@ -3031,29 +2524,14 @@
       authButton.onclick =
         signIn;
 
-
       document.querySelector(
         ".auth-switch"
       ).innerHTML =
         'Don\'t have an account? ' +
         '<button onclick="showSignUp()">Create Account</button>';
 
-
-      authMessage.textContent =
-        "";
-
-      emailInput.autocomplete =
-        "email";
-
-      passwordInput.autocomplete =
-        "current-password";
-
     }
 
-
-    /* ==========================================
-       UPDATE ACCOUNT UI
-    ========================================== */
 
     function updateAccountUI(user) {
 
@@ -3084,96 +2562,34 @@
     }
 
 
-    /* ==========================================
-       SIGN OUT
-    ========================================== */
-
     async function signOut() {
 
-      try {
+      await supabaseClient.auth.signOut();
 
-        const {
-          error
-        } =
-          await supabaseClient.auth.signOut();
-
-
-        if (error) {
-
-          console.error(
-            "Sign-out error:",
-            error
-          );
-
-          return;
-
-        }
-
-
-        updateAccountUI(null);
-
-      } catch (error) {
-
-        console.error(
-          "Sign-out exception:",
-          error
-        );
-
-      }
+      updateAccountUI(null);
 
     }
 
-
-    /* ==========================================
-       CHECK EXISTING SESSION
-    ========================================== */
 
     async function checkSession() {
 
-      try {
-
-        const {
-          data,
-          error
-        } =
-          await supabaseClient.auth.getSession();
+      const {
+        data
+      } =
+        await supabaseClient.auth
+          .getSession();
 
 
-        if (error) {
+      if (
+        data &&
+        data.session
+      ) {
 
-          console.error(
-            "Session error:",
-            error
-          );
-
-          updateAccountUI(null);
-
-          return;
-
-        }
-
-
-        if (
-          data &&
-          data.session
-        ) {
-
-          updateAccountUI(
-            data.session.user
-          );
-
-        } else {
-
-          updateAccountUI(null);
-
-        }
-
-      } catch (error) {
-
-        console.error(
-          "Session exception:",
-          error
+        updateAccountUI(
+          data.session.user
         );
+
+      } else {
 
         updateAccountUI(null);
 
@@ -3181,31 +2597,15 @@
 
     }
 
-
-    /* ==========================================
-       AUTH STATE CHANGE
-    ========================================== */
 
     supabaseClient.auth.onAuthStateChange(
       function(event, session) {
 
-        console.log(
-          "Auth event:",
-          event
+        updateAccountUI(
+          session
+            ? session.user
+            : null
         );
-
-
-        if (session) {
-
-          updateAccountUI(
-            session.user
-          );
-
-        } else {
-
-          updateAccountUI(null);
-
-        }
 
       }
     );
@@ -3234,92 +2634,23 @@
             .trim();
 
 
-        const cards =
-          document.querySelectorAll(
-            ".card"
-          );
-
-
-        cards.forEach(
-          function(card) {
+        document
+          .querySelectorAll(
+            ".card, .live-card, .news-card"
+          )
+          .forEach(function(card) {
 
             const text =
               card.innerText
                 .toLowerCase();
 
-
-            if (
+            card.style.display =
               !query ||
               text.includes(query)
-            ) {
+                ? ""
+                : "none";
 
-              card.style.display =
-                "";
-
-            } else {
-
-              card.style.display =
-                "none";
-
-            }
-
-          }
-        );
-
-
-        const newsCards =
-          document.querySelectorAll(
-            ".news-card"
-          );
-
-
-        newsCards.forEach(
-          function(card) {
-
-            const text =
-              card.innerText
-                .toLowerCase();
-
-
-            if (
-              !query ||
-              text.includes(query)
-            ) {
-
-              card.style.display =
-                "";
-
-            } else {
-
-              card.style.display =
-                "none";
-
-            }
-
-          }
-        );
-
-      }
-    );
-
-
-    /* ==========================================
-       ENTER KEY LOGIN
-    ========================================== */
-
-    passwordInput.addEventListener(
-      "keydown",
-      function(event) {
-
-        if (
-          event.key === "Enter"
-        ) {
-
-          event.preventDefault();
-
-          authButton.click();
-
-        }
+          });
 
       }
     );
@@ -3329,61 +2660,44 @@
        NEWSLETTER
     ========================================== */
 
-    const newsletterForm =
-      document.getElementById(
+    document
+      .getElementById(
         "newsletterForm"
-      );
+      )
+      .addEventListener(
+        "submit",
+        async function(event) {
 
-    const newsletterEmail =
-      document.getElementById(
-        "newsletterEmail"
-      );
-
-    const newsletterButton =
-      document.getElementById(
-        "newsletterButton"
-      );
-
-    const newsletterMessage =
-      document.getElementById(
-        "newsletter-message"
-      );
+          event.preventDefault();
 
 
-    newsletterForm.addEventListener(
-      "submit",
-      async function(event) {
-
-        event.preventDefault();
-
-
-        const email =
-          newsletterEmail.value
-            .trim()
-            .toLowerCase();
+          const email =
+            document
+              .getElementById(
+                "newsletterEmail"
+              )
+              .value
+              .trim()
+              .toLowerCase();
 
 
-        if (!email) {
+          const button =
+            document.getElementById(
+              "newsletterButton"
+            );
 
-          newsletterMessage.textContent =
-            "Please enter your email address.";
-
-          return;
-
-        }
-
-
-        newsletterButton.disabled =
-          true;
-
-        newsletterButton.textContent =
-          "Subscribing...";
-
-        newsletterMessage.textContent =
-          "";
+          const message =
+            document.getElementById(
+              "newsletter-message"
+            );
 
 
-        try {
+          button.disabled =
+            true;
+
+          button.textContent =
+            "Subscribing...";
+
 
           const {
             error
@@ -3394,71 +2708,44 @@
               )
               .insert([
                 {
-                  email: email
+                  email
                 }
               ]);
 
 
           if (error) {
 
-            console.error(
-              "Newsletter subscription error:",
-              error
-            );
-
-
-            if (
+            message.textContent =
               error.code === "23505"
-            ) {
+                ? "This email is already subscribed."
+                : "Unable to subscribe right now.";
 
-              newsletterMessage.textContent =
-                "This email is already subscribed.";
+          } else {
 
-            } else {
+            message.textContent =
+              "You're subscribed! Welcome to BRENZKafrica Plus.";
 
-              newsletterMessage.textContent =
-                "Unable to subscribe right now. Please try again.";
-
-            }
-
-            return;
+            document
+              .getElementById(
+                "newsletterEmail"
+              )
+              .value = "";
 
           }
 
 
-          newsletterMessage.textContent =
-            "You're subscribed! Welcome to BRENZKafrica Plus.";
-
-          newsletterEmail.value =
-            "";
-
-
-        } catch (error) {
-
-          console.error(
-            "Newsletter exception:",
-            error
-          );
-
-          newsletterMessage.textContent =
-            "Connection error. Please try again.";
-
-        } finally {
-
-          newsletterButton.disabled =
+          button.disabled =
             false;
 
-          newsletterButton.textContent =
+          button.textContent =
             "Subscribe";
 
         }
-
-      }
-    );
+      );
 
 
     /* ==========================================
-       ESCAPE KEY
+       ESCAPE
     ========================================== */
 
     document.addEventListener(
@@ -3470,7 +2757,6 @@
         ) {
 
           closePlayer();
-
           closeAccount();
 
         }
