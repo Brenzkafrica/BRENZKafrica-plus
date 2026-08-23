@@ -272,6 +272,7 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 18px;
+      gap: 15px;
     }
 
     .live-title {
@@ -311,6 +312,8 @@
     .live-status {
       color: #777;
       font-size: 12px;
+      flex: 1;
+      text-align: right;
     }
 
     .live-row {
@@ -398,6 +401,12 @@
       text-overflow: ellipsis;
     }
 
+    .live-card-time {
+      color: #888;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
     .live-empty {
       color: #777;
       padding: 25px 0;
@@ -448,6 +457,8 @@
     .breaking-news-status {
       color: #777;
       font-size: 12px;
+      flex: 1;
+      text-align: right;
     }
 
     .news-row {
@@ -852,6 +863,16 @@
       .account-status span {
         display: none;
       }
+
+      .live-header {
+        flex-wrap: wrap;
+      }
+
+      .live-status {
+        text-align: left;
+        flex-basis: 100%;
+        order: 3;
+      }
     }
   </style>
 </head>
@@ -899,7 +920,6 @@
         class="account-status"
         id="accountStatus"
       >
-
         <span id="userEmail"></span>
 
         <button
@@ -908,7 +928,6 @@
         >
           Sign Out
         </button>
-
       </div>
 
     </div>
@@ -935,9 +954,8 @@
       </h1>
 
       <p>
-        Discover original African stories, films,
-        series, documentaries and creative work
-        from BRENZKafrica.
+        Discover original African stories, films, series,
+        documentaries and creative work from BRENZKafrica.
       </p>
 
       <div class="hero-buttons">
@@ -1553,6 +1571,64 @@
 
 
     /* ==========================================
+       HTML ESCAPE
+    ========================================== */
+
+    function escapeHTML(value) {
+
+      if (
+        value === null ||
+        value === undefined
+      ) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* ==========================================
+       DATE FORMAT
+    ========================================== */
+
+    function formatDate(value) {
+
+      if (!value) {
+        return "";
+      }
+
+      const date =
+        new Date(value);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+        return "";
+      }
+
+      return date.toLocaleString(
+        undefined,
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
+
+    }
+
+
+    /* ==========================================
        VIDEO PLAYER
     ========================================== */
 
@@ -1570,10 +1646,12 @@
       player.classList.add("active");
 
       video.play().catch(function(error) {
+
         console.log(
           "Autoplay prevented:",
           error
         );
+
       });
 
     }
@@ -1653,10 +1731,13 @@
 
 
     /* ==========================================
-       PLAY LIVE EVENT
+       LIVE PLAYER
     ========================================== */
 
-    function playLiveEvent(title, streamUrl) {
+    function playLiveEvent(
+      title,
+      streamUrl
+    ) {
 
       if (!streamUrl) {
 
@@ -1671,9 +1752,8 @@
       const youtubeId =
         extractYouTubeId(streamUrl);
 
-
       playerTitle.textContent =
-        title || "Live";
+        title || "BRENZKafrica Live";
 
 
       if (youtubeId) {
@@ -1733,7 +1813,7 @@
 
 
     /* ==========================================
-       FEATURED
+       FEATURED VIDEO
     ========================================== */
 
     function playFeatured() {
@@ -1745,10 +1825,6 @@
 
     }
 
-
-    /* ==========================================
-       CLOSE PLAYER
-    ========================================== */
 
     function closePlayer() {
 
@@ -1771,10 +1847,6 @@
     }
 
 
-    /* ==========================================
-       INFO
-    ========================================== */
-
     function showInfo() {
 
       alert(
@@ -1785,65 +1857,12 @@
 
 
     /* ==========================================
-       ESCAPE HTML
-    ========================================== */
-
-    function escapeHTML(value) {
-
-      if (
-        value === null ||
-        value === undefined
-      ) {
-        return "";
-      }
-
-      return String(value)
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#039;");
-
-    }
-
-
-    /* ==========================================
-       FORMAT DATE
-    ========================================== */
-
-    function formatDate(value) {
-
-      if (!value) {
-        return "";
-      }
-
-      const date =
-        new Date(value);
-
-      if (
-        Number.isNaN(
-          date.getTime()
-        )
-      ) {
-        return "";
-      }
-
-      return date.toLocaleString(
-        undefined,
-        {
-          day: "numeric",
-          month: "short",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit"
-        }
-      );
-
-    }
-
-
-    /* ==========================================
-       RENDER LIVE EVENTS
+       LIVE EVENTS
+       
+       IMPORTANT:
+       We DO NOT order by created,
+       created_at, or any assumed
+       timestamp column.
     ========================================== */
 
     function renderLiveEvents(events) {
@@ -1872,13 +1891,13 @@
           const title =
             escapeHTML(
               event.title ||
-              "Live Event"
+              "BRENZKafrica Live"
             );
 
           const description =
             escapeHTML(
               event.description ||
-              "BRENZKafrica Live"
+              "Live broadcast from BRENZKafrica Plus"
             );
 
 
@@ -1894,16 +1913,42 @@
 
 
           /*
-           * Your current table does not necessarily
-           * contain stream_url or is_live yet.
-           *
-           * These are safely read if they exist.
-           */
+            Your database uses "status".
+            We therefore use status instead
+            of assuming an "is_live" column.
+          */
+
+          const status =
+            String(
+              event.status || "upcoming"
+            )
+            .toLowerCase()
+            .trim();
+
+
+          const isLive =
+            status === "live" ||
+            status === "live_now" ||
+            status === "live now" ||
+            status === "broadcasting";
+
+
+          const badge =
+            isLive
+              ? "🔴 LIVE NOW"
+              : "UPCOMING";
+
+
+          const badgeClass =
+            isLive
+              ? ""
+              : "upcoming-badge";
+
 
           const streamUrl =
             event.stream_url ||
-            event.youtube_url ||
             event.video_url ||
+            event.youtube_url ||
             "";
 
 
@@ -1913,47 +1958,31 @@
             );
 
 
-          /*
-           * Your database uses status.
-           *
-           * Current values can include:
-           * upcoming
-           * live
-           * ended
-           */
-
-          const status =
-            String(
-              event.status ||
-              "upcoming"
-            ).toLowerCase();
+          let timeText = "";
 
 
-          const isLive =
-            status === "live" ||
-            status === "live_now" ||
-            status === "live now";
+          if (
+            event.start_time
+          ) {
 
+            const formatted =
+              formatDate(
+                event.start_time
+              );
 
-          const badge =
-            isLive
-              ? "🔴 LIVE NOW"
-              : "UPCOMING";
+            if (formatted) {
 
+              timeText =
+                "Starts " +
+                formatted;
 
-          const startTime =
-            formatDate(
-              event.start_time
-            );
+            }
 
-
-          const timeText =
-            startTime
-              ? "Starts " + startTime
-              : "";
+          }
 
 
           return `
+
             <article
               class="live-card"
               data-title="${title}"
@@ -1966,30 +1995,32 @@
                 alt="${title}"
               >
 
-              <div class="live-badge ${isLive ? "" : "upcoming-badge"}">
+              <div
+                class="live-badge ${badgeClass}"
+              >
                 ${badge}
               </div>
 
-              <div class="live-card-info">
+              <div
+                class="live-card-info"
+              >
 
-                <div class="live-card-title">
+                <div
+                  class="live-card-title"
+                >
                   ${title}
                 </div>
 
-                <div class="live-card-description">
+                <div
+                  class="live-card-description"
+                >
                   ${description}
                 </div>
 
                 ${
                   timeText
                     ? `
-                      <div
-                        style="
-                          color:#777;
-                          font-size:10px;
-                          margin-top:5px;
-                        "
-                      >
+                      <div class="live-card-time">
                         ${escapeHTML(timeText)}
                       </div>
                     `
@@ -1999,27 +2030,32 @@
               </div>
 
             </article>
+
           `;
 
         }).join("");
 
 
       const liveCount =
-        events.filter(function(event) {
+        events.filter(
+          function(event) {
 
-          const status =
-            String(
-              event.status ||
-              ""
-            ).toLowerCase();
+            const status =
+              String(
+                event.status || ""
+              )
+              .toLowerCase()
+              .trim();
 
-          return (
-            status === "live" ||
-            status === "live_now" ||
-            status === "live now"
-          );
+            return (
+              status === "live" ||
+              status === "live_now" ||
+              status === "live now" ||
+              status === "broadcasting"
+            );
 
-        }).length;
+          }
+        ).length;
 
 
       liveStatus.textContent =
@@ -2052,6 +2088,7 @@
 
       let streamUrl = "";
 
+
       try {
 
         streamUrl =
@@ -2061,9 +2098,13 @@
 
       } catch(error) {
 
-        console.error(error);
+        console.error(
+          "Stream URL decode error:",
+          error
+        );
 
       }
+
 
       playLiveEvent(
         title,
@@ -2075,9 +2116,16 @@
 
     /* ==========================================
        LOAD LIVE EVENTS
-       IMPORTANT:
-       The database column is "created"
-       NOT "created_at".
+       
+       THIS IS THE IMPORTANT FIX.
+       
+       No .order("created")
+       No .order("created_at")
+       No assumed timestamp column.
+       
+       Supabase simply returns the
+       records that the RLS policy
+       allows the public to read.
     ========================================== */
 
     async function loadLiveEvents() {
@@ -2093,25 +2141,28 @@
 
       try {
 
-        const {
-          data,
-          error
-        } =
+        console.log(
+          "Loading live_events..."
+        );
+
+
+        const result =
           await supabaseClient
             .from("live_events")
-            .select("*")
-            .order(
-              "created",
-              {
-                ascending: false
-              }
-            );
+            .select("*");
+
+
+        const data =
+          result.data;
+
+        const error =
+          result.error;
 
 
         if (error) {
 
           console.error(
-            "Live events error:",
+            "SUPABASE LIVE EVENTS ERROR:",
             error
           );
 
@@ -2121,7 +2172,7 @@
 
 
         console.log(
-          "Live events loaded:",
+          "LIVE EVENTS DATA:",
           data
         );
 
@@ -2141,8 +2192,14 @@
 
         liveRow.innerHTML =
           '<div class="live-empty">' +
-          'Unable to load Live right now. ' +
-          'Please check the Supabase connection and table permissions.' +
+          'Unable to load Live right now.' +
+          '<br><br>' +
+          '<small>' +
+          escapeHTML(
+            error.message ||
+            "Unknown Supabase error"
+          ) +
+          '</small>' +
           '</div>';
 
 
@@ -2154,20 +2211,18 @@
     }
 
 
-    /* ==========================================
-       LOAD LIVE IMMEDIATELY
-    ========================================== */
+    /* Load Live */
 
     loadLiveEvents();
 
 
-    /* ==========================================
-       REFRESH LIVE EVERY 30 SECONDS
-    ========================================== */
+    /*
+      Refresh every 30 seconds.
+    */
 
     setInterval(
       loadLiveEvents,
-      30 * 1000
+      30000
     );
 
 
@@ -2284,38 +2339,53 @@
 
 
         newsRow.innerHTML =
-          data.news.map(function(item) {
+          data.news.map(
+            function(item) {
 
-            return `
-              <article
-                class="news-card"
-                onclick="openNewsArticle('${encodeURIComponent(item.link || "")}')"
-              >
+              return `
 
-                <div>
+                <article
+                  class="news-card"
+                  onclick="openNewsArticle('${encodeURIComponent(item.link || "")}')"
+                >
 
-                  <div class="news-source">
-                    ${escapeHTML(item.source || "News")}
+                  <div>
+
+                    <div class="news-source">
+                      ${escapeHTML(
+                        item.source ||
+                        "News"
+                      )}
+                    </div>
+
+                    <div class="news-title">
+                      ${escapeHTML(
+                        item.title
+                      )}
+                    </div>
+
+                    <div class="news-description">
+                      ${escapeHTML(
+                        item.description
+                      )}
+                    </div>
+
                   </div>
 
-                  <div class="news-title">
-                    ${escapeHTML(item.title)}
+                  <div class="news-date">
+                    ${escapeHTML(
+                      formatNewsDate(
+                        item.date
+                      )
+                    )}
                   </div>
 
-                  <div class="news-description">
-                    ${escapeHTML(item.description)}
-                  </div>
+                </article>
 
-                </div>
+              `;
 
-                <div class="news-date">
-                  ${escapeHTML(formatNewsDate(item.date))}
-                </div>
-
-              </article>
-            `;
-
-          }).join("");
+            }
+          ).join("");
 
 
         newsStatus.textContent =
@@ -2342,7 +2412,9 @@
     }
 
 
-    function openNewsArticle(encoded) {
+    function openNewsArticle(
+      encoded
+    ) {
 
       if (!encoded) {
         return;
@@ -2367,7 +2439,9 @@
 
       } catch(error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
@@ -2456,7 +2530,9 @@
     }
 
 
-    function showAuthMessage(message) {
+    function showAuthMessage(
+      message
+    ) {
 
       authMessage.textContent =
         message;
@@ -2473,7 +2549,10 @@
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Please enter your email and password."
@@ -2542,7 +2621,10 @@
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Please enter your email and password."
@@ -2553,7 +2635,9 @@
       }
 
 
-      if (password.length < 6) {
+      if (
+        password.length < 6
+      ) {
 
         showAuthMessage(
           "Password must be at least 6 characters."
@@ -2673,7 +2757,8 @@
           "flex";
 
         userEmail.textContent =
-          user.email || "Viewer";
+          user.email ||
+          "Viewer";
 
       } else {
 
@@ -2695,7 +2780,9 @@
 
       await supabaseClient.auth.signOut();
 
-      updateAccountUI(null);
+      updateAccountUI(
+        null
+      );
 
     }
 
@@ -2720,7 +2807,9 @@
 
       } else {
 
-        updateAccountUI(null);
+        updateAccountUI(
+          null
+        );
 
       }
 
@@ -2728,7 +2817,10 @@
 
 
     supabaseClient.auth.onAuthStateChange(
-      function(event, session) {
+      function(
+        event,
+        session
+      ) {
 
         updateAccountUI(
           session
@@ -2767,19 +2859,21 @@
           .querySelectorAll(
             ".card, .live-card, .news-card"
           )
-          .forEach(function(card) {
+          .forEach(
+            function(card) {
 
-            const text =
-              card.innerText
-                .toLowerCase();
+              const text =
+                card.innerText
+                  .toLowerCase();
 
-            card.style.display =
-              !query ||
-              text.includes(query)
-                ? ""
-                : "none";
+              card.style.display =
+                !query ||
+                text.includes(query)
+                  ? ""
+                  : "none";
 
-          });
+            }
+          );
 
       }
     );
