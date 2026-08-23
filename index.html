@@ -272,6 +272,7 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 18px;
+      gap: 15px;
     }
 
     .live-title {
@@ -311,6 +312,7 @@
     .live-status {
       color: #777;
       font-size: 12px;
+      margin-left: auto;
     }
 
     .live-row {
@@ -376,6 +378,10 @@
       background: #333;
     }
 
+    .ended-badge {
+      background: #555;
+    }
+
     .live-card-info {
       position: absolute;
       z-index: 3;
@@ -396,6 +402,12 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .live-card-time {
+      color: #999;
+      font-size: 11px;
+      margin-top: 5px;
     }
 
     .live-empty {
@@ -448,6 +460,7 @@
     .breaking-news-status {
       color: #777;
       font-size: 12px;
+      margin-left: auto;
     }
 
     .news-row {
@@ -852,6 +865,14 @@
       .account-status span {
         display: none;
       }
+
+      .live-header {
+        flex-wrap: wrap;
+      }
+
+      .live-status {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
@@ -1067,11 +1088,8 @@
       <div class="live-header">
 
         <div class="live-title">
-
           <span class="live-dot"></span>
-
           Live
-
         </div>
 
         <div
@@ -1576,10 +1594,6 @@
     }
 
 
-    /* ==========================================
-       YOUTUBE ID
-    ========================================== */
-
     function extractYouTubeId(url) {
 
       if (!url) {
@@ -1588,8 +1602,7 @@
 
       try {
 
-        const parsed =
-          new URL(url);
+        const parsed = new URL(url);
 
         if (
           parsed.hostname.includes("youtube.com")
@@ -1649,10 +1662,6 @@
     }
 
 
-    /* ==========================================
-       LIVE PLAYER
-    ========================================== */
-
     function playLiveEvent(title, streamUrl) {
 
       if (!streamUrl) {
@@ -1671,46 +1680,38 @@
       playerTitle.textContent =
         title || "Live";
 
+
       if (youtubeId) {
 
         video.pause();
 
         video.src = "";
 
-        video.style.display =
-          "none";
+        video.style.display = "none";
 
-        youtubePlayer.style.display =
-          "block";
+        youtubePlayer.style.display = "block";
 
         youtubePlayer.src =
           "https://www.youtube.com/embed/" +
           youtubeId +
           "?autoplay=1";
 
-        player.classList.add(
-          "active"
-        );
+        player.classList.add("active");
 
         return;
 
       }
 
-      youtubePlayer.style.display =
-        "none";
 
-      youtubePlayer.src =
-        "";
+      youtubePlayer.style.display = "none";
 
-      video.style.display =
-        "block";
+      youtubePlayer.src = "";
 
-      video.src =
-        streamUrl;
+      video.style.display = "block";
 
-      player.classList.add(
-        "active"
-      );
+      video.src = streamUrl;
+
+      player.classList.add("active");
 
       video.play().catch(
         function(error) {
@@ -1726,10 +1727,6 @@
     }
 
 
-    /* ==========================================
-       FEATURED
-    ========================================== */
-
     function playFeatured() {
 
       playVideo(
@@ -1740,10 +1737,6 @@
     }
 
 
-    /* ==========================================
-       CLOSE PLAYER
-    ========================================== */
-
     function closePlayer() {
 
       video.pause();
@@ -1752,22 +1745,14 @@
 
       youtubePlayer.src = "";
 
-      youtubePlayer.style.display =
-        "none";
+      youtubePlayer.style.display = "none";
 
-      video.style.display =
-        "block";
+      video.style.display = "block";
 
-      player.classList.remove(
-        "active"
-      );
+      player.classList.remove("active");
 
     }
 
-
-    /* ==========================================
-       INFO
-    ========================================== */
 
     function showInfo() {
 
@@ -1779,7 +1764,7 @@
 
 
     /* ==========================================
-       ESCAPE HTML
+       HELPERS
     ========================================== */
 
     function escapeHTML(value) {
@@ -1801,23 +1786,16 @@
     }
 
 
-    /* ==========================================
-       FORMAT DATE
-    ========================================== */
-
     function formatDate(value) {
 
       if (!value) {
         return "";
       }
 
-      const date =
-        new Date(value);
+      const date = new Date(value);
 
       if (
-        Number.isNaN(
-          date.getTime()
-        )
+        Number.isNaN(date.getTime())
       ) {
         return "";
       }
@@ -1837,7 +1815,86 @@
 
 
     /* ==========================================
-       LIVE EVENTS
+       LIVE STATUS
+       Uses the REAL database column:
+       status
+    ========================================== */
+
+    function normalizeLiveStatus(status) {
+
+      return String(
+        status || ""
+      )
+        .toLowerCase()
+        .trim()
+        .replace(/[\s-]+/g, "_");
+
+    }
+
+
+    function isLiveStatus(status) {
+
+      const value =
+        normalizeLiveStatus(status);
+
+      return [
+        "live",
+        "live_now",
+        "live_now_",
+        "broadcasting",
+        "on_air",
+        "active"
+      ].includes(value);
+
+    }
+
+
+    function isEndedStatus(status) {
+
+      const value =
+        normalizeLiveStatus(status);
+
+      return [
+        "ended",
+        "finished",
+        "completed",
+        "cancelled",
+        "canceled"
+      ].includes(value);
+
+    }
+
+
+    function getLiveBadge(status) {
+
+      if (isLiveStatus(status)) {
+
+        return {
+          text: "🔴 LIVE NOW",
+          className: ""
+        };
+
+      }
+
+      if (isEndedStatus(status)) {
+
+        return {
+          text: "ENDED",
+          className: "ended-badge"
+        };
+
+      }
+
+      return {
+        text: "UPCOMING",
+        className: "upcoming-badge"
+      };
+
+    }
+
+
+    /* ==========================================
+       RENDER LIVE EVENTS
     ========================================== */
 
     function renderLiveEvents(events) {
@@ -1866,13 +1923,13 @@
           const title =
             escapeHTML(
               event.title ||
-              "Live Event"
+              "BRENZKafrica Live"
             );
 
           const description =
             escapeHTML(
               event.description ||
-              "BRENZKafrica Live"
+              "BRENZKafrica Live broadcast"
             );
 
 
@@ -1882,63 +1939,50 @@
 
 
           const safeThumbnail =
-            escapeHTML(
-              thumbnail
-            );
+            escapeHTML(thumbnail);
 
 
           /*
-             Your Supabase table currently
-             does not necessarily have stream_url.
+             Your current database does not show
+             stream_url.
 
-             We support several possible names
-             so we can connect the stream later.
+             We therefore safely check several
+             possible names in case you add one later.
           */
 
           const streamUrl =
             event.stream_url ||
             event.youtube_url ||
             event.video_url ||
+            event.broadcast_url ||
             "";
 
 
           const encodedUrl =
-            encodeURIComponent(
-              streamUrl
+            encodeURIComponent(streamUrl);
+
+
+          const status =
+            normalizeLiveStatus(
+              event.status
             );
 
 
-          /*
-             Your database uses "status"
-             rather than "is_live".
-          */
-
-          const status =
-            String(
-              event.status || ""
-            ).toLowerCase();
+          const badge =
+            getLiveBadge(
+              event.status
+            );
 
 
-          const isLive =
-            status === "live" ||
-            status === "live_now" ||
-            status === "broadcasting";
+          let timeText = "";
 
+          if (event.start_time) {
 
-          const isUpcoming =
-            status === "upcoming";
+            timeText =
+              formatDate(
+                event.start_time
+              );
 
-
-          let badge = "UPCOMING";
-
-
-          if (isLive) {
-            badge = "🔴 LIVE NOW";
-          } else if (
-            status === "ended" ||
-            status === "completed"
-          ) {
-            badge = "ENDED";
           }
 
 
@@ -1947,6 +1991,7 @@
               class="live-card"
               data-title="${title}"
               data-stream="${encodedUrl}"
+              data-status="${escapeHTML(status)}"
               onclick="openLiveCard(this)"
             >
 
@@ -1955,8 +2000,8 @@
                 alt="${title}"
               >
 
-              <div class="live-badge ${isLive ? "" : "upcoming-badge"}">
-                ${badge}
+              <div class="live-badge ${badge.className}">
+                ${badge.text}
               </div>
 
               <div class="live-card-info">
@@ -1969,6 +2014,16 @@
                   ${description}
                 </div>
 
+                ${
+                  timeText
+                  ? `
+                    <div class="live-card-time">
+                      ${escapeHTML(timeText)}
+                    </div>
+                  `
+                  : ""
+                }
+
               </div>
 
             </article>
@@ -1980,16 +2035,18 @@
       const liveCount =
         events.filter(function(event) {
 
-          const status =
-            String(
-              event.status || ""
-            ).toLowerCase();
-
-          return (
-            status === "live" ||
-            status === "live_now" ||
-            status === "broadcasting"
+          return isLiveStatus(
+            event.status
           );
+
+        }).length;
+
+
+      const upcomingCount =
+        events.filter(function(event) {
+
+          return !isLiveStatus(event.status) &&
+                 !isEndedStatus(event.status);
 
         }).length;
 
@@ -1998,26 +2055,26 @@
 
         liveStatus.textContent =
           liveCount +
-          " live now";
+          (
+            liveCount === 1
+              ? " live now"
+              : " live now"
+          );
+
+      } else if (upcomingCount > 0) {
+
+        liveStatus.textContent =
+          upcomingCount +
+          (
+            upcomingCount === 1
+              ? " upcoming broadcast"
+              : " upcoming broadcasts"
+          );
 
       } else {
 
-        const upcomingCount =
-          events.filter(function(event) {
-
-            return String(
-              event.status || ""
-            ).toLowerCase() === "upcoming";
-
-          }).length;
-
-
         liveStatus.textContent =
-          upcomingCount > 0
-            ? upcomingCount +
-              " upcoming broadcast" +
-              (upcomingCount === 1 ? "" : "s")
-            : "No live broadcasts";
+          "No live broadcasts";
 
       }
 
@@ -2047,6 +2104,12 @@
         );
 
 
+      const status =
+        card.getAttribute(
+          "data-status"
+        );
+
+
       let streamUrl = "";
 
 
@@ -2064,6 +2127,34 @@
       }
 
 
+      /*
+         If the event is upcoming and has no
+         broadcast URL yet, don't try to play it.
+      */
+
+      if (!streamUrl) {
+
+        if (
+          !isLiveStatus(status)
+        ) {
+
+          alert(
+            "This BRENZKafrica broadcast is upcoming. The stream will be available when the broadcast begins."
+          );
+
+        } else {
+
+          alert(
+            "This live event does not have a stream URL yet."
+          );
+
+        }
+
+        return;
+
+      }
+
+
       playLiveEvent(
         title,
         streamUrl
@@ -2076,8 +2167,7 @@
        LOAD LIVE EVENTS
        
        IMPORTANT:
-       Your table uses "created",
-       NOT "created_at".
+       Uses "created", NOT "created_at".
     ========================================== */
 
     async function loadLiveEvents() {
@@ -2094,10 +2184,12 @@
 
       try {
 
-        const {
-          data,
-          error
-        } =
+        console.log(
+          "Loading live_events..."
+        );
+
+
+        const result =
           await supabaseClient
             .from("live_events")
             .select("*")
@@ -2109,63 +2201,63 @@
             );
 
 
+        const data =
+          result.data;
+
+        const error =
+          result.error;
+
+
         if (error) {
 
           console.error(
-            "Live events error:",
+            "LIVE EVENTS SUPABASE ERROR:",
             error
           );
 
-          throw error;
-
-        }
-
-
-        /*
-           This helps us see exactly what
-           Supabase is returning.
-        */
-
-        console.log(
-          "LIVE EVENTS FROM SUPABASE:",
-          data
-        );
-
-
-        if (
-          !data ||
-          data.length === 0
-        ) {
-
           liveRow.innerHTML =
             '<div class="live-empty">' +
-            'No live events are available right now.' +
+            'Unable to load Live: ' +
+            escapeHTML(
+              error.message ||
+              "Unknown Supabase error"
+            ) +
             '</div>';
 
           liveStatus.textContent =
-            "No live events";
+            "Live unavailable";
 
           return;
 
         }
 
 
-        renderLiveEvents(
+        console.log(
+          "LIVE EVENTS DATA:",
           data
+        );
+
+
+        renderLiveEvents(
+          data || []
         );
 
 
       } catch(error) {
 
         console.error(
-          "Unable to load live events:",
+          "LIVE EVENTS EXCEPTION:",
           error
         );
 
 
         liveRow.innerHTML =
           '<div class="live-empty">' +
-          'Unable to load Live right now. Check your Supabase table permissions.' +
+          'Unable to load Live: ' +
+          escapeHTML(
+            error.message ||
+            "Unexpected error"
+          ) +
           '</div>';
 
 
@@ -2177,16 +2269,16 @@
     }
 
 
-    /* ==========================================
-       LOAD LIVE IMMEDIATELY
-    ========================================== */
+    /*
+       Load Live immediately.
+    */
 
     loadLiveEvents();
 
 
-    /* ==========================================
-       REFRESH LIVE EVERY 30 SECONDS
-    ========================================== */
+    /*
+       Automatically refresh Live every 30 seconds.
+    */
 
     setInterval(
       loadLiveEvents,
@@ -2199,14 +2291,10 @@
     ========================================== */
 
     const newsRow =
-      document.getElementById(
-        "newsRow"
-      );
+      document.getElementById("newsRow");
 
     const newsStatus =
-      document.getElementById(
-        "newsStatus"
-      );
+      document.getElementById("newsStatus");
 
 
     function formatNewsDate(value) {
@@ -2223,7 +2311,9 @@
           date.getTime()
         )
       ) {
+
         return value;
+
       }
 
       return date.toLocaleString(
@@ -2323,17 +2413,19 @@
                   </div>
 
                   <div class="news-title">
-                    ${escapeHTML(item.title)}
+                    ${escapeHTML(item.title || "")}
                   </div>
 
                   <div class="news-description">
-                    ${escapeHTML(item.description)}
+                    ${escapeHTML(item.description || "")}
                   </div>
 
                 </div>
 
                 <div class="news-date">
-                  ${escapeHTML(formatNewsDate(item.date))}
+                  ${escapeHTML(
+                    formatNewsDate(item.date)
+                  )}
                 </div>
 
               </article>
@@ -2374,14 +2466,10 @@
         return;
       }
 
-
       try {
 
         const url =
-          decodeURIComponent(
-            encoded
-          );
-
+          decodeURIComponent(encoded);
 
         if (url) {
 
@@ -2420,48 +2508,40 @@
         "auth-section"
       );
 
-
     const authTitle =
       document.getElementById(
         "auth-title"
       );
-
 
     const authButton =
       document.getElementById(
         "auth-button"
       );
 
-
     const authMessage =
       document.getElementById(
         "auth-message"
       );
-
 
     const emailInput =
       document.getElementById(
         "email"
       );
 
-
     const passwordInput =
       document.getElementById(
         "password"
       );
-
 
     const signinButton =
       document.getElementById(
         "signinButton"
       );
 
-
     const accountStatus =
       document.getElementById(
         "accountStatus"
       );
-
 
     const userEmail =
       document.getElementById(
@@ -2663,14 +2743,11 @@
       authTitle.textContent =
         "Create Account";
 
-
       authButton.textContent =
         "Create Account";
 
-
       authButton.onclick =
         signUp;
-
 
       document.querySelector(
         ".auth-switch"
@@ -2686,14 +2763,11 @@
       authTitle.textContent =
         "Sign In";
 
-
       authButton.textContent =
         "Sign In";
 
-
       authButton.onclick =
         signIn;
-
 
       document.querySelector(
         ".auth-switch"
@@ -2868,7 +2942,6 @@
           button.disabled =
             true;
 
-
           button.textContent =
             "Subscribing...";
 
@@ -2899,7 +2972,6 @@
             message.textContent =
               "You're subscribed! Welcome to BRENZKafrica Plus.";
 
-
             document
               .getElementById(
                 "newsletterEmail"
@@ -2911,7 +2983,6 @@
 
           button.disabled =
             false;
-
 
           button.textContent =
             "Subscribe";
@@ -2933,7 +3004,6 @@
         ) {
 
           closePlayer();
-
           closeAccount();
 
         }
