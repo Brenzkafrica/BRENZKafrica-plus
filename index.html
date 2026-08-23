@@ -350,11 +350,8 @@
 
       border: 1px solid #292929;
       border-radius: 8px;
-
       padding: 18px;
-
       cursor: pointer;
-
       transition: 0.3s;
 
       display: flex;
@@ -636,7 +633,6 @@
 
       border: 1px solid #292929;
       border-radius: 10px;
-
       text-align: center;
     }
 
@@ -656,7 +652,6 @@
       display: flex;
       justify-content: center;
       gap: 10px;
-
       max-width: 600px;
       margin: auto;
     }
@@ -664,17 +659,11 @@
     .newsletter-form input {
       flex: 1;
       min-width: 0;
-
       background: #050505;
-
       border: 1px solid #444;
-
       color: white;
-
       padding: 14px;
-
       border-radius: 5px;
-
       outline: none;
     }
 
@@ -862,6 +851,7 @@
         class="account-status"
         id="accountStatus"
       >
+
         <span id="userEmail"></span>
 
         <button
@@ -870,6 +860,7 @@
         >
           Sign Out
         </button>
+
       </div>
 
     </div>
@@ -1042,7 +1033,7 @@
           class="breaking-news-status"
           id="newsStatus"
         >
-          Connecting to BRENZKafrica News...
+          Loading latest African news...
         </div>
 
         <button
@@ -1060,7 +1051,7 @@
       >
 
         <div class="news-loading">
-          Loading latest African news...
+          Loading breaking news...
         </div>
 
       </div>
@@ -1395,7 +1386,7 @@
   <script>
 
     /* ==========================================
-       SUPABASE
+       SUPABASE CONNECTION
     ========================================== */
 
     const SUPABASE_URL =
@@ -1419,126 +1410,11 @@
 
 
     /* ==========================================
-       NEWS API
-       IMPORTANT:
-       Use the production BRENZKafrica domain.
+       BRENZKAFRICA NEWS API
+       CORRECTED: SAME VERCEL DOMAIN
     ========================================== */
 
-    const NEWS_API_URL =
-      "https://brenz-kafrica-plus.vercel.app/api/news";
-
-
-    /* ==========================================
-       FALLBACK NEWS
-       These are only used if the API temporarily
-       cannot be reached.
-    ========================================== */
-
-    const FALLBACK_NEWS = [
-
-      {
-        title:
-          "Youth caravan steps up Ebola awareness amid attacks on response teams",
-
-        link:
-          "http://www.africanews.com/2026/08/23/youth-caravan-steps-up-ebola-awareness-amid-attacks-on-response-teams/",
-
-        description:
-          "Response teams in Ituri and North Kivu provinces have faced intense mistrust, fueled by rumors and misinformation, in a region also torn by violence from multiple armed groups.",
-
-        source:
-          "Africanews",
-
-        date:
-          "Sun, 23 Aug 2026 10:52:19 +0000"
-      },
-
-      {
-        title:
-          "Former world champion boxer Zolani Tete killed in South Africa",
-
-        link:
-          "http://www.africanews.com/2026/08/23/former-world-champion-boxer-zolani-tete-killed-in-south-africa/",
-
-        description:
-          "Former world champion boxer Zolani Tete has been shot and killed at his home in South Africa, government officials said Friday.",
-
-        source:
-          "Africanews",
-
-        date:
-          "Sun, 23 Aug 2026 09:35:26 +0000"
-      },
-
-      {
-        title:
-          "Ethiopia: Tigrayan women celebrate Ashenda amid fears of new war",
-
-        link:
-          "http://www.africanews.com/2026/08/23/ethiopia-tigrayan-women-celebrate-ashenda-amid-fears-of-new-war/",
-
-        description:
-          "In Addis Ababa, Tigrayan women gather to celebrate Ashenda, while expressing hopes for lasting peace in Ethiopia's Tigray region.",
-
-        source:
-          "Africanews",
-
-        date:
-          "Sun, 23 Aug 2026 08:25:06 +0000"
-      },
-
-      {
-        title:
-          "DRC: Ex-president Kabila challenges US sanctions in court",
-
-        link:
-          "http://www.africanews.com/2026/08/23/drc-ex-president-kabila-challenges-us-sanctions-in-court/",
-
-        description:
-          "Joseph Kabila, who led Congo from 2001 to 2019, is challenging US sanctions in court.",
-
-        source:
-          "Africanews",
-
-        date:
-          "Sun, 23 Aug 2026 07:15:08 +0000"
-      },
-
-      {
-        title:
-          "Ebola gathering ban stalls cultural revival in eastern Congo’s Goma",
-
-        link:
-          "http://www.africanews.com/2026/08/22/ebola-gathering-ban-stalls-cultural-revival-in-eastern-congos-goma/",
-
-        description:
-          "Goma's cultural scene has faced another shutdown following an Ebola outbreak and restrictions on gatherings.",
-
-        source:
-          "Africanews",
-
-        date:
-          "Sat, 22 Aug 2026 14:59:17 +0000"
-      },
-
-      {
-        title:
-          "Sudan farms lie barren as El Nino leaves Nile banks dry",
-
-        link:
-          "http://www.africanews.com/2026/08/22/sudan-farms-lie-barren-as-el-nino-leaves-nile-banks-dry/",
-
-        description:
-          "Across Sudan, farmland lies fallow as farmers struggle with destruction and difficult conditions.",
-
-        source:
-          "Africanews",
-
-        date:
-          "Sat, 22 Aug 2026 14:00:00 +0000"
-      }
-
-    ];
+    const NEWS_API_URL = "/api/news";
 
 
     /* ==========================================
@@ -1644,7 +1520,7 @@
 
 
     /* ==========================================
-       NEWS HELPERS
+       BREAKING NEWS
     ========================================== */
 
     function escapeHTML(value) {
@@ -1653,9 +1529,7 @@
         value === null ||
         value === undefined
       ) {
-
         return "";
-
       }
 
       return String(value)
@@ -1671,25 +1545,19 @@
     function formatNewsDate(dateValue) {
 
       if (!dateValue) {
-
         return "";
-
       }
 
       const date =
         new Date(dateValue);
-
 
       if (
         Number.isNaN(
           date.getTime()
         )
       ) {
-
         return dateValue;
-
       }
-
 
       return date.toLocaleString(
         undefined,
@@ -1708,9 +1576,7 @@
     function openNewsArticle(url) {
 
       if (!url) {
-
         return;
-
       }
 
       window.open(
@@ -1722,14 +1588,7 @@
     }
 
 
-    /* ==========================================
-       RENDER NEWS
-    ========================================== */
-
-    function renderBreakingNews(
-      news,
-      usingFallback = false
-    ) {
+    function renderBreakingNews(news) {
 
       if (
         !Array.isArray(news) ||
@@ -1753,14 +1612,10 @@
         news.map(function(item) {
 
           const title =
-            escapeHTML(
-              item.title
-            );
+            escapeHTML(item.title);
 
           const description =
-            escapeHTML(
-              item.description
-            );
+            escapeHTML(item.description);
 
           const source =
             escapeHTML(
@@ -1769,24 +1624,21 @@
 
           const date =
             escapeHTML(
-              formatNewsDate(
-                item.date
-              )
+              formatNewsDate(item.date)
             );
 
+          const rawLink =
+            item.link || "";
 
           const safeLink =
-            String(
-              item.link || "#"
-            )
-            .replace(/'/g, "%27");
+            encodeURIComponent(rawLink);
 
 
           return `
-
             <article
               class="news-card"
-              onclick="openNewsArticle('${safeLink}')"
+              data-news-link="${safeLink}"
+              onclick="openNewsCard(this)"
             >
 
               <div>
@@ -1810,36 +1662,55 @@
               </div>
 
             </article>
-
           `;
 
         }).join("");
 
 
-      if (usingFallback) {
+      newsStatus.textContent =
+        "Live African news";
 
-        newsStatus.textContent =
-          "Latest available African news";
+    }
 
-      } else {
 
-        newsStatus.textContent =
-          "Live African news";
+    function openNewsCard(card) {
+
+      if (!card) {
+        return;
+      }
+
+      const encoded =
+        card.getAttribute(
+          "data-news-link"
+        );
+
+      if (!encoded) {
+        return;
+      }
+
+      try {
+
+        const url =
+          decodeURIComponent(encoded);
+
+        openNewsArticle(url);
+
+      } catch (error) {
+
+        console.error(
+          "News link error:",
+          error
+        );
 
       }
 
     }
 
 
-    /* ==========================================
-       LOAD BREAKING NEWS
-    ========================================== */
-
     async function loadBreakingNews() {
 
       newsStatus.textContent =
         "Updating...";
-
 
       newsRow.innerHTML =
         '<div class="news-loading">' +
@@ -1848,21 +1719,6 @@
 
 
       try {
-
-        const controller =
-          new AbortController();
-
-
-        const timeout =
-          setTimeout(
-            function() {
-
-              controller.abort();
-
-            },
-            10000
-          );
-
 
         const response =
           await fetch(
@@ -1873,20 +1729,15 @@
               headers: {
                 "Accept":
                   "application/json"
-              },
-              signal:
-                controller.signal
+              }
             }
           );
-
-
-        clearTimeout(timeout);
 
 
         if (!response.ok) {
 
           throw new Error(
-            "News API HTTP " +
+            "News API returned HTTP " +
             response.status
           );
 
@@ -1903,79 +1754,39 @@
         );
 
 
-        let news = null;
-
-
-        /*
-          Accept the normal API structure:
-          { success:true, news:[...] }
-        */
-
         if (
-          data &&
-          Array.isArray(data.news)
-        ) {
-
-          news =
-            data.news;
-
-        }
-
-        /*
-          Also accept a plain array if the
-          API ever returns one.
-        */
-
-        else if (
-          Array.isArray(data)
-        ) {
-
-          news =
-            data;
-
-        }
-
-
-        if (
-          !Array.isArray(news) ||
-          news.length === 0
+          !data ||
+          data.success !== true
         ) {
 
           throw new Error(
-            "News API returned no news."
+            "News API returned an invalid response."
           );
 
         }
 
 
         renderBreakingNews(
-          news,
-          false
+          data.news
         );
 
 
       } catch (error) {
 
         console.error(
-          "Breaking news API error:",
+          "Breaking news error:",
           error
         );
 
 
-        /*
-          IMPORTANT:
-          Do not leave the user with a
-          permanent loading screen.
+        newsRow.innerHTML =
+          '<div class="news-error">' +
+          'Unable to load breaking news right now. ' +
+          'Please try again.' +
+          '</div>';
 
-          Show the latest news we already
-          have if the API is temporarily
-          unavailable.
-        */
-
-        renderBreakingNews(
-          FALLBACK_NEWS,
-          true
-        );
+        newsStatus.textContent =
+          "News unavailable";
 
       }
 
@@ -1983,15 +1794,13 @@
 
 
     /* ==========================================
-       START NEWS
+       LOAD NEWS
     ========================================== */
 
     loadBreakingNews();
 
 
-    /*
-      Refresh every 10 minutes.
-    */
+    /* Refresh every 10 minutes */
 
     setInterval(
       loadBreakingNews,
@@ -2020,24 +1829,28 @@
         "active"
       );
 
-      authMessage.textContent =
-        "";
+      authMessage.textContent = "";
 
-      authButton.disabled =
-        false;
+      authButton.disabled = false;
 
     }
 
 
-    function showAuthMessage(
-      message
-    ) {
+    /* ==========================================
+       MESSAGE HELPER
+    ========================================== */
+
+    function showAuthMessage(message) {
 
       authMessage.textContent =
         message;
 
     }
 
+
+    /* ==========================================
+       BUTTON LOADING
+    ========================================== */
 
     function setAuthLoading(
       loading,
@@ -2046,7 +1859,6 @@
 
       authButton.disabled =
         loading;
-
 
       if (loading) {
 
@@ -2073,17 +1885,13 @@
     async function signUp() {
 
       const email =
-        emailInput.value
-          .trim();
+        emailInput.value.trim();
 
       const password =
         passwordInput.value;
 
 
-      if (
-        !email ||
-        !password
-      ) {
+      if (!email || !password) {
 
         showAuthMessage(
           "Please enter your email and password."
@@ -2094,9 +1902,7 @@
       }
 
 
-      if (
-        password.length < 6
-      ) {
+      if (password.length < 6) {
 
         showAuthMessage(
           "Password must be at least 6 characters."
@@ -2124,12 +1930,10 @@
           data,
           error
         } =
-          await supabaseClient.auth.signUp(
-            {
-              email: email,
-              password: password
-            }
-          );
+          await supabaseClient.auth.signUp({
+            email: email,
+            password: password
+          });
 
 
         if (error) {
@@ -2138,7 +1942,6 @@
             "Supabase sign-up error:",
             error
           );
-
 
           showAuthMessage(
             error.message ||
@@ -2158,20 +1961,16 @@
               "Account created successfully! You are now signed in."
             );
 
-
             updateAccountUI(
               data.user
             );
 
 
-            setTimeout(
-              function() {
+            setTimeout(function() {
 
-                closeAccount();
+              closeAccount();
 
-              },
-              1000
-            );
+            }, 1000);
 
           } else {
 
@@ -2196,7 +1995,6 @@
           error
         );
 
-
         showAuthMessage(
           "Connection error. Please check your internet connection and try again."
         );
@@ -2220,17 +2018,13 @@
     async function signIn() {
 
       const email =
-        emailInput.value
-          .trim();
+        emailInput.value.trim();
 
       const password =
         passwordInput.value;
 
 
-      if (
-        !email ||
-        !password
-      ) {
+      if (!email || !password) {
 
         showAuthMessage(
           "Please enter your email and password."
@@ -2258,12 +2052,10 @@
           data,
           error
         } =
-          await supabaseClient.auth.signInWithPassword(
-            {
-              email: email,
-              password: password
-            }
-          );
+          await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+          });
 
 
         if (error) {
@@ -2316,14 +2108,11 @@
           );
 
 
-          setTimeout(
-            function() {
+          setTimeout(function() {
 
-              closeAccount();
+            closeAccount();
 
-            },
-            800
-          );
+          }, 800);
 
         } else {
 
@@ -2339,7 +2128,6 @@
           "Sign-in exception:",
           error
         );
-
 
         showAuthMessage(
           "Connection error. Please try again."
@@ -2366,10 +2154,8 @@
       authTitle.textContent =
         "Create Account";
 
-
       authButton.textContent =
         "Create Account";
-
 
       authButton.onclick =
         signUp;
@@ -2385,10 +2171,8 @@
       authMessage.textContent =
         "";
 
-
       emailInput.autocomplete =
         "email";
-
 
       passwordInput.autocomplete =
         "new-password";
@@ -2405,10 +2189,8 @@
       authTitle.textContent =
         "Sign In";
 
-
       authButton.textContent =
         "Sign In";
-
 
       authButton.onclick =
         signIn;
@@ -2424,10 +2206,8 @@
       authMessage.textContent =
         "";
 
-
       emailInput.autocomplete =
         "email";
-
 
       passwordInput.autocomplete =
         "current-password";
@@ -2436,36 +2216,29 @@
 
 
     /* ==========================================
-       ACCOUNT UI
+       UPDATE ACCOUNT UI
     ========================================== */
 
-    function updateAccountUI(
-      user
-    ) {
+    function updateAccountUI(user) {
 
       if (user) {
 
         signinButton.style.display =
           "none";
 
-
         accountStatus.style.display =
           "flex";
 
-
         userEmail.textContent =
-          user.email ||
-          "Viewer";
+          user.email || "Viewer";
 
       } else {
 
         signinButton.style.display =
           "block";
 
-
         accountStatus.style.display =
           "none";
-
 
         userEmail.textContent =
           "";
@@ -2501,9 +2274,7 @@
         }
 
 
-        updateAccountUI(
-          null
-        );
+        updateAccountUI(null);
 
       } catch (error) {
 
@@ -2518,7 +2289,7 @@
 
 
     /* ==========================================
-       CHECK SESSION
+       CHECK EXISTING SESSION
     ========================================== */
 
     async function checkSession() {
@@ -2539,10 +2310,7 @@
             error
           );
 
-
-          updateAccountUI(
-            null
-          );
+          updateAccountUI(null);
 
           return;
 
@@ -2560,9 +2328,7 @@
 
         } else {
 
-          updateAccountUI(
-            null
-          );
+          updateAccountUI(null);
 
         }
 
@@ -2573,10 +2339,7 @@
           error
         );
 
-
-        updateAccountUI(
-          null
-        );
+        updateAccountUI(null);
 
       }
 
@@ -2584,14 +2347,11 @@
 
 
     /* ==========================================
-       AUTH STATE
+       AUTH STATE CHANGE
     ========================================== */
 
     supabaseClient.auth.onAuthStateChange(
-      function(
-        event,
-        session
-      ) {
+      function(event, session) {
 
         console.log(
           "Auth event:",
@@ -2607,15 +2367,17 @@
 
         } else {
 
-          updateAccountUI(
-            null
-          );
+          updateAccountUI(null);
 
         }
 
       }
     );
 
+
+    /* ==========================================
+       START SESSION CHECK
+    ========================================== */
 
     checkSession();
 
@@ -2782,10 +2544,8 @@
         newsletterButton.disabled =
           true;
 
-
         newsletterButton.textContent =
           "Subscribing...";
-
 
         newsletterMessage.textContent =
           "";
@@ -2816,8 +2576,7 @@
 
 
             if (
-              error.code ===
-              "23505"
+              error.code === "23505"
             ) {
 
               newsletterMessage.textContent =
@@ -2838,7 +2597,6 @@
           newsletterMessage.textContent =
             "You're subscribed! Welcome to BRENZKafrica Plus.";
 
-
           newsletterEmail.value =
             "";
 
@@ -2850,7 +2608,6 @@
             error
           );
 
-
           newsletterMessage.textContent =
             "Connection error. Please try again.";
 
@@ -2858,7 +2615,6 @@
 
           newsletterButton.disabled =
             false;
-
 
           newsletterButton.textContent =
             "Subscribe";
