@@ -281,6 +281,117 @@
       height: 270px;
     }
 
+    /* ==========================================
+       BREAKING NEWS
+    ========================================== */
+
+    .news-section {
+      padding: 25px 5%;
+      margin-bottom: 30px;
+    }
+
+    .news-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 8px;
+    }
+
+    .news-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .news-live {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+
+      color: #e50914;
+
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .news-live-dot {
+      width: 8px;
+      height: 8px;
+
+      border-radius: 50%;
+
+      background: #e50914;
+
+      box-shadow:
+        0 0 0 4px rgba(229,9,20,0.12);
+
+      animation: newsPulse 1.5s infinite;
+    }
+
+    @keyframes newsPulse {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.45;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    .news-subtitle {
+      color: #999;
+      margin-bottom: 18px;
+      font-size: 14px;
+    }
+
+    .news-container {
+      width: 100%;
+      height: 420px;
+
+      background: #111;
+
+      border: 1px solid #292929;
+
+      border-radius: 8px;
+
+      overflow: hidden;
+
+      position: relative;
+    }
+
+    .news-container iframe {
+      width: 100%;
+      height: 100%;
+
+      border: none;
+
+      background: #111;
+    }
+
+    .news-source {
+      margin-top: 10px;
+
+      color: #777;
+
+      font-size: 11px;
+    }
+
+    .news-source a {
+      color: #aaa;
+      text-decoration: none;
+    }
+
+    .news-source a:hover {
+      color: white;
+    }
+
     /* VIDEO PLAYER */
 
     .player {
@@ -696,6 +807,24 @@
         display: none;
       }
 
+      /* NEWS MOBILE */
+
+      .news-section {
+        padding: 20px;
+      }
+
+      .news-header {
+        align-items: flex-start;
+      }
+
+      .news-title-wrap {
+        flex-wrap: wrap;
+      }
+
+      .news-container {
+        height: 500px;
+      }
+
       /* NEWSLETTER MOBILE */
 
       .newsletter {
@@ -730,11 +859,29 @@
     </div>
 
     <nav>
+
       <a href="#">Home</a>
-      <a href="#originals">Originals</a>
-      <a href="#series">Series</a>
-      <a href="#films">Films</a>
-      <a href="#documentaries">Documentaries</a>
+
+      <a href="#originals">
+        Originals
+      </a>
+
+      <a href="#series">
+        Series
+      </a>
+
+      <a href="#films">
+        Films
+      </a>
+
+      <a href="#documentaries">
+        Documentaries
+      </a>
+
+      <a href="#news">
+        News
+      </a>
+
     </nav>
 
     <div class="nav-right">
@@ -822,6 +969,7 @@
   <!-- CONTENT -->
 
   <main>
+
 
     <!-- ORIGINALS -->
 
@@ -1088,6 +1236,71 @@
       </div>
 
     </section>
+
+
+    <!-- ==========================================
+         BREAKING NEWS
+    ========================================== -->
+
+    <section
+      class="news-section"
+      id="news"
+    >
+
+      <div class="news-header">
+
+        <div class="news-title-wrap">
+
+          <h2 class="section-title">
+            Breaking News
+          </h2>
+
+          <div class="news-live">
+
+            <span class="news-live-dot"></span>
+
+            LIVE
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <p class="news-subtitle">
+        Latest African and international news, updated in real time.
+      </p>
+
+
+      <div class="news-container">
+
+        <iframe
+          src="https://www.africanews.com/news/"
+          title="Africanews Latest Breaking News"
+          loading="lazy"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+
+      </div>
+
+
+      <div class="news-source">
+
+        News provided by
+
+        <a
+          href="https://www.africanews.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Africanews
+        </a>
+
+      </div>
+
+    </section>
+
 
   </main>
 
@@ -1996,6 +2209,7 @@
 
     /* ==========================================
        NEWSLETTER
+       KEEPING YOUR WORKING VERSION
     ========================================== */
 
     const newsletterForm =
