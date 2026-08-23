@@ -69,6 +69,40 @@
       color: white;
     }
 
+    /* LIVE NAV */
+    .live-nav {
+      color: #ff3b3b !important;
+      font-weight: bold;
+    }
+
+    .live-nav::before {
+      content: "";
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: #e50914;
+      border-radius: 50%;
+      margin-right: 5px;
+      animation: livePulse 1.5s infinite;
+    }
+
+    @keyframes livePulse {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.45;
+        transform: scale(0.75);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
     .nav-right {
       display: flex;
       align-items: center;
@@ -269,6 +303,180 @@
     }
 
     /* ==========================================
+       LIVE
+    ========================================== */
+
+    .live-section {
+      padding: 30px 5%;
+      margin-bottom: 20px;
+      scroll-margin-top: 80px;
+    }
+
+    .live-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .live-heading {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .live-dot {
+      width: 11px;
+      height: 11px;
+      background: #e50914;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(229,9,20,0.9);
+      animation: newsPulse 1.3s infinite;
+    }
+
+    .live-status-text {
+      color: #777;
+      font-size: 12px;
+    }
+
+    .live-feature {
+      display: none;
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .live-feature.active {
+      display: block;
+    }
+
+    .live-player-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      background: #000;
+    }
+
+    .live-player-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .live-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      z-index: 5;
+      background: #e50914;
+      color: white;
+      padding: 7px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+    }
+
+    .live-info {
+      padding: 20px;
+    }
+
+    .live-info h3 {
+      font-size: 22px;
+      margin-bottom: 8px;
+    }
+
+    .live-info p {
+      color: #999;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .live-empty {
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 10px;
+      padding: 45px 20px;
+      text-align: center;
+      color: #777;
+    }
+
+    .live-empty strong {
+      display: block;
+      color: #ddd;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .upcoming-live {
+      margin-top: 25px;
+    }
+
+    .upcoming-live h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .live-card-row {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding-bottom: 15px;
+      scrollbar-width: none;
+    }
+
+    .live-card-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .live-card {
+      min-width: 280px;
+      background: #111;
+      border: 1px solid #292929;
+      border-radius: 8px;
+      padding: 18px;
+      transition: 0.3s;
+    }
+
+    .live-card:hover {
+      transform: translateY(-4px);
+      border-color: #555;
+    }
+
+    .live-card-status {
+      color: #e50914;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .live-card-title {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .live-card-description {
+      color: #888;
+      font-size: 13px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .live-card-date {
+      color: #666;
+      font-size: 11px;
+    }
+
+    /* ==========================================
        BREAKING NEWS
     ========================================== */
 
@@ -425,7 +633,9 @@
       color: white;
     }
 
-    /* VIDEO PLAYER */
+    /* ==========================================
+       VIDEO PLAYER
+    ========================================== */
 
     .player {
       display: none;
@@ -468,7 +678,9 @@
       font-weight: bold;
     }
 
-    /* AUTHENTICATION */
+    /* ==========================================
+       AUTHENTICATION
+    ========================================== */
 
     .auth-section {
       display: none;
@@ -587,7 +799,9 @@
       color: white;
     }
 
-    /* ACCOUNT */
+    /* ==========================================
+       ACCOUNT
+    ========================================== */
 
     .account-status {
       display: none;
@@ -618,7 +832,9 @@
       background: #333;
     }
 
-    /* NEWSLETTER */
+    /* ==========================================
+       NEWSLETTER
+    ========================================== */
 
     .newsletter {
       margin: 60px 5% 20px;
@@ -762,6 +978,18 @@
         height: 210px;
       }
 
+      .live-section {
+        padding: 20px;
+      }
+
+      .live-header {
+        align-items: flex-start;
+      }
+
+      .live-status-text {
+        display: none;
+      }
+
       .breaking-news {
         padding: 20px;
       }
@@ -824,6 +1052,12 @@
     <nav>
       <a href="#">Home</a>
       <a href="#originals">Originals</a>
+
+      <!-- LIVE -->
+      <a href="#live" class="live-nav">
+        LIVE
+      </a>
+
       <a href="#news">News</a>
       <a href="#series">Series</a>
       <a href="#films">Films</a>
@@ -915,6 +1149,112 @@
   <!-- CONTENT -->
 
   <main>
+
+    <!-- ==========================================
+         LIVE
+    ========================================== -->
+
+    <section
+      class="live-section"
+      id="live"
+    >
+
+      <div class="live-header">
+
+        <div class="live-heading">
+
+          <span class="live-dot"></span>
+
+          LIVE
+
+        </div>
+
+        <div
+          class="live-status-text"
+          id="liveStatus"
+        >
+          Checking live broadcasts...
+        </div>
+
+      </div>
+
+
+      <!-- CURRENT LIVE EVENT -->
+
+      <div
+        class="live-feature"
+        id="liveFeature"
+      >
+
+        <div class="live-player-wrap">
+
+          <div class="live-badge">
+            ● LIVE NOW
+          </div>
+
+          <iframe
+            id="liveIframe"
+            src=""
+            title="BRENZKafrica Live"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+
+        </div>
+
+
+        <div class="live-info">
+
+          <h3 id="liveTitle">
+            BRENZKafrica Live
+          </h3>
+
+          <p id="liveDescription">
+            Live broadcast from BRENZKafrica Plus.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- NOTHING LIVE -->
+
+      <div
+        class="live-empty"
+        id="liveEmpty"
+      >
+
+        <strong>
+          Nothing Live Right Now
+        </strong>
+
+        Check back soon for the next BRENZKafrica broadcast.
+
+      </div>
+
+
+      <!-- UPCOMING -->
+
+      <div
+        class="upcoming-live"
+        id="upcomingLive"
+        style="display:none;"
+      >
+
+        <h3>
+          Upcoming Live
+        </h3>
+
+        <div
+          class="live-card-row"
+          id="liveUpcomingRow"
+        ></div>
+
+      </div>
+
+    </section>
+
 
     <!-- ORIGINALS -->
 
@@ -1410,8 +1750,7 @@
 
 
     /* ==========================================
-       BRENZKAFRICA NEWS API
-       CORRECTED: SAME VERCEL DOMAIN
+       NEWS API
     ========================================== */
 
     const NEWS_API_URL = "/api/news";
@@ -1462,6 +1801,35 @@
 
     const newsStatus =
       document.getElementById("newsStatus");
+
+
+    /* ==========================================
+       LIVE ELEMENTS
+    ========================================== */
+
+    const liveFeature =
+      document.getElementById("liveFeature");
+
+    const liveEmpty =
+      document.getElementById("liveEmpty");
+
+    const liveStatus =
+      document.getElementById("liveStatus");
+
+    const liveIframe =
+      document.getElementById("liveIframe");
+
+    const liveTitle =
+      document.getElementById("liveTitle");
+
+    const liveDescription =
+      document.getElementById("liveDescription");
+
+    const upcomingLive =
+      document.getElementById("upcomingLive");
+
+    const liveUpcomingRow =
+      document.getElementById("liveUpcomingRow");
 
 
     /* ==========================================
@@ -1517,6 +1885,488 @@
       );
 
     }
+
+
+    /* ==========================================
+       LIVE SYSTEM
+    ========================================== */
+
+    function getYouTubeVideoId(url) {
+
+      if (!url) {
+        return null;
+      }
+
+      try {
+
+        const parsed =
+          new URL(url);
+
+        if (
+          parsed.hostname.includes(
+            "youtu.be"
+          )
+        ) {
+
+          return parsed.pathname
+            .replace("/", "")
+            .trim();
+
+        }
+
+        if (
+          parsed.hostname.includes(
+            "youtube.com"
+          )
+        ) {
+
+          const videoId =
+            parsed.searchParams.get(
+              "v"
+            );
+
+          if (videoId) {
+            return videoId;
+          }
+
+          const parts =
+            parsed.pathname
+              .split("/")
+              .filter(Boolean);
+
+          const liveIndex =
+            parts.indexOf("live");
+
+          if (
+            liveIndex !== -1 &&
+            parts[liveIndex + 1]
+          ) {
+
+            return parts[
+              liveIndex + 1
+            ];
+
+          }
+
+          const embedIndex =
+            parts.indexOf("embed");
+
+          if (
+            embedIndex !== -1 &&
+            parts[embedIndex + 1]
+          ) {
+
+            return parts[
+              embedIndex + 1
+            ];
+
+          }
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "YouTube URL error:",
+          error
+        );
+
+      }
+
+      return null;
+
+    }
+
+
+    function getYouTubeEmbedUrl(url) {
+
+      const videoId =
+        getYouTubeVideoId(url);
+
+      if (!videoId) {
+        return null;
+      }
+
+      return (
+        "https://www.youtube.com/embed/" +
+        encodeURIComponent(videoId) +
+        "?autoplay=1&rel=0"
+      );
+
+    }
+
+
+    function formatLiveDate(dateValue) {
+
+      if (!dateValue) {
+        return "Date to be announced";
+      }
+
+      const date =
+        new Date(dateValue);
+
+      if (
+        Number.isNaN(
+          date.getTime()
+        )
+      ) {
+
+        return "Date to be announced";
+
+      }
+
+      return date.toLocaleString(
+        undefined,
+        {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
+
+    }
+
+
+    function getEventStatus(event) {
+
+      const now =
+        new Date();
+
+      const start =
+        event.start_time
+          ? new Date(event.start_time)
+          : null;
+
+      const end =
+        event.end_time
+          ? new Date(event.end_time)
+          : null;
+
+
+      if (
+        start &&
+        !Number.isNaN(start.getTime()) &&
+        start > now
+      ) {
+
+        return "upcoming";
+
+      }
+
+
+      if (
+        start &&
+        !Number.isNaN(start.getTime()) &&
+        start <= now &&
+        (
+          !end ||
+          Number.isNaN(end.getTime()) ||
+          end > now
+        )
+      ) {
+
+        return "live";
+
+      }
+
+
+      if (
+        end &&
+        !Number.isNaN(end.getTime()) &&
+        end <= now
+      ) {
+
+        return "ended";
+
+      }
+
+
+      /*
+       If no start/end times have been entered,
+       we use the status field from Supabase.
+      */
+
+      return (
+        event.status ||
+        "upcoming"
+      ).toLowerCase();
+
+    }
+
+
+    function renderLiveEvent(event) {
+
+      if (!event) {
+
+        liveFeature.classList.remove(
+          "active"
+        );
+
+        liveEmpty.style.display =
+          "block";
+
+        liveStatus.textContent =
+          "Nothing live right now";
+
+        return;
+
+      }
+
+
+      const embedUrl =
+        getYouTubeEmbedUrl(
+          event.youtube_url
+        );
+
+
+      if (!embedUrl) {
+
+        liveFeature.classList.remove(
+          "active"
+        );
+
+        liveEmpty.style.display =
+          "block";
+
+        liveStatus.textContent =
+          "Live stream is not ready";
+
+        return;
+
+      }
+
+
+      liveTitle.textContent =
+        event.title ||
+        "BRENZKafrica Live";
+
+
+      liveDescription.textContent =
+        event.description ||
+        "Live broadcast from BRENZKafrica Plus.";
+
+
+      liveIframe.src =
+        embedUrl;
+
+
+      liveFeature.classList.add(
+        "active"
+      );
+
+      liveEmpty.style.display =
+        "none";
+
+
+      liveStatus.textContent =
+        "Live now";
+
+    }
+
+
+    function renderUpcomingEvents(events) {
+
+      if (
+        !Array.isArray(events) ||
+        events.length === 0
+      ) {
+
+        upcomingLive.style.display =
+          "none";
+
+        liveUpcomingRow.innerHTML =
+          "";
+
+        return;
+
+      }
+
+
+      upcomingLive.style.display =
+        "block";
+
+
+      liveUpcomingRow.innerHTML =
+        events.map(function(event) {
+
+          return `
+            <article class="live-card">
+
+              <div class="live-card-status">
+                UPCOMING
+              </div>
+
+              <div class="live-card-title">
+                ${escapeHTML(
+                  event.title ||
+                  "BRENZKafrica Live"
+                )}
+              </div>
+
+              <div class="live-card-description">
+                ${escapeHTML(
+                  event.description ||
+                  "Upcoming BRENZKafrica broadcast."
+                )}
+              </div>
+
+              <div class="live-card-date">
+                ${escapeHTML(
+                  formatLiveDate(
+                    event.start_time
+                  )
+                )}
+              </div>
+
+            </article>
+          `;
+
+        }).join("");
+
+    }
+
+
+    async function loadLiveEvents() {
+
+      liveStatus.textContent =
+        "Checking live broadcasts...";
+
+
+      try {
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient
+            .from("live_events")
+            .select("*")
+            .order(
+              "start_time",
+              {
+                ascending: true
+              }
+            );
+
+
+        if (error) {
+
+          console.error(
+            "LIVE Supabase error:",
+            error
+          );
+
+          liveFeature.classList.remove(
+            "active"
+          );
+
+          liveEmpty.style.display =
+            "block";
+
+          liveEmpty.innerHTML =
+            `
+              <strong>
+                LIVE is being prepared
+              </strong>
+              Live broadcasts will appear here.
+            `;
+
+          liveStatus.textContent =
+            "LIVE unavailable";
+
+          return;
+
+        }
+
+
+        const events =
+          Array.isArray(data)
+            ? data
+            : [];
+
+
+        const liveEvents =
+          events.filter(function(event) {
+
+            return (
+              getEventStatus(event) ===
+              "live"
+            );
+
+          });
+
+
+        const upcomingEvents =
+          events.filter(function(event) {
+
+            return (
+              getEventStatus(event) ===
+              "upcoming"
+            );
+
+          });
+
+
+        /*
+          If more than one event is live,
+          the first one is featured.
+        */
+
+        if (
+          liveEvents.length > 0
+        ) {
+
+          renderLiveEvent(
+            liveEvents[0]
+          );
+
+        } else {
+
+          renderLiveEvent(null);
+
+        }
+
+
+        renderUpcomingEvents(
+          upcomingEvents
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "LIVE loading exception:",
+          error
+        );
+
+        liveStatus.textContent =
+          "LIVE unavailable";
+
+      }
+
+    }
+
+
+    /*
+      Load LIVE immediately.
+    */
+
+    loadLiveEvents();
+
+
+    /*
+      Check LIVE status every 30 seconds.
+      This allows Upcoming → LIVE → Ended
+      to update automatically.
+    */
+
+    setInterval(
+      loadLiveEvents,
+      30 * 1000
+    );
 
 
     /* ==========================================
@@ -1793,14 +2643,8 @@
     }
 
 
-    /* ==========================================
-       LOAD NEWS
-    ========================================== */
-
     loadBreakingNews();
 
-
-    /* Refresh every 10 minutes */
 
     setInterval(
       loadBreakingNews,
@@ -1836,10 +2680,6 @@
     }
 
 
-    /* ==========================================
-       MESSAGE HELPER
-    ========================================== */
-
     function showAuthMessage(message) {
 
       authMessage.textContent =
@@ -1847,10 +2687,6 @@
 
     }
 
-
-    /* ==========================================
-       BUTTON LOADING
-    ========================================== */
 
     function setAuthLoading(
       loading,
@@ -2374,10 +3210,6 @@
       }
     );
 
-
-    /* ==========================================
-       START SESSION CHECK
-    ========================================== */
 
     checkSession();
 
