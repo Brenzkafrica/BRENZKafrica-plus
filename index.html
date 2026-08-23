@@ -45,7 +45,6 @@
       font-size: 24px;
       font-weight: 900;
       letter-spacing: -1px;
-      white-space: nowrap;
     }
 
     .logo span {
@@ -99,8 +98,6 @@
     .signin:hover {
       transform: scale(1.04);
     }
-
-    /* HERO */
 
     .hero {
       height: 90vh;
@@ -303,7 +300,6 @@
       border-radius: 50%;
       box-shadow: 0 0 12px rgba(229,9,20,0.8);
       animation: newsPulse 1.5s infinite;
-      flex-shrink: 0;
     }
 
     @keyframes newsPulse {
@@ -326,22 +322,6 @@
     .breaking-news-status {
       color: #777;
       font-size: 12px;
-      flex: 1;
-    }
-
-    .news-refresh {
-      background: #222;
-      border: 1px solid #444;
-      color: #ddd;
-      padding: 7px 12px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 11px;
-    }
-
-    .news-refresh:hover {
-      background: #333;
-      color: white;
     }
 
     .news-row {
@@ -370,9 +350,7 @@
 
       border: 1px solid #292929;
       border-radius: 8px;
-
       padding: 18px;
-
       cursor: pointer;
       transition: 0.3s;
 
@@ -432,7 +410,24 @@
       color: #999;
     }
 
-    /* VIDEO PLAYER */
+    .news-refresh {
+      background: #222;
+      border: 1px solid #444;
+      color: #ddd;
+      padding: 7px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+    }
+
+    .news-refresh:hover {
+      background: #333;
+      color: white;
+    }
+
+    /* ==========================================
+       VIDEO PLAYER
+    ========================================== */
 
     .player {
       display: none;
@@ -459,12 +454,15 @@
       position: absolute;
       top: 25px;
       right: 30px;
+
       background: rgba(255,255,255,0.15);
       color: white;
       border: none;
       border-radius: 50%;
+
       width: 45px;
       height: 45px;
+
       font-size: 22px;
       cursor: pointer;
     }
@@ -475,7 +473,9 @@
       font-weight: bold;
     }
 
-    /* AUTHENTICATION */
+    /* ==========================================
+       AUTHENTICATION
+    ========================================== */
 
     .auth-section {
       display: none;
@@ -483,6 +483,7 @@
       inset: 0;
       background: rgba(0,0,0,0.88);
       z-index: 10000;
+
       align-items: center;
       justify-content: center;
       padding: 20px;
@@ -495,10 +496,12 @@
     .auth-box {
       width: 100%;
       max-width: 420px;
+
       background: #111;
       border: 1px solid #333;
       border-radius: 12px;
       padding: 30px;
+
       position: relative;
       box-shadow: 0 20px 70px rgba(0,0,0,0.8);
     }
@@ -583,9 +586,11 @@
       position: absolute;
       top: 12px;
       right: 15px;
+
       background: none;
       border: none;
       color: #aaa;
+
       font-size: 26px;
       cursor: pointer;
     }
@@ -594,7 +599,9 @@
       color: white;
     }
 
-    /* ACCOUNT */
+    /* ==========================================
+       ACCOUNT
+    ========================================== */
 
     .account-status {
       display: none;
@@ -625,7 +632,9 @@
       background: #333;
     }
 
-    /* NEWSLETTER */
+    /* ==========================================
+       NEWSLETTER
+    ========================================== */
 
     .newsletter {
       margin: 60px 5% 20px;
@@ -640,7 +649,6 @@
 
       border: 1px solid #292929;
       border-radius: 10px;
-
       text-align: center;
     }
 
@@ -660,6 +668,7 @@
       display: flex;
       justify-content: center;
       gap: 10px;
+
       max-width: 600px;
       margin: auto;
     }
@@ -667,9 +676,11 @@
     .newsletter-form input {
       flex: 1;
       min-width: 0;
+
       background: #050505;
       border: 1px solid #444;
       color: white;
+
       padding: 14px;
       border-radius: 5px;
       outline: none;
@@ -683,8 +694,10 @@
       background: #e50914;
       color: white;
       border: none;
+
       padding: 14px 22px;
       border-radius: 5px;
+
       font-weight: bold;
       cursor: pointer;
     }
@@ -713,7 +726,9 @@
       margin-top: 40px;
     }
 
-    /* MOBILE */
+    /* ==========================================
+       MOBILE
+    ========================================== */
 
     @media (max-width: 700px) {
 
@@ -823,7 +838,9 @@
 
 <body>
 
-  <!-- NAVIGATION -->
+  <!-- ==========================================
+       NAVIGATION
+  ========================================== -->
 
   <header>
 
@@ -878,7 +895,9 @@
   </header>
 
 
-  <!-- HERO -->
+  <!-- ==========================================
+       HERO
+  ========================================== -->
 
   <section class="hero">
 
@@ -922,7 +941,9 @@
   </section>
 
 
-  <!-- CONTENT -->
+  <!-- ==========================================
+       CONTENT
+  ========================================== -->
 
   <main>
 
@@ -1022,7 +1043,9 @@
     </section>
 
 
-    <!-- BREAKING NEWS -->
+    <!-- ==========================================
+         BREAKING NEWS
+    ========================================== -->
 
     <section
       class="breaking-news"
@@ -1048,7 +1071,7 @@
 
         <button
           class="news-refresh"
-          onclick="loadBreakingNews(true)"
+          onclick="loadBreakingNews()"
         >
           Refresh
         </button>
@@ -1079,10 +1102,6 @@
       <h2 class="section-title">
         Series
       </h2>
-
-      <p class="section-subtitle">
-        African stories, journeys and creative voices.
-      </p>
 
       <div class="row">
 
@@ -1155,10 +1174,6 @@
         Films
       </h2>
 
-      <p class="section-subtitle">
-        Independent African stories and visual journeys.
-      </p>
-
       <div class="row">
 
         <div class="card">
@@ -1220,10 +1235,6 @@
         Documentaries
       </h2>
 
-      <p class="section-subtitle">
-        Real people. Real places. African perspectives.
-      </p>
-
       <div class="row">
 
         <div class="card">
@@ -1254,7 +1265,9 @@
   </main>
 
 
-  <!-- VIDEO PLAYER -->
+  <!-- ==========================================
+       VIDEO PLAYER
+  ========================================== -->
 
   <div
     class="player"
@@ -1282,7 +1295,9 @@
   </div>
 
 
-  <!-- AUTHENTICATION -->
+  <!-- ==========================================
+       AUTHENTICATION
+  ========================================== -->
 
   <div
     id="auth-section"
@@ -1344,7 +1359,9 @@
   </div>
 
 
-  <!-- NEWSLETTER -->
+  <!-- ==========================================
+       NEWSLETTER
+  ========================================== -->
 
   <section class="newsletter">
 
@@ -1384,7 +1401,9 @@
   </section>
 
 
-  <!-- FOOTER -->
+  <!-- ==========================================
+       FOOTER
+  ========================================== -->
 
   <footer>
 
@@ -1403,12 +1422,14 @@
   </footer>
 
 
-  <!-- JAVASCRIPT -->
+  <!-- ==========================================
+       JAVASCRIPT
+  ========================================== -->
 
   <script>
 
     /* ==========================================
-       SUPABASE CONNECTION
+       SUPABASE
     ========================================== */
 
     const SUPABASE_URL =
@@ -1433,11 +1454,13 @@
 
     /* ==========================================
        BRENZKAFRICA NEWS API
-       THIS IS YOUR VERCEL API
+       
+       IMPORTANT:
+       We use /api/news so this always points
+       to the current BRENZKafrica Plus Vercel site.
     ========================================== */
 
-    const NEWS_API_URL =
-      "https://brenz-kafrica-plus-jcc4eadb1-brenzkafricas-projects.vercel.app/api/news";
+    const NEWS_API_URL = "/api/news";
 
 
     /* ==========================================
@@ -1493,7 +1516,9 @@
 
     function playVideo(name, url) {
 
-      if (!url) return;
+      if (!url) {
+        return;
+      }
 
       playerTitle.textContent = name;
 
@@ -1514,7 +1539,6 @@
 
       playVideo(
         "BRENZKafrica Cinema",
-
         "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
       );
 
@@ -1525,9 +1549,7 @@
 
       video.pause();
 
-      video.removeAttribute("src");
-
-      video.load();
+      video.src = "";
 
       player.classList.remove("active");
 
@@ -1620,11 +1642,9 @@
       ) {
 
         newsRow.innerHTML =
-          `
-          <div class="news-empty">
-            No breaking news available right now.
-          </div>
-          `;
+          '<div class="news-empty">' +
+          'No breaking news available right now.' +
+          '</div>';
 
         newsStatus.textContent =
           "No updates available";
@@ -1640,9 +1660,7 @@
             escapeHTML(item.title);
 
           const description =
-            escapeHTML(
-              item.description
-            );
+            escapeHTML(item.description);
 
           const source =
             escapeHTML(
@@ -1651,20 +1669,22 @@
 
           const date =
             escapeHTML(
-              formatNewsDate(
-                item.date
-              )
+              formatNewsDate(item.date)
             );
 
-          const link =
-            item.link || "#";
+
+          /*
+            Store the URL safely on the element
+            instead of putting it directly into
+            an onclick HTML attribute.
+          */
+
+          const articleURL =
+            item.link || "";
 
 
           return `
-            <article
-              class="news-card"
-              data-news-url="${escapeHTML(link)}"
-            >
+            <article class="news-card">
 
               <div>
 
@@ -1692,22 +1712,42 @@
         }).join("");
 
 
-      document
-        .querySelectorAll(".news-card")
-        .forEach(function(card) {
+      /*
+        Attach the article links after rendering.
+      */
 
-          card.addEventListener(
-            "click",
-            function() {
+      const cards =
+        newsRow.querySelectorAll(
+          ".news-card"
+        );
 
-              openNewsArticle(
-                card.dataset.newsUrl
-              );
 
-            }
-          );
+      cards.forEach(
+        function(card, index) {
 
-        });
+          const item =
+            news[index];
+
+          if (
+            item &&
+            item.link
+          ) {
+
+            card.addEventListener(
+              "click",
+              function() {
+
+                openNewsArticle(
+                  item.link
+                );
+
+              }
+            );
+
+          }
+
+        }
+      );
 
 
       newsStatus.textContent =
@@ -1716,47 +1756,22 @@
     }
 
 
-    async function loadBreakingNews(
-      manualRefresh = false
-    ) {
+    async function loadBreakingNews() {
 
-      if (manualRefresh) {
-
-        newsStatus.textContent =
-          "Updating...";
-
-      } else {
-
-        newsStatus.textContent =
-          "Loading latest African news...";
-
-      }
-
+      newsStatus.textContent =
+        "Updating...";
 
       newsRow.innerHTML =
-        `
-        <div class="news-loading">
-          Loading latest African news...
-        </div>
-        `;
+        '<div class="news-loading">' +
+        'Loading latest African news...' +
+        '</div>';
 
 
       try {
 
-        /*
-          Cache-busting parameter helps ensure
-          the browser requests the latest API data.
-        */
-
-        const requestURL =
-          NEWS_API_URL +
-          "?t=" +
-          Date.now();
-
-
         const response =
           await fetch(
-            requestURL,
+            NEWS_API_URL,
             {
               method: "GET",
               cache: "no-store",
@@ -1782,7 +1797,7 @@
 
 
         console.log(
-          "BRENZKafrica News API response:",
+          "BRENZKafrica News API:",
           data
         );
 
@@ -1807,18 +1822,16 @@
       } catch (error) {
 
         console.error(
-          "Breaking News API error:",
+          "Breaking news error:",
           error
         );
 
 
         newsRow.innerHTML =
-          `
-          <div class="news-error">
-            Unable to load breaking news right now.
-            Please try again.
-          </div>
-          `;
+          '<div class="news-error">' +
+          'Unable to load breaking news right now. ' +
+          'Please try again.' +
+          '</div>';
 
         newsStatus.textContent =
           "News unavailable";
@@ -1829,33 +1842,29 @@
 
 
     /* ==========================================
-       LOAD BREAKING NEWS
+       LOAD NEWS
     ========================================== */
 
     loadBreakingNews();
 
 
     /*
-      Automatically refresh every 10 minutes.
+      Refresh every 10 minutes.
     */
 
     setInterval(
-      function() {
-        loadBreakingNews(false);
-      },
+      loadBreakingNews,
       10 * 60 * 1000
     );
 
 
     /* ==========================================
-       ACCOUNT PANEL
+       ACCOUNT
     ========================================== */
 
     function openAccount() {
 
-      authSection.classList.add(
-        "active"
-      );
+      authSection.classList.add("active");
 
       emailInput.focus();
 
@@ -1864,36 +1873,21 @@
 
     function closeAccount() {
 
-      authSection.classList.remove(
-        "active"
-      );
+      authSection.classList.remove("active");
 
-      authMessage.textContent =
-        "";
+      authMessage.textContent = "";
 
-      authButton.disabled =
-        false;
+      authButton.disabled = false;
 
     }
 
 
-    /* ==========================================
-       AUTH MESSAGE
-    ========================================== */
+    function showAuthMessage(message) {
 
-    function showAuthMessage(
-      message
-    ) {
-
-      authMessage.textContent =
-        message;
+      authMessage.textContent = message;
 
     }
 
-
-    /* ==========================================
-       AUTH LOADING
-    ========================================== */
 
     function setAuthLoading(
       loading,
@@ -1928,21 +1922,22 @@
     async function signUp() {
 
       const email =
-        emailInput.value
-          .trim();
+        emailInput.value.trim();
 
       const password =
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Please enter your email and password."
         );
 
         return;
-
       }
 
 
@@ -1955,7 +1950,6 @@
         );
 
         return;
-
       }
 
 
@@ -1995,7 +1989,6 @@
           );
 
           return;
-
         }
 
 
@@ -2065,21 +2058,22 @@
     async function signIn() {
 
       const email =
-        emailInput.value
-          .trim();
+        emailInput.value.trim();
 
       const password =
         passwordInput.value;
 
 
-      if (!email || !password) {
+      if (
+        !email ||
+        !password
+      ) {
 
         showAuthMessage(
           "Please enter your email and password."
         );
 
         return;
-
       }
 
 
@@ -2137,7 +2131,6 @@
           }
 
           return;
-
         }
 
 
@@ -2149,6 +2142,7 @@
           updateAccountUI(
             data.user
           );
+
 
           showAuthMessage(
             "Welcome to BRENZKafrica Plus!"
@@ -2267,9 +2261,7 @@
        ACCOUNT UI
     ========================================== */
 
-    function updateAccountUI(
-      user
-    ) {
+    function updateAccountUI(user) {
 
       if (user) {
 
@@ -2280,8 +2272,7 @@
           "flex";
 
         userEmail.textContent =
-          user.email ||
-          "Viewer";
+          user.email || "Viewer";
 
       } else {
 
@@ -2321,7 +2312,6 @@
           );
 
           return;
-
         }
 
 
@@ -2368,7 +2358,6 @@
           );
 
           return;
-
         }
 
 
@@ -2406,7 +2395,7 @@
 
 
     /* ==========================================
-       AUTH STATE CHANGE
+       AUTH STATE
     ========================================== */
 
     supabaseClient.auth.onAuthStateChange(
@@ -2636,8 +2625,7 @@
 
 
             if (
-              error.code ===
-              "23505"
+              error.code === "23505"
             ) {
 
               newsletterMessage.textContent =
