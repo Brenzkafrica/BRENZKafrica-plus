@@ -285,110 +285,159 @@
        BREAKING NEWS
     ========================================== */
 
-    .news-section {
+    .breaking-news {
       padding: 25px 5%;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
-    .news-header {
+    .breaking-news-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      margin-bottom: 8px;
+      margin-bottom: 15px;
+      gap: 15px;
     }
 
-    .news-title-wrap {
+    .breaking-news-title {
       display: flex;
       align-items: center;
-      gap: 12px;
-    }
-
-    .news-live {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-
-      color: #e50914;
-
-      font-size: 11px;
+      gap: 10px;
+      font-size: 22px;
       font-weight: bold;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
     }
 
-    .news-live-dot {
-      width: 8px;
-      height: 8px;
-
-      border-radius: 50%;
-
+    .breaking-dot {
+      width: 10px;
+      height: 10px;
       background: #e50914;
-
-      box-shadow:
-        0 0 0 4px rgba(229,9,20,0.12);
-
+      border-radius: 50%;
+      box-shadow: 0 0 12px rgba(229,9,20,0.8);
       animation: newsPulse 1.5s infinite;
     }
 
     @keyframes newsPulse {
       0% {
         opacity: 1;
+        transform: scale(1);
       }
 
       50% {
-        opacity: 0.45;
+        opacity: 0.4;
+        transform: scale(0.7);
       }
 
       100% {
         opacity: 1;
+        transform: scale(1);
       }
     }
 
-    .news-subtitle {
-      color: #999;
-      margin-bottom: 18px;
-      font-size: 14px;
+    .breaking-news-status {
+      color: #777;
+      font-size: 12px;
     }
 
-    .news-container {
-      width: 100%;
-      height: 420px;
+    .news-row {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      padding: 5px 0 18px;
+      scrollbar-width: none;
+    }
 
-      background: #111;
+    .news-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .news-card {
+      min-width: 310px;
+      max-width: 310px;
+      min-height: 180px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #181818,
+          #0e0e0e
+        );
 
       border: 1px solid #292929;
-
       border-radius: 8px;
 
-      overflow: hidden;
+      padding: 18px;
 
-      position: relative;
+      cursor: pointer;
+
+      transition: 0.3s;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
-    .news-container iframe {
-      width: 100%;
-      height: 100%;
-
-      border: none;
-
-      background: #111;
+    .news-card:hover {
+      transform: translateY(-4px);
+      border-color: #555;
+      background: #1b1b1b;
     }
 
     .news-source {
-      margin-top: 10px;
+      color: #e50914;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
 
+    .news-title {
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .news-description {
+      color: #999;
+      font-size: 13px;
+      line-height: 1.5;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .news-date {
+      color: #666;
+      font-size: 11px;
+      margin-top: 15px;
+    }
+
+    .news-loading,
+    .news-error,
+    .news-empty {
       color: #777;
+      padding: 25px 0;
+      font-size: 14px;
+    }
 
+    .news-error {
+      color: #999;
+    }
+
+    .news-refresh {
+      background: #222;
+      border: 1px solid #444;
+      color: #ddd;
+      padding: 7px 12px;
+      border-radius: 4px;
+      cursor: pointer;
       font-size: 11px;
     }
 
-    .news-source a {
-      color: #aaa;
-      text-decoration: none;
-    }
-
-    .news-source a:hover {
+    .news-refresh:hover {
+      background: #333;
       color: white;
     }
 
@@ -799,30 +848,35 @@
         height: 210px;
       }
 
+      /* BREAKING NEWS MOBILE */
+
+      .breaking-news {
+        padding: 20px;
+      }
+
+      .breaking-news-header {
+        align-items: flex-start;
+      }
+
+      .breaking-news-title {
+        font-size: 20px;
+      }
+
+      .breaking-news-status {
+        display: none;
+      }
+
+      .news-card {
+        min-width: 280px;
+        max-width: 280px;
+      }
+
       .auth-box {
         padding: 25px 20px;
       }
 
       .account-status span {
         display: none;
-      }
-
-      /* NEWS MOBILE */
-
-      .news-section {
-        padding: 20px;
-      }
-
-      .news-header {
-        align-items: flex-start;
-      }
-
-      .news-title-wrap {
-        flex-wrap: wrap;
-      }
-
-      .news-container {
-        height: 500px;
       }
 
       /* NEWSLETTER MOBILE */
@@ -859,29 +913,12 @@
     </div>
 
     <nav>
-
       <a href="#">Home</a>
-
-      <a href="#originals">
-        Originals
-      </a>
-
-      <a href="#series">
-        Series
-      </a>
-
-      <a href="#films">
-        Films
-      </a>
-
-      <a href="#documentaries">
-        Documentaries
-      </a>
-
-      <a href="#news">
-        News
-      </a>
-
+      <a href="#originals">Originals</a>
+      <a href="#news">News</a>
+      <a href="#series">Series</a>
+      <a href="#films">Films</a>
+      <a href="#documentaries">Documentaries</a>
     </nav>
 
     <div class="nav-right">
@@ -969,7 +1006,6 @@
   <!-- CONTENT -->
 
   <main>
-
 
     <!-- ORIGINALS -->
 
@@ -1060,6 +1096,55 @@
 
           </div>
 
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- ==========================================
+         BREAKING NEWS
+    ========================================== -->
+
+    <section
+      class="breaking-news"
+      id="news"
+    >
+
+      <div class="breaking-news-header">
+
+        <div class="breaking-news-title">
+
+          <span class="breaking-dot"></span>
+
+          Breaking News
+
+        </div>
+
+        <div
+          class="breaking-news-status"
+          id="newsStatus"
+        >
+          Loading latest African news...
+        </div>
+
+        <button
+          class="news-refresh"
+          onclick="loadBreakingNews()"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+      <div
+        class="news-row"
+        id="newsRow"
+      >
+
+        <div class="news-loading">
+          Loading breaking news...
         </div>
 
       </div>
@@ -1236,71 +1321,6 @@
       </div>
 
     </section>
-
-
-    <!-- ==========================================
-         BREAKING NEWS
-    ========================================== -->
-
-    <section
-      class="news-section"
-      id="news"
-    >
-
-      <div class="news-header">
-
-        <div class="news-title-wrap">
-
-          <h2 class="section-title">
-            Breaking News
-          </h2>
-
-          <div class="news-live">
-
-            <span class="news-live-dot"></span>
-
-            LIVE
-
-          </div>
-
-        </div>
-
-      </div>
-
-
-      <p class="news-subtitle">
-        Latest African and international news, updated in real time.
-      </p>
-
-
-      <div class="news-container">
-
-        <iframe
-          src="https://www.africanews.com/news/"
-          title="Africanews Latest Breaking News"
-          loading="lazy"
-          referrerpolicy="strict-origin-when-cross-origin"
-        ></iframe>
-
-      </div>
-
-
-      <div class="news-source">
-
-        News provided by
-
-        <a
-          href="https://www.africanews.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Africanews
-        </a>
-
-      </div>
-
-    </section>
-
 
   </main>
 
@@ -1485,6 +1505,14 @@
 
 
     /* ==========================================
+       BRENZKAFRICA NEWS API
+    ========================================== */
+
+    const NEWS_API_URL =
+      "https://brenz-kafrica-plus-jcc4eadb1-brenzkafricas-projects.vercel.app/api/news";
+
+
+    /* ==========================================
        ELEMENTS
     ========================================== */
 
@@ -1523,6 +1551,12 @@
 
     const userEmail =
       document.getElementById("userEmail");
+
+    const newsRow =
+      document.getElementById("newsRow");
+
+    const newsStatus =
+      document.getElementById("newsStatus");
 
 
     /* ==========================================
@@ -1578,6 +1612,243 @@
       );
 
     }
+
+
+    /* ==========================================
+       BREAKING NEWS
+    ========================================== */
+
+    function escapeHTML(value) {
+
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    }
+
+
+    function formatNewsDate(dateValue) {
+
+      if (!dateValue) {
+        return "";
+      }
+
+      const date =
+        new Date(dateValue);
+
+      if (Number.isNaN(date.getTime())) {
+        return dateValue;
+      }
+
+      return date.toLocaleString(
+        undefined,
+        {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
+
+    }
+
+
+    function openNewsArticle(url) {
+
+      if (!url) {
+        return;
+      }
+
+      window.open(
+        url,
+        "_blank",
+        "noopener,noreferrer"
+      );
+
+    }
+
+
+    function renderBreakingNews(news) {
+
+      if (!Array.isArray(news) || news.length === 0) {
+
+        newsRow.innerHTML =
+          '<div class="news-empty">' +
+          'No breaking news available right now.' +
+          '</div>';
+
+        newsStatus.textContent =
+          "No updates available";
+
+        return;
+
+      }
+
+
+      newsRow.innerHTML =
+        news.map(function(item) {
+
+          const title =
+            escapeHTML(item.title);
+
+          const description =
+            escapeHTML(item.description);
+
+          const source =
+            escapeHTML(item.source || "News");
+
+          const date =
+            escapeHTML(
+              formatNewsDate(item.date)
+            );
+
+          const link =
+            escapeHTML(item.link || "#");
+
+
+          return `
+            <article
+              class="news-card"
+              onclick="openNewsArticle('${link}')"
+            >
+
+              <div>
+
+                <div class="news-source">
+                  ${source}
+                </div>
+
+                <div class="news-title">
+                  ${title}
+                </div>
+
+                <div class="news-description">
+                  ${description}
+                </div>
+
+              </div>
+
+              <div class="news-date">
+                ${date}
+              </div>
+
+            </article>
+          `;
+
+        }).join("");
+
+
+      newsStatus.textContent =
+        "Live African news";
+
+    }
+
+
+    async function loadBreakingNews() {
+
+      newsStatus.textContent =
+        "Updating...";
+
+      newsRow.innerHTML =
+        '<div class="news-loading">' +
+        'Loading latest African news...' +
+        '</div>';
+
+
+      try {
+
+        const response =
+          await fetch(
+            NEWS_API_URL,
+            {
+              method: "GET",
+              cache: "no-store"
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            "News API returned HTTP " +
+            response.status
+          );
+
+        }
+
+
+        const data =
+          await response.json();
+
+
+        console.log(
+          "BRENZKafrica News API:",
+          data
+        );
+
+
+        if (
+          !data ||
+          data.success !== true
+        ) {
+
+          throw new Error(
+            "News API returned an invalid response."
+          );
+
+        }
+
+
+        renderBreakingNews(
+          data.news
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Breaking news error:",
+          error
+        );
+
+
+        newsRow.innerHTML =
+          '<div class="news-error">' +
+          'Unable to load breaking news right now. ' +
+          'Please try again.' +
+          '</div>';
+
+        newsStatus.textContent =
+          "News unavailable";
+
+      }
+
+    }
+
+
+    /* ==========================================
+       LOAD NEWS
+    ========================================== */
+
+    loadBreakingNews();
+
+
+    /*
+      Refresh breaking news every 10 minutes.
+    */
+
+    setInterval(
+      loadBreakingNews,
+      10 * 60 * 1000
+    );
 
 
     /* ==========================================
@@ -1829,7 +2100,9 @@
 
           if (
             error.message &&
-            error.message.toLowerCase().includes("email not confirmed")
+            error.message
+              .toLowerCase()
+              .includes("email not confirmed")
           ) {
 
             showAuthMessage(
@@ -2181,6 +2454,43 @@
           }
         );
 
+
+        /*
+          Also search breaking news.
+        */
+
+        const newsCards =
+          document.querySelectorAll(
+            ".news-card"
+          );
+
+
+        newsCards.forEach(
+          function(card) {
+
+            const text =
+              card.innerText
+                .toLowerCase();
+
+
+            if (
+              !query ||
+              text.includes(query)
+            ) {
+
+              card.style.display =
+                "";
+
+            } else {
+
+              card.style.display =
+                "none";
+
+            }
+
+          }
+        );
+
       }
     );
 
@@ -2209,7 +2519,7 @@
 
     /* ==========================================
        NEWSLETTER
-       KEEPING YOUR WORKING VERSION
+       DO NOT CHANGE
     ========================================== */
 
     const newsletterForm =
