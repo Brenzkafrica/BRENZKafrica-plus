@@ -3970,7 +3970,359 @@
       loadBreakingNews,
       10 * 60 * 1000
     );
+/* =========================================================
+   DOCUMENTARIES — SUPABASE
+========================================================= */
+const documentaryRow =
+  document.getElementById("documentaryRow");
 
+function extractYouTubeId(url) {
+
+  if (!url) {
+    return null;
+  }
+
+  try {
+
+    const parsed =
+      new URL(url);
+
+    if (
+      parsed.hostname.includes(
+        "youtube.com"
+      )
+    ) {
+
+      if (
+        parsed.pathname === "/watch"
+      ) {
+
+        return parsed.searchParams.get(
+          "v"
+        );
+
+      }
+
+      if (
+        parsed.pathname.startsWith(
+          "/embed/"
+        )
+      ) {
+
+        return parsed.pathname
+          .split("/embed/")[1]
+          .split("/")[0];
+
+      }
+
+      if (
+        parsed.pathname.startsWith(
+          "/shorts/"
+        )
+      ) {
+
+        return parsed.pathname
+          .split("/shorts/")[1]
+          .split("/")[0];
+
+      }
+
+    }
+
+    if (
+      parsed.hostname ===
+      "youtu.be"
+    ) {
+
+      return parsed.pathname
+        .replace("/", "")
+        .split("/")[0];
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "YouTube URL error:",
+      error
+    );
+
+  }
+
+  return null;
+
+}
+
+function extractVimeoId(url) {
+
+  if (!url) {
+    return null;
+  }
+
+  const match =
+    String(url).match(
+      /vimeo\.com\/(?:video\/)?(\d+)/i
+    );
+
+  return match
+    ? match[1]
+    : null;
+
+}
+
+function playDocumentary(
+  title,
+  url
+) {
+
+  if (!url) {
+
+    showToast(
+      "This documentary is not available yet."
+    );
+
+    return;
+
+  }
+
+  const youtubeId =
+    extractYouTubeId(url);
+
+  const vimeoId =
+    extractVimeoId(url);
+
+  video.pause();
+
+  video.src = "";
+
+  youtubePlayer.src = "";
+
+  video.style.display =
+    "none";
+
+  youtubePlayer.style.display =
+    "none";
+
+  playerTitle.textContent =
+    title ||
+    "BRENZKafrica Documentary";
+
+  if (youtubeId) {
+
+    youtubePlayer.src =
+      "https://www.youtube.com/embed/" +
+      youtubeId +
+      "?autoplay=1&rel=0";
+
+    youtubePlayer.style.display =
+      "block";
+
+  }
+
+  else if (vimeoId) {
+
+    youtubePlayer.src =
+      "https://player.vimeo.com/video/" +
+      vimeoId +
+      "?autoplay=1";
+
+    youtubePlayer.style.display =
+      "block";
+
+  }
+
+  else {
+
+    video.src = url;
+
+    video.style.display =
+      "block";
+
+    video.play().catch(
+      function(error) {
+
+        console.log(
+          "Autoplay prevented:",
+          error
+        );
+
+      }
+    );
+
+  }
+
+  player.classList.add(
+    "active"
+  );
+
+  document.body.classList.add(
+    "modal-open"
+  );
+
+}
+
+async function loadDocumentaries() {
+
+  if (!documentaryRow) {
+    return;
+  }
+
+  documentaryRow.innerHTML =
+    '<div class="news-loading">' +
+    'Loading documentaries...' +
+    '</div>';
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+    await supabaseClient
+      .from("content")
+      .select(
+        "id,title,description,content_type,category,country,thumbnail_url,video_url,creator,license,attribution,is_original,is_featured,is_published,release_date"
+      )
+      .eq(
+        "category",
+        "Documentary"
+      )
+      .eq(
+        "is_published",
+        true
+      )
+      .order(
+        "is_featured",
+        {
+          ascending: false
+        }
+      )
+      .order(
+        "release_date",
+        {
+          ascending: false,
+          nullsFirst: false
+        }
+      );
+
+    if (error) {
+      throw error;
+    }
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
+
+      documentaryRow.innerHTML =
+        '<div class="news-empty">' +
+        'No documentaries available yet.' +
+        '</div>';
+
+      return;
+
+    }
+
+    documentaryRow.innerHTML =
+      data.map(
+        function(item) {
+
+          const title =
+            escapeHTML(
+              item.title ||
+              "Untitled Documentary"
+            );
+
+          const thumbnail =
+            escapeHTML(
+              item.thumbnail_url ||
+              "https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80"
+            );
+
+          const country =
+            escapeHTML(
+              item.country ||
+              "Africa"
+            );
+
+          return `
+
+            <article
+              class="card"
+              onclick='playDocumentary(
+                ${JSON.stringify(
+                  item.title ||
+                  "Documentary"
+                )},
+                ${JSON.stringify(
+                  item.video_url ||
+                  ""
+                )}
+              )'
+            >
+
+              <img
+                src="${thumbnail}"
+                alt="${title}"
+                loading="lazy"
+                onerror="this.src='https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80'"
+              >
+
+              ${
+                item.is_featured
+                  ? `
+                    <span class="card-badge">
+                      FEATURED
+                    </span>
+                  `
+                  : ""
+              }
+
+              <div class="card-overlay">
+
+                <div class="card-title">
+                  ${title}
+                </div>
+
+                <div class="card-type">
+                  Documentary • ${country}
+                </div>
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
+
+  } catch (error) {
+
+    console.error(
+      "Documentary loading error:",
+      error
+    );
+
+    documentaryRow.innerHTML =
+      '<div class="news-error">' +
+      'Unable to load documentaries right now.' +
+      '</div>';
+
+  }
+
+}
+
+loadDocumentaries();
+
+setInterval(
+  loadDocumentaries,
+  10 * 60 * 1000
+);
+
+/* =========================================================
+   AUTHENTICATION
+========================================================= */
 
     /* =========================================================
        AUTHENTICATION
