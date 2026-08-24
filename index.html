@@ -2,18 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BRENZKafrica Plus</title>
+<title>BRENZKafrica+</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
 *{
   margin:0;
   padding:0;
@@ -33,43 +28,26 @@ body{
 
 button,
 input{
-  font:inherit;
+  font-family:inherit;
 }
 
-button{
-  cursor:pointer;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
+/* ================= HEADER ================= */
 
 header{
   position:fixed;
   top:0;
   left:0;
   right:0;
-  height:72px;
-  z-index:3000;
-
+  height:70px;
+  z-index:1000;
   display:flex;
   align-items:center;
-
-  padding:0 4%;
-
+  padding:0 5%;
   background:linear-gradient(
     to bottom,
-    rgba(0,0,0,.98),
-    rgba(0,0,0,.78),
-    transparent
+    rgba(0,0,0,.96),
+    rgba(0,0,0,0)
   );
-
   transition:.3s;
 }
 
@@ -79,9 +57,9 @@ header.scrolled{
 }
 
 .logo{
-  font-size:25px;
+  font-size:24px;
   font-weight:900;
-  letter-spacing:-1.5px;
+  letter-spacing:-1px;
   white-space:nowrap;
 }
 
@@ -92,12 +70,13 @@ header.scrolled{
 nav{
   display:flex;
   gap:22px;
-  margin-left:38px;
+  margin-left:35px;
   flex:1;
 }
 
 nav a{
   color:#ccc;
+  text-decoration:none;
   font-size:14px;
   transition:.25s;
 }
@@ -112,54 +91,36 @@ nav a:hover{
   gap:12px;
 }
 
-.search-wrapper{
-  position:relative;
-}
-
 .search{
-  width:170px;
-  padding:9px 12px;
-
+  width:150px;
   background:rgba(0,0,0,.7);
-  border:1px solid #444;
-  border-radius:5px;
-
+  border:1px solid #555;
   color:#fff;
+  padding:9px 12px;
+  border-radius:4px;
   outline:none;
-
-  transition:.25s;
-}
-
-.search:focus{
-  width:220px;
-  border-color:#777;
 }
 
 .signin{
   background:#e50914;
-  border:0;
+  border:none;
   color:#fff;
-
   padding:9px 18px;
   border-radius:4px;
-
+  cursor:pointer;
   font-weight:bold;
-}
-
-.signin:hover{
-  background:#f6121d;
 }
 
 .account-status{
   display:none;
   align-items:center;
-  gap:9px;
+  gap:10px;
 }
 
-.account-email{
-  max-width:130px;
+.account-status span{
   color:#ccc;
-  font-size:12px;
+  font-size:13px;
+  max-width:150px;
   overflow:hidden;
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -167,93 +128,65 @@ nav a:hover{
 
 .signout{
   background:#222;
-  color:#fff;
   border:1px solid #444;
-  border-radius:4px;
-  padding:8px 11px;
-  font-size:12px;
-}
-
-.mobile-menu{
-  display:none;
-  background:none;
-  border:0;
   color:#fff;
-  font-size:25px;
+  padding:8px 12px;
+  border-radius:4px;
+  cursor:pointer;
 }
 
-
-/* =========================================================
-   HERO
-========================================================= */
+/* ================= HERO ================= */
 
 .hero{
-  min-height:720px;
-  height:88vh;
-
+  height:90vh;
+  min-height:600px;
   position:relative;
-
   display:flex;
   align-items:center;
-
   padding:0 5%;
-
   background:
     linear-gradient(
       90deg,
       rgba(0,0,0,.97) 0%,
-      rgba(0,0,0,.78) 35%,
-      rgba(0,0,0,.3) 75%,
-      rgba(0,0,0,.05)
+      rgba(0,0,0,.7) 43%,
+      rgba(0,0,0,.1) 100%
     ),
     linear-gradient(
       0deg,
       #080808 0%,
-      transparent 30%
+      transparent 35%
     );
-
   background-size:cover;
   background-position:center;
-  background-repeat:no-repeat;
+  transition:background-image .5s;
 }
 
 .hero-content{
   max-width:650px;
-  padding-top:70px;
-  position:relative;
-  z-index:2;
+  padding-top:90px;
 }
 
 .hero-label{
   color:#e50914;
   font-weight:bold;
   letter-spacing:3px;
-  font-size:12px;
-  margin-bottom:16px;
+  font-size:14px;
+  margin-bottom:15px;
 }
 
 .hero h1{
-  font-size:clamp(48px,7vw,86px);
-  line-height:.93;
+  font-size:clamp(45px,7vw,85px);
+  line-height:.95;
+  margin-bottom:20px;
   font-weight:900;
-  letter-spacing:-3px;
-  margin-bottom:22px;
 }
 
-.hero-meta{
-  display:flex;
-  gap:15px;
-  color:#ccc;
-  font-size:13px;
-  margin-bottom:17px;
-}
-
-.hero-description{
+.hero p{
+  font-size:18px;
+  line-height:1.6;
   color:#ddd;
-  font-size:17px;
-  line-height:1.65;
   max-width:600px;
-  margin-bottom:27px;
+  margin-bottom:25px;
 }
 
 .hero-buttons{
@@ -263,15 +196,12 @@ nav a:hover{
 
 .play-btn,
 .info-btn{
-  border:0;
-  border-radius:5px;
-
-  padding:13px 24px;
-
-  font-size:15px;
+  border:none;
+  padding:13px 25px;
+  border-radius:4px;
+  font-size:16px;
   font-weight:bold;
-
-  transition:.25s;
+  cursor:pointer;
 }
 
 .play-btn{
@@ -279,242 +209,151 @@ nav a:hover{
   color:#000;
 }
 
-.play-btn:hover{
-  background:#ddd;
-}
-
 .info-btn{
-  background:rgba(90,90,90,.75);
+  background:rgba(100,100,100,.7);
   color:#fff;
 }
 
-.info-btn:hover{
-  background:#555;
-}
-
-
-/* =========================================================
-   MAIN
-========================================================= */
+/* ================= MAIN ================= */
 
 main{
-  position:relative;
-  z-index:10;
   margin-top:-80px;
+  position:relative;
+  z-index:2;
 }
 
 .section{
-  padding:24px 5%;
-  margin-bottom:12px;
-}
-
-.section-header{
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
+  padding:25px 5%;
   margin-bottom:15px;
 }
 
 .section-title{
   font-size:22px;
-  font-weight:800;
+  margin-bottom:15px;
+  font-weight:bold;
 }
 
 .section-subtitle{
   color:#888;
-  font-size:13px;
-  margin-top:6px;
+  margin-top:-7px;
+  margin-bottom:18px;
 }
 
-
-/* =========================================================
-   CONTENT ROW
-========================================================= */
-
-.content-row{
+.row{
   display:flex;
-  gap:13px;
-
+  gap:12px;
   overflow-x:auto;
-
-  padding:8px 3px 18px;
-
+  padding:10px 5px 18px;
   scrollbar-width:none;
 }
 
-.content-row::-webkit-scrollbar{
+.row::-webkit-scrollbar{
   display:none;
 }
 
-.content-card{
-  flex:0 0 230px;
-  height:130px;
+/* ================= CARDS ================= */
 
-  background:#171717;
-
+.card{
+  min-width:220px;
+  height:125px;
   border-radius:6px;
   overflow:hidden;
-
   position:relative;
-
+  background:#181818;
   cursor:pointer;
-
-  transition:
-    transform .25s,
-    box-shadow .25s;
+  transition:.3s;
+  flex-shrink:0;
 }
 
-.content-card:hover{
+.card:hover{
   transform:scale(1.06);
-  z-index:20;
-  box-shadow:0 12px 35px rgba(0,0,0,.7);
+  z-index:10;
 }
 
-.content-card img{
+.card img{
   width:100%;
   height:100%;
   object-fit:cover;
   display:block;
 }
 
-.content-card::after{
-  content:"";
+.card-overlay{
   position:absolute;
   inset:0;
-
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  padding:35px 10px 10px;
   background:linear-gradient(
-    transparent 35%,
+    transparent,
     rgba(0,0,0,.95)
   );
-}
-
-.card-info{
-  position:absolute;
-  left:11px;
-  right:11px;
-  bottom:10px;
-  z-index:2;
 }
 
 .card-title{
   font-size:14px;
   font-weight:bold;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
 }
 
-.card-meta{
+.card-type{
+  font-size:11px;
+  color:#bbb;
   margin-top:4px;
-  color:#aaa;
-  font-size:10px;
 }
 
-.card-badge{
-  position:absolute;
-  top:9px;
-  left:9px;
-  z-index:4;
-
-  background:#e50914;
-  color:#fff;
-
-  padding:4px 7px;
-
-  border-radius:3px;
-
-  font-size:9px;
-  font-weight:bold;
-}
-
-.poster-card{
-  flex-basis:180px;
+.portrait-card{
+  min-width:180px;
   height:270px;
 }
 
-.poster-card .card-title{
-  white-space:normal;
-}
+/* ================= EMPTY / LOADING ================= */
 
-
-/* =========================================================
-   CONTENT STATES
-========================================================= */
-
-.content-loading,
-.content-empty{
+.loading{
   color:#777;
   padding:25px 0;
-  font-size:13px;
 }
 
-
-/* =========================================================
-   MY LIST
-========================================================= */
-
-.list-button{
-  position:absolute;
-  top:9px;
-  right:9px;
-  z-index:10;
-
-  width:30px;
-  height:30px;
-
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.4);
-
-  background:rgba(0,0,0,.7);
-
-  color:#fff;
-
-  font-size:18px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.empty{
+  color:#666;
+  padding:20px 0;
 }
 
-.list-button.active{
-  background:#e50914;
-  border-color:#e50914;
-}
+/* ================= LIVE ================= */
 
-
-/* =========================================================
-   LIVE
-========================================================= */
-
-.live-section{
+.live-section,
+.breaking-news{
   padding:30px 5%;
+  margin-bottom:20px;
 }
 
-.live-header{
+.live-header,
+.breaking-news-header{
   display:flex;
   align-items:center;
-  gap:13px;
-  margin-bottom:8px;
+  gap:15px;
+  margin-bottom:18px;
 }
 
-.live-title{
+.live-title,
+.breaking-news-title{
   display:flex;
   align-items:center;
-  gap:9px;
-  font-size:23px;
+  gap:10px;
+  font-size:24px;
   font-weight:bold;
+  white-space:nowrap;
+}
+
+.live-dot,
+.breaking-dot{
+  width:11px;
+  height:11px;
+  background:#e50914;
+  border-radius:50%;
+  box-shadow:0 0 14px rgba(229,9,20,.8);
 }
 
 .live-dot{
-  width:10px;
-  height:10px;
-
-  border-radius:50%;
-
-  background:#e50914;
-
-  box-shadow:0 0 14px rgba(229,9,20,.9);
-
   animation:pulse 1.3s infinite;
 }
 
@@ -525,51 +364,38 @@ main{
   }
 }
 
-.live-status{
+.live-status,
+.breaking-news-status{
   color:#777;
   font-size:12px;
   flex:1;
 }
 
-.refresh-btn{
-  background:#222;
-  color:#ddd;
-
-  border:1px solid #444;
-
-  border-radius:4px;
-
-  padding:7px 11px;
-
-  font-size:11px;
-}
-
-.live-row{
+.live-row,
+.news-row{
   display:flex;
   gap:15px;
   overflow-x:auto;
   scrollbar-width:none;
-  padding:10px 3px 18px;
+  padding:5px 0 18px;
 }
 
-.live-row::-webkit-scrollbar{
+.live-row::-webkit-scrollbar,
+.news-row::-webkit-scrollbar{
   display:none;
 }
 
 .live-card{
   min-width:320px;
+  max-width:320px;
   height:190px;
-
-  border:1px solid #292929;
   border-radius:8px;
-
   overflow:hidden;
-
   position:relative;
-
   background:#111;
-
+  border:1px solid #292929;
   cursor:pointer;
+  flex-shrink:0;
 }
 
 .live-card img{
@@ -578,123 +404,67 @@ main{
   object-fit:cover;
 }
 
-.live-card::after{
+.live-card:after{
   content:"";
   position:absolute;
   inset:0;
-
   background:linear-gradient(
-    transparent 35%,
+    transparent 30%,
     rgba(0,0,0,.95)
   );
 }
 
 .live-badge{
   position:absolute;
-  top:11px;
-  left:11px;
-  z-index:3;
-
+  top:12px;
+  left:12px;
+  z-index:2;
   background:#e50914;
-
-  padding:5px 8px;
-
+  padding:5px 9px;
   border-radius:4px;
-
-  font-size:9px;
+  font-size:10px;
   font-weight:bold;
 }
 
-.live-upcoming{
+.upcoming{
   background:#333;
 }
 
-.live-info{
+.live-card-info{
   position:absolute;
+  z-index:3;
   bottom:12px;
   left:14px;
   right:14px;
-  z-index:3;
 }
 
-.live-info h3{
+.live-card-title{
   font-size:17px;
-  margin-bottom:5px;
-}
-
-.live-info p{
-  color:#bbb;
-  font-size:11px;
-}
-
-
-/* =========================================================
-   NEWS
-========================================================= */
-
-.news-section{
-  padding:28px 5%;
-}
-
-.news-header{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  margin-bottom:14px;
-}
-
-.news-title{
-  font-size:22px;
   font-weight:bold;
 }
 
-.news-dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:#e50914;
+.live-card-description{
+  color:#bbb;
+  font-size:12px;
+  margin-top:5px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.news-status{
-  color:#777;
-  font-size:11px;
-  flex:1;
-}
-
-.news-row{
-  display:flex;
-  gap:14px;
-  overflow-x:auto;
-  scrollbar-width:none;
-  padding:5px 2px 18px;
-}
-
-.news-row::-webkit-scrollbar{
-  display:none;
-}
+/* ================= NEWS ================= */
 
 .news-card{
-  flex:0 0 310px;
+  min-width:310px;
+  max-width:310px;
   min-height:180px;
-
-  background:linear-gradient(
-    145deg,
-    #191919,
-    #0e0e0e
-  );
-
+  background:linear-gradient(145deg,#181818,#0e0e0e);
   border:1px solid #292929;
   border-radius:8px;
-
-  padding:17px;
-
+  padding:18px;
   cursor:pointer;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-
-  transition:.25s;
+  flex-shrink:0;
+  transition:.3s;
 }
 
 .news-card:hover{
@@ -704,182 +474,54 @@ main{
 
 .news-source{
   color:#e50914;
-  font-size:10px;
+  font-size:11px;
   font-weight:bold;
   text-transform:uppercase;
+  margin-bottom:10px;
 }
 
-.news-card h3{
-  font-size:16px;
-  line-height:1.4;
-  margin:10px 0;
+.news-title{
+  font-size:17px;
+  line-height:1.35;
+  font-weight:bold;
 }
 
-.news-card p{
+.news-description{
   color:#999;
-  font-size:12px;
+  font-size:13px;
   line-height:1.5;
+  margin-top:8px;
 }
 
 .news-date{
   color:#666;
-  font-size:10px;
+  font-size:11px;
+  margin-top:15px;
 }
 
+/* ================= BUTTONS ================= */
 
-/* =========================================================
-   DETAIL MODAL
-========================================================= */
-
-.detail-modal{
-  display:none;
-
-  position:fixed;
-  inset:0;
-
-  z-index:7000;
-
-  background:rgba(0,0,0,.9);
-
-  overflow-y:auto;
-
-  padding:70px 20px 40px;
+.refresh{
+  background:#222;
+  border:1px solid #444;
+  color:#ddd;
+  padding:7px 12px;
+  border-radius:4px;
+  cursor:pointer;
+  font-size:11px;
 }
 
-.detail-modal.active{
-  display:block;
-}
-
-.detail-box{
-  max-width:1050px;
-  margin:auto;
-
-  background:#151515;
-
-  border-radius:10px;
-
-  overflow:hidden;
-
-  position:relative;
-}
-
-.detail-hero{
-  min-height:430px;
-
-  background-size:cover;
-  background-position:center;
-
-  display:flex;
-  align-items:end;
-
-  position:relative;
-}
-
-.detail-hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-
-  background:linear-gradient(
-    transparent 20%,
-    #151515 95%
-  );
-}
-
-.detail-content{
-  position:relative;
-  z-index:2;
-
-  padding:45px;
-
-  max-width:720px;
-}
-
-.detail-content h2{
-  font-size:42px;
-  margin-bottom:14px;
-}
-
-.detail-meta{
-  display:flex;
-  gap:13px;
-  color:#aaa;
-  font-size:12px;
-  margin-bottom:15px;
-}
-
-.detail-description{
-  color:#ccc;
-  line-height:1.7;
-  font-size:14px;
-}
-
-.detail-close{
-  position:absolute;
-  right:18px;
-  top:18px;
-  z-index:10;
-
-  width:40px;
-  height:40px;
-
-  border-radius:50%;
-
-  border:0;
-
-  background:rgba(0,0,0,.7);
-
-  color:#fff;
-
-  font-size:24px;
-}
-
-.detail-actions{
-  margin-top:22px;
-
-  display:flex;
-  gap:10px;
-}
-
-.detail-actions button{
-  border:0;
-  border-radius:5px;
-
-  padding:11px 20px;
-
-  font-weight:bold;
-}
-
-.detail-play{
-  background:#fff;
-  color:#000;
-}
-
-.detail-list{
-  background:#333;
-  color:#fff;
-}
-
-
-/* =========================================================
-   PLAYER
-========================================================= */
+/* ================= PLAYER ================= */
 
 .player{
   display:none;
-
   position:fixed;
   inset:0;
-
-  z-index:9000;
-
   background:#000;
-
+  z-index:5000;
   align-items:center;
   justify-content:center;
-
   flex-direction:column;
-
   padding:20px;
 }
 
@@ -889,268 +531,247 @@ main{
 
 .player video,
 .youtube-player{
-  width:92%;
-  max-width:1200px;
+  width:90%;
+  max-width:1100px;
   height:70vh;
-
   background:#000;
-
-  border:0;
+  border:none;
 }
 
 .player video{
   object-fit:contain;
 }
 
-.close-player{
+.close-player,
+.close-details,
+.close-auth{
   position:absolute;
-  right:25px;
-  top:22px;
-
+  top:25px;
+  right:30px;
+  z-index:10;
+  background:rgba(255,255,255,.15);
+  color:#fff;
+  border:none;
+  border-radius:50%;
   width:45px;
   height:45px;
-
-  border-radius:50%;
-  border:0;
-
-  background:rgba(255,255,255,.15);
-
-  color:#fff;
-
-  font-size:25px;
+  font-size:22px;
+  cursor:pointer;
 }
 
 .player-title{
-  margin-top:14px;
+  margin-top:15px;
+  font-size:18px;
   font-weight:bold;
 }
 
+/* ================= DETAILS ================= */
 
-/* =========================================================
-   AUTH
-========================================================= */
-
-.auth-modal{
+.details{
   display:none;
-
   position:fixed;
   inset:0;
+  background:rgba(0,0,0,.94);
+  z-index:4500;
+  overflow-y:auto;
+}
 
+.details.active{
+  display:block;
+}
+
+.details-hero{
+  min-height:70vh;
+  display:flex;
+  align-items:flex-end;
+  padding:60px 7%;
+  background-size:cover;
+  background-position:center;
+  position:relative;
+}
+
+.details-hero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    #080808,
+    rgba(8,8,8,.35),
+    rgba(8,8,8,.1)
+  );
+}
+
+.details-content{
+  position:relative;
+  z-index:2;
+  max-width:700px;
+}
+
+.details-content h1{
+  font-size:clamp(40px,6vw,70px);
+  margin-bottom:15px;
+}
+
+.details-meta{
+  color:#aaa;
+  margin-bottom:15px;
+}
+
+.details-description{
+  color:#ddd;
+  line-height:1.7;
+  margin-bottom:25px;
+}
+
+/* ================= AUTH ================= */
+
+.auth-section{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.88);
   z-index:10000;
-
-  background:rgba(0,0,0,.9);
-
   align-items:center;
   justify-content:center;
-
   padding:20px;
 }
 
-.auth-modal.active{
+.auth-section.active{
   display:flex;
 }
 
 .auth-box{
   width:100%;
   max-width:420px;
-
   background:#111;
-
   border:1px solid #333;
-
-  border-radius:10px;
-
+  border-radius:12px;
   padding:30px;
-
   position:relative;
 }
 
 .auth-box h2{
-  font-size:27px;
-  margin-bottom:9px;
+  font-size:28px;
+  margin-bottom:10px;
 }
 
-.auth-box p{
+.auth-description{
   color:#888;
-  font-size:13px;
+  font-size:14px;
+  margin-bottom:22px;
   line-height:1.5;
-  margin-bottom:20px;
 }
 
 .auth-box input{
   width:100%;
-
   background:#050505;
-
   color:#fff;
-
   border:1px solid #333;
-
-  border-radius:5px;
-
-  padding:13px;
-
-  margin-bottom:11px;
-
+  padding:14px;
+  border-radius:6px;
+  margin-bottom:12px;
   outline:none;
 }
 
-.auth-action{
+#auth-button{
   width:100%;
-
-  border:0;
-  border-radius:5px;
-
   padding:13px;
-
+  border:none;
+  border-radius:6px;
   background:#e50914;
-
   color:#fff;
-
   font-weight:bold;
+  cursor:pointer;
 }
 
-.auth-message{
-  min-height:18px;
-  text-align:center;
-  margin-top:13px;
+#auth-message{
+  min-height:20px;
+  margin-top:15px;
   color:#aaa;
-  font-size:12px;
+  font-size:13px;
+  text-align:center;
 }
 
 .auth-switch{
-  text-align:center;
+  margin-top:20px;
   color:#888;
-  font-size:12px;
-  margin-top:18px;
+  font-size:13px;
+  text-align:center;
 }
 
 .auth-switch button{
   background:none;
-  border:0;
+  border:none;
   color:#fff;
+  cursor:pointer;
   font-weight:bold;
 }
 
-.auth-close{
-  position:absolute;
-  right:13px;
-  top:10px;
-
-  background:none;
-  border:0;
-
-  color:#aaa;
-
-  font-size:25px;
-}
-
-
-/* =========================================================
-   NEWSLETTER
-========================================================= */
+/* ================= NEWSLETTER ================= */
 
 .newsletter{
-  margin:55px 5% 25px;
-
-  padding:50px 30px;
-
+  margin:60px 5% 20px;
+  padding:45px 30px;
+  background:linear-gradient(135deg,#151515,#0d0d0d);
   border:1px solid #292929;
-
   border-radius:10px;
-
-  background:linear-gradient(
-    135deg,
-    #171717,
-    #0c0c0c
-  );
-
   text-align:center;
 }
 
 .newsletter h2{
   font-size:28px;
-  margin-bottom:9px;
+  margin-bottom:10px;
 }
 
 .newsletter p{
-  color:#888;
+  color:#999;
   max-width:600px;
-  margin:0 auto 22px;
+  margin:0 auto 25px;
   line-height:1.6;
 }
 
 .newsletter-form{
+  display:flex;
+  justify-content:center;
+  gap:10px;
   max-width:600px;
   margin:auto;
-
-  display:flex;
-  gap:9px;
 }
 
 .newsletter-form input{
   flex:1;
-
   background:#050505;
-  color:#fff;
-
   border:1px solid #444;
-
+  color:#fff;
+  padding:14px;
   border-radius:5px;
-
-  padding:13px;
-
   outline:none;
 }
 
 .newsletter-form button{
   background:#e50914;
   color:#fff;
-
-  border:0;
+  border:none;
+  padding:14px 22px;
   border-radius:5px;
-
-  padding:13px 20px;
-
   font-weight:bold;
+  cursor:pointer;
 }
 
-#newsletter-message{
-  min-height:20px;
-  margin-top:15px;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
+/* ================= FOOTER ================= */
 
 footer{
-  border-top:1px solid #222;
-
-  padding:50px 5%;
-
+  padding:60px 5%;
+  color:#777;
   text-align:center;
-
-  color:#666;
+  border-top:1px solid #222;
+  margin-top:40px;
 }
 
-footer h3{
-  color:#fff;
-  margin-bottom:10px;
-}
+/* ================= MOBILE ================= */
 
-footer p{
-  font-size:12px;
-  margin-top:6px;
-}
-
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:800px){
+@media(max-width:700px){
 
   header{
     height:60px;
@@ -1158,80 +779,65 @@ footer p{
   }
 
   .logo{
-    font-size:20px;
+    font-size:19px;
   }
 
   nav{
     display:none;
   }
 
-  .mobile-menu{
-    display:block;
-  }
-
-  .nav-right{
-    margin-left:auto;
-  }
-
   .search{
-    width:100px;
-  }
-
-  .search:focus{
-    width:140px;
+    width:90px;
   }
 
   .signin{
-    padding:8px 11px;
-    font-size:11px;
+    padding:8px 12px;
+    font-size:12px;
   }
 
   .hero{
     height:75vh;
-    min-height:560px;
+    min-height:500px;
     padding:0 20px;
   }
 
-  .hero h1{
-    font-size:47px;
-    letter-spacing:-2px;
+  .hero-content{
+    padding-top:80px;
   }
 
-  .hero-description{
-    font-size:14px;
+  .hero h1{
+    font-size:48px;
+  }
+
+  .hero p{
+    font-size:15px;
   }
 
   .section,
-  .live-section,
-  .news-section{
+  .breaking-news,
+  .live-section{
     padding-left:20px;
     padding-right:20px;
   }
 
-  .content-card{
-    flex-basis:175px;
+  .card{
+    min-width:170px;
     height:100px;
   }
 
-  .poster-card{
-    flex-basis:145px;
-    height:215px;
+  .portrait-card{
+    min-width:140px;
+    height:210px;
   }
 
   .live-card{
     min-width:280px;
+    max-width:280px;
   }
 
   .news-card{
-    flex-basis:280px;
-  }
-
-  .detail-content{
-    padding:25px;
-  }
-
-  .detail-content h2{
-    font-size:30px;
+    min-width:280px;
+    max-width:280px;
   }
 
   .player video,
@@ -1241,8 +847,8 @@ footer p{
   }
 
   .newsletter{
-    margin-left:20px;
-    margin-right:20px;
+    margin:40px 20px 20px;
+    padding:35px 20px;
   }
 
   .newsletter-form{
@@ -1253,56 +859,44 @@ footer p{
     width:100%;
   }
 
+  .account-status span{
+    display:none;
+  }
 }
-
 </style>
 </head>
 
-
 <body>
 
-
-<!-- =======================================================
-     HEADER
-======================================================= -->
-
-<header id="siteHeader">
+<header id="header">
 
   <div class="logo">
     BRENZK<span>africa</span>+
   </div>
 
   <nav>
-
-    <a href="#home">Home</a>
+    <a href="#">Home</a>
     <a href="#originals">Originals</a>
-    <a href="#trending">Trending</a>
+    <a href="#live">🔴 Live</a>
+    <a href="#news">News</a>
     <a href="#series">Series</a>
     <a href="#films">Films</a>
     <a href="#documentaries">Documentaries</a>
-    <a href="#live">🔴 Live</a>
-    <a href="#news">News</a>
-
   </nav>
 
   <div class="nav-right">
 
-    <div class="search-wrapper">
-
-      <input
-        id="search"
-        class="search"
-        type="search"
-        placeholder="Search"
-        autocomplete="off"
-      >
-
-    </div>
+    <input
+      class="search"
+      id="search"
+      type="text"
+      placeholder="Search"
+    >
 
     <button
       class="signin"
       id="signinButton"
-      onclick="openAuth()"
+      onclick="openAccount()"
     >
       Sign In
     </button>
@@ -1311,11 +905,7 @@ footer p{
       class="account-status"
       id="accountStatus"
     >
-
-      <span
-        class="account-email"
-        id="userEmail"
-      ></span>
+      <span id="userEmail"></span>
 
       <button
         class="signout"
@@ -1323,7 +913,6 @@ footer p{
       >
         Sign Out
       </button>
-
     </div>
 
   </div>
@@ -1331,13 +920,11 @@ footer p{
 </header>
 
 
-<!-- =======================================================
-     HERO
-======================================================= -->
+<!-- ================= HERO ================= -->
 
 <section
   class="hero"
-  id="home"
+  id="hero"
 >
 
   <div class="hero-content">
@@ -1355,21 +942,7 @@ footer p{
       Unlimited Vision.
     </h1>
 
-    <div
-      class="hero-meta"
-      id="heroMeta"
-    >
-      <span>Original</span>
-      <span>•</span>
-      <span>Africa</span>
-      <span>•</span>
-      <span>2026</span>
-    </div>
-
-    <p
-      class="hero-description"
-      id="heroDescription"
-    >
+    <p id="heroDescription">
       Discover original African stories, films,
       series, documentaries and creative work
       from BRENZKafrica.
@@ -1379,7 +952,6 @@ footer p{
 
       <button
         class="play-btn"
-        id="heroPlay"
         onclick="playHero()"
       >
         ▶ Play
@@ -1387,7 +959,7 @@ footer p{
 
       <button
         class="info-btn"
-        onclick="showHeroInfo()"
+        onclick="openHeroDetails()"
       >
         ⓘ More Info
       </button>
@@ -1401,309 +973,135 @@ footer p{
 
 <main>
 
-
-<!-- =======================================================
-     CONTINUE WATCHING
-======================================================= -->
-
-<section
-  class="section"
-  id="continueSection"
-  style="display:none;"
->
-
-  <div class="section-header">
-
-    <div>
-
-      <h2 class="section-title">
-        Continue Watching
-      </h2>
-
-      <p class="section-subtitle">
-        Pick up where you left off.
-      </p>
-
-    </div>
-
-  </div>
-
-  <div
-    class="content-row"
-    id="continueRow"
-  ></div>
-
-</section>
-
-
-<!-- =======================================================
-     MY LIST
-======================================================= -->
-
-<section
-  class="section"
-  id="myListSection"
-  style="display:none;"
->
-
-  <div class="section-header">
-
-    <div>
-
-      <h2 class="section-title">
-        My List
-      </h2>
-
-      <p class="section-subtitle">
-        Your saved BRENZKafrica titles.
-      </p>
-
-    </div>
-
-  </div>
-
-  <div
-    class="content-row"
-    id="myListRow"
-  ></div>
-
-</section>
-
-
-<!-- =======================================================
-     TRENDING
-======================================================= -->
-
-<section
-  class="section"
-  id="trending"
->
-
-  <div class="section-header">
-
-    <div>
-
-      <h2 class="section-title">
-        Trending on BRENZKafrica+
-      </h2>
-
-      <p class="section-subtitle">
-        What audiences are watching.
-      </p>
-
-    </div>
-
-  </div>
-
-  <div
-    class="content-row"
-    id="trendingRow"
-  >
-
-    <div class="content-loading">
-      Loading content...
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     RECENTLY ADDED
-======================================================= -->
-
-<section class="section">
-
-  <div class="section-header">
-
-    <div>
-
-      <h2 class="section-title">
-        Recently Added
-      </h2>
-
-      <p class="section-subtitle">
-        Fresh stories from BRENZKafrica.
-      </p>
-
-    </div>
-
-  </div>
-
-  <div
-    class="content-row"
-    id="recentRow"
-  >
-
-    <div class="content-loading">
-      Loading content...
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- =======================================================
-     ORIGINALS
-======================================================= -->
+<!-- ================= ORIGINALS ================= -->
 
 <section
   class="section"
   id="originals"
 >
 
-  <div class="section-header">
+  <h2 class="section-title">
+    BRENZKafrica Originals
+  </h2>
 
-    <div>
-
-      <h2 class="section-title">
-        BRENZKafrica Originals
-      </h2>
-
-      <p class="section-subtitle">
-        Stories created by Africa. For the world.
-      </p>
-
-    </div>
-
-  </div>
+  <p class="section-subtitle">
+    Stories created by Africa. For the world.
+  </p>
 
   <div
-    class="content-row"
+    class="row"
     id="originalsRow"
   >
-
-    <div class="content-loading">
-      Loading originals...
+    <div class="loading">
+      Loading Originals...
     </div>
-
   </div>
 
 </section>
 
 
-<!-- =======================================================
-     SERIES
-======================================================= -->
+<!-- ================= TRENDING ================= -->
+
+<section class="section">
+
+  <h2 class="section-title">
+    Trending Now
+  </h2>
+
+  <div
+    class="row"
+    id="trendingRow"
+  >
+    <div class="loading">
+      Loading...
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= SERIES ================= -->
 
 <section
   class="section"
   id="series"
 >
 
-  <div class="section-header">
+  <h2 class="section-title">
+    Series
+  </h2>
 
-    <div>
-
-      <h2 class="section-title">
-        Series
-      </h2>
-
-      <p class="section-subtitle">
-        African stories told episode by episode.
-      </p>
-
-    </div>
-
-  </div>
+  <p class="section-subtitle">
+    African stories told across episodes and seasons.
+  </p>
 
   <div
-    class="content-row"
+    class="row"
     id="seriesRow"
   >
-
-    <div class="content-loading">
-      Loading series...
+    <div class="loading">
+      Loading Series...
     </div>
-
   </div>
 
 </section>
 
 
-<!-- =======================================================
-     FILMS
-======================================================= -->
+<!-- ================= FILMS ================= -->
 
 <section
   class="section"
   id="films"
 >
 
-  <div class="section-header">
+  <h2 class="section-title">
+    Films
+  </h2>
 
-    <div>
-
-      <h2 class="section-title">
-        Films
-      </h2>
-
-      <p class="section-subtitle">
-        Independent African cinema.
-      </p>
-
-    </div>
-
-  </div>
+  <p class="section-subtitle">
+    Independent African stories and visual journeys.
+  </p>
 
   <div
-    class="content-row"
+    class="row"
     id="filmsRow"
   >
-
-    <div class="content-loading">
-      Loading films...
+    <div class="loading">
+      Loading Films...
     </div>
-
   </div>
 
 </section>
 
 
-<!-- =======================================================
-     DOCUMENTARIES
-======================================================= -->
+<!-- ================= DOCUMENTARIES ================= -->
 
 <section
   class="section"
   id="documentaries"
 >
 
-  <div class="section-header">
+  <h2 class="section-title">
+    Documentaries
+  </h2>
 
-    <div>
-
-      <h2 class="section-title">
-        Documentaries
-      </h2>
-
-      <p class="section-subtitle">
-        Real people. Real places. African perspectives.
-      </p>
-
-    </div>
-
-  </div>
+  <p class="section-subtitle">
+    Real people. Real places. African perspectives.
+  </p>
 
   <div
-    class="content-row"
+    class="row"
     id="documentariesRow"
   >
-
-    <div class="content-loading">
-      Loading documentaries...
+    <div class="loading">
+      Loading Documentaries...
     </div>
-
   </div>
 
 </section>
 
 
-<!-- =======================================================
-     LIVE
-======================================================= -->
+<!-- ================= LIVE ================= -->
 
 <section
   class="live-section"
@@ -1728,7 +1126,7 @@ footer p{
     </div>
 
     <button
-      class="refresh-btn"
+      class="refresh"
       onclick="loadLiveEvents()"
     >
       Refresh
@@ -1744,42 +1142,40 @@ footer p{
     class="live-row"
     id="liveRow"
   >
-
-    <div class="content-loading">
+    <div class="loading">
       Loading live events...
     </div>
-
   </div>
 
 </section>
 
 
-<!-- =======================================================
-     NEWS
-======================================================= -->
+<!-- ================= NEWS ================= -->
 
 <section
-  class="news-section"
+  class="breaking-news"
   id="news"
 >
 
-  <div class="news-header">
+  <div class="breaking-news-header">
 
-    <span class="news-dot"></span>
+    <div class="breaking-news-title">
 
-    <div class="news-title">
+      <span class="breaking-dot"></span>
+
       Breaking News
+
     </div>
 
     <div
-      class="news-status"
+      class="breaking-news-status"
       id="newsStatus"
     >
       Loading latest African news...
     </div>
 
     <button
-      class="refresh-btn"
+      class="refresh"
       onclick="loadBreakingNews()"
     >
       Refresh
@@ -1791,76 +1187,75 @@ footer p{
     class="news-row"
     id="newsRow"
   >
-
-    <div class="content-loading">
+    <div class="loading">
       Loading breaking news...
     </div>
-
   </div>
 
 </section>
 
-
 </main>
 
 
-<!-- =======================================================
-     CONTENT DETAIL
-======================================================= -->
+<!-- ================= DETAILS ================= -->
 
 <div
-  class="detail-modal"
-  id="detailModal"
+  class="details"
+  id="details"
 >
 
-  <div class="detail-box">
+  <button
+    class="close-details"
+    onclick="closeDetails()"
+  >
+    ×
+  </button>
 
-    <button
-      class="detail-close"
-      onclick="closeDetails()"
-    >
-      ×
-    </button>
+  <div
+    class="details-hero"
+    id="detailsHero"
+  >
 
-    <div
-      class="detail-hero"
-      id="detailHero"
-    >
+    <div class="details-content">
 
-      <div class="detail-content">
+      <div
+        class="hero-label"
+        id="detailsType"
+      >
+        BRENZKAFRICA
+      </div>
 
-        <h2 id="detailTitle">
-          Title
-        </h2>
+      <h1 id="detailsTitle">
+        Title
+      </h1>
 
-        <div
-          class="detail-meta"
-          id="detailMeta"
-        ></div>
+      <div
+        class="details-meta"
+        id="detailsMeta"
+      >
+      </div>
 
-        <p
-          class="detail-description"
-          id="detailDescription"
-        ></p>
+      <p
+        class="details-description"
+        id="detailsDescription"
+      >
+      </p>
 
-        <div class="detail-actions">
+      <div class="hero-buttons">
 
-          <button
-            class="detail-play"
-            onclick="playSelectedContent()"
-          >
-            ▶ Play
-          </button>
+        <button
+          class="play-btn"
+          id="detailsPlay"
+        >
+          ▶ Play
+        </button>
 
-          <button
-            class="detail-list"
-            id="detailListButton"
-            onclick="toggleSelectedList()"
-          >
-            ＋ My List
-          </button>
-
-        </div>
+        <button
+          class="info-btn"
+          onclick="closeDetails()"
+        >
+          Close
+        </button>
 
       </div>
 
@@ -1871,9 +1266,7 @@ footer p{
 </div>
 
 
-<!-- =======================================================
-     VIDEO PLAYER
-======================================================= -->
+<!-- ================= PLAYER ================= -->
 
 <div
   class="player"
@@ -1896,7 +1289,7 @@ footer p{
   <iframe
     id="youtubePlayer"
     class="youtube-player"
-    style="display:none;"
+    style="display:none"
     allow="autoplay; encrypted-media; picture-in-picture"
     allowfullscreen
   ></iframe>
@@ -1909,31 +1302,29 @@ footer p{
 </div>
 
 
-<!-- =======================================================
-     AUTH
-======================================================= -->
+<!-- ================= AUTH ================= -->
 
 <div
-  class="auth-modal"
-  id="authModal"
+  id="auth-section"
+  class="auth-section"
 >
 
   <div class="auth-box">
 
     <button
-      class="auth-close"
-      onclick="closeAuth()"
+      class="close-auth"
+      onclick="closeAccount()"
     >
       ×
     </button>
 
-    <h2 id="authTitle">
+    <h2 id="auth-title">
       Sign In
     </h2>
 
-    <p>
-      Sign in to BRENZKafrica Plus to save
-      titles and continue watching.
+    <p class="auth-description">
+      Sign in to your BRENZKafrica Plus account
+      or create a new viewer account.
     </p>
 
     <input
@@ -1949,39 +1340,27 @@ footer p{
     >
 
     <button
-      class="auth-action"
-      id="authButton"
+      id="auth-button"
       onclick="signIn()"
     >
       Sign In
     </button>
 
-    <div
-      class="auth-message"
-      id="authMessage"
-    ></div>
+    <p id="auth-message"></p>
 
-    <div class="auth-switch">
-
+    <p class="auth-switch">
       Don't have an account?
-
-      <button
-        onclick="showSignUp()"
-        id="authSwitchButton"
-      >
+      <button onclick="showSignUp()">
         Create Account
       </button>
-
-    </div>
+    </p>
 
   </div>
 
 </div>
 
 
-<!-- =======================================================
-     NEWSLETTER
-======================================================= -->
+<!-- ================= NEWSLETTER ================= -->
 
 <section class="newsletter">
 
@@ -2016,24 +1395,20 @@ footer p{
 
   </form>
 
-  <p id="newsletterMessage"></p>
+  <p id="newsletter-message"></p>
 
 </section>
 
 
-<!-- =======================================================
-     FOOTER
-======================================================= -->
-
 <footer>
 
-  <h3>
-    BRENZKafrica+
-  </h3>
+  <h3>BRENZKafrica+</h3>
 
   <p>
     African Creativity. Unlimited Vision.
   </p>
+
+  <br>
 
   <p>
     © 2026 BRENZKafrica. All rights reserved.
@@ -2079,20 +1454,9 @@ const NEWS_API_URL="/api/news";
    STATE
 ========================================================= */
 
-let allContent=[];
-
-let selectedContent=null;
-
-let heroContent=null;
-
-let currentUser=null;
-
-let myList=
-JSON.parse(
-  localStorage.getItem(
-    "brenzkafrica_my_list"
-  ) || "[]"
-);
+let contentItems=[];
+let heroItem=null;
+let selectedItem=null;
 
 
 /* =========================================================
@@ -2101,10 +1465,7 @@ JSON.parse(
 
 function escapeHTML(value){
 
-  if(
-    value===null ||
-    value===undefined
-  ){
+  if(value===null || value===undefined){
     return "";
   }
 
@@ -2114,110 +1475,130 @@ function escapeHTML(value){
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
-
 }
 
 
-function normalize(value){
+function firstValue(item,keys){
 
-  return String(
-    value || ""
-  )
-  .toLowerCase()
-  .trim()
-  .replace(/[_-]/g," ");
+  for(const key of keys){
 
+    if(
+      item &&
+      item[key] !== null &&
+      item[key] !== undefined &&
+      String(item[key]).trim() !== ""
+    ){
+      return item[key];
+    }
+
+  }
+
+  return "";
 }
 
 
 function getTitle(item){
 
-  return item.title ||
-    "Untitled";
-
-
-}
-
-
-function getImage(item){
-
-  return item.thumbnail ||
-    "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1000&q=80";
-
+  return firstValue(item,[
+    "title",
+    "Tittle",
+    "Title",
+    "name",
+    "Name"
+  ]) || "Untitled";
 }
 
 
 function getDescription(item){
 
-  return item.description ||
-    item.content ||
-    "Discover this African story on BRENZKafrica Plus.";
-
-
+  return firstValue(item,[
+    "description",
+    "Description",
+    "content",
+    "Content"
+  ]) || "Discover this BRENZKafrica production.";
 }
 
 
-function getType(item){
+function getThumbnail(item){
 
-  const type=
-    normalize(
-      item.content_type
-    );
+  return firstValue(item,[
+    "thumbnail_url",
+    "Thumb nail_url",
+    "Thumbnail",
+    "thumbnail",
+    "thumb_nail_url",
+    "image_url",
+    "poster_url"
+  ]) ||
+  "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1000&q=80";
+}
+
+
+function getVideo(item){
+
+  return firstValue(item,[
+    "video_url",
+    "Video_url",
+    "video",
+    "Video",
+    "youtube_url",
+    "YouTube"
+  ]);
+}
+
+
+function getCategory(item){
+
+  return String(
+    firstValue(item,[
+      "category",
+      "Category",
+      "content_type",
+      "Content_type",
+      "Content type"
+    ]) || ""
+  ).trim();
+}
+
+
+function getContentType(item){
+
+  return String(
+    firstValue(item,[
+      "content_type",
+      "Content_type",
+      "Content type",
+      "category",
+      "Category"
+    ]) || ""
+  ).trim();
+}
+
+
+function normalize(value){
+
+  return String(value || "")
+    .toLowerCase()
+    .replace(/[_-]/g," ")
+    .trim();
+}
+
+
+function matches(item,words){
 
   const category=
-    normalize(
-      item.category
-    );
+    normalize(getCategory(item));
 
-  if(
-    type.includes("documentary") ||
-    category.includes("documentary")
-  ){
-    return "Documentary";
-  }
+  const type=
+    normalize(getContentType(item));
 
-  if(
-    type.includes("series") ||
-    category.includes("series")
-  ){
-    return "Series";
-  }
+  const combined=
+    category+" "+type;
 
-  if(
-    type.includes("film") ||
-    category.includes("film") ||
-    category.includes("movie")
-  ){
-    return "Film";
-  }
-
-  return item.content_type ||
-    item.category ||
-    "Original";
-
-}
-
-
-function isOriginal(item){
-
-  return (
-    item.original===true ||
-    normalize(item.original)==="true" ||
-    normalize(item.original)==="yes" ||
-    normalize(item.original)==="original"
+  return words.some(
+    word=>combined.includes(word)
   );
-
-}
-
-
-function isFeatured(item){
-
-  return (
-    item.is_featured===true ||
-    normalize(item.is_featured)==="true" ||
-    normalize(item.is_featured)==="yes"
-  );
-
 }
 
 
@@ -2227,248 +1608,200 @@ function isFeatured(item){
 
 async function loadContent(){
 
-  setRowLoading();
+  const rows=[
+    "id",
+    "Tittle",
+    "title",
+    "Description",
+    "description",
+    "Content_type",
+    "content_type",
+    "Category",
+    "category",
+    "Country",
+    "country",
+    "Thumb nail_url",
+    "thumbnail_url",
+    "thumbnail",
+    "Video_url",
+    "video_url",
+    "Source_type",
+    "source_type",
+    "Content_group",
+    "content_group"
+  ];
 
   try{
 
-    const {
-      data,
-      error
-    }=
+    /*
+      We first request the known production columns.
+    */
+
+    let result=
       await supabaseClient
         .from("content")
-        .select(
-          "id,title,content_type,category,description,thumbnail,youtube_link,source_url,creator,license,attribution,original,is_featured,release_date"
-        );
+        .select("*");
 
-
-    if(error){
-      throw error;
+    if(result.error){
+      throw result.error;
     }
 
+    contentItems=result.data || [];
 
-    allContent=
-      Array.isArray(data)
-        ? data
-        : [];
-
-
-    renderCatalogue();
-
-    chooseHero();
+    renderContent();
 
   }catch(error){
 
     console.error(
-      "CONTENT ERROR:",
+      "CONTENT DATABASE ERROR:",
       error
     );
 
-    showDatabaseError(error);
-
-  }
-
-}
-
-
-function setRowLoading(){
-
-  const ids=[
-    "trendingRow",
-    "recentRow",
-    "originalsRow",
-    "seriesRow",
-    "filmsRow",
-    "documentariesRow"
-  ];
-
-  ids.forEach(
-    id=>{
-      const element=
-        document.getElementById(id);
-
-      if(element){
-
-        element.innerHTML=
-          '<div class="content-loading">Loading content...</div>';
-
-      }
-
-    }
-  );
-
-}
-
-
-function showDatabaseError(error){
-
-  const message=
-    escapeHTML(
+    showContentError(
       error.message ||
       "Unable to load content."
     );
 
-  [
-    "trendingRow",
-    "recentRow",
-    "originalsRow",
-    "seriesRow",
-    "filmsRow",
-    "documentariesRow"
-  ].forEach(
-    id=>{
-
-      const row=
-        document.getElementById(id);
-
-      if(row){
-
-        row.innerHTML=
-          `<div class="content-empty">
-            Unable to load content.
-            <br>
-            <small>${message}</small>
-          </div>`;
-
-      }
-
-    }
-  );
-
+  }
 }
 
 
 /* =========================================================
-   SORTING
+   RENDER ALL CONTENT
 ========================================================= */
 
-function releaseTime(item){
+function renderContent(){
 
-  const date=
-    new Date(
-      item.release_date
+  if(!contentItems.length){
+
+    showContentError(
+      "No content has been added to the content table yet."
     );
 
-  if(
-    Number.isNaN(
-      date.getTime()
-    )
-  ){
-    return 0;
+    return;
   }
 
-  return date.getTime();
 
-}
+  /*
+    Hero
+  */
 
+  heroItem=
+    contentItems.find(
+      item=>{
 
-function recentContent(){
+        const featured=
+          String(
+            firstValue(item,[
+              "is_featured",
+              "Is featured",
+              "featured"
+            ])
+          ).toLowerCase();
 
-  return [...allContent]
-    .sort(
-      (a,b)=>
-        releaseTime(b)-
-        releaseTime(a)
-    );
+        return(
+          featured==="true" ||
+          featured==="1"
+        );
 
-}
-
-
-/* =========================================================
-   RENDER CATALOGUE
-========================================================= */
-
-function renderCatalogue(){
-
-  const recent=
-    recentContent();
-
-  const originals=
-    allContent.filter(
-      isOriginal
-    );
-
-  const series=
-    allContent.filter(
-      item=>
-        getType(item)==="Series"
-    );
-
-  const films=
-    allContent.filter(
-      item=>
-        getType(item)==="Film"
-    );
-
-  const documentaries=
-    allContent.filter(
-      item=>
-        getType(item)==="Documentary"
-    );
-
-  const featured=
-    allContent.filter(
-      isFeatured
-    );
-
-  const trending=
-    featured.length
-      ? featured
-      : recent;
+      }
+    ) ||
+    contentItems[0];
 
 
-  renderRow(
-    "trendingRow",
-    trending,
-    false
-  );
+  updateHero(heroItem);
 
-  renderRow(
-    "recentRow",
-    recent,
-    false
-  );
+
+  /*
+    Originals
+  */
 
   renderRow(
     "originalsRow",
-    originals,
-    false
+    contentItems.filter(
+      item=>matches(
+        item,
+        ["original"]
+      )
+    ),
+    "original"
   );
+
+
+  /*
+    Trending
+  */
+
+  renderRow(
+    "trendingRow",
+    contentItems.slice(0,12),
+    "landscape"
+  );
+
+
+  /*
+    Series
+  */
 
   renderRow(
     "seriesRow",
-    series,
-    true
+    contentItems.filter(
+      item=>matches(
+        item,
+        ["series"]
+      )
+    ),
+    "series"
   );
+
+
+  /*
+    Films
+  */
 
   renderRow(
     "filmsRow",
-    films,
-    false
+    contentItems.filter(
+      item=>matches(
+        item,
+        ["film","movie"]
+      )
+    ),
+    "film"
   );
+
+
+  /*
+    Documentaries
+  */
 
   renderRow(
     "documentariesRow",
-    documentaries,
-    false
+    contentItems.filter(
+      item=>matches(
+        item,
+        ["documentary","documentaries"]
+      )
+    ),
+    "documentary"
   );
-
-  renderMyList();
-
-  renderContinueWatching();
 
 }
 
 
+/* =========================================================
+   RENDER ROW
+========================================================= */
+
 function renderRow(
-  rowId,
+  elementId,
   items,
-  poster
+  type
 ){
 
   const row=
     document.getElementById(
-      rowId
+      elementId
     );
 
   if(!row){
@@ -2476,131 +1809,95 @@ function renderRow(
   }
 
 
-  if(
-    !items ||
-    items.length===0
-  ){
+  if(!items || !items.length){
 
     row.innerHTML=
-      `<div class="content-empty">
-        No content available yet.
-      </div>`;
+      '<div class="empty">No titles available yet.</div>';
 
     return;
-
   }
 
 
   row.innerHTML=
     items.map(
-      item=>
-        createCard(
-          item,
-          poster
-        )
+      item=>createCard(item,type)
     ).join("");
 
 }
 
 
 /* =========================================================
-   CARD
+   CREATE CARD
 ========================================================= */
 
 function createCard(
   item,
-  poster=false
+  type
 ){
-
-  const id=
-    String(item.id);
 
   const title=
     escapeHTML(
       getTitle(item)
     );
 
-  const image=
+  const description=
     escapeHTML(
-      getImage(item)
+      getDescription(item)
     );
 
-  const type=
+  const thumbnail=
     escapeHTML(
-      getType(item)
+      getThumbnail(item)
     );
 
-  const original=
-    isOriginal(item);
+  const category=
+    escapeHTML(
+      getCategory(item) ||
+      getContentType(item) ||
+      "BRENZKafrica"
+    );
 
-  const active=
-    myList.includes(id);
+  const id=
+    encodeURIComponent(
+      String(
+        item.id || title
+      )
+    );
+
+
+  const portrait=
+    type==="series" ||
+    type==="documentary";
 
 
   return `
-
     <article
-      class="content-card ${
-        poster
-          ? "poster-card"
-          : ""
-      }"
-      onclick="openDetails('${encodeURIComponent(id)}')"
+      class="card ${portrait ? "portrait-card":""}"
+      data-title="${title}"
+      data-id="${id}"
+      onclick="openTitleById('${id}')"
     >
 
-      ${
-        original
-          ? `<div class="card-badge">
-              ORIGINAL
-            </div>`
-          : ""
-      }
-
       <img
-        src="${image}"
+        src="${thumbnail}"
         alt="${title}"
         loading="lazy"
-        onerror="this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=1000&q=80'"
+        onerror="this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80'"
       >
 
-      <button
-        class="list-button ${
-          active
-            ? "active"
-            : ""
-        }"
-        onclick="event.stopPropagation();toggleList('${encodeURIComponent(id)}')"
-        aria-label="Add to My List"
-      >
-        ${
-          active
-            ? "✓"
-            : "+"
-        }
-      </button>
-
-      <div class="card-info">
+      <div class="card-overlay">
 
         <div class="card-title">
           ${title}
         </div>
 
-        <div class="card-meta">
-          ${type}
-          ${
-            item.creator
-              ? " • "+
-                escapeHTML(
-                  item.creator
-                )
-              : ""
-          }
+        <div class="card-type">
+          ${category}
         </div>
 
       </div>
 
     </article>
-
   `;
 
 }
@@ -2610,227 +1907,168 @@ function createCard(
    HERO
 ========================================================= */
 
-function chooseHero(){
+function updateHero(item){
 
-  const featured=
-    allContent.filter(
-      isFeatured
-    );
-
-  heroContent=
-    featured[0] ||
-    recentContent()[0] ||
-    null;
-
-
-  if(!heroContent){
+  if(!item){
     return;
   }
 
+  const title=
+    getTitle(item);
+
+  const description=
+    getDescription(item);
 
   const image=
-    getImage(
-      heroContent
-    );
-
-
-  const hero=
-    document.querySelector(
-      ".hero"
-    );
-
-
-  hero.style.backgroundImage=
-    `
-      linear-gradient(
-        90deg,
-        rgba(0,0,0,.97) 0%,
-        rgba(0,0,0,.78) 35%,
-        rgba(0,0,0,.3) 75%,
-        rgba(0,0,0,.05)
-      ),
-      linear-gradient(
-        0deg,
-        #080808 0%,
-        transparent 30%
-      ),
-      url("${image}")
-    `;
-
+    getThumbnail(item);
 
   document.getElementById(
     "heroTitle"
-  ).textContent=
-    getTitle(
-      heroContent
-    );
-
+  ).innerHTML=
+    escapeHTML(title);
 
   document.getElementById(
     "heroDescription"
   ).textContent=
-    getDescription(
-      heroContent
-    );
-
+    description;
 
   document.getElementById(
     "heroLabel"
   ).textContent=
-    isOriginal(heroContent)
-      ? "BRENZKAFRICA ORIGINAL"
-      : getType(heroContent)
-        .toUpperCase();
-
-
-  const year=
-    heroContent.release_date
-      ? new Date(
-          heroContent.release_date
-        ).getFullYear()
-      : "2026";
+    (
+      getCategory(item) ||
+      "BRENZKAFRICA ORIGINAL"
+    ).toUpperCase();
 
 
   document.getElementById(
-    "heroMeta"
-  ).innerHTML=
+    "hero"
+  ).style.backgroundImage=
     `
-      <span>
-        ${escapeHTML(
-          getType(heroContent)
-        )}
-      </span>
-
-      <span>•</span>
-
-      <span>Africa</span>
-
-      <span>•</span>
-
-      <span>${year}</span>
+    linear-gradient(
+      90deg,
+      rgba(0,0,0,.97) 0%,
+      rgba(0,0,0,.7) 43%,
+      rgba(0,0,0,.1) 100%
+    ),
+    linear-gradient(
+      0deg,
+      #080808 0%,
+      transparent 35%
+    ),
+    url("${image}")
     `;
-
-}
-
-
-function playHero(){
-
-  if(!heroContent){
-
-    alert(
-      "No featured content is available yet."
-    );
-
-    return;
-
-  }
-
-  playContent(
-    heroContent
-  );
-
-}
-
-
-function showHeroInfo(){
-
-  if(heroContent){
-
-    openDetails(
-      encodeURIComponent(
-        String(heroContent.id)
-      )
-    );
-
-    return;
-
-  }
-
-  alert(
-    "BRENZKafrica Plus — African Creativity. Unlimited Vision."
-  );
 
 }
 
 
 /* =========================================================
-   DETAILS
+   TITLE DETAILS
 ========================================================= */
 
-function openDetails(
-  encodedId
-){
+function openTitleById(encodedId){
 
-  const id=
-    decodeURIComponent(
-      encodedId
-    );
+  let id;
+
+  try{
+    id=decodeURIComponent(encodedId);
+  }catch{
+    return;
+  }
+
 
   const item=
-    allContent.find(
+    contentItems.find(
       content=>
-        String(content.id)===id
+        String(content.id || getTitle(content))===id
     );
+
 
   if(!item){
     return;
   }
 
 
-  selectedContent=
-    item;
+  selectedItem=item;
 
 
   document.getElementById(
-    "detailHero"
-  ).style.backgroundImage=
-    `
-      linear-gradient(
-        transparent 20%,
-        #151515 95%
-      ),
-      url("${getImage(item)}")
-    `;
-
-
-  document.getElementById(
-    "detailTitle"
+    "detailsTitle"
   ).textContent=
     getTitle(item);
 
 
   document.getElementById(
-    "detailDescription"
+    "detailsDescription"
   ).textContent=
     getDescription(item);
 
 
-  const meta=
-    [
-      getType(item),
-      item.creator,
-      item.release_date
-        ? new Date(
-            item.release_date
-          ).getFullYear()
-        : ""
-    ].filter(Boolean);
-
-
   document.getElementById(
-    "detailMeta"
+    "detailsType"
   ).textContent=
-    meta.join(" • ");
-
-
-  updateDetailListButton();
+    (
+      getCategory(item) ||
+      getContentType(item) ||
+      "BRENZKAFRICA"
+    ).toUpperCase();
 
 
   document.getElementById(
-    "detailModal"
-  ).classList.add(
-    "active"
-  );
+    "detailsMeta"
+  ).textContent=
+    [
+      getContentType(item),
+      firstValue(item,[
+        "Country",
+        "country"
+      ])
+    ]
+    .filter(Boolean)
+    .join(" • ");
+
+
+  document.getElementById(
+    "detailsHero"
+  ).style.backgroundImage=
+    `
+    linear-gradient(
+      to top,
+      #080808,
+      rgba(8,8,8,.35),
+      rgba(8,8,8,.1)
+    ),
+    url("${getThumbnail(item)}")
+    `;
+
+
+  document.getElementById(
+    "detailsPlay"
+  ).onclick=
+    function(){
+      playItem(item);
+    };
+
+
+  document.getElementById(
+    "details"
+  ).classList.add("active");
+
+}
+
+
+function openHeroDetails(){
+
+  if(heroItem){
+    openTitleById(
+      encodeURIComponent(
+        String(
+          heroItem.id ||
+          getTitle(heroItem)
+        )
+      )
+    );
+  }
 
 }
 
@@ -2838,95 +2076,44 @@ function openDetails(
 function closeDetails(){
 
   document.getElementById(
-    "detailModal"
-  ).classList.remove(
-    "active"
-  );
+    "details"
+  ).classList.remove("active");
 
 }
 
 
-function playSelectedContent(){
+/* =========================================================
+   PLAY
+========================================================= */
 
-  if(!selectedContent){
-    return;
+function playHero(){
+
+  if(heroItem){
+    playItem(heroItem);
   }
+
+}
+
+
+function playItem(item){
 
   closeDetails();
 
-  playContent(
-    selectedContent
-  );
+  const url=
+    getVideo(item);
 
-}
-
-
-function playContent(item){
-
-  const youtube=
-    item.youtube_link ||
-    item.source_url ||
-    "";
-
-
-  if(!youtube){
+  if(!url){
 
     alert(
-      "This title has been added to the catalogue, but a video link has not been connected yet."
+      "A video has not been connected to this title yet."
     );
 
     return;
-
   }
 
-
-  const youtubeId=
-    extractYouTubeId(
-      youtube
-    );
-
-
-  playerTitle.textContent=
-    getTitle(item);
-
-
-  if(youtubeId){
-
-    video.pause();
-    video.src="";
-    video.style.display="none";
-
-    youtubePlayer.style.display="block";
-
-    youtubePlayer.src=
-      "https://www.youtube.com/embed/"+
-      youtubeId+
-      "?autoplay=1&rel=0";
-
-  }else{
-
-    youtubePlayer.src="";
-    youtubePlayer.style.display="none";
-
-    video.style.display="block";
-
-    video.src=
-      youtube;
-
-    video.play().catch(
-      ()=>{}
-    );
-
-  }
-
-
-  saveContinueWatching(
-    item
-  );
-
-
-  player.classList.add(
-    "active"
+  playVideo(
+    getTitle(item),
+    url
   );
 
 }
@@ -2943,7 +2130,6 @@ function extractYouTubeId(url){
     const parsed=
       new URL(url);
 
-
     if(
       parsed.hostname.includes(
         "youtube.com"
@@ -2953,54 +2139,26 @@ function extractYouTubeId(url){
       if(
         parsed.pathname==="/watch"
       ){
-
-        return parsed.searchParams.get(
-          "v"
-        );
-
+        return parsed.searchParams.get("v");
       }
 
-
       if(
-        parsed.pathname.startsWith(
-          "/embed/"
-        )
+        parsed.pathname.startsWith("/live/")
       ){
-
-        return parsed.pathname
-          .split("/embed/")[1]
-          .split("/")[0];
-
-      }
-
-
-      if(
-        parsed.pathname.startsWith(
-          "/shorts/"
-        )
-      ){
-
-        return parsed.pathname
-          .split("/shorts/")[1]
-          .split("/")[0];
-
-      }
-
-
-      if(
-        parsed.pathname.startsWith(
-          "/live/"
-        )
-      ){
-
         return parsed.pathname
           .split("/live/")[1]
           .split("/")[0];
+      }
 
+      if(
+        parsed.pathname.startsWith("/embed/")
+      ){
+        return parsed.pathname
+          .split("/embed/")[1]
+          .split("/")[0];
       }
 
     }
-
 
     if(
       parsed.hostname==="youtu.be"
@@ -3015,324 +2173,134 @@ function extractYouTubeId(url){
   }catch(error){
 
     console.error(
-      "YouTube error:",
+      "YouTube URL error:",
       error
     );
 
   }
 
   return null;
-
 }
 
 
-/* =========================================================
-   PLAYER
-========================================================= */
+function playVideo(
+  name,
+  url
+){
 
-const player=
-  document.getElementById(
-    "player"
-  );
+  const player=
+    document.getElementById(
+      "player"
+    );
 
-const video=
-  document.getElementById(
-    "video"
-  );
+  const video=
+    document.getElementById(
+      "video"
+    );
 
-const youtubePlayer=
-  document.getElementById(
-    "youtubePlayer"
-  );
+  const youtube=
+    document.getElementById(
+      "youtubePlayer"
+    );
 
-const playerTitle=
-  document.getElementById(
-    "playerTitle"
-  );
+  const title=
+    document.getElementById(
+      "playerTitle"
+    );
+
+
+  title.textContent=name;
+
+
+  const youtubeId=
+    extractYouTubeId(url);
+
+
+  if(youtubeId){
+
+    video.pause();
+    video.src="";
+    video.style.display="none";
+
+    youtube.style.display="block";
+
+    youtube.src=
+      "https://www.youtube.com/embed/" +
+      youtubeId +
+      "?autoplay=1";
+
+  }else{
+
+    youtube.src="";
+    youtube.style.display="none";
+
+    video.style.display="block";
+
+    video.src=url;
+
+    video.play().catch(
+      ()=>{}
+    );
+
+  }
+
+
+  player.classList.add("active");
+}
 
 
 function closePlayer(){
 
-  video.pause();
+  const video=
+    document.getElementById("video");
 
+  const youtube=
+    document.getElementById("youtubePlayer");
+
+  video.pause();
   video.src="";
 
-  youtubePlayer.src="";
+  youtube.src="";
+  youtube.style.display="none";
 
-  youtubePlayer.style.display=
-    "none";
+  video.style.display="block";
 
-  video.style.display=
-    "block";
-
-  player.classList.remove(
-    "active"
-  );
+  document.getElementById(
+    "player"
+  ).classList.remove("active");
 
 }
 
 
 /* =========================================================
-   MY LIST
+   CONTENT ERROR
 ========================================================= */
 
-function saveMyList(){
-
-  localStorage.setItem(
-    "brenzkafrica_my_list",
-    JSON.stringify(
-      myList
-    )
-  );
-
-}
-
-
-function toggleList(
-  encodedId
-){
-
-  const id=
-    decodeURIComponent(
-      encodedId
-    );
-
-
-  const index=
-    myList.indexOf(id);
-
-
-  if(index>=0){
-
-    myList.splice(
-      index,
-      1
-    );
-
-  }else{
-
-    myList.push(
-      id
-    );
-
-  }
-
-
-  saveMyList();
-
-  renderCatalogue();
-
-  if(selectedContent){
-
-    updateDetailListButton();
-
-  }
-
-}
-
-
-function toggleSelectedList(){
-
-  if(!selectedContent){
-    return;
-  }
-
-  toggleList(
-    encodeURIComponent(
-      String(
-        selectedContent.id
-      )
-    );
-
-}
-
-
-function updateDetailListButton(){
-
-  const button=
-    document.getElementById(
-      "detailListButton"
-    );
-
-
-  if(
-    myList.includes(
-      String(
-        selectedContent.id
-      )
-    )
-  ){
-
-    button.textContent=
-      "✓ In My List";
-
-  }else{
-
-    button.textContent=
-      "＋ My List";
-
-  }
-
-}
-
-
-function renderMyList(){
-
-  const section=
-    document.getElementById(
-      "myListSection"
-    );
-
-  const row=
-    document.getElementById(
-      "myListRow"
-    );
-
-
-  const items=
-    myList
-      .map(
-        id=>
-          allContent.find(
-            item=>
-              String(item.id)===id
-          )
-      )
-      .filter(Boolean);
-
-
-  if(
-    items.length===0
-  ){
-
-    section.style.display=
-      "none";
-
-    return;
-
-  }
-
-
-  section.style.display=
-    "block";
-
-
-  row.innerHTML=
-    items.map(
-      item=>
-        createCard(
-          item,
-          false
-        )
-    ).join("");
-
-}
-
-
-/* =========================================================
-   CONTINUE WATCHING
-========================================================= */
-
-function saveContinueWatching(
-  item
-){
-
-  let history=
-    JSON.parse(
-      localStorage.getItem(
-        "brenzkafrica_continue"
-      ) || "[]"
-    );
-
-
-  history=
-    history.filter(
-      id=>
-        String(id)!==
-        String(item.id)
-    );
-
-
-  history.unshift(
-    String(item.id)
-  );
-
-
-  history=
-    history.slice(
-      0,
-      10
-    );
-
-
-  localStorage.setItem(
-    "brenzkafrica_continue",
-    JSON.stringify(history)
-  );
-
-
-  renderContinueWatching();
-
-}
-
-
-function renderContinueWatching(){
-
-  const section=
-    document.getElementById(
-      "continueSection"
-    );
-
-  const row=
-    document.getElementById(
-      "continueRow"
-    );
-
-
-  let history=
-    JSON.parse(
-      localStorage.getItem(
-        "brenzkafrica_continue"
-      ) || "[]"
-    );
-
-
-  const items=
-    history
-      .map(
-        id=>
-          allContent.find(
-            item=>
-              String(item.id)===String(id)
-          )
-      )
-      .filter(Boolean);
-
-
-  if(
-    items.length===0
-  ){
-
-    section.style.display=
-      "none";
-
-    return;
-
-  }
-
-
-  section.style.display=
-    "block";
-
-
-  row.innerHTML=
-    items.map(
-      item=>
-        createCard(
-          item,
-          false
-        )
-    ).join("");
+function showContentError(message){
+
+  [
+    "originalsRow",
+    "trendingRow",
+    "seriesRow",
+    "filmsRow",
+    "documentariesRow"
+  ].forEach(id=>{
+
+    const row=
+      document.getElementById(id);
+
+    if(row){
+
+      row.innerHTML=
+        `
+        <div class="empty">
+          ${escapeHTML(message)}
+        </div>
+        `;
+
+    }
+
+  });
 
 }
 
@@ -3354,8 +2322,7 @@ async function loadLiveEvents(){
     );
 
 
-  status.textContent=
-    "Updating...";
+  status.textContent="Updating...";
 
 
   try{
@@ -3376,124 +2343,79 @@ async function loadLiveEvents(){
     }
 
 
-    if(
-      !data ||
-      data.length===0
-    ){
+    if(!data || !data.length){
 
       row.innerHTML=
-        `<div class="content-empty">
-          No live events are available right now.
-        </div>`;
+        '<div class="empty">No live events are available right now.</div>';
 
       status.textContent=
         "No live events";
 
       return;
-
     }
 
 
     row.innerHTML=
-      data.map(
-        event=>{
+      data.map(event=>{
 
-          const statusValue=
-            normalize(
-              event.status
-            );
+        const eventStatus=
+          normalize(event.status || "upcoming");
 
+        const live=
+          eventStatus.includes("live") ||
+          eventStatus.includes("active");
 
-          const live=
-            [
-              "live",
-              "live now",
-              "live_now",
-              "active"
-            ].includes(
-              statusValue
-            );
+        return `
+          <article
+            class="live-card"
+            onclick="playLiveEvent(
+              '${escapeHTML(event.title || "Live")}',
+              '${escapeHTML(event.stream_url || "")}'
+            )"
+          >
 
-
-          const thumbnail=
-            event.thumbnail ||
-            "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
-
-
-          return `
-
-            <article
-              class="live-card"
-              onclick="playLiveEvent(
-                '${encodeURIComponent(
-                  event.title || "Live"
-                )}',
-                '${encodeURIComponent(
-                  event.stream_url || ""
-                )}',
-                '${live}'
-              )"
+            <img
+              src="${escapeHTML(
+                event.thumbnail ||
+                "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+              )}"
+              alt="${escapeHTML(event.title || "Live")}"
             >
 
-              <img
-                src="${escapeHTML(thumbnail)}"
-                alt="${escapeHTML(event.title || "Live event")}"
-              >
+            <div class="live-badge ${
+              live ? "" : "upcoming"
+            }">
+              ${live ? "🔴 LIVE NOW":"UPCOMING"}
+            </div>
 
-              <div class="
-                live-badge
-                ${live ? "" : "live-upcoming"}
-              ">
-                ${live ? "🔴 LIVE NOW" : "UPCOMING"}
+            <div class="live-card-info">
+
+              <div class="live-card-title">
+                ${escapeHTML(
+                  event.title ||
+                  "BRENZKafrica Live"
+                )}
               </div>
 
-              <div class="live-info">
-
-                <h3>
-                  ${escapeHTML(
-                    event.title ||
-                    "BRENZKafrica Live"
-                  )}
-                </h3>
-
-                <p>
-                  ${escapeHTML(
-                    event.description ||
-                    "BRENZKafrica Live broadcast"
-                  )}
-                </p>
-
+              <div class="live-card-description">
+                ${escapeHTML(
+                  event.description ||
+                  "BRENZKafrica live broadcast"
+                )}
               </div>
 
-            </article>
+            </div>
 
-          `;
+          </article>
+        `;
 
-        }
-      ).join("");
-
-
-    const liveCount=
-      data.filter(
-        event=>
-          [
-            "live",
-            "live now",
-            "live_now",
-            "active"
-          ].includes(
-            normalize(
-              event.status
-            )
-          )
-      ).length;
+      }).join("");
 
 
     status.textContent=
-      liveCount
-        ? liveCount+
-          " live now"
-        : "Upcoming broadcasts";
+      data.length+
+      " event"+
+      (data.length===1?"":"s");
 
 
   }catch(error){
@@ -3504,16 +2426,11 @@ async function loadLiveEvents(){
     );
 
     row.innerHTML=
-      `<div class="content-empty">
+      `
+      <div class="empty">
         Unable to load Live right now.
-        <br>
-        <small>
-          ${escapeHTML(
-            error.message ||
-            "Database error"
-          )}
-        </small>
-      </div>`;
+      </div>
+      `;
 
     status.textContent=
       "Live unavailable";
@@ -3524,128 +2441,30 @@ async function loadLiveEvents(){
 
 
 function playLiveEvent(
-  encodedTitle,
-  encodedUrl,
-  isLive
+  title,
+  streamUrl
 ){
 
-  const title=
-    decodeURIComponent(
-      encodedTitle
-    );
-
-  const streamUrl=
-    decodeURIComponent(
-      encodedUrl
-    );
-
-
-  if(
-    !isLive ||
-    !streamUrl
-  ){
+  if(!streamUrl){
 
     alert(
-      "This broadcast is currently upcoming. The stream will become available when the event goes live."
+      "This live event does not have a broadcast stream connected yet."
     );
 
     return;
-
   }
 
-
-  const youtubeId=
-    extractYouTubeId(
-      streamUrl
-    );
-
-
-  playerTitle.textContent=
-    title;
-
-
-  if(youtubeId){
-
-    video.pause();
-    video.src="";
-    video.style.display="none";
-
-    youtubePlayer.style.display=
-      "block";
-
-    youtubePlayer.src=
-      "https://www.youtube.com/embed/"+
-      youtubeId+
-      "?autoplay=1";
-
-  }else{
-
-    youtubePlayer.src="";
-    youtubePlayer.style.display="none";
-
-    video.style.display="block";
-
-    video.src=
-      streamUrl;
-
-    video.play().catch(
-      ()=>{}
-    );
-
-  }
-
-
-  player.classList.add(
-    "active"
+  playVideo(
+    title,
+    streamUrl
   );
 
 }
-
-
-loadLiveEvents();
-
-setInterval(
-  loadLiveEvents,
-  30000
-);
 
 
 /* =========================================================
-   BREAKING NEWS
+   NEWS
 ========================================================= */
-
-function formatDate(value){
-
-  if(!value){
-    return "";
-  }
-
-  const date=
-    new Date(value);
-
-
-  if(
-    Number.isNaN(
-      date.getTime()
-    )
-  ){
-    return "";
-  }
-
-
-  return date.toLocaleString(
-    undefined,
-    {
-      day:"numeric",
-      month:"short",
-      year:"numeric",
-      hour:"2-digit",
-      minute:"2-digit"
-    }
-  );
-
-}
-
 
 async function loadBreakingNews(){
 
@@ -3660,8 +2479,7 @@ async function loadBreakingNews(){
     );
 
 
-  status.textContent=
-    "Updating...";
+  status.textContent="Updating...";
 
 
   try{
@@ -3670,21 +2488,16 @@ async function loadBreakingNews(){
       await fetch(
         NEWS_API_URL,
         {
-          cache:"no-store",
-          headers:{
-            Accept:"application/json"
-          }
+          method:"GET",
+          cache:"no-store"
         }
       );
 
 
     if(!response.ok){
-
       throw new Error(
-        "News API error "+
-        response.status
+        "News API error "+response.status
       );
-
     }
 
 
@@ -3694,103 +2507,72 @@ async function loadBreakingNews(){
 
     if(
       !data ||
-      data.success!==true
-    ){
-
-      throw new Error(
-        data.error ||
-        "Invalid news response"
-      );
-
-    }
-
-
-    if(
+      data.success!==true ||
       !data.news ||
       !data.news.length
     ){
 
       row.innerHTML=
-        `<div class="content-empty">
-          No breaking news available right now.
-        </div>`;
+        '<div class="empty">No breaking news available right now.</div>';
 
       status.textContent=
         "No updates";
 
       return;
-
     }
 
 
     row.innerHTML=
-      data.news.map(
-        item=>{
+      data.news.map(item=>{
 
-          const link=
-            encodeURIComponent(
-              item.link || ""
-            );
+        const link=
+          encodeURIComponent(
+            item.link || ""
+          );
 
+        return `
+          <article
+            class="news-card"
+            onclick="openNewsArticle('${link}')"
+          >
 
-          return `
+            <div>
 
-            <article
-              class="news-card"
-              onclick="openNewsArticle('${link}')"
-            >
-
-              <div>
-
-                <div class="news-source">
-                  ${escapeHTML(
-                    item.source ||
-                    "News"
-                  )}
-                </div>
-
-                <h3>
-                  ${escapeHTML(
-                    item.title ||
-                    ""
-                  )}
-                </h3>
-
-                <p>
-                  ${escapeHTML(
-                    item.description ||
-                    ""
-                  )}
-                </p>
-
-              </div>
-
-              <div class="news-date">
+              <div class="news-source">
                 ${escapeHTML(
-                  formatDate(
-                    item.date
-                  )
+                  item.source || "News"
                 )}
               </div>
 
-            </article>
+              <div class="news-title">
+                ${escapeHTML(
+                  item.title || ""
+                )}
+              </div>
 
-          `;
+              <div class="news-description">
+                ${escapeHTML(
+                  item.description || ""
+                )}
+              </div>
 
-        }
-      ).join("");
+            </div>
+
+            <div class="news-date">
+              ${escapeHTML(
+                formatDate(item.date)
+              )}
+            </div>
+
+          </article>
+        `;
+
+      }).join("");
 
 
     status.textContent=
-      data.count+
-      " fresh stories • Updated "+
-      new Date().toLocaleTimeString(
-        [],
-        {
-          hour:"2-digit",
-          minute:"2-digit"
-        }
-      );
+      (data.count || data.news.length)+
+      " fresh stories";
 
 
   }catch(error){
@@ -3801,16 +2583,7 @@ async function loadBreakingNews(){
     );
 
     row.innerHTML=
-      `<div class="content-empty">
-        Unable to load breaking news.
-        <br>
-        <small>
-          ${escapeHTML(
-            error.message ||
-            "News unavailable"
-          )}
-        </small>
-      </div>`;
+      '<div class="empty">Unable to load breaking news right now.</div>';
 
     status.textContent=
       "News unavailable";
@@ -3820,29 +2593,18 @@ async function loadBreakingNews(){
 }
 
 
-function openNewsArticle(
-  encoded
-){
-
-  if(!encoded){
-    return;
-  }
-
+function openNewsArticle(encoded){
 
   try{
 
     const url=
-      decodeURIComponent(
-        encoded
-      );
-
+      decodeURIComponent(encoded);
 
     if(
       !/^https?:\/\//i.test(url)
     ){
       return;
     }
-
 
     window.open(
       url,
@@ -3852,45 +2614,64 @@ function openNewsArticle(
 
   }catch(error){
 
-    console.error(
-      error
-    );
+    console.error(error);
 
   }
 
 }
 
 
-loadBreakingNews();
+function formatDate(value){
 
-setInterval(
-  loadBreakingNews,
-  10*60*1000
-);
+  if(!value){
+    return "";
+  }
+
+  const date=
+    new Date(value);
+
+  if(
+    Number.isNaN(
+      date.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return date.toLocaleString(
+    undefined,
+    {
+      day:"numeric",
+      month:"short",
+      year:"numeric"
+    }
+  );
+
+}
 
 
 /* =========================================================
-   AUTHENTICATION
+   AUTH
 ========================================================= */
 
-const authModal=
+const authSection=
   document.getElementById(
-    "authModal"
+    "auth-section"
   );
 
 const authTitle=
   document.getElementById(
-    "authTitle"
+    "auth-title"
   );
 
 const authButton=
   document.getElementById(
-    "authButton"
+    "auth-button"
   );
 
 const authMessage=
   document.getElementById(
-    "authMessage"
+    "auth-message"
   );
 
 const emailInput=
@@ -3903,49 +2684,28 @@ const passwordInput=
     "password"
   );
 
-const signinButton=
-  document.getElementById(
-    "signinButton"
-  );
 
-const accountStatus=
-  document.getElementById(
-    "accountStatus"
-  );
+function openAccount(){
 
-const userEmail=
-  document.getElementById(
-    "userEmail"
-  );
-
-
-function openAuth(){
-
-  authModal.classList.add(
-    "active"
-  );
+  authSection.classList.add("active");
 
   emailInput.focus();
 
 }
 
 
-function closeAuth(){
+function closeAccount(){
 
-  authModal.classList.remove(
-    "active"
-  );
+  authSection.classList.remove("active");
 
-  authMessage.textContent=
-    "";
+  authMessage.textContent="";
 
 }
 
 
-function authMsg(message){
+function showAuthMessage(message){
 
-  authMessage.textContent=
-    message;
+  authMessage.textContent=message;
 
 }
 
@@ -3959,24 +2719,18 @@ async function signIn(){
     passwordInput.value;
 
 
-  if(
-    !email ||
-    !password
-  ){
+  if(!email || !password){
 
-    authMsg(
+    showAuthMessage(
       "Please enter your email and password."
     );
 
     return;
-
   }
 
 
   authButton.disabled=true;
-
-  authButton.textContent=
-    "Signing in...";
+  authButton.textContent="Signing in...";
 
 
   const {
@@ -3991,29 +2745,24 @@ async function signIn(){
 
 
   authButton.disabled=false;
-
-  authButton.textContent=
-    "Sign In";
+  authButton.textContent="Sign In";
 
 
   if(error){
 
-    authMsg(
+    showAuthMessage(
       error.message
     );
 
     return;
-
   }
 
 
   if(data.user){
 
-    updateAccountUI(
-      data.user
-    );
+    updateAccountUI(data.user);
 
-    closeAuth();
+    closeAccount();
 
   }
 
@@ -4029,37 +2778,28 @@ async function signUp(){
     passwordInput.value;
 
 
-  if(
-    !email ||
-    !password
-  ){
+  if(!email || !password){
 
-    authMsg(
+    showAuthMessage(
       "Please enter your email and password."
     );
 
     return;
-
   }
 
 
-  if(
-    password.length<6
-  ){
+  if(password.length<6){
 
-    authMsg(
+    showAuthMessage(
       "Password must be at least 6 characters."
     );
 
     return;
-
   }
 
 
   authButton.disabled=true;
-
-  authButton.textContent=
-    "Creating account...";
+  authButton.textContent="Creating account...";
 
 
   const {
@@ -4074,36 +2814,28 @@ async function signUp(){
 
 
   authButton.disabled=false;
-
-  authButton.textContent=
-    "Create Account";
+  authButton.textContent="Create Account";
 
 
   if(error){
 
-    authMsg(
+    showAuthMessage(
       error.message
     );
 
     return;
-
   }
 
 
-  if(
-    data.session &&
-    data.user
-  ){
+  if(data.session && data.user){
 
-    updateAccountUI(
-      data.user
-    );
+    updateAccountUI(data.user);
 
-    closeAuth();
+    closeAccount();
 
   }else{
 
-    authMsg(
+    showAuthMessage(
       "Account created. Please check your email to confirm your account."
     );
 
@@ -4123,15 +2855,11 @@ function showSignUp(){
   authButton.onclick=
     signUp;
 
-  document.getElementById(
-    "authSwitchButton"
-  ).textContent=
-    "Sign In";
-
-  document.getElementById(
-    "authSwitchButton"
-  ).onclick=
-    showSignIn;
+  document.querySelector(
+    ".auth-switch"
+  ).innerHTML=
+    'Already have an account? '+
+    '<button onclick="showSignIn()">Sign In</button>';
 
 }
 
@@ -4147,50 +2875,47 @@ function showSignIn(){
   authButton.onclick=
     signIn;
 
-  document.getElementById(
-    "authSwitchButton"
-  ).textContent=
-    "Create Account";
-
-  document.getElementById(
-    "authSwitchButton"
-  ).onclick=
-    showSignUp;
+  document.querySelector(
+    ".auth-switch"
+  ).innerHTML=
+    "Don't have an account? "+
+    '<button onclick="showSignUp()">Create Account</button>';
 
 }
 
 
-function updateAccountUI(
-  user
-){
+function updateAccountUI(user){
 
-  currentUser=
-    user ||
-    null;
+  const signin=
+    document.getElementById(
+      "signinButton"
+    );
+
+  const account=
+    document.getElementById(
+      "accountStatus"
+    );
+
+  const email=
+    document.getElementById(
+      "userEmail"
+    );
 
 
   if(user){
 
-    signinButton.style.display=
-      "none";
+    signin.style.display="none";
+    account.style.display="flex";
 
-    accountStatus.style.display=
-      "flex";
-
-    userEmail.textContent=
-      user.email ||
-      "Viewer";
+    email.textContent=
+      user.email || "Viewer";
 
   }else{
 
-    signinButton.style.display=
-      "block";
+    signin.style.display="block";
+    account.style.display="none";
 
-    accountStatus.style.display=
-      "none";
-
-    userEmail.textContent=
-      "";
+    email.textContent="";
 
   }
 
@@ -4201,9 +2926,7 @@ async function signOut(){
 
   await supabaseClient.auth.signOut();
 
-  updateAccountUI(
-    null
-  );
+  updateAccountUI(null);
 
 }
 
@@ -4228,10 +2951,7 @@ async function checkSession(){
 
 
 supabaseClient.auth.onAuthStateChange(
-  function(
-    event,
-    session
-  ){
+  function(event,session){
 
     updateAccountUI(
       session
@@ -4243,252 +2963,154 @@ supabaseClient.auth.onAuthStateChange(
 );
 
 
-checkSession();
-
-
 /* =========================================================
    SEARCH
 ========================================================= */
 
-const search=
-  document.getElementById(
-    "search"
-  );
+document
+  .getElementById("search")
+  .addEventListener(
+    "input",
+    function(){
+
+      const query=
+        this.value
+          .toLowerCase()
+          .trim();
 
 
-search.addEventListener(
-  "input",
-  function(){
-
-    const query=
-      search.value
-        .toLowerCase()
-        .trim();
-
-
-    if(!query){
-
-      renderCatalogue();
-
-      return;
-
-    }
-
-
-    const results=
-      allContent.filter(
-        item=>{
-
-          const searchable=
-            [
-              item.title,
-              item.description,
-              item.category,
-              item.content_type,
-              item.creator
-            ]
-            .join(" ")
-            .toLowerCase();
-
-
-          return searchable.includes(
-            query
-          );
-
-        }
-      );
-
-
-    renderSearchResults(
-      results
-    );
-
-  }
-);
-
-
-function renderSearchResults(
-  results
-){
-
-  const rows=[
-    "trendingRow",
-    "recentRow",
-    "originalsRow",
-    "seriesRow",
-    "filmsRow",
-    "documentariesRow"
-  ];
-
-
-  rows.forEach(
-    id=>{
-
-      const row=
-        document.getElementById(id);
-
-      if(row){
-
-        row.innerHTML=
-          "";
-
-      }
-
-    }
-  );
-
-
-  const trending=
-    document.getElementById(
-      "trendingRow"
-    );
-
-
-  if(
-    !results.length
-  ){
-
-    trending.innerHTML=
-      `<div class="content-empty">
-        No results found.
-      </div>`;
-
-    return;
-
-  }
-
-
-  trending.innerHTML=
-    results.map(
-      item=>
-        createCard(
-          item,
-          false
+      document
+        .querySelectorAll(
+          ".card,.live-card,.news-card"
         )
-    ).join("");
+        .forEach(card=>{
 
-}
+          const text=
+            card.innerText
+              .toLowerCase();
+
+          card.style.display=
+            !query ||
+            text.includes(query)
+              ? ""
+              : "none";
+
+        });
+
+    }
+  );
 
 
 /* =========================================================
    NEWSLETTER
 ========================================================= */
 
-document.getElementById(
-  "newsletterForm"
-).addEventListener(
-  "submit",
-  async function(event){
+document
+  .getElementById(
+    "newsletterForm"
+  )
+  .addEventListener(
+    "submit",
+    async function(event){
 
-    event.preventDefault();
-
-
-    const email=
-      document.getElementById(
-        "newsletterEmail"
-      )
-      .value
-      .trim()
-      .toLowerCase();
+      event.preventDefault();
 
 
-    const button=
-      document.getElementById(
-        "newsletterButton"
-      );
+      const input=
+        document.getElementById(
+          "newsletterEmail"
+        );
 
-    const message=
-      document.getElementById(
-        "newsletterMessage"
-      );
+      const button=
+        document.getElementById(
+          "newsletterButton"
+        );
 
-
-    button.disabled=true;
-
-    button.textContent=
-      "Subscribing...";
-
-
-    const {
-      error
-    }=
-      await supabaseClient
-        .from(
-          "newsletter_subscribers"
-        )
-        .insert([
-          {
-            email
-          }
-        ]);
+      const message=
+        document.getElementById(
+          "newsletter-message"
+        );
 
 
-    if(error){
+      const email=
+        input.value
+          .trim()
+          .toLowerCase();
 
-      message.textContent=
-        error.code==="23505"
-          ? "This email is already subscribed."
-          : "Unable to subscribe right now.";
 
-    }else{
+      button.disabled=true;
+      button.textContent=
+        "Subscribing...";
 
-      message.textContent=
-        "You're subscribed! Welcome to BRENZKafrica Plus.";
 
-      document.getElementById(
-        "newsletterEmail"
-      ).value="";
+      const {
+        error
+      }=
+        await supabaseClient
+          .from(
+            "newsletter_subscribers"
+          )
+          .insert([
+            {email}
+          ]);
+
+
+      if(error){
+
+        message.textContent=
+          error.code==="23505"
+            ? "This email is already subscribed."
+            : "Unable to subscribe right now.";
+
+      }else{
+
+        message.textContent=
+          "You're subscribed! Welcome to BRENZKafrica Plus.";
+
+        input.value="";
+
+      }
+
+
+      button.disabled=false;
+      button.textContent="Subscribe";
 
     }
-
-
-    button.disabled=false;
-
-    button.textContent=
-      "Subscribe";
-
-  }
-);
+  );
 
 
 /* =========================================================
-   HEADER SCROLL
+   HEADER
 ========================================================= */
 
 window.addEventListener(
   "scroll",
   function(){
 
-    const header=
-      document.getElementById(
-        "siteHeader"
+    document
+      .getElementById("header")
+      .classList.toggle(
+        "scrolled",
+        window.scrollY>40
       );
-
-
-    header.classList.toggle(
-      "scrolled",
-      window.scrollY>40
-    );
 
   }
 );
 
 
 /* =========================================================
-   KEYBOARD
+   ESCAPE KEY
 ========================================================= */
 
 document.addEventListener(
   "keydown",
   function(event){
 
-    if(
-      event.key==="Escape"
-    ){
+    if(event.key==="Escape"){
 
       closePlayer();
       closeDetails();
-      closeAuth();
+      closeAccount();
 
     }
 
@@ -4497,14 +3119,28 @@ document.addEventListener(
 
 
 /* =========================================================
-   INITIALIZE
+   START
 ========================================================= */
 
 loadContent();
 
+loadLiveEvents();
+
+loadBreakingNews();
+
+checkSession();
+
+
+/* AUTO REFRESH */
+
 setInterval(
-  loadContent,
-  5*60*1000
+  loadLiveEvents,
+  30000
+);
+
+setInterval(
+  loadBreakingNews,
+  10*60*1000
 );
 
 </script>
