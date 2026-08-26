@@ -39,13 +39,7 @@ html{
 body{
   background:var(--bg);
   color:var(--text);
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Arial,
-    sans-serif;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
   min-height:100vh;
   overflow-x:hidden;
 }
@@ -54,8 +48,7 @@ body.modal-open{
   overflow:hidden;
 }
 
-button,
-input{
+button,input{
   font:inherit;
 }
 
@@ -565,6 +558,26 @@ main{
   font-weight:900;
 }
 
+/* YOUTUBE ORIGINAL CARD */
+
+.youtube-original-card{
+  flex:0 0 235px;
+  height:132px;
+}
+
+.youtube-original-card .card-badge{
+  background:#e50914;
+}
+
+.youtube-original-card .youtube-label{
+  color:#ff3b45;
+  font-size:9px;
+  font-weight:900;
+  margin-top:4px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+
 .portrait-card{
   flex-basis:180px;
   height:270px;
@@ -574,7 +587,7 @@ main{
   padding-top:80px;
 }
 
-/* WATCHLIST BUTTON */
+/* WATCHLIST */
 
 .watchlist-button{
   position:absolute;
@@ -606,8 +619,6 @@ main{
   border-color:var(--red);
 }
 
-/* WATCHLIST */
-
 #watchlist{
   scroll-margin-top:90px;
 }
@@ -617,10 +628,6 @@ main{
   padding:45px 10px;
   color:#666;
   font-size:13px;
-}
-
-.watchlist-card{
-  position:relative;
 }
 
 /* LIVE */
@@ -1191,7 +1198,8 @@ footer p{
     font-size:19px;
   }
 
-  .card{
+  .card,
+  .youtube-original-card{
     flex-basis:175px;
     height:100px;
   }
@@ -1239,8 +1247,6 @@ footer p{
 
 <body>
 
-<!-- HEADER -->
-
 <header id="siteHeader">
 
 <div class="header-inner">
@@ -1253,33 +1259,19 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 
 <a href="#" class="active">Home</a>
 
-<a href="#watchlist">
-My Watchlist
-</a>
+<a href="#watchlist">My Watchlist</a>
 
-<a href="#originals">
-Originals
-</a>
+<a href="#originals">Originals</a>
 
-<a href="#live">
-🔴 Live
-</a>
+<a href="#live">🔴 Live</a>
 
-<a href="#news">
-News
-</a>
+<a href="#news">News</a>
 
-<a href="#series">
-Series
-</a>
+<a href="#series">Series</a>
 
-<a href="#films">
-Films
-</a>
+<a href="#films">Films</a>
 
-<a href="#documentaries">
-Documentaries
-</a>
+<a href="#documentaries">Documentaries</a>
 
 </nav>
 
@@ -1331,47 +1323,20 @@ onclick="toggleMobileMenu()">
 
 </header>
 
-<!-- MOBILE MENU -->
-
 <div
 class="mobile-menu"
 id="mobileMenu">
 
-<a href="#" onclick="closeMobileMenu()">
-Home
-</a>
-
-<a href="#watchlist" onclick="closeMobileMenu()">
-My Watchlist
-</a>
-
-<a href="#originals" onclick="closeMobileMenu()">
-Originals
-</a>
-
-<a href="#live" onclick="closeMobileMenu()">
-🔴 Live
-</a>
-
-<a href="#news" onclick="closeMobileMenu()">
-News
-</a>
-
-<a href="#series" onclick="closeMobileMenu()">
-Series
-</a>
-
-<a href="#films" onclick="closeMobileMenu()">
-Films
-</a>
-
-<a href="#documentaries" onclick="closeMobileMenu()">
-Documentaries
-</a>
+<a href="#" onclick="closeMobileMenu()">Home</a>
+<a href="#watchlist" onclick="closeMobileMenu()">My Watchlist</a>
+<a href="#originals" onclick="closeMobileMenu()">Originals</a>
+<a href="#live" onclick="closeMobileMenu()">🔴 Live</a>
+<a href="#news" onclick="closeMobileMenu()">News</a>
+<a href="#series" onclick="closeMobileMenu()">Series</a>
+<a href="#films" onclick="closeMobileMenu()">Films</a>
+<a href="#documentaries" onclick="closeMobileMenu()">Documentaries</a>
 
 </div>
-
-<!-- HERO -->
 
 <section class="hero">
 
@@ -1427,13 +1392,9 @@ onclick="showInfo()">
 
 </section>
 
-<!-- MAIN -->
-
 <main>
 
 <div class="content-container">
-
-<!-- WATCHLIST -->
 
 <section
 class="section"
@@ -1462,8 +1423,6 @@ Sign in to see your Watchlist.
 </div>
 
 </section>
-
-<!-- ORIGINALS -->
 
 <section
 class="section"
@@ -1496,8 +1455,6 @@ Loading originals...
 </div>
 
 </section>
-
-<!-- LIVE -->
 
 <section
 class="live-section"
@@ -1543,8 +1500,6 @@ Loading live events...
 
 </section>
 
-<!-- NEWS -->
-
 <section
 class="breaking-news"
 id="news">
@@ -1589,8 +1544,6 @@ Loading breaking news...
 
 </section>
 
-<!-- SERIES -->
-
 <section
 class="section"
 id="series">
@@ -1623,8 +1576,6 @@ Loading series...
 
 </section>
 
-<!-- FILMS -->
-
 <section
 class="section"
 id="films">
@@ -1656,8 +1607,6 @@ Loading films...
 </div>
 
 </section>
-
-<!-- DOCUMENTARIES -->
 
 <section
 class="section"
@@ -1695,8 +1644,6 @@ Loading documentaries...
 
 </main>
 
-<!-- PLAYER -->
-
 <div
 class="player"
 id="player">
@@ -1728,8 +1675,6 @@ id="playerTitle">
 </div>
 
 </div>
-
-<!-- AUTH -->
 
 <div
 id="auth-section"
@@ -1783,8 +1728,6 @@ Create Account
 
 </div>
 
-<!-- NEWSLETTER -->
-
 <section class="newsletter">
 
 <div class="newsletter-kicker">
@@ -1822,8 +1765,6 @@ Subscribe
 
 </section>
 
-<!-- FOOTER -->
-
 <footer>
 
 <h3>
@@ -1837,19 +1778,12 @@ African Creativity. Unlimited Vision.
 <div class="footer-links">
 
 <a href="#">Home</a>
-
 <a href="#watchlist">My Watchlist</a>
-
 <a href="#originals">Originals</a>
-
 <a href="#news">News</a>
-
 <a href="#live">Live</a>
-
 <a href="#series">Series</a>
-
 <a href="#films">Films</a>
-
 <a href="#documentaries">Documentaries</a>
 
 </div>
@@ -1896,6 +1830,16 @@ detectSessionInUrl:true
 
 const NEWS_API_URL="/api/news";
 
+/*
+   BRENZKafrica YouTube API
+
+   This is the ONLY addition to the existing structure.
+   Your YouTube endpoint should return the latest videos
+   from the BRENZKafrica channel.
+*/
+
+const YOUTUBE_API_URL="/api/youtube";
+
 /* =========================================================
    ELEMENTS
 ========================================================= */
@@ -1918,6 +1862,9 @@ const watchlistRow=document.getElementById("watchlistRow");
 
 let currentUser=null;
 let watchlistIds=new Set();
+
+let allContent=[];
+let youtubeOriginals=[];
 
 /* =========================================================
    SECURITY
@@ -1999,7 +1946,7 @@ mobileMenu.classList.remove("active");
 }
 
 /* =========================================================
-   YOUTUBE
+   YOUTUBE ID
 ========================================================= */
 
 function extractYouTubeId(url){
@@ -2038,7 +1985,10 @@ return parsed.pathname
 
 }
 
-if(parsed.hostname==="youtu.be"){
+if(
+parsed.hostname==="youtu.be"||
+parsed.hostname==="www.youtu.be"
+){
 
 return parsed.pathname
 .replace("/","")
@@ -2048,7 +1998,10 @@ return parsed.pathname
 
 }catch(error){
 
-console.error(error);
+console.error(
+"YouTube URL error:",
+error
+);
 
 }
 
@@ -2390,7 +2343,7 @@ button.disabled=false;
 }
 
 /* =========================================================
-   UPDATE BUTTONS
+   UPDATE WATCHLIST BUTTONS
 ========================================================= */
 
 function updateWatchlistButtons(){
@@ -2428,7 +2381,7 @@ saved
 }
 
 /* =========================================================
-   WATCHLIST CARD
+   SUPABASE CONTENT CARD
 ========================================================= */
 
 function createContentCard(item){
@@ -2451,9 +2404,6 @@ const country=
 item.country
 ? " • "+item.country
 :"";
-
-const videoUrl=
-item.video_url||"";
 
 const featured=
 item.is_featured;
@@ -2516,7 +2466,310 @@ ${escapeHTML(type)}${escapeHTML(country)}
 }
 
 /* =========================================================
-   PLAY CONTENT CARD
+   YOUTUBE ORIGINAL CARD
+========================================================= */
+
+function createYouTubeOriginalCard(item){
+
+const videoId=
+item.videoId||
+extractYouTubeId(item.url)||
+extractYouTubeId(item.video_url);
+
+if(!videoId){
+return "";
+}
+
+const title=
+item.title||
+"BRENZKafrica Tutorial";
+
+const thumbnail=
+item.thumbnail||
+`https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+
+const description=
+item.description||
+"BRENZKafrica creative tutorial";
+
+const published=
+item.publishedAt||
+item.published_at||
+"";
+
+return `
+<article
+class="card youtube-original-card"
+data-youtube-id="${escapeHTML(videoId)}"
+data-title="${escapeHTML(title)}"
+onclick="playYouTubeOriginal(this)">
+
+<img
+src="${escapeHTML(thumbnail)}"
+alt="${escapeHTML(title)}"
+loading="lazy"
+onerror="this.src='https://i.ytimg.com/vi/${escapeHTML(videoId)}/hqdefault.jpg'">
+
+<span class="card-badge">
+BRENZKAFRICA
+</span>
+
+<div class="card-overlay">
+
+<div class="card-title">
+${escapeHTML(title)}
+</div>
+
+<div class="youtube-label">
+YouTube Tutorial
+</div>
+
+<div class="card-type">
+${escapeHTML(formatDate(published))}
+</div>
+
+</div>
+
+</article>
+`;
+
+}
+
+/* =========================================================
+   PLAY YOUTUBE ORIGINAL
+========================================================= */
+
+function playYouTubeOriginal(card){
+
+if(!card){
+return;
+}
+
+const videoId=
+card.dataset.youtubeId;
+
+const title=
+card.dataset.title||
+"BRENZKafrica Tutorial";
+
+if(!videoId){
+
+showToast(
+"This YouTube video is unavailable."
+);
+
+return;
+
+}
+
+playVideo(
+title,
+"https://www.youtube.com/watch?v="+videoId
+);
+
+}
+
+/* =========================================================
+   LOAD BRENZKAFRICA YOUTUBE TUTORIALS
+========================================================= */
+
+async function loadYouTubeOriginals(){
+
+const originalsRow=
+document.getElementById("originalsRow");
+
+try{
+
+const response=
+await fetch(
+YOUTUBE_API_URL,
+{
+method:"GET",
+cache:"no-store",
+headers:{
+Accept:"application/json"
+}
+}
+);
+
+if(!response.ok){
+
+throw new Error(
+"YouTube API returned "+response.status
+);
+
+}
+
+const data=
+await response.json();
+
+let videos=[];
+
+/*
+   Accept several response formats so the existing
+   YouTube endpoint can continue working without
+   changing the rest of the site.
+*/
+
+if(Array.isArray(data)){
+videos=data;
+}else if(Array.isArray(data.videos)){
+videos=data.videos;
+}else if(Array.isArray(data.items)){
+videos=data.items;
+}else if(Array.isArray(data.data)){
+videos=data.data;
+}
+
+youtubeOriginals=
+videos
+.map(item=>{
+
+const snippet=
+item.snippet||item;
+
+const resourceId=
+snippet.resourceId||
+item.resourceId||
+item.videoId||
+item.id;
+
+let videoId="";
+
+if(typeof resourceId==="string"){
+videoId=resourceId;
+}else if(resourceId?.videoId){
+videoId=resourceId.videoId;
+}
+
+if(!videoId&&item.video_id){
+videoId=item.video_id;
+}
+
+let url=
+item.url||
+item.video_url||
+snippet.url||
+"";
+
+if(!videoId){
+videoId=extractYouTubeId(url)||"";
+}
+
+if(!url&&videoId){
+url=
+"https://www.youtube.com/watch?v="+
+videoId;
+}
+
+return {
+videoId,
+url,
+title:
+item.title||
+snippet.title||
+"BRENZKafrica Tutorial",
+description:
+item.description||
+snippet.description||
+"BRENZKafrica creative tutorial",
+thumbnail:
+item.thumbnail||
+item.thumbnail_url||
+snippet.thumbnail||
+snippet.thumbnails?.high?.url||
+snippet.thumbnails?.medium?.url||
+snippet.thumbnails?.default?.url||
+(videoId
+?`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+:""),
+publishedAt:
+item.publishedAt||
+item.published_at||
+snippet.publishedAt||
+""
+};
+
+})
+.filter(item=>item.videoId)
+.slice(0,20);
+
+/*
+   IMPORTANT:
+   We do NOT replace Supabase Originals.
+
+   We simply add the YouTube tutorials underneath
+   the existing BRENZKafrica Originals content.
+*/
+
+if(youtubeOriginals.length){
+
+const youtubeHTML=
+youtubeOriginals
+.map(createYouTubeOriginalCard)
+.join("");
+
+/*
+   If Supabase Originals already loaded,
+   append the tutorials.
+
+   If it has not loaded yet, render them first.
+*/
+
+const existingHTML=
+originalsRow.innerHTML.trim();
+
+if(
+!existingHTML||
+existingHTML.includes("Loading originals")||
+existingHTML.includes("No content available yet")
+){
+
+originalsRow.innerHTML=
+youtubeHTML;
+
+}else{
+
+originalsRow.insertAdjacentHTML(
+"beforeend",
+youtubeHTML
+);
+
+}
+
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+if(youtubeOriginals.length){
+
+console.log(
+"BRENZKafrica YouTube Originals loaded:",
+youtubeOriginals.length
+);
+
+}
+
+}catch(error){
+
+console.error(
+"BRENZKafrica YouTube loading error:",
+error
+);
+
+/*
+   Do NOT destroy the Supabase Originals section
+   if YouTube is unavailable.
+*/
+
+}
+
+}
+
+/* =========================================================
+   PLAY SUPABASE CONTENT
 ========================================================= */
 
 function playContentCard(card){
@@ -2529,7 +2782,8 @@ const id=card.dataset.contentId;
 
 const title=card.dataset.title;
 
-const content=allContent.find(
+const content=
+allContent.find(
 item=>String(item.id)===String(id)
 );
 
@@ -2549,12 +2803,6 @@ content.video_url
 );
 
 }
-
-/* =========================================================
-   ALL CONTENT CACHE
-========================================================= */
-
-let allContent=[];
 
 /* =========================================================
    LOAD CONTENT
@@ -2589,6 +2837,13 @@ throw error;
 allContent=data||[];
 
 renderContentSections();
+
+/*
+   Load YouTube tutorials AFTER the normal
+   BRENZKafrica Originals have rendered.
+*/
+
+await loadYouTubeOriginals();
 
 }catch(error){
 
@@ -2782,7 +3037,7 @@ try{
 const {data,error}=await supabaseClient
 .from("live_events")
 .select(
-"id,title,description,thumbnail,status,start_time,end_time,is_featured"
+"id,title,description,thumbnail,status,start_time,end_time,is_featured,stream_url"
 );
 
 if(error){
@@ -3598,17 +3853,21 @@ link.classList.add("active");
 });
 
 /* =========================================================
-   LOAD CONTENT
+   INITIAL CONTENT LOAD
 ========================================================= */
 
 loadContent();
 
 /* =========================================================
-   AUTO REFRESH CONTENT
+   AUTO REFRESH CONTENT + YOUTUBE
 ========================================================= */
 
 setInterval(
-loadContent,
+async function(){
+
+await loadContent();
+
+},
 10*60*1000
 );
 
