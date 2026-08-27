@@ -558,6 +558,26 @@ main{
   font-weight:900;
 }
 
+/* EPISODE CARD */
+
+.episode-card{
+  flex:0 0 235px;
+  height:132px;
+}
+
+.episode-card .card-badge{
+  background:var(--red);
+}
+
+.episode-number{
+  color:#fff;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:.7px;
+  text-transform:uppercase;
+  margin-top:4px;
+}
+
 /* YOUTUBE ORIGINAL CARD */
 
 .youtube-original-card{
@@ -1199,7 +1219,8 @@ footer p{
   }
 
   .card,
-  .youtube-original-card{
+  .youtube-original-card,
+  .episode-card{
     flex-basis:175px;
     height:100px;
   }
@@ -1258,19 +1279,12 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <nav id="desktopNav">
 
 <a href="#" class="active">Home</a>
-
 <a href="#watchlist">My Watchlist</a>
-
 <a href="#originals">Originals</a>
-
 <a href="#live">🔴 Live</a>
-
 <a href="#news">News</a>
-
 <a href="#series">Series</a>
-
 <a href="#films">Films</a>
-
 <a href="#documentaries">Documentaries</a>
 
 </nav>
@@ -1278,7 +1292,6 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <div class="nav-right">
 
 <div class="search-wrap">
-
 <span class="search-icon">⌕</span>
 
 <input
@@ -1287,7 +1300,6 @@ id="search"
 type="search"
 placeholder="Search"
 autocomplete="off">
-
 </div>
 
 <button
@@ -1355,13 +1367,9 @@ Unlimited Vision.
 <div class="hero-meta">
 
 <strong>2026</strong>
-
 <span class="meta-dot"></span>
-
 <span>Original</span>
-
 <span class="meta-dot"></span>
-
 <span>Africa</span>
 
 </div>
@@ -1569,7 +1577,7 @@ class="row"
 id="seriesRow">
 
 <div class="news-loading">
-Loading series...
+Loading episodes...
 </div>
 
 </div>
@@ -1829,15 +1837,6 @@ detectSessionInUrl:true
 ========================================================= */
 
 const NEWS_API_URL="/api/news";
-
-/*
-   BRENZKafrica YouTube API
-
-   This is the ONLY addition to the existing structure.
-   Your YouTube endpoint should return the latest videos
-   from the BRENZKafrica channel.
-*/
-
 const YOUTUBE_API_URL="/api/youtube";
 
 /* =========================================================
@@ -1865,6 +1864,12 @@ let watchlistIds=new Set();
 
 let allContent=[];
 let youtubeOriginals=[];
+
+/* =========================================================
+   EPISODES
+========================================================= */
+
+let allEpisodes=[];
 
 /* =========================================================
    SECURITY
@@ -2028,6 +2033,58 @@ return match?match[1]:null;
 }
 
 /* =========================================================
+   GOOGLE DRIVE
+========================================================= */
+
+function extractGoogleDriveId(url){
+
+if(!url){
+return null;
+}
+
+const value=String(url).trim();
+
+let match=value.match(
+/\/file\/d\/([^/]+)/i
+);
+
+if(match&&match[1]){
+return match[1];
+}
+
+match=value.match(
+/[?&]id=([^&]+)/i
+);
+
+if(match&&match[1]){
+return match[1];
+}
+
+return null;
+
+}
+
+function convertGoogleDriveUrl(url){
+
+const fileId=extractGoogleDriveId(url);
+
+if(!fileId){
+return url;
+}
+
+/*
+   Google Drive download endpoint.
+
+   This allows the browser to request the actual
+   file instead of opening the normal Drive viewer.
+*/
+
+return "https://drive.google.com/uc?export=download&id="+
+encodeURIComponent(fileId);
+
+}
+
+/* =========================================================
    PLAYER
 ========================================================= */
 
@@ -2045,6 +2102,7 @@ return;
 
 const youtubeId=extractYouTubeId(url);
 const vimeoId=extractVimeoId(url);
+const googleDriveId=extractGoogleDriveId(url);
 
 video.pause();
 video.src="";
@@ -2073,6 +2131,23 @@ vimeoId+
 "?autoplay=1";
 
 youtubePlayer.style.display="block";
+
+}else if(googleDriveId){
+
+const driveUrl=
+convertGoogleDriveUrl(url);
+
+video.src=driveUrl;
+video.style.display="block";
+
+video.play().catch(error=>{
+
+console.log(
+"Google Drive autoplay prevented:",
+error
+);
+
+});
 
 }else{
 
@@ -2466,6 +2541,191 @@ ${escapeHTML(type)}${escapeHTML(country)}
 }
 
 /* =========================================================
+   SERIES EPISODE CARD
+========================================================= */
+
+function createEpisodeCard(episode){
+
+const id=episode.id;
+
+const episodeNumber=
+episode.episode_number;
+
+const title=
+episode.title||
+"Episode "+episodeNumber;
+
+const thumbnail=
+episode.thumbnail_url||
+"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
+
+const duration=
+episode.duration_seconds
+?Math.round(episode.duration_seconds/60)+" min"
+:"Series";
+
+const premium=
+episode.is_premium===true;
+
+return `
+<article
+class="card episode-card"
+data-episode-id="${escapeHTML(id)}"
+data-title="${escapeHTML(title)}"
+onclick="playEpisode('${escapeHTML(id)}')">
+
+<img
+src="${escapeHTML(thumbnail)}"
+alt="${escapeHTML(title)}"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80'">
+
+<span class="card-badge">
+EP ${escapeHTML(episodeNumber)}
+</span>
+
+<div class="card-overlay">
+
+<div class="card-title">
+${escapeHTML(title)}
+</div>
+
+<div class="episode-number">
+${premium?"PREMIUM • ":""}${escapeHTML(duration)}
+</div>
+
+</div>
+
+</article>
+`;
+
+}
+
+/* =========================================================
+   LOAD SERIES EPISODES
+========================================================= */
+
+async function loadSeriesEpisodes(){
+
+const seriesRow=
+document.getElementById("seriesRow");
+
+seriesRow.innerHTML=
+'<div class="news-loading">Loading episodes...</div>';
+
+try{
+
+const {data,error}=
+await supabaseClient
+.from("episodes")
+.select(`
+id,
+season_id,
+episode_number,
+title,
+description,
+thumbnail_url,
+video_url,
+duration_seconds,
+is_premium,
+published_at,
+created_at,
+series_id
+`)
+.not("video_url","is",null)
+.order("episode_number",{ascending:true});
+
+if(error){
+throw error;
+}
+
+allEpisodes=data||[];
+
+if(!allEpisodes.length){
+
+seriesRow.innerHTML=
+'<div class="news-empty">'+
+'No episodes available yet.'+
+'</div>';
+
+return;
+
+}
+
+seriesRow.innerHTML=
+allEpisodes
+.map(createEpisodeCard)
+.join("");
+
+console.log(
+"BRENZKafrica episodes loaded:",
+allEpisodes.length
+);
+
+}catch(error){
+
+console.error(
+"Episode loading error:",
+error
+);
+
+seriesRow.innerHTML=
+'<div class="news-error">'+
+'Unable to load episodes right now.'+
+'</div>';
+
+}
+
+}
+
+/* =========================================================
+   PLAY SERIES EPISODE
+========================================================= */
+
+function playEpisode(id){
+
+const episode=
+allEpisodes.find(
+item=>String(item.id)===String(id)
+);
+
+if(!episode){
+
+showToast(
+"Episode could not be found."
+);
+
+return;
+
+}
+
+if(!episode.video_url){
+
+showToast(
+"This episode is not available yet."
+);
+
+return;
+
+}
+
+/*
+   Premium restriction will be connected
+   to subscriptions later.
+
+   For now, published episodes can be tested.
+*/
+
+playVideo(
+episode.title||
+"Episode "+episode.episode_number,
+
+episode.video_url
+);
+
+}
+
+/* =========================================================
    YOUTUBE ORIGINAL CARD
 ========================================================= */
 
@@ -2605,12 +2865,6 @@ await response.json();
 
 let videos=[];
 
-/*
-   Accept several response formats so the existing
-   YouTube endpoint can continue working without
-   changing the rest of the site.
-*/
-
 if(Array.isArray(data)){
 videos=data;
 }else if(Array.isArray(data.videos)){
@@ -2694,27 +2948,12 @@ snippet.publishedAt||
 .filter(item=>item.videoId)
 .slice(0,20);
 
-/*
-   IMPORTANT:
-   We do NOT replace Supabase Originals.
-
-   We simply add the YouTube tutorials underneath
-   the existing BRENZKafrica Originals content.
-*/
-
 if(youtubeOriginals.length){
 
 const youtubeHTML=
 youtubeOriginals
 .map(createYouTubeOriginalCard)
 .join("");
-
-/*
-   If Supabase Originals already loaded,
-   append the tutorials.
-
-   If it has not loaded yet, render them first.
-*/
 
 const existingHTML=
 originalsRow.innerHTML.trim();
@@ -2739,30 +2978,12 @@ youtubeHTML
 
 }
 
-/* =====================================================
-   STATUS
-===================================================== */
-
-if(youtubeOriginals.length){
-
-console.log(
-"BRENZKafrica YouTube Originals loaded:",
-youtubeOriginals.length
-);
-
-}
-
 }catch(error){
 
 console.error(
 "BRENZKafrica YouTube loading error:",
 error
 );
-
-/*
-   Do NOT destroy the Supabase Originals section
-   if YouTube is unavailable.
-*/
 
 }
 
@@ -2838,11 +3059,6 @@ allContent=data||[];
 
 renderContentSections();
 
-/*
-   Load YouTube tutorials AFTER the normal
-   BRENZKafrica Originals have rendered.
-*/
-
 await loadYouTubeOriginals();
 
 }catch(error){
@@ -2915,7 +3131,6 @@ function renderContentSections(){
 
 const groups={
 originals:document.getElementById("originalsRow"),
-series:document.getElementById("seriesRow"),
 films:document.getElementById("filmsRow"),
 documentary:document.getElementById("documentaryRow")
 };
@@ -3858,14 +4073,23 @@ link.classList.add("active");
 
 loadContent();
 
+/*
+   NEW:
+   Load the 22 series episodes directly
+   from the Supabase episodes table.
+*/
+
+loadSeriesEpisodes();
+
 /* =========================================================
-   AUTO REFRESH CONTENT + YOUTUBE
+   AUTO REFRESH CONTENT + EPISODES + YOUTUBE
 ========================================================= */
 
 setInterval(
 async function(){
 
 await loadContent();
+await loadSeriesEpisodes();
 
 },
 10*60*1000
