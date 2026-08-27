@@ -79,7 +79,9 @@ a{
   border-radius:20px;
 }
 
-/* HEADER */
+/* =========================================================
+   HEADER
+========================================================= */
 
 header{
   position:fixed;
@@ -201,6 +203,7 @@ nav a.active::after{
   background:rgba(0,0,0,.55);
   color:#fff;
   outline:none;
+  transition:.2s;
 }
 
 .search:focus{
@@ -256,7 +259,9 @@ nav a.active::after{
   font-size:18px;
 }
 
-/* MOBILE MENU */
+/* =========================================================
+   MOBILE MENU
+========================================================= */
 
 .mobile-menu{
   display:none;
@@ -285,7 +290,9 @@ nav a.active::after{
   font-weight:700;
 }
 
-/* HERO */
+/* =========================================================
+   HERO
+========================================================= */
 
 .hero{
   position:relative;
@@ -401,7 +408,9 @@ nav a.active::after{
   color:#fff;
 }
 
-/* MAIN */
+/* =========================================================
+   MAIN
+========================================================= */
 
 main{
   position:relative;
@@ -458,11 +467,14 @@ main{
   font-weight:700;
 }
 
-/* ROW */
+/* =========================================================
+   ROW
+========================================================= */
 
 .row,
 .live-row,
-.news-row{
+.news-row,
+.episode-row{
   display:flex;
   gap:14px;
   overflow-x:auto;
@@ -473,11 +485,14 @@ main{
 
 .row::-webkit-scrollbar,
 .live-row::-webkit-scrollbar,
-.news-row::-webkit-scrollbar{
+.news-row::-webkit-scrollbar,
+.episode-row::-webkit-scrollbar{
   display:none;
 }
 
-/* CARD */
+/* =========================================================
+   CARD
+========================================================= */
 
 .card{
   position:relative;
@@ -558,27 +573,128 @@ main{
   font-weight:900;
 }
 
-/* EPISODE CARD */
+/* =========================================================
+   EPISODES
+========================================================= */
 
-.episode-card{
-  flex:0 0 235px;
-  height:132px;
+.episodes-section{
+  display:none;
 }
 
-.episode-card .card-badge{
-  background:var(--red);
+.episodes-section.visible{
+  display:block;
+}
+
+.episode-card{
+  position:relative;
+  flex:0 0 285px;
+  height:165px;
+  overflow:hidden;
+  background:#151515;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:9px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.episode-card:hover{
+  transform:translateY(-5px);
+  border-color:#444;
+  box-shadow:0 15px 35px rgba(0,0,0,.55);
+}
+
+.episode-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  transition:.4s ease;
+}
+
+.episode-card:hover img{
+  transform:scale(1.05);
+}
+
+.episode-card::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      to top,
+      rgba(0,0,0,.96),
+      rgba(0,0,0,.15) 60%,
+      transparent
+    );
 }
 
 .episode-number{
-  color:#fff;
+  position:absolute;
+  top:10px;
+  left:10px;
+  z-index:5;
+  background:rgba(0,0,0,.78);
+  border:1px solid rgba(255,255,255,.18);
+  padding:5px 8px;
+  border-radius:4px;
   font-size:9px;
   font-weight:900;
-  letter-spacing:.7px;
-  text-transform:uppercase;
-  margin-top:4px;
 }
 
-/* YOUTUBE ORIGINAL CARD */
+.episode-premium{
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:5;
+  background:#d4a017;
+  color:#000;
+  padding:5px 7px;
+  border-radius:4px;
+  font-size:8px;
+  font-weight:900;
+}
+
+.episode-info{
+  position:absolute;
+  left:12px;
+  right:12px;
+  bottom:12px;
+  z-index:5;
+}
+
+.episode-title{
+  font-size:14px;
+  font-weight:900;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.episode-description{
+  color:#aaa;
+  font-size:10px;
+  margin-top:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.episode-duration{
+  color:#777;
+  font-size:9px;
+  margin-top:5px;
+}
+
+.episode-empty,
+.episode-error,
+.episode-loading{
+  color:#777;
+  padding:35px 3px;
+  font-size:12px;
+}
+
+/* =========================================================
+   YOUTUBE
+========================================================= */
 
 .youtube-original-card{
   flex:0 0 235px;
@@ -607,7 +723,9 @@ main{
   padding-top:80px;
 }
 
-/* WATCHLIST */
+/* =========================================================
+   WATCHLIST
+========================================================= */
 
 .watchlist-button{
   position:absolute;
@@ -650,7 +768,9 @@ main{
   font-size:13px;
 }
 
-/* LIVE */
+/* =========================================================
+   LIVE
+========================================================= */
 
 .live-section{
   padding-top:28px;
@@ -778,7 +898,9 @@ main{
   font-size:12px;
 }
 
-/* NEWS */
+/* =========================================================
+   NEWS
+========================================================= */
 
 .breaking-news{
   padding-top:25px;
@@ -839,7 +961,9 @@ main{
   font-size:12px;
 }
 
-/* PLAYER */
+/* =========================================================
+   PLAYER
+========================================================= */
 
 .player{
   display:none;
@@ -890,7 +1014,17 @@ main{
   font-weight:700;
 }
 
-/* AUTH */
+.player-description{
+  width:min(1200px,94vw);
+  color:#888;
+  font-size:12px;
+  margin-top:7px;
+  line-height:1.5;
+}
+
+/* =========================================================
+   AUTH
+========================================================= */
 
 .auth-section{
   display:none;
@@ -985,7 +1119,9 @@ main{
   font-size:25px;
 }
 
-/* NEWSLETTER */
+/* =========================================================
+   NEWSLETTER
+========================================================= */
 
 .newsletter{
   width:calc(100% - 9%);
@@ -1053,7 +1189,9 @@ main{
   font-weight:800;
 }
 
-/* FOOTER */
+/* =========================================================
+   FOOTER
+========================================================= */
 
 footer{
   padding:55px 5% 35px;
@@ -1088,7 +1226,9 @@ footer p{
   font-size:11px;
 }
 
-/* TOAST */
+/* =========================================================
+   TOAST
+========================================================= */
 
 .toast{
   position:fixed;
@@ -1112,7 +1252,9 @@ footer p{
   transform:translate(-50%,0);
 }
 
-/* MOBILE */
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:850px){
 
@@ -1219,8 +1361,7 @@ footer p{
   }
 
   .card,
-  .youtube-original-card,
-  .episode-card{
+  .youtube-original-card{
     flex-basis:175px;
     height:100px;
   }
@@ -1228,6 +1369,11 @@ footer p{
   .portrait-card{
     flex-basis:140px;
     height:210px;
+  }
+
+  .episode-card{
+    flex-basis:250px;
+    height:145px;
   }
 
   .live-card,
@@ -1279,12 +1425,19 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <nav id="desktopNav">
 
 <a href="#" class="active">Home</a>
+
 <a href="#watchlist">My Watchlist</a>
+
 <a href="#originals">Originals</a>
+
 <a href="#live">🔴 Live</a>
+
 <a href="#news">News</a>
+
 <a href="#series">Series</a>
+
 <a href="#films">Films</a>
+
 <a href="#documentaries">Documentaries</a>
 
 </nav>
@@ -1292,6 +1445,7 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <div class="nav-right">
 
 <div class="search-wrap">
+
 <span class="search-icon">⌕</span>
 
 <input
@@ -1300,6 +1454,7 @@ id="search"
 type="search"
 placeholder="Search"
 autocomplete="off">
+
 </div>
 
 <button
@@ -1367,9 +1522,13 @@ Unlimited Vision.
 <div class="hero-meta">
 
 <strong>2026</strong>
+
 <span class="meta-dot"></span>
+
 <span>Original</span>
+
 <span class="meta-dot"></span>
+
 <span>Africa</span>
 
 </div>
@@ -1404,6 +1563,10 @@ onclick="showInfo()">
 
 <div class="content-container">
 
+<!-- =====================================================
+     WATCHLIST
+===================================================== -->
+
 <section
 class="section"
 id="watchlist">
@@ -1431,6 +1594,10 @@ Sign in to see your Watchlist.
 </div>
 
 </section>
+
+<!-- =====================================================
+     ORIGINALS
+===================================================== -->
 
 <section
 class="section"
@@ -1463,6 +1630,84 @@ Loading originals...
 </div>
 
 </section>
+
+<!-- =====================================================
+     SERIES
+===================================================== -->
+
+<section
+class="section"
+id="series">
+
+<div class="section-heading">
+
+<h2 class="section-title">
+Series
+</h2>
+
+<a href="#series" class="section-link">
+View all →
+</a>
+
+</div>
+
+<p class="section-subtitle">
+African stories, journeys and creative voices.
+</p>
+
+<div
+class="row"
+id="seriesRow">
+
+<div class="news-loading">
+Loading series...
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     EPISODES
+===================================================== -->
+
+<section
+class="section episodes-section"
+id="episodes">
+
+<div class="section-heading">
+
+<h2 class="section-title">
+Episodes
+</h2>
+
+<span class="section-link">
+Season episodes
+</span>
+
+</div>
+
+<p
+class="section-subtitle"
+id="episodesSubtitle">
+Watch episodes from this series.
+</p>
+
+<div
+class="episode-row"
+id="episodesRow">
+
+<div class="episode-loading">
+Loading episodes...
+</div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     LIVE
+===================================================== -->
 
 <section
 class="live-section"
@@ -1508,6 +1753,10 @@ Loading live events...
 
 </section>
 
+<!-- =====================================================
+     NEWS
+===================================================== -->
+
 <section
 class="breaking-news"
 id="news">
@@ -1552,37 +1801,9 @@ Loading breaking news...
 
 </section>
 
-<section
-class="section"
-id="series">
-
-<div class="section-heading">
-
-<h2 class="section-title">
-Series
-</h2>
-
-<a href="#series" class="section-link">
-View all →
-</a>
-
-</div>
-
-<p class="section-subtitle">
-African stories, journeys and creative voices.
-</p>
-
-<div
-class="row"
-id="seriesRow">
-
-<div class="news-loading">
-Loading episodes...
-</div>
-
-</div>
-
-</section>
+<!-- =====================================================
+     FILMS
+===================================================== -->
 
 <section
 class="section"
@@ -1615,6 +1836,10 @@ Loading films...
 </div>
 
 </section>
+
+<!-- =====================================================
+     DOCUMENTARIES
+===================================================== -->
 
 <section
 class="section"
@@ -1652,6 +1877,10 @@ Loading documentaries...
 
 </main>
 
+<!-- =====================================================
+     PLAYER
+===================================================== -->
+
 <div
 class="player"
 id="player">
@@ -1682,7 +1911,16 @@ class="player-title"
 id="playerTitle">
 </div>
 
+<div
+class="player-description"
+id="playerDescription">
 </div>
+
+</div>
+
+<!-- =====================================================
+     AUTH
+===================================================== -->
 
 <div
 id="auth-section"
@@ -1736,6 +1974,10 @@ Create Account
 
 </div>
 
+<!-- =====================================================
+     NEWSLETTER
+===================================================== -->
+
 <section class="newsletter">
 
 <div class="newsletter-kicker">
@@ -1772,6 +2014,10 @@ Subscribe
 <p id="newsletter-message"></p>
 
 </section>
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
 
@@ -1837,39 +2083,76 @@ detectSessionInUrl:true
 ========================================================= */
 
 const NEWS_API_URL="/api/news";
+
 const YOUTUBE_API_URL="/api/youtube";
+
+/* =========================================================
+   SERIES CONFIGURATION
+========================================================= */
+
+/*
+   YOUR SERIES ID
+   All 22 episodes currently have series_id = 1.
+*/
+
+const CURRENT_SERIES_ID = 1;
 
 /* =========================================================
    ELEMENTS
 ========================================================= */
 
 const player=document.getElementById("player");
+
 const video=document.getElementById("video");
-const youtubePlayer=document.getElementById("youtubePlayer");
-const playerTitle=document.getElementById("playerTitle");
 
-const liveRow=document.getElementById("liveRow");
-const liveStatus=document.getElementById("liveStatus");
+const youtubePlayer=
+document.getElementById("youtubePlayer");
 
-const newsRow=document.getElementById("newsRow");
-const newsStatus=document.getElementById("newsStatus");
+const playerTitle=
+document.getElementById("playerTitle");
 
-const siteHeader=document.getElementById("siteHeader");
-const mobileMenu=document.getElementById("mobileMenu");
+const playerDescription=
+document.getElementById("playerDescription");
 
-const watchlistRow=document.getElementById("watchlistRow");
+const liveRow=
+document.getElementById("liveRow");
+
+const liveStatus=
+document.getElementById("liveStatus");
+
+const newsRow=
+document.getElementById("newsRow");
+
+const newsStatus=
+document.getElementById("newsStatus");
+
+const siteHeader=
+document.getElementById("siteHeader");
+
+const mobileMenu=
+document.getElementById("mobileMenu");
+
+const watchlistRow=
+document.getElementById("watchlistRow");
+
+const episodesSection=
+document.getElementById("episodes");
+
+const episodesRow=
+document.getElementById("episodesRow");
+
+const episodesSubtitle=
+document.getElementById("episodesSubtitle");
 
 let currentUser=null;
+
 let watchlistIds=new Set();
 
 let allContent=[];
-let youtubeOriginals=[];
-
-/* =========================================================
-   EPISODES
-========================================================= */
 
 let allEpisodes=[];
+
+let youtubeOriginals=[];
 
 /* =========================================================
    SECURITY
@@ -1898,7 +2181,8 @@ let toastTimer=null;
 
 function showToast(message){
 
-const toast=document.getElementById("toast");
+const toast=
+document.getElementById("toast");
 
 toast.textContent=message;
 
@@ -2024,7 +2308,8 @@ if(!url){
 return null;
 }
 
-const match=String(url).match(
+const match=
+String(url).match(
 /vimeo\.com\/(?:video\/)?(\d+)/i
 );
 
@@ -2033,8 +2318,22 @@ return match?match[1]:null;
 }
 
 /* =========================================================
-   GOOGLE DRIVE
+   GOOGLE DRIVE URL
 ========================================================= */
+
+/*
+   Converts common Google Drive share URLs:
+
+   https://drive.google.com/file/d/FILE_ID/view
+
+   into:
+
+   https://drive.google.com/uc?export=download&id=FILE_ID
+
+   IMPORTANT:
+   Google may still block direct playback for very large
+   files or require confirmation before downloading.
+*/
 
 function extractGoogleDriveId(url){
 
@@ -2045,18 +2344,26 @@ return null;
 const value=String(url).trim();
 
 let match=value.match(
-/\/file\/d\/([^/]+)/i
+/drive\.google\.com\/file\/d\/([^/]+)/i
 );
 
-if(match&&match[1]){
+if(match){
 return match[1];
 }
 
 match=value.match(
-/[?&]id=([^&]+)/i
+/drive\.google\.com\/open\?id=([^&]+)/i
 );
 
-if(match&&match[1]){
+if(match){
+return match[1];
+}
+
+match=value.match(
+/drive\.google\.com\/uc\?.*id=([^&]+)/i
+);
+
+if(match){
 return match[1];
 }
 
@@ -2066,21 +2373,15 @@ return null;
 
 function convertGoogleDriveUrl(url){
 
-const fileId=extractGoogleDriveId(url);
+const id=
+extractGoogleDriveId(url);
 
-if(!fileId){
+if(!id){
 return url;
 }
 
-/*
-   Google Drive download endpoint.
-
-   This allows the browser to request the actual
-   file instead of opening the normal Drive viewer.
-*/
-
 return "https://drive.google.com/uc?export=download&id="+
-encodeURIComponent(fileId);
+encodeURIComponent(id);
 
 }
 
@@ -2088,7 +2389,11 @@ encodeURIComponent(fileId);
    PLAYER
 ========================================================= */
 
-function playVideo(name,url){
+function playVideo(
+name,
+url,
+description=""
+){
 
 if(!url){
 
@@ -2100,19 +2405,37 @@ return;
 
 }
 
-const youtubeId=extractYouTubeId(url);
-const vimeoId=extractVimeoId(url);
-const googleDriveId=extractGoogleDriveId(url);
+const cleanUrl=
+String(url).trim();
+
+const youtubeId=
+extractYouTubeId(cleanUrl);
+
+const vimeoId=
+extractVimeoId(cleanUrl);
+
+const googleDriveId=
+extractGoogleDriveId(cleanUrl);
 
 video.pause();
-video.src="";
+
+video.removeAttribute("src");
+
 youtubePlayer.src="";
 
 video.style.display="none";
+
 youtubePlayer.style.display="none";
 
 playerTitle.textContent=
 name||"BRENZKafrica";
+
+playerDescription.textContent=
+description||"";
+
+/* =====================================================
+   YOUTUBE
+===================================================== */
 
 if(youtubeId){
 
@@ -2123,7 +2446,13 @@ youtubeId+
 
 youtubePlayer.style.display="block";
 
-}else if(vimeoId){
+}
+
+/* =====================================================
+   VIMEO
+===================================================== */
+
+else if(vimeoId){
 
 youtubePlayer.src=
 "https://player.vimeo.com/video/"+
@@ -2132,26 +2461,40 @@ vimeoId+
 
 youtubePlayer.style.display="block";
 
-}else if(googleDriveId){
+}
+
+/* =====================================================
+   GOOGLE DRIVE
+===================================================== */
+
+else if(googleDriveId){
 
 const driveUrl=
-convertGoogleDriveUrl(url);
+convertGoogleDriveUrl(cleanUrl);
 
 video.src=driveUrl;
+
 video.style.display="block";
 
 video.play().catch(error=>{
 
-console.log(
-"Google Drive autoplay prevented:",
+console.warn(
+"Google Drive playback did not start automatically:",
 error
 );
 
 });
 
-}else{
+}
 
-video.src=url;
+/* =====================================================
+   NORMAL VIDEO
+===================================================== */
+
+else{
+
+video.src=cleanUrl;
+
 video.style.display="block";
 
 video.play().catch(()=>{});
@@ -2159,6 +2502,7 @@ video.play().catch(()=>{});
 }
 
 player.classList.add("active");
+
 document.body.classList.add("modal-open");
 
 }
@@ -2196,9 +2540,11 @@ playVideo(
 function closePlayer(){
 
 video.pause();
-video.src="";
+
+video.removeAttribute("src");
 
 youtubePlayer.src="";
+
 youtubePlayer.style.display="none";
 
 video.style.display="block";
@@ -2249,6 +2595,44 @@ year:"numeric"
 }
 
 /* =========================================================
+   DURATION
+========================================================= */
+
+function formatDuration(seconds){
+
+const total=
+Number(seconds);
+
+if(!Number.isFinite(total)||total<=0){
+return "";
+}
+
+const hours=
+Math.floor(total/3600);
+
+const minutes=
+Math.floor((total%3600)/60);
+
+const secs=
+Math.floor(total%60);
+
+if(hours>0){
+
+return hours+
+":"+
+String(minutes).padStart(2,"0")+
+":"+
+String(secs).padStart(2,"0");
+
+}
+
+return minutes+
+":"+
+String(secs).padStart(2,"0");
+
+}
+
+/* =========================================================
    WATCHLIST
 ========================================================= */
 
@@ -2271,18 +2655,24 @@ return;
 
 try{
 
-const {data,error}=await supabaseClient
+const {data,error}=
+await supabaseClient
 .from("watchlist")
 .select("content_id")
 .eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
+.order(
+"created_at",
+{ascending:false}
+);
 
 if(error){
 throw error;
 }
 
 watchlistIds=new Set(
-(data||[]).map(item=>item.content_id)
+(data||[]).map(
+item=>item.content_id
+)
 );
 
 updateWatchlistButtons();
@@ -2345,7 +2735,8 @@ try{
 
 if(isSaved){
 
-const {error}=await supabaseClient
+const {error}=
+await supabaseClient
 .from("watchlist")
 .delete()
 .eq("user_id",currentUser.id)
@@ -2363,7 +2754,8 @@ showToast(
 
 }else{
 
-const {error}=await supabaseClient
+const {error}=
+await supabaseClient
 .from("watchlist")
 .insert({
 user_id:currentUser.id,
@@ -2427,9 +2819,11 @@ document
 .querySelectorAll(".watchlist-button")
 .forEach(button=>{
 
-const id=button.dataset.contentId;
+const id=
+button.dataset.contentId;
 
-const saved=watchlistIds.has(id);
+const saved=
+watchlistIds.has(id);
 
 button.classList.toggle(
 "saved",
@@ -2456,7 +2850,7 @@ saved
 }
 
 /* =========================================================
-   SUPABASE CONTENT CARD
+   CONTENT CARD
 ========================================================= */
 
 function createContentCard(item){
@@ -2537,191 +2931,6 @@ ${escapeHTML(type)}${escapeHTML(country)}
 
 </article>
 `;
-
-}
-
-/* =========================================================
-   SERIES EPISODE CARD
-========================================================= */
-
-function createEpisodeCard(episode){
-
-const id=episode.id;
-
-const episodeNumber=
-episode.episode_number;
-
-const title=
-episode.title||
-"Episode "+episodeNumber;
-
-const thumbnail=
-episode.thumbnail_url||
-"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
-
-const duration=
-episode.duration_seconds
-?Math.round(episode.duration_seconds/60)+" min"
-:"Series";
-
-const premium=
-episode.is_premium===true;
-
-return `
-<article
-class="card episode-card"
-data-episode-id="${escapeHTML(id)}"
-data-title="${escapeHTML(title)}"
-onclick="playEpisode('${escapeHTML(id)}')">
-
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy"
-onerror="this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80'">
-
-<span class="card-badge">
-EP ${escapeHTML(episodeNumber)}
-</span>
-
-<div class="card-overlay">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="episode-number">
-${premium?"PREMIUM • ":""}${escapeHTML(duration)}
-</div>
-
-</div>
-
-</article>
-`;
-
-}
-
-/* =========================================================
-   LOAD SERIES EPISODES
-========================================================= */
-
-async function loadSeriesEpisodes(){
-
-const seriesRow=
-document.getElementById("seriesRow");
-
-seriesRow.innerHTML=
-'<div class="news-loading">Loading episodes...</div>';
-
-try{
-
-const {data,error}=
-await supabaseClient
-.from("episodes")
-.select(`
-id,
-season_id,
-episode_number,
-title,
-description,
-thumbnail_url,
-video_url,
-duration_seconds,
-is_premium,
-published_at,
-created_at,
-series_id
-`)
-.not("video_url","is",null)
-.order("episode_number",{ascending:true});
-
-if(error){
-throw error;
-}
-
-allEpisodes=data||[];
-
-if(!allEpisodes.length){
-
-seriesRow.innerHTML=
-'<div class="news-empty">'+
-'No episodes available yet.'+
-'</div>';
-
-return;
-
-}
-
-seriesRow.innerHTML=
-allEpisodes
-.map(createEpisodeCard)
-.join("");
-
-console.log(
-"BRENZKafrica episodes loaded:",
-allEpisodes.length
-);
-
-}catch(error){
-
-console.error(
-"Episode loading error:",
-error
-);
-
-seriesRow.innerHTML=
-'<div class="news-error">'+
-'Unable to load episodes right now.'+
-'</div>';
-
-}
-
-}
-
-/* =========================================================
-   PLAY SERIES EPISODE
-========================================================= */
-
-function playEpisode(id){
-
-const episode=
-allEpisodes.find(
-item=>String(item.id)===String(id)
-);
-
-if(!episode){
-
-showToast(
-"Episode could not be found."
-);
-
-return;
-
-}
-
-if(!episode.video_url){
-
-showToast(
-"This episode is not available yet."
-);
-
-return;
-
-}
-
-/*
-   Premium restriction will be connected
-   to subscriptions later.
-
-   For now, published episodes can be tested.
-*/
-
-playVideo(
-episode.title||
-"Episode "+episode.episode_number,
-
-episode.video_url
-);
 
 }
 
@@ -2830,7 +3039,7 @@ title,
 }
 
 /* =========================================================
-   LOAD BRENZKAFRICA YOUTUBE TUTORIALS
+   LOAD YOUTUBE ORIGINALS
 ========================================================= */
 
 async function loadYouTubeOriginals(){
@@ -2866,13 +3075,21 @@ await response.json();
 let videos=[];
 
 if(Array.isArray(data)){
+
 videos=data;
+
 }else if(Array.isArray(data.videos)){
+
 videos=data.videos;
+
 }else if(Array.isArray(data.items)){
+
 videos=data.items;
+
 }else if(Array.isArray(data.data)){
+
 videos=data.data;
+
 }
 
 youtubeOriginals=
@@ -2891,13 +3108,19 @@ item.id;
 let videoId="";
 
 if(typeof resourceId==="string"){
+
 videoId=resourceId;
+
 }else if(resourceId?.videoId){
+
 videoId=resourceId.videoId;
+
 }
 
 if(!videoId&&item.video_id){
+
 videoId=item.video_id;
+
 }
 
 let url=
@@ -2907,26 +3130,36 @@ snippet.url||
 "";
 
 if(!videoId){
-videoId=extractYouTubeId(url)||"";
+
+videoId=
+extractYouTubeId(url)||"";
+
 }
 
 if(!url&&videoId){
+
 url=
 "https://www.youtube.com/watch?v="+
 videoId;
+
 }
 
 return {
+
 videoId,
+
 url,
+
 title:
 item.title||
 snippet.title||
 "BRENZKafrica Tutorial",
+
 description:
 item.description||
 snippet.description||
 "BRENZKafrica creative tutorial",
+
 thumbnail:
 item.thumbnail||
 item.thumbnail_url||
@@ -2937,11 +3170,13 @@ snippet.thumbnails?.default?.url||
 (videoId
 ?`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
 :""),
+
 publishedAt:
 item.publishedAt||
 item.published_at||
 snippet.publishedAt||
 ""
+
 };
 
 })
@@ -2960,8 +3195,12 @@ originalsRow.innerHTML.trim();
 
 if(
 !existingHTML||
-existingHTML.includes("Loading originals")||
-existingHTML.includes("No content available yet")
+existingHTML.includes(
+"Loading originals"
+)||
+existingHTML.includes(
+"No content available yet"
+)
 ){
 
 originalsRow.innerHTML=
@@ -2999,9 +3238,8 @@ if(!card){
 return;
 }
 
-const id=card.dataset.contentId;
-
-const title=card.dataset.title;
+const id=
+card.dataset.contentId;
 
 const content=
 allContent.find(
@@ -3020,7 +3258,8 @@ return;
 
 playVideo(
 content.title,
-content.video_url
+content.video_url,
+content.description
 );
 
 }
@@ -3033,12 +3272,16 @@ async function loadContent(){
 
 try{
 
-const {data,error}=await supabaseClient
+const {data,error}=
+await supabaseClient
 .from("content")
 .select(
 "id,title,description,content_type,category,country,thumbnail_url,video_url,creator,license,attribution,is_original,is_featured,is_published,release_date"
 )
-.eq("is_published",true)
+.eq(
+"is_published",
+true
+)
 .order(
 "is_featured",
 {ascending:false}
@@ -3081,7 +3324,10 @@ document.getElementById(
    CATEGORY HELPERS
 ========================================================= */
 
-function matchesCategory(item,category){
+function matchesCategory(
+item,
+category
+){
 
 const value=(
 String(item.category||"")+
@@ -3130,16 +3376,27 @@ return false;
 function renderContentSections(){
 
 const groups={
-originals:document.getElementById("originalsRow"),
-films:document.getElementById("filmsRow"),
-documentary:document.getElementById("documentaryRow")
+
+originals:
+document.getElementById("originalsRow"),
+
+series:
+document.getElementById("seriesRow"),
+
+films:
+document.getElementById("filmsRow"),
+
+documentary:
+document.getElementById("documentaryRow")
+
 };
 
 Object.keys(groups).forEach(group=>{
 
 const row=groups[group];
 
-const items=allContent.filter(
+const items=
+allContent.filter(
 item=>matchesCategory(item,group)
 );
 
@@ -3155,7 +3412,9 @@ return;
 }
 
 row.innerHTML=
-items.map(createContentCard).join("");
+items.map(
+createContentCard
+).join("");
 
 });
 
@@ -3191,9 +3450,11 @@ return;
 
 }
 
-const ids=Array.from(watchlistIds);
+const ids=
+Array.from(watchlistIds);
 
-const {data,error}=await supabaseClient
+const {data,error}=
+await supabaseClient
 .from("content")
 .select(
 "id,title,description,content_type,category,country,thumbnail_url,video_url,is_featured,release_date"
@@ -3213,7 +3474,8 @@ return;
 
 }
 
-const ordered=(data||[]).sort(
+const ordered=
+(data||[]).sort(
 (a,b)=>{
 return ids.indexOf(a.id)-
 ids.indexOf(b.id);
@@ -3232,7 +3494,267 @@ return;
 }
 
 watchlistRow.innerHTML=
-ordered.map(createContentCard).join("");
+ordered.map(
+createContentCard
+).join("");
+
+}
+
+/* =========================================================
+   LOAD EPISODES
+========================================================= */
+
+/*
+   THIS IS THE IMPORTANT PART.
+
+   Your episodes table contains:
+
+   id
+   season_id
+   episode_number
+   title
+   description
+   thumbnail_url
+   video_url
+   duration_seconds
+   is_premium
+   published_at
+   created_at
+   series_id
+
+   All 22 episodes have:
+   series_id = 1
+*/
+
+async function loadEpisodes(){
+
+episodesSection.classList.add("visible");
+
+episodesRow.innerHTML=
+'<div class="episode-loading">'+
+'Loading episodes...'+
+'</div>';
+
+episodesSubtitle.textContent=
+"Loading episodes for Series ID "+CURRENT_SERIES_ID+"...";
+
+try{
+
+console.log(
+"Loading episodes for series_id:",
+CURRENT_SERIES_ID
+);
+
+const {data,error}=
+await supabaseClient
+.from("episodes")
+.select(
+"id,season_id,episode_number,title,description,thumbnail_url,video_url,duration_seconds,is_premium,published_at,created_at,series_id"
+)
+.eq(
+"series_id",
+CURRENT_SERIES_ID
+)
+.order(
+"season_id",
+{ascending:true}
+)
+.order(
+"episode_number",
+{ascending:true}
+);
+
+if(error){
+
+console.error(
+"EPISODES SUPABASE ERROR:",
+error
+);
+
+throw error;
+
+}
+
+allEpisodes=data||[];
+
+console.log(
+"Episodes loaded:",
+allEpisodes.length
+);
+
+if(!allEpisodes.length){
+
+episodesRow.innerHTML=
+'<div class="episode-empty">'+
+'No episodes were found for Series ID 1.'+
+'</div>';
+
+episodesSubtitle.textContent=
+"No episodes found.";
+
+return;
+
+}
+
+episodesSubtitle.textContent=
+allEpisodes.length+
+" episode"+
+(allEpisodes.length===1?"":"s")+
+" available";
+
+episodesRow.innerHTML=
+allEpisodes
+.map(createEpisodeCard)
+.join("");
+
+}catch(error){
+
+console.error(
+"Episode loading error:",
+error
+);
+
+episodesRow.innerHTML=
+'<div class="episode-error">'+
+'Unable to load episodes. Please check the Supabase episodes table and RLS policies.'+
+'</div>';
+
+episodesSubtitle.textContent=
+"Episode loading failed.";
+
+}
+
+}
+
+/* =========================================================
+   CREATE EPISODE CARD
+========================================================= */
+
+function createEpisodeCard(episode){
+
+const id=
+episode.id;
+
+const number=
+episode.episode_number;
+
+const title=
+episode.title||
+"Episode "+number;
+
+const description=
+episode.description||
+"";
+
+const thumbnail=
+episode.thumbnail_url||
+"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
+
+const duration=
+formatDuration(
+episode.duration_seconds
+);
+
+const premium=
+episode.is_premium===true;
+
+return `
+<article
+class="episode-card"
+data-episode-id="${escapeHTML(id)}"
+onclick="playEpisode('${escapeHTML(id)}')">
+
+<img
+src="${escapeHTML(thumbnail)}"
+alt="${escapeHTML(title)}"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80'">
+
+<div class="episode-number">
+EP ${escapeHTML(number)}
+</div>
+
+${
+premium
+?
+'<div class="episode-premium">PREMIUM</div>'
+:
+""
+}
+
+<div class="episode-info">
+
+<div class="episode-title">
+${escapeHTML(title)}
+</div>
+
+<div class="episode-description">
+${escapeHTML(description)}
+</div>
+
+${
+duration
+?
+`<div class="episode-duration">
+${escapeHTML(duration)}
+</div>`
+:
+""
+}
+
+</div>
+
+</article>
+`;
+
+}
+
+/* =========================================================
+   PLAY EPISODE
+========================================================= */
+
+function playEpisode(id){
+
+const episode=
+allEpisodes.find(
+item=>String(item.id)===String(id)
+);
+
+if(!episode){
+
+showToast(
+"This episode could not be found."
+);
+
+return;
+
+}
+
+if(!episode.video_url){
+
+showToast(
+"Video for this episode has not been connected yet."
+);
+
+return;
+
+}
+
+console.log(
+"Playing episode:",
+episode.episode_number,
+episode.title,
+episode.video_url
+);
+
+playVideo(
+"Episode "+
+episode.episode_number+
+" — "+
+episode.title,
+episode.video_url,
+episode.description||""
+);
 
 }
 
@@ -3242,14 +3764,16 @@ ordered.map(createContentCard).join("");
 
 async function loadLiveEvents(){
 
-liveStatus.textContent="Updating...";
+liveStatus.textContent=
+"Updating...";
 
 liveRow.innerHTML=
 '<div class="live-empty">Loading live events...</div>';
 
 try{
 
-const {data,error}=await supabaseClient
+const {data,error}=
+await supabaseClient
 .from("live_events")
 .select(
 "id,title,description,thumbnail,status,start_time,end_time,is_featured,stream_url"
@@ -3273,10 +3797,13 @@ return;
 
 }
 
-liveRow.innerHTML=data.map(event=>{
+liveRow.innerHTML=
+data.map(event=>{
 
 const status=
-String(event.status||"upcoming")
+String(
+event.status||"upcoming"
+)
 .toLowerCase()
 .trim();
 
@@ -3326,10 +3853,14 @@ event.description||
 
 ${
 event.start_time
-? `<div class="live-card-time">
-${escapeHTML(formatDate(event.start_time))}
+?
+`<div class="live-card-time">
+${escapeHTML(
+formatDate(event.start_time)
+)}
 </div>`
-:""
+:
+""
 }
 
 </div>
@@ -3341,14 +3872,20 @@ ${escapeHTML(formatDate(event.start_time))}
 
 liveStatus.textContent=
 data.some(event=>{
-const s=String(event.status||"")
+
+const s=
+String(event.status||"")
 .toLowerCase();
+
 return s==="live"||
 s==="live_now"||
 s==="active";
+
 })
-?"Live now"
-:"Upcoming broadcasts";
+?
+"Live now"
+:
+"Upcoming broadcasts";
 
 }catch(error){
 
@@ -3392,7 +3929,10 @@ return;
 
 }
 
-playVideo(title,streamUrl);
+playVideo(
+title,
+streamUrl
+);
 
 }
 
@@ -3409,14 +3949,16 @@ loadLiveEvents,
 
 async function loadBreakingNews(){
 
-newsStatus.textContent="Updating...";
+newsStatus.textContent=
+"Updating...";
 
 newsRow.innerHTML=
 '<div class="news-loading">Loading latest African news...</div>';
 
 try{
 
-const response=await fetch(
+const response=
+await fetch(
 NEWS_API_URL,
 {
 method:"GET",
@@ -3435,9 +3977,13 @@ throw new Error(
 
 }
 
-const data=await response.json();
+const data=
+await response.json();
 
-if(!data||data.success!==true){
+if(
+!data||
+data.success!==true
+){
 
 throw new Error(
 data?.error||
@@ -3446,23 +3992,30 @@ data?.error||
 
 }
 
-if(!data.news||!data.news.length){
+if(
+!data.news||
+!data.news.length
+){
 
 newsRow.innerHTML=
 '<div class="news-empty">'+
 'No breaking news available right now.'+
 '</div>';
 
-newsStatus.textContent="No updates";
+newsStatus.textContent=
+"No updates";
 
 return;
 
 }
 
-newsRow.innerHTML=data.news.map(item=>{
+newsRow.innerHTML=
+data.news.map(item=>{
 
 const encoded=
-encodeURIComponent(item.link||"");
+encodeURIComponent(
+item.link||""
+);
 
 return `
 <article
@@ -3472,21 +4025,29 @@ onclick="openNewsArticle('${encoded}')">
 <div>
 
 <div class="news-source">
-${escapeHTML(item.source||"News")}
+${escapeHTML(
+item.source||"News"
+)}
 </div>
 
 <div class="news-title">
-${escapeHTML(item.title||"")}
+${escapeHTML(
+item.title||""
+)}
 </div>
 
 <div class="news-description">
-${escapeHTML(item.description||"")}
+${escapeHTML(
+item.description||""
+)}
 </div>
 
 </div>
 
 <div class="news-date">
-${escapeHTML(formatDate(item.date))}
+${escapeHTML(
+formatDate(item.date)
+)}
 </div>
 
 </article>
@@ -3522,9 +4083,12 @@ return;
 
 try{
 
-const url=decodeURIComponent(encoded);
+const url=
+decodeURIComponent(encoded);
 
-if(!/^https?:\/\//i.test(url)){
+if(
+!/^https?:\/\//i.test(url)
+){
 return;
 }
 
@@ -3554,16 +4118,24 @@ loadBreakingNews,
 ========================================================= */
 
 const authSection=
-document.getElementById("auth-section");
+document.getElementById(
+"auth-section"
+);
 
 const authTitle=
-document.getElementById("auth-title");
+document.getElementById(
+"auth-title"
+);
 
 const authButton=
-document.getElementById("auth-button");
+document.getElementById(
+"auth-button"
+);
 
 const authMessage=
-document.getElementById("auth-message");
+document.getElementById(
+"auth-message"
+);
 
 const emailInput=
 document.getElementById("email");
@@ -3584,7 +4156,9 @@ function openAccount(){
 
 authSection.classList.add("active");
 
-document.body.classList.add("modal-open");
+document.body.classList.add(
+"modal-open"
+);
 
 emailInput.focus();
 
@@ -3592,9 +4166,13 @@ emailInput.focus();
 
 function closeAccount(){
 
-authSection.classList.remove("active");
+authSection.classList.remove(
+"active"
+);
 
-document.body.classList.remove("modal-open");
+document.body.classList.remove(
+"modal-open"
+);
 
 authMessage.textContent="";
 
@@ -3612,8 +4190,11 @@ authMessage.textContent=message;
 
 async function signIn(){
 
-const email=emailInput.value.trim();
-const password=passwordInput.value;
+const email=
+emailInput.value.trim();
+
+const password=
+passwordInput.value;
 
 if(!email||!password){
 
@@ -3626,20 +4207,27 @@ return;
 }
 
 authButton.disabled=true;
-authButton.textContent="Signing in...";
+
+authButton.textContent=
+"Signing in...";
 
 const {data,error}=
-await supabaseClient.auth.signInWithPassword({
+await supabaseClient.auth
+.signInWithPassword({
 email,
 password
 });
 
 authButton.disabled=false;
-authButton.textContent="Sign In";
+
+authButton.textContent=
+"Sign In";
 
 if(error){
 
-showAuthMessage(error.message);
+showAuthMessage(
+error.message
+);
 
 return;
 
@@ -3649,7 +4237,9 @@ if(data.user){
 
 currentUser=data.user;
 
-updateAccountUI(data.user);
+updateAccountUI(
+data.user
+);
 
 closeAccount();
 
@@ -3669,8 +4259,11 @@ showToast(
 
 async function signUp(){
 
-const email=emailInput.value.trim();
-const password=passwordInput.value;
+const email=
+emailInput.value.trim();
+
+const password=
+passwordInput.value;
 
 if(!email||!password){
 
@@ -3693,30 +4286,42 @@ return;
 }
 
 authButton.disabled=true;
-authButton.textContent="Creating account...";
+
+authButton.textContent=
+"Creating account...";
 
 const {data,error}=
-await supabaseClient.auth.signUp({
+await supabaseClient.auth
+.signUp({
 email,
 password
 });
 
 authButton.disabled=false;
-authButton.textContent="Create Account";
+
+authButton.textContent=
+"Create Account";
 
 if(error){
 
-showAuthMessage(error.message);
+showAuthMessage(
+error.message
+);
 
 return;
 
 }
 
-if(data.session&&data.user){
+if(
+data.session&&
+data.user
+){
 
 currentUser=data.user;
 
-updateAccountUI(data.user);
+updateAccountUI(
+data.user
+);
 
 closeAccount();
 
@@ -3742,15 +4347,21 @@ showAuthMessage(
 
 function showSignUp(){
 
-authTitle.textContent="Create Account";
+authTitle.textContent=
+"Create Account";
 
-authButton.textContent="Create Account";
+authButton.textContent=
+"Create Account";
 
-authButton.onclick=signUp;
+authButton.onclick=
+signUp;
 
-passwordInput.autocomplete="new-password";
+passwordInput.autocomplete=
+"new-password";
 
-document.querySelector(".auth-switch").innerHTML=
+document.querySelector(
+".auth-switch"
+).innerHTML=
 'Already have an account? '+
 '<button onclick="showSignIn()">Sign In</button>';
 
@@ -3758,15 +4369,21 @@ document.querySelector(".auth-switch").innerHTML=
 
 function showSignIn(){
 
-authTitle.textContent="Sign In";
+authTitle.textContent=
+"Sign In";
 
-authButton.textContent="Sign In";
+authButton.textContent=
+"Sign In";
 
-authButton.onclick=signIn;
+authButton.onclick=
+signIn;
 
-passwordInput.autocomplete="current-password";
+passwordInput.autocomplete=
+"current-password";
 
-document.querySelector(".auth-switch").innerHTML=
+document.querySelector(
+".auth-switch"
+).innerHTML=
 "Don't have an account? "+
 '<button onclick="showSignUp()">Create Account</button>';
 
@@ -3778,22 +4395,27 @@ document.querySelector(".auth-switch").innerHTML=
 
 function updateAccountUI(user){
 
-currentUser=user||null;
+currentUser=
+user||null;
 
 if(user){
 
-signinButton.style.display="none";
+signinButton.style.display=
+"none";
 
-accountStatus.style.display="flex";
+accountStatus.style.display=
+"flex";
 
 userEmail.textContent=
 user.email||"Viewer";
 
 }else{
 
-signinButton.style.display="block";
+signinButton.style.display=
+"block";
 
-accountStatus.style.display="none";
+accountStatus.style.display=
+"none";
 
 userEmail.textContent="";
 
@@ -3808,7 +4430,8 @@ userEmail.textContent="";
 async function signOut(){
 
 const {error}=
-await supabaseClient.auth.signOut();
+await supabaseClient.auth
+.signOut();
 
 if(error){
 
@@ -3846,11 +4469,13 @@ showToast(
 async function checkSession(){
 
 const {data}=
-await supabaseClient.auth.getSession();
+await supabaseClient.auth
+.getSession();
 
 if(data?.session){
 
-currentUser=data.session.user;
+currentUser=
+data.session.user;
 
 updateAccountUI(
 data.session.user
@@ -3875,13 +4500,18 @@ watchlistRow.innerHTML=
    AUTH STATE
 ========================================================= */
 
-supabaseClient.auth.onAuthStateChange(
+supabaseClient.auth
+.onAuthStateChange(
 async function(event,session){
 
 currentUser=
-session?session.user:null;
+session?
+session.user:
+null;
 
-updateAccountUI(currentUser);
+updateAccountUI(
+currentUser
+);
 
 if(session){
 
@@ -3910,28 +4540,36 @@ checkSession();
 ========================================================= */
 
 const search=
-document.getElementById("search");
+document.getElementById(
+"search"
+);
 
 search.addEventListener(
 "input",
 function(){
 
 const query=
-search.value.toLowerCase().trim();
+search.value
+.toLowerCase()
+.trim();
 
 document
 .querySelectorAll(
-".card,.live-card,.news-card"
+".card,.episode-card,.live-card,.news-card"
 )
 .forEach(card=>{
 
 const text=
-card.innerText.toLowerCase();
+card.innerText
+.toLowerCase();
 
 card.style.display=
-!query||text.includes(query)
-?""
-:"none";
+!query||
+text.includes(query)
+?
+""
+:
+"none";
 
 });
 
@@ -3943,7 +4581,9 @@ card.style.display=
 ========================================================= */
 
 document
-.getElementById("newsletterForm")
+.getElementById(
+"newsletterForm"
+)
 .addEventListener(
 "submit",
 async function(event){
@@ -3952,7 +4592,9 @@ event.preventDefault();
 
 const email=
 document
-.getElementById("newsletterEmail")
+.getElementById(
+"newsletterEmail"
+)
 .value
 .trim()
 .toLowerCase();
@@ -3968,11 +4610,15 @@ document.getElementById(
 );
 
 button.disabled=true;
-button.textContent="Subscribing...";
+
+button.textContent=
+"Subscribing...";
 
 const {error}=
 await supabaseClient
-.from("newsletter_subscribers")
+.from(
+"newsletter_subscribers"
+)
 .insert([
 {email}
 ]);
@@ -3981,22 +4627,28 @@ if(error){
 
 message.textContent=
 error.code==="23505"
-?"This email is already subscribed."
-:"Unable to subscribe right now.";
+?
+"This email is already subscribed."
+:
+"Unable to subscribe right now.";
 
 }else{
 
 message.textContent=
 "You're subscribed! Welcome to BRENZKafrica Plus.";
 
-document.getElementById(
+document
+.getElementById(
 "newsletterEmail"
-).value="";
+)
+.value="";
 
 }
 
 button.disabled=false;
-button.textContent="Subscribe";
+
+button.textContent=
+"Subscribe";
 
 }
 );
@@ -4009,8 +4661,13 @@ authSection.addEventListener(
 "click",
 function(event){
 
-if(event.target===authSection){
+if(
+event.target===
+authSection
+){
+
 closeAccount();
+
 }
 
 }
@@ -4020,8 +4677,13 @@ player.addEventListener(
 "click",
 function(event){
 
-if(event.target===player){
+if(
+event.target===
+player
+){
+
 closePlayer();
+
 }
 
 }
@@ -4034,7 +4696,9 @@ function(event){
 if(event.key==="Escape"){
 
 closePlayer();
+
 closeAccount();
+
 closeMobileMenu();
 
 }
@@ -4047,7 +4711,9 @@ closeMobileMenu();
 ========================================================= */
 
 document
-.querySelectorAll("#desktopNav a")
+.querySelectorAll(
+"#desktopNav a"
+)
 .forEach(link=>{
 
 link.addEventListener(
@@ -4055,12 +4721,18 @@ link.addEventListener(
 function(){
 
 document
-.querySelectorAll("#desktopNav a")
+.querySelectorAll(
+"#desktopNav a"
+)
 .forEach(item=>{
-item.classList.remove("active");
+item.classList.remove(
+"active"
+);
 });
 
-link.classList.add("active");
+link.classList.add(
+"active"
+);
 
 }
 );
@@ -4068,28 +4740,28 @@ link.classList.add("active");
 });
 
 /* =========================================================
-   INITIAL CONTENT LOAD
+   INITIAL LOAD
 ========================================================= */
 
 loadContent();
 
 /*
-   NEW:
-   Load the 22 series episodes directly
-   from the Supabase episodes table.
+   Load the 22 episodes belonging
+   to series_id = 1.
 */
 
-loadSeriesEpisodes();
+loadEpisodes();
 
 /* =========================================================
-   AUTO REFRESH CONTENT + EPISODES + YOUTUBE
+   AUTO REFRESH
 ========================================================= */
 
 setInterval(
 async function(){
 
 await loadContent();
-await loadSeriesEpisodes();
+
+await loadEpisodes();
 
 },
 10*60*1000
