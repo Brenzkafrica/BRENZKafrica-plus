@@ -7,7 +7,7 @@
 <title>BRENZKafrica Plus</title>
 
 <meta name="description"
-content="BRENZKafrica Plus — African stories, films, series, documentaries, news and creative vision.">
+content="BRENZKafrica Plus — African stories, series, documentaries, sports, news and creative vision.">
 
 <meta name="theme-color" content="#080808">
 
@@ -962,6 +962,282 @@ main{
 }
 
 /* =========================================================
+   SPORTS
+   NEW DESIGN — SAME BRENZKAFRICA ROW SYSTEM
+========================================================= */
+
+.sports-section{
+  position:relative;
+}
+
+.sports-heading-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.sports-status{
+  color:#666;
+  font-size:10px;
+}
+
+.sports-refresh{
+  background:#171717;
+  border:1px solid #303030;
+  color:#aaa;
+  padding:7px 11px;
+  border-radius:4px;
+  font-size:10px;
+  font-weight:700;
+  transition:.2s ease;
+}
+
+.sports-refresh:hover{
+  color:#fff;
+  border-color:#555;
+}
+
+.sports-row{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:5px 3px 18px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
+
+.sports-row::-webkit-scrollbar{
+  display:none;
+}
+
+.sports-card{
+  position:relative;
+  flex:0 0 300px;
+  height:175px;
+  overflow:hidden;
+  background:
+    radial-gradient(
+      circle at 50% 15%,
+      rgba(255,255,255,.08),
+      transparent 45%
+    ),
+    linear-gradient(
+      145deg,
+      #181818,
+      #0c0c0c
+    );
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:10px;
+  cursor:pointer;
+  transition:.25s ease;
+}
+
+.sports-card:hover{
+  transform:translateY(-5px) scale(1.015);
+  border-color:#444;
+  box-shadow:0 18px 38px rgba(0,0,0,.55);
+}
+
+.sports-card-bg{
+  position:absolute;
+  inset:0;
+  opacity:.18;
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(229,9,20,.7),
+      transparent 48%
+    );
+}
+
+.sports-top{
+  position:absolute;
+  top:11px;
+  left:12px;
+  right:12px;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.sports-league{
+  color:#aaa;
+  font-size:9px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  max-width:180px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.sports-live-badge{
+  background:var(--red);
+  color:#fff;
+  padding:5px 8px;
+  border-radius:4px;
+  font-size:8px;
+  font-weight:900;
+}
+
+.sports-upcoming-badge{
+  background:#303030;
+  color:#ddd;
+  padding:5px 8px;
+  border-radius:4px;
+  font-size:8px;
+  font-weight:900;
+}
+
+.sports-final-badge{
+  background:#555;
+  color:#fff;
+  padding:5px 8px;
+  border-radius:4px;
+  font-size:8px;
+  font-weight:900;
+}
+
+.sports-match{
+  position:absolute;
+  left:15px;
+  right:15px;
+  top:48px;
+  z-index:4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+}
+
+.sports-team{
+  width:100px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+
+.sports-team-logo{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  margin-bottom:7px;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.6));
+}
+
+.sports-team-name{
+  color:#ddd;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.2;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.sports-vs{
+  flex-shrink:0;
+  width:35px;
+  height:35px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#111;
+  border:1px solid #333;
+  color:#777;
+  font-size:9px;
+  font-weight:900;
+}
+
+.sports-score{
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:1px;
+}
+
+.sports-bottom{
+  position:absolute;
+  left:13px;
+  right:13px;
+  bottom:11px;
+  z-index:5;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+
+.sports-event-name{
+  color:#777;
+  font-size:9px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.sports-time{
+  color:#aaa;
+  font-size:9px;
+  white-space:nowrap;
+}
+
+.sports-single{
+  position:absolute;
+  inset:48px 18px 35px;
+  z-index:4;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+.sports-single-title{
+  font-size:18px;
+  font-weight:900;
+  line-height:1.2;
+}
+
+.sports-empty{
+  color:#686868;
+  padding:35px 3px;
+  font-size:12px;
+}
+
+.sports-error{
+  color:#777;
+  padding:35px 3px;
+  font-size:12px;
+}
+
+@media(max-width:600px){
+
+  .sports-card{
+    flex-basis:265px;
+    height:160px;
+  }
+
+  .sports-team{
+    width:82px;
+  }
+
+  .sports-team-logo{
+    width:40px;
+    height:40px;
+  }
+
+  .sports-match{
+    gap:8px;
+  }
+
+}
+
+/* =========================================================
    PLAYER
 ========================================================= */
 
@@ -1436,7 +1712,7 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 
 <a href="#series">Series</a>
 
-<a href="#films">Films</a>
+<a href="#sports">Sports</a>
 
 <a href="#documentaries">Documentaries</a>
 
@@ -1500,7 +1776,7 @@ id="mobileMenu">
 <a href="#live" onclick="closeMobileMenu()">🔴 Live</a>
 <a href="#news" onclick="closeMobileMenu()">News</a>
 <a href="#series" onclick="closeMobileMenu()">Series</a>
-<a href="#films" onclick="closeMobileMenu()">Films</a>
+<a href="#sports" onclick="closeMobileMenu()">Sports</a>
 <a href="#documentaries" onclick="closeMobileMenu()">Documentaries</a>
 
 </div>
@@ -1802,35 +2078,47 @@ Loading breaking news...
 </section>
 
 <!-- =====================================================
-     FILMS
+     SPORTS
 ===================================================== -->
 
 <section
-class="section"
-id="films">
+class="section sports-section"
+id="sports">
 
 <div class="section-heading">
 
 <h2 class="section-title">
-Films
+Sports
 </h2>
 
-<a href="#films" class="section-link">
-View all →
-</a>
+<div class="sports-heading-right">
+
+<span
+class="sports-status"
+id="sportsStatus">
+Updating...
+</span>
+
+<button
+class="sports-refresh"
+onclick="loadSports()">
+↻ Refresh
+</button>
+
+</div>
 
 </div>
 
 <p class="section-subtitle">
-Independent African stories and visual journeys.
+Worldwide sports — live scores, upcoming fixtures and major events.
 </p>
 
 <div
-class="row"
-id="filmsRow">
+class="sports-row"
+id="sportsRow">
 
-<div class="news-loading">
-Loading films...
+<div class="sports-empty">
+Loading worldwide sports...
 </div>
 
 </div>
@@ -1990,7 +2278,7 @@ Stay in the loop
 
 <p>
 Get the latest African stories, films, series,
-documentaries and creative updates from BRENZKafrica.
+documentaries, sports and creative updates from BRENZKafrica.
 </p>
 
 <form
@@ -2037,7 +2325,7 @@ African Creativity. Unlimited Vision.
 <a href="#news">News</a>
 <a href="#live">Live</a>
 <a href="#series">Series</a>
-<a href="#films">Films</a>
+<a href="#sports">Sports</a>
 <a href="#documentaries">Documentaries</a>
 
 </div>
@@ -2090,12 +2378,147 @@ const YOUTUBE_API_URL="/api/youtube";
    SERIES CONFIGURATION
 ========================================================= */
 
-/*
-   YOUR SERIES ID
-   All 22 episodes currently have series_id = 1.
-*/
-
 const CURRENT_SERIES_ID = 1;
+
+/* =========================================================
+   SPORTS CONFIGURATION
+========================================================= */
+
+const SPORTS_LEAGUES = [
+
+{
+sport:"soccer",
+league:"eng.1",
+name:"Premier League"
+},
+
+{
+sport:"soccer",
+league:"esp.1",
+name:"LaLiga"
+},
+
+{
+sport:"soccer",
+league:"ger.1",
+name:"Bundesliga"
+},
+
+{
+sport:"soccer",
+league:"ita.1",
+name:"Serie A"
+},
+
+{
+sport:"soccer",
+league:"fra.1",
+name:"Ligue 1"
+},
+
+{
+sport:"soccer",
+league:"uefa.champions",
+name:"UEFA Champions League"
+},
+
+{
+sport:"soccer",
+league:"usa.1",
+name:"MLS"
+},
+
+{
+sport:"soccer",
+league:"usa.nwsl",
+name:"NWSL"
+},
+
+{
+sport:"soccer",
+league:"mex.1",
+name:"Liga MX"
+},
+
+{
+sport:"soccer",
+league:"bra.1",
+name:"Brasileirão"
+},
+
+{
+sport:"soccer",
+league:"arg.1",
+name:"Argentina Liga"
+},
+
+{
+sport:"basketball",
+league:"nba",
+name:"NBA"
+},
+
+{
+sport:"basketball",
+league:"wnba",
+name:"WNBA"
+},
+
+{
+sport:"basketball",
+league:"euroleague",
+name:"EuroLeague"
+},
+
+{
+sport:"football",
+league:"nfl",
+name:"NFL"
+},
+
+{
+sport:"baseball",
+league:"mlb",
+name:"MLB"
+},
+
+{
+sport:"hockey",
+league:"nhl",
+name:"NHL"
+},
+
+{
+sport:"racing",
+league:"f1",
+name:"Formula 1"
+},
+
+{
+sport:"golf",
+league:"pga",
+name:"PGA Tour"
+},
+
+{
+sport:"tennis",
+league:"atp",
+name:"ATP Tennis"
+},
+
+{
+sport:"tennis",
+league:"wta",
+name:"WTA Tennis"
+},
+
+{
+sport:"mma",
+league:"ufc",
+name:"UFC"
+}
+
+];
 
 /* =========================================================
    ELEMENTS
@@ -2144,6 +2567,12 @@ document.getElementById("episodesRow");
 const episodesSubtitle=
 document.getElementById("episodesSubtitle");
 
+const sportsRow=
+document.getElementById("sportsRow");
+
+const sportsStatus=
+document.getElementById("sportsStatus");
+
 let currentUser=null;
 
 let watchlistIds=new Set();
@@ -2153,6 +2582,8 @@ let allContent=[];
 let allEpisodes=[];
 
 let youtubeOriginals=[];
+
+let allSportsEvents=[];
 
 /* =========================================================
    SECURITY
@@ -2321,20 +2752,6 @@ return match?match[1]:null;
    GOOGLE DRIVE URL
 ========================================================= */
 
-/*
-   Converts common Google Drive share URLs:
-
-   https://drive.google.com/file/d/FILE_ID/view
-
-   into:
-
-   https://drive.google.com/uc?export=download&id=FILE_ID
-
-   IMPORTANT:
-   Google may still block direct playback for very large
-   files or require confirmation before downloading.
-*/
-
 function extractGoogleDriveId(url){
 
 if(!url){
@@ -2433,10 +2850,6 @@ name||"BRENZKafrica";
 playerDescription.textContent=
 description||"";
 
-/* =====================================================
-   YOUTUBE
-===================================================== */
-
 if(youtubeId){
 
 youtubePlayer.src=
@@ -2448,10 +2861,6 @@ youtubePlayer.style.display="block";
 
 }
 
-/* =====================================================
-   VIMEO
-===================================================== */
-
 else if(vimeoId){
 
 youtubePlayer.src=
@@ -2462,10 +2871,6 @@ vimeoId+
 youtubePlayer.style.display="block";
 
 }
-
-/* =====================================================
-   GOOGLE DRIVE
-===================================================== */
 
 else if(googleDriveId){
 
@@ -2486,10 +2891,6 @@ error
 });
 
 }
-
-/* =====================================================
-   NORMAL VIDEO
-===================================================== */
 
 else{
 
@@ -2589,6 +2990,35 @@ undefined,
 day:"numeric",
 month:"short",
 year:"numeric"
+}
+);
+
+}
+
+/* =========================================================
+   SPORTS DATE
+========================================================= */
+
+function formatSportsDate(value){
+
+if(!value){
+return "";
+}
+
+const date=new Date(value);
+
+if(Number.isNaN(date.getTime())){
+return "";
+}
+
+return date.toLocaleString(
+undefined,
+{
+weekday:"short",
+day:"numeric",
+month:"short",
+hour:"numeric",
+minute:"2-digit"
 }
 );
 
@@ -3350,15 +3780,6 @@ return value.includes("series");
 
 }
 
-if(category==="films"){
-
-return (
-value.includes("film")||
-value.includes("movie")
-);
-
-}
-
 if(category==="documentary"){
 
 return value.includes("documentary");
@@ -3382,9 +3803,6 @@ document.getElementById("originalsRow"),
 
 series:
 document.getElementById("seriesRow"),
-
-films:
-document.getElementById("filmsRow"),
 
 documentary:
 document.getElementById("documentaryRow")
@@ -3503,28 +3921,6 @@ createContentCard
 /* =========================================================
    LOAD EPISODES
 ========================================================= */
-
-/*
-   THIS IS THE IMPORTANT PART.
-
-   Your episodes table contains:
-
-   id
-   season_id
-   episode_number
-   title
-   description
-   thumbnail_url
-   video_url
-   duration_seconds
-   is_premium
-   published_at
-   created_at
-   series_id
-
-   All 22 episodes have:
-   series_id = 1
-*/
 
 async function loadEpisodes(){
 
@@ -3739,13 +4135,6 @@ showToast(
 return;
 
 }
-
-console.log(
-"Playing episode:",
-episode.episode_number,
-episode.title,
-episode.video_url
-);
 
 playVideo(
 "Episode "+
@@ -4111,6 +4500,592 @@ loadBreakingNews();
 setInterval(
 loadBreakingNews,
 10*60*1000
+);
+
+/* =========================================================
+   SPORTS DATA
+========================================================= */
+
+async function fetchSportsLeague(config){
+
+const url=
+"https://site.api.espn.com/apis/site/v2/sports/"+
+encodeURIComponent(config.sport)+
+"/"+
+encodeURIComponent(config.league)+
+"/scoreboard";
+
+try{
+
+const response=
+await fetch(
+url,
+{
+method:"GET",
+cache:"no-store",
+headers:{
+Accept:"application/json"
+}
+}
+);
+
+if(!response.ok){
+
+console.warn(
+"Sports endpoint failed:",
+config.name,
+response.status
+);
+
+return [];
+
+}
+
+const data=
+await response.json();
+
+if(
+!data||
+!Array.isArray(data.events)
+){
+
+return [];
+
+}
+
+return data.events.map(
+event=>{
+
+const competition=
+event.competitions?.[0]||null;
+
+const competitors=
+competition?.competitors||[];
+
+const home=
+competitors.find(
+item=>item.homeAway==="home"
+);
+
+const away=
+competitors.find(
+item=>item.homeAway==="away"
+);
+
+const state=
+competition
+?.status
+?.type
+?.state||
+"pre";
+
+let status=
+"upcoming";
+
+if(state==="in"){
+status="live";
+}
+
+if(state==="post"){
+status="final";
+}
+
+const homeTeam=
+home?.team||
+{};
+
+const awayTeam=
+away?.team||
+{};
+
+const homeName=
+homeTeam.displayName||
+homeTeam.shortDisplayName||
+homeTeam.name||
+"Home";
+
+const awayName=
+awayTeam.displayName||
+awayTeam.shortDisplayName||
+awayTeam.name||
+"Away";
+
+const homeLogo=
+homeTeam.logo||
+homeTeam.logos?.[0]?.href||
+"";
+
+const awayLogo=
+awayTeam.logo||
+awayTeam.logos?.[0]?.href||
+"";
+
+const homeScore=
+home?.score??"";
+
+const awayScore=
+away?.score??"";
+
+const detail=
+competition
+?.status
+?.type
+?.shortDetail||
+competition
+?.status
+?.type
+?.detail||
+"";
+
+const eventName=
+event.name||
+config.name;
+
+const eventDate=
+event.date||
+competition?.date||
+"";
+
+const eventUrl=
+event.links?.find(
+link=>link.rel?.includes("desktop")
+)?.href||
+event.links?.[0]?.href||
+"";
+
+return {
+
+id:
+event.id,
+
+sport:
+config.sport,
+
+league:
+config.name,
+
+name:
+eventName,
+
+home:
+homeName,
+
+away:
+awayName,
+
+homeLogo,
+
+awayLogo,
+
+homeScore,
+
+awayScore,
+
+status,
+
+detail,
+
+date:
+eventDate,
+
+url:
+eventUrl
+
+};
+
+}
+);
+
+}catch(error){
+
+console.error(
+"Sports request error:",
+config.name,
+error
+);
+
+return [];
+
+}
+
+}
+
+/* =========================================================
+   SPORTS CARD
+========================================================= */
+
+function createSportsCard(event){
+
+const isSingle=
+!event.home||
+!event.away;
+
+let badgeHTML=
+'<span class="sports-upcoming-badge">UPCOMING</span>';
+
+if(event.status==="live"){
+
+badgeHTML=
+'<span class="sports-live-badge">🔴 LIVE</span>';
+
+}
+
+if(event.status==="final"){
+
+badgeHTML=
+'<span class="sports-final-badge">FINAL</span>';
+
+}
+
+if(isSingle){
+
+return `
+<article
+class="sports-card"
+data-sports-url="${escapeHTML(event.url||"")}"
+onclick="openSportsEvent(this)">
+
+<div class="sports-card-bg"></div>
+
+<div class="sports-top">
+
+<div class="sports-league">
+${escapeHTML(event.league)}
+</div>
+
+${badgeHTML}
+
+</div>
+
+<div class="sports-single">
+
+<div>
+
+<div class="sports-single-title">
+${escapeHTML(event.name)}
+</div>
+
+${
+event.detail
+?
+`<div style="color:#888;font-size:10px;margin-top:7px;">
+${escapeHTML(event.detail)}
+</div>`
+:
+""
+}
+
+</div>
+
+</div>
+
+<div class="sports-bottom">
+
+<div class="sports-event-name">
+${escapeHTML(event.sport)}
+</div>
+
+<div class="sports-time">
+${escapeHTML(
+event.status==="live"
+?
+event.detail||"Live now"
+:
+formatSportsDate(event.date)
+)}
+</div>
+
+</div>
+
+</article>
+`;
+
+}
+
+return `
+<article
+class="sports-card"
+data-sports-url="${escapeHTML(event.url||"")}"
+onclick="openSportsEvent(this)">
+
+<div class="sports-card-bg"></div>
+
+<div class="sports-top">
+
+<div class="sports-league">
+${escapeHTML(event.league)}
+</div>
+
+${badgeHTML}
+
+</div>
+
+<div class="sports-match">
+
+<div class="sports-team">
+
+${
+event.homeLogo
+?
+`<img
+class="sports-team-logo"
+src="${escapeHTML(event.homeLogo)}"
+alt="${escapeHTML(event.home)}"
+loading="lazy"
+onerror="this.style.display='none'">`
+:
+""
+}
+
+<div class="sports-team-name">
+${escapeHTML(event.home)}
+</div>
+
+</div>
+
+<div class="sports-vs">
+
+${
+event.status==="live"||
+event.status==="final"
+?
+`<div class="sports-score">
+${escapeHTML(event.homeScore)}
+</div>`
+:
+"VS"
+}
+
+</div>
+
+<div class="sports-team">
+
+${
+event.awayLogo
+?
+`<img
+class="sports-team-logo"
+src="${escapeHTML(event.awayLogo)}"
+alt="${escapeHTML(event.away)}"
+loading="lazy"
+onerror="this.style.display='none'">`
+:
+""
+}
+
+<div class="sports-team-name">
+${escapeHTML(event.away)}
+</div>
+
+</div>
+
+</div>
+
+<div class="sports-bottom">
+
+<div class="sports-event-name">
+${escapeHTML(event.name)}
+</div>
+
+<div class="sports-time">
+${escapeHTML(
+event.status==="live"
+?
+event.detail||"LIVE"
+:
+event.status==="final"
+?
+"Final"
+:
+formatSportsDate(event.date)
+)}
+</div>
+
+</div>
+
+</article>
+`;
+
+}
+
+/* =========================================================
+   SPORTS EVENT
+========================================================= */
+
+function openSportsEvent(card){
+
+if(!card){
+return;
+}
+
+const url=
+card.dataset.sportsUrl;
+
+if(
+url &&
+/^https?:\/\//i.test(url)
+){
+
+window.open(
+url,
+"_blank",
+"noopener,noreferrer"
+);
+
+return;
+
+}
+
+showToast(
+"Sports event information is currently unavailable."
+);
+
+}
+
+/* =========================================================
+   LOAD WORLDWIDE SPORTS
+========================================================= */
+
+async function loadSports(){
+
+sportsStatus.textContent=
+"Updating...";
+
+sportsRow.innerHTML=
+'<div class="sports-empty">'+
+'Loading worldwide sports...'+
+'</div>';
+
+try{
+
+const results=
+await Promise.all(
+SPORTS_LEAGUES.map(
+fetchSportsLeague
+)
+);
+
+allSportsEvents=
+results
+.flat()
+.filter(Boolean);
+
+/*
+   Sort:
+   LIVE first
+   Then upcoming
+   Then completed
+*/
+
+allSportsEvents.sort(
+(a,b)=>{
+
+const priority={
+live:0,
+upcoming:1,
+final:2
+};
+
+const statusDifference=
+(priority[a.status]??3)-
+(priority[b.status]??3);
+
+if(statusDifference!==0){
+return statusDifference;
+}
+
+return new Date(
+a.date||0
+)-
+new Date(
+b.date||0
+);
+
+}
+);
+
+/*
+   Keep the homepage fast.
+   Display the best 40 events.
+*/
+
+allSportsEvents=
+allSportsEvents.slice(
+0,
+40
+);
+
+if(!allSportsEvents.length){
+
+sportsRow.innerHTML=
+'<div class="sports-empty">'+
+'No worldwide sports events are available right now.'+
+'</div>';
+
+sportsStatus.textContent=
+"No events";
+
+return;
+
+}
+
+sportsRow.innerHTML=
+allSportsEvents
+.map(createSportsCard)
+.join("");
+
+const liveCount=
+allSportsEvents.filter(
+event=>event.status==="live"
+).length;
+
+if(liveCount){
+
+sportsStatus.textContent=
+liveCount+
+" live now";
+
+}else{
+
+sportsStatus.textContent=
+allSportsEvents.length+
+" events";
+
+}
+
+}catch(error){
+
+console.error(
+"Worldwide sports loading error:",
+error
+);
+
+sportsRow.innerHTML=
+'<div class="sports-error">'+
+'Unable to load worldwide sports right now.'+
+'</div>';
+
+sportsStatus.textContent=
+"Sports unavailable";
+
+}
+
+}
+
+/*
+   First sports load.
+*/
+
+loadSports();
+
+/*
+   Automatically refresh sports
+   every 2 minutes.
+*/
+
+setInterval(
+loadSports,
+2*60*1000
 );
 
 /* =========================================================
@@ -4555,7 +5530,7 @@ search.value
 
 document
 .querySelectorAll(
-".card,.episode-card,.live-card,.news-card"
+".card,.episode-card,.live-card,.news-card,.sports-card"
 )
 .forEach(card=>{
 
@@ -4744,11 +5719,6 @@ link.classList.add(
 ========================================================= */
 
 loadContent();
-
-/*
-   Load the 22 episodes belonging
-   to series_id = 1.
-*/
 
 loadEpisodes();
 
