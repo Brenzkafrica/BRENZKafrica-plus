@@ -1801,42 +1801,75 @@ Loading breaking news...
 
 </section>
 
-<!-- =====================================================
-     FILMS
-===================================================== -->
+<!-- ==============================
+     BRENZKAFRICA PLUS — SPORTS
+     ============================== -->
+<section class="content-section sports-section" id="sports">
 
-<section
-class="section"
-id="films">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">WORLDWIDE</span>
+      <h2>Sports</h2>
+      <p class="section-subtitle">
+        Live scores, upcoming games and worldwide sporting events.
+      </p>
+    </div>
 
-<div class="section-heading">
+    <div class="sports-status">
+      <span class="sports-live-dot"></span>
+      <span id="sportsLastUpdated">Updating...</span>
+    </div>
+  </div>
 
-<h2 class="section-title">
-Films
-</h2>
+  <div class="sports-tabs">
+    <button class="sports-tab active" data-sports-filter="all">
+      All
+    </button>
 
-<a href="#films" class="section-link">
-View all →
-</a>
+    <button class="sports-tab" data-sports-filter="Football">
+      Football
+    </button>
 
-</div>
+    <button class="sports-tab" data-sports-filter="Basketball">
+      Basketball
+    </button>
 
-<p class="section-subtitle">
-Independent African stories and visual journeys.
-</p>
+    <button class="sports-tab" data-sports-filter="Baseball">
+      Baseball
+    </button>
 
-<div
-class="row"
-id="filmsRow">
+    <button class="sports-tab" data-sports-filter="American Football">
+      NFL
+    </button>
 
-<div class="news-loading">
-Loading films...
-</div>
+    <button class="sports-tab" data-sports-filter="Ice Hockey">
+      Hockey
+    </button>
 
-</div>
+    <button class="sports-tab" data-sports-filter="Tennis">
+      Tennis
+    </button>
+  </div>
+
+  <div
+    id="sportsLoading"
+    class="sports-loading">
+    Loading worldwide sports...
+  </div>
+
+  <div
+    id="sportsGrid"
+    class="sports-grid">
+  </div>
+
+  <div
+    id="sportsEmpty"
+    class="sports-empty"
+    style="display:none;">
+    No sporting events available right now.
+  </div>
 
 </section>
-
 <!-- =====================================================
      DOCUMENTARIES
 ===================================================== -->
