@@ -4695,210 +4695,932 @@ loadBreakingNews,
    SPORTS DATA
 ========================================================= */
 
+/*
+   Sports are completely separate from BRENZKafrica Live.
+
+   BRENZKafrica Live:
+   -------------------
+   Your own broadcasts from the live_events table.
+
+   Sports Live Now:
+   ----------------
+   Worldwide live sports data.
+
+   A sports broadcast URL is ONLY displayed when an
+   authorized/legitimate stream URL has been connected.
+*/
+
+
 async function fetchSportsLeague(config){
 
-const url=
-"https://site.api.espn.com/apis/site/v2/sports/"+
-encodeURIComponent(config.sport)+
-"/"+
-encodeURIComponent(config.league)+
-"/scoreboard";
+  const url =
+    "https://site.api.espn.com/apis/site/v2/sports/" +
+    encodeURIComponent(config.sport) +
+    "/" +
+    encodeURIComponent(config.league) +
+    "/scoreboard";
 
-try{
 
-const response=
-await fetch(
-url,
-{
-method:"GET",
-cache:"no-store",
-headers:{
-Accept:"application/json"
+  try{
+
+    const response =
+      await fetch(
+        url,
+        {
+          method:"GET",
+          cache:"no-store",
+          headers:{
+            Accept:"application/json"
+          }
+        }
+      );
+
+
+    if(!response.ok){
+
+      console.warn(
+        "Sports endpoint failed:",
+        config.name,
+        response.status
+      );
+
+      return [];
+
+    }
+
+
+    const data =
+      await response.json();
+
+
+    if(
+      !data ||
+      !Array.isArray(data.events)
+    ){
+
+      return [];
+
+    }
+
+
+    return data.events.map(event=>{
+
+      const competition =
+        event.competitions?.[0] || null;
+
+
+      const competitors =
+        competition?.competitors || [];
+
+
+      const home =
+        competitors.find(
+          item =>
+            item.homeAway === "home"
+        );
+
+
+      const away =
+        competitors.find(
+          item =>
+            item.homeAway === "away"
+        );
+
+
+      const state =
+        competition
+          ?.status
+          ?.type
+          ?.state || "pre";
+
+
+      let status = "upcoming";
+
+
+      if(state === "in"){
+        status = "live";
+      }
+
+
+      if(state === "post"){
+        status = "final";
+      }
+
+
+      const homeTeam =
+        home?.team || {};
+
+
+      const awayTeam =
+        away?.team || {};
+
+
+      const homeName =
+        homeTeam.displayName ||
+        homeTeam.shortDisplayName ||
+        homeTeam.name ||
+        "Home";
+
+
+      const awayName =
+        awayTeam.displayName ||
+        awayTeam.shortDisplayName ||
+        awayTeam.name ||
+        "Away";
+
+
+      const homeLogo =
+        homeTeam.logo ||
+        homeTeam.logos?.[0]?.href ||
+        "";
+
+
+      const awayLogo =
+        awayTeam.logo ||
+        awayTeam.logos?.[0]?.href ||
+        "";
+
+
+      const homeScore =
+        home?.score ?? "";
+
+
+      const awayScore =
+        away?.score ?? "";
+
+
+      const detail =
+        competition
+          ?.status
+          ?.type
+          ?.shortDetail ||
+        competition
+          ?.status
+          ?.type
+          ?.detail ||
+        "";
+
+
+      const eventName =
+        event.name ||
+        config.name;
+
+
+      const eventDate =
+        event.date ||
+        "";
+
+
+      /*
+         ESPN event page.
+
+         This is NOT treated as a broadcast stream.
+         It is simply the event information page.
+      */
+
+      const eventUrl =
+        event.links?.find(
+          link =>
+            Array.isArray(link.rel) &&
+            link.rel.includes("desktop")
+        )?.href ||
+        event.links?.[0]?.href ||
+        "";
+
+
+      return {
+
+        id:event.id,
+
+        sport:config.sport,
+
+        sportName:
+          config.sportName ||
+          config.sport,
+
+        league:
+          config.name,
+
+        eventName,
+
+        home:homeName,
+
+        away:awayName,
+
+        homeLogo,
+
+        awayLogo,
+
+        homeScore,
+
+        awayScore,
+
+        status,
+
+        detail,
+
+        date:eventDate,
+
+        eventUrl,
+
+        /*
+           Broadcast URL is intentionally empty unless
+           an authorized source is connected later.
+        */
+
+        broadcastUrl:""
+
+      };
+
+    });
+
+
+  }catch(error){
+
+    console.error(
+      "Sports request error:",
+      config.name,
+      error
+    );
+
+    return [];
+
+  }
+
 }
+
+
+/* =========================================================
+   SPORTS CARD
+========================================================= */
+
+function createSportsCard(event){
+
+  const isLive =
+    event.status === "live";
+
+
+  const isFinal =
+    event.status === "final";
+
+
+  let badgeHTML =
+    `
+    <span class="sports-upcoming-badge">
+      UPCOMING
+    </span>
+    `;
+
+
+  if(isLive){
+
+    badgeHTML =
+      `
+      <span class="sports-live-badge">
+        <span class="sports-live-pulse"></span>
+        LIVE
+      </span>
+      `;
+
+  }
+
+
+  if(isFinal){
+
+    badgeHTML =
+      `
+      <span class="sports-final-badge">
+        FINAL
+      </span>
+      `;
+
+  }
+
+
+  const broadcastButton =
+    event.broadcastUrl
+    ?
+    `
+      <button
+        class="sports-watch-button"
+        onclick="
+          event.stopPropagation();
+          playSportsBroadcast(
+            '${escapeHTML(event.eventName)}',
+            '${escapeHTML(event.broadcastUrl)}'
+          );
+        ">
+        ▶ Watch Live
+      </button>
+    `
+    :
+    (
+      isLive
+      ?
+      `
+        <span class="sports-no-broadcast">
+          Live data
+        </span>
+      `
+      :
+      ""
+    );
+
+
+  return `
+
+  <article
+    class="sports-card"
+    data-sports-event="${escapeHTML(event.id)}"
+    onclick="openSportsEvent('${escapeHTML(event.eventUrl || "")}')">
+
+
+    <div class="sports-card-bg"></div>
+
+
+    <div class="sports-top">
+
+      <div class="sports-league">
+        ${escapeHTML(event.league)}
+      </div>
+
+      ${badgeHTML}
+
+    </div>
+
+
+    <div class="sports-match">
+
+
+      <div class="sports-team">
+
+        ${
+          event.homeLogo
+          ?
+          `
+          <img
+            class="sports-team-logo"
+            src="${escapeHTML(event.homeLogo)}"
+            alt="${escapeHTML(event.home)}"
+            loading="lazy"
+            onerror="this.style.display='none'">
+          `
+          :
+          ""
+        }
+
+        <div class="sports-team-name">
+          ${escapeHTML(event.home)}
+        </div>
+
+      </div>
+
+
+      <div class="sports-vs">
+
+        ${
+          isLive || isFinal
+          ?
+          `
+          <div class="sports-score">
+            ${escapeHTML(event.homeScore)}
+          </div>
+          `
+          :
+          "VS"
+        }
+
+      </div>
+
+
+      <div class="sports-team">
+
+        ${
+          event.awayLogo
+          ?
+          `
+          <img
+            class="sports-team-logo"
+            src="${escapeHTML(event.awayLogo)}"
+            alt="${escapeHTML(event.away)}"
+            loading="lazy"
+            onerror="this.style.display='none'">
+          `
+          :
+          ""
+        }
+
+        <div class="sports-team-name">
+          ${escapeHTML(event.away)}
+        </div>
+
+      </div>
+
+
+    </div>
+
+
+    <div class="sports-bottom">
+
+      <div class="sports-event-name">
+        ${escapeHTML(event.eventName)}
+      </div>
+
+
+      <div class="sports-time">
+
+        ${
+          isLive
+          ?
+          escapeHTML(
+            event.detail ||
+            "LIVE NOW"
+          )
+          :
+          isFinal
+          ?
+          "Final"
+          :
+          escapeHTML(
+            formatSportsDate(event.date)
+          )
+        }
+
+      </div>
+
+    </div>
+
+
+    ${broadcastButton}
+
+  </article>
+
+  `;
+
 }
-);
 
-if(!response.ok){
 
-console.warn(
-"Sports endpoint failed:",
-config.name,
-response.status
-);
+/* =========================================================
+   SPORTS TAB
+========================================================= */
 
-return [];
-
-}
-
-const data=
-await response.json();
-
-if(
-!data||
-!Array.isArray(data.events)
+function showSportsTab(
+  tab,
+  button
 ){
 
-return [];
+  document
+    .querySelectorAll(".sports-tab")
+    .forEach(item=>{
+      item.classList.remove("active");
+    });
+
+
+  if(button){
+
+    button.classList.add("active");
+
+  }
+
+
+  document
+    .querySelectorAll(".sports-panel")
+    .forEach(panel=>{
+      panel.classList.remove("active");
+    });
+
+
+  if(tab === "live"){
+
+    document
+      .getElementById(
+        "sportsLivePanel"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(tab === "football"){
+
+    document
+      .getElementById(
+        "sportsFootballPanel"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(tab === "basketball"){
+
+    document
+      .getElementById(
+        "sportsBasketballPanel"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(tab === "tennis"){
+
+    document
+      .getElementById(
+        "sportsTennisPanel"
+      )
+      .classList.add("active");
+
+  }
+
+
+  if(tab === "all"){
+
+    document
+      .getElementById(
+        "sportsAllPanel"
+      )
+      .classList.add("active");
+
+  }
+
+
+  renderSportsTabs();
 
 }
 
-return data.events.map(
-event=>{
 
-const competition=
-event.competitions?.[0]||null;
+/* =========================================================
+   RENDER SPORTS TABS
+========================================================= */
 
-const competitors=
-competition?.competitors||[];
+function renderSportsTabs(){
 
-const home=
-competitors.find(
-item=>item.homeAway==="home"
+  const live =
+    allSportsEvents.filter(
+      event =>
+        event.status === "live"
+    );
+
+
+  const football =
+    allSportsEvents.filter(
+      event =>
+        event.sport === "soccer"
+    );
+
+
+  const basketball =
+    allSportsEvents.filter(
+      event =>
+        event.sport === "basketball"
+    );
+
+
+  const tennis =
+    allSportsEvents.filter(
+      event =>
+        event.sport === "tennis"
+    );
+
+
+  renderSportsRow(
+    "sportsLiveRow",
+    live,
+    "No sports are live right now."
+  );
+
+
+  renderSportsRow(
+    "sportsFootballRow",
+    football,
+    "No football events available."
+  );
+
+
+  renderSportsRow(
+    "sportsBasketballRow",
+    basketball,
+    "No basketball events available."
+  );
+
+
+  renderSportsRow(
+    "sportsTennisRow",
+    tennis,
+    "No tennis events available."
+  );
+
+
+  renderSportsRow(
+    "sportsAllRow",
+    allSportsEvents,
+    "No sports events available."
+  );
+
+}
+
+
+/* =========================================================
+   SPORTS ROW
+========================================================= */
+
+function renderSportsRow(
+  elementId,
+  events,
+  emptyMessage
+){
+
+  const row =
+    document.getElementById(
+      elementId
+    );
+
+
+  if(!row){
+    return;
+  }
+
+
+  if(!events || !events.length){
+
+    row.innerHTML =
+      `
+      <div class="sports-empty">
+        ${escapeHTML(emptyMessage)}
+      </div>
+      `;
+
+    return;
+
+  }
+
+
+  row.innerHTML =
+    events
+      .map(createSportsCard)
+      .join("");
+
+}
+
+
+/* =========================================================
+   OPEN SPORTS EVENT
+========================================================= */
+
+function openSportsEvent(url){
+
+  if(
+    !url ||
+    !/^https?:\/\//i.test(url)
+  ){
+
+    showToast(
+      "Sports event information is unavailable."
+    );
+
+    return;
+
+  }
+
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================================================
+   PLAY AUTHORIZED SPORTS BROADCAST
+========================================================= */
+
+function playSportsBroadcast(
+  title,
+  url
+){
+
+  if(
+    !url ||
+    !/^https?:\/\//i.test(url)
+  ){
+
+    showToast(
+      "No authorized broadcast is connected."
+    );
+
+    return;
+
+  }
+
+
+  playVideo(
+    title ||
+    "Live Sports",
+    url,
+    "Authorized live sports broadcast"
+  );
+
+}
+
+
+/* =========================================================
+   LOAD WORLDWIDE SPORTS
+========================================================= */
+
+async function loadSports(){
+
+  sportsStatus.textContent =
+    "Updating...";
+
+
+  document
+    .querySelectorAll(".sports-row")
+    .forEach(row=>{
+
+      if(
+        row.innerHTML.includes(
+          "No sports"
+        )
+      ){
+
+        row.innerHTML =
+          `
+          <div class="sports-empty">
+            Updating sports...
+          </div>
+          `;
+
+      }
+
+    });
+
+
+  try{
+
+    const results =
+      await Promise.all(
+        SPORTS_LEAGUES.map(
+          fetchSportsLeague
+        )
+      );
+
+
+    allSportsEvents =
+      results
+        .flat()
+        .filter(Boolean);
+
+
+    /*
+       LIVE FIRST
+       UPCOMING SECOND
+       FINAL LAST
+    */
+
+    allSportsEvents.sort(
+      (a,b)=>{
+
+        const priority = {
+
+          live:0,
+
+          upcoming:1,
+
+          final:2
+
+        };
+
+
+        const statusDifference =
+          (
+            priority[a.status] ?? 3
+          )
+          -
+          (
+            priority[b.status] ?? 3
+          );
+
+
+        if(
+          statusDifference !== 0
+        ){
+
+          return statusDifference;
+
+        }
+
+
+        return (
+          new Date(a.date || 0) -
+          new Date(b.date || 0)
+        );
+
+      }
+    );
+
+
+    /*
+       Prevent an enormous homepage.
+
+       Live events are always retained.
+    */
+
+    const liveEvents =
+      allSportsEvents.filter(
+        event =>
+          event.status === "live"
+      );
+
+
+    const otherEvents =
+      allSportsEvents.filter(
+        event =>
+          event.status !== "live"
+      );
+
+
+    allSportsEvents =
+      [
+        ...liveEvents,
+        ...otherEvents
+      ]
+      .slice(0,60);
+
+
+    renderSportsTabs();
+
+
+    const liveCount =
+      allSportsEvents.filter(
+        event =>
+          event.status === "live"
+      ).length;
+
+
+    if(liveCount){
+
+      sportsStatus.textContent =
+        liveCount +
+        " live now";
+
+    }else{
+
+      sportsStatus.textContent =
+        allSportsEvents.length +
+        " events";
+
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "Worldwide sports loading error:",
+      error
+    );
+
+
+    sportsStatus.textContent =
+      "Sports unavailable";
+
+
+    document
+      .querySelectorAll(".sports-row")
+      .forEach(row=>{
+
+        row.innerHTML =
+          `
+          <div class="sports-error">
+            Unable to load sports right now.
+          </div>
+          `;
+
+      });
+
+  }
+
+}
+
+
+/* =========================================================
+   SPORTS INITIAL LOAD
+========================================================= */
+
+loadSports();
+
+
+/*
+   Automatically update scores and live
+   matches every 2 minutes.
+*/
+
+setInterval(
+  loadSports,
+  2 * 60 * 1000
 );
-
-const away=
-competitors.find(
-item=>item.homeAway==="away"
-);
-
-const state=
-competition
-?.status
-?.type
-?.state||
-"pre";
-
-let status=
-"upcoming";
-
-if(state==="in"){
-status="live";
-}
-
-if(state==="post"){
-status="final";
-}
-
-const homeTeam=
-home?.team||
-{};
-
-const awayTeam=
-away?.team||
-{};
-
-const homeName=
-homeTeam.displayName||
-homeTeam.shortDisplayName||
-homeTeam.name||
-"Home";
-
-const awayName=
-awayTeam.displayName||
-awayTeam.shortDisplayName||
-awayTeam.name||
-"Away";
-
-const homeLogo=
-homeTeam.logo||
-homeTeam.logos?.[0]?.href||
-"";
-
-const awayLogo=
-awayTeam.logo||
-awayTeam.logos?.[0]?.href||
-"";
-
-const homeScore=
-home?.score??"";
-
-const awayScore=
-away?.score??"";
-
-const detail=
-competition
-?.status
-?.type
-?.shortDetail||
-competition
-?.status
-?.type
-?.detail||
-"";
-
-const eventName=
-event.name||
-config.name;
-
-const eventDate=
-event.date||
-competition?.date||
-"";
-
-const eventUrl=
-event.links?.find(
-link=>link.rel?.includes("desktop")
-)?.href||
-event.links?.[0]?.href||
-"";
-
-return {
-
-id:
-event.id,
-
-sport:
-config.sport,
-
-league:
-config.name,
-
-name:
-eventName,
-
-home:
-homeName,
-
-away:
-awayName,
-
-homeLogo,
-
-awayLogo,
-
-homeScore,
-
-awayScore,
-
-status,
-
-detail,
-
-date:
-eventDate,
-
-url:
-eventUrl
-
-};
-
-}
-);
-
-}catch(error){
-
-console.error(
-"Sports request error:",
-config.name,
-error
-);
-
-return [];
-
-}
-
-}
-
 /* =========================================================
    SPORTS CARD
 ========================================================= */
