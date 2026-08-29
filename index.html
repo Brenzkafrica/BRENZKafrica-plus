@@ -5161,166 +5161,146 @@ function createSportsCard(event){
 
 
 /* =========================================================
-   SPORTS TAB
+   SPORTS TABS
 ========================================================= */
 
-function showSportsTab(
-  tab,
-  button
-){
+.sports-tabs{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  overflow-x:auto;
+  padding:4px 2px 17px;
+  scrollbar-width:none;
+  -webkit-overflow-scrolling:touch;
+}
 
-  document
-    .querySelectorAll(".sports-tab")
-    .forEach(item=>{
-      item.classList.remove("active");
-    });
+.sports-tabs::-webkit-scrollbar{
+  display:none;
+}
 
+.sports-tab{
+  flex:0 0 auto;
+  border:1px solid rgba(255,255,255,.10);
+  background:#151515;
+  color:#aaa;
+  padding:9px 15px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:800;
+  transition:.2s ease;
+}
 
-  if(button){
+.sports-tab:hover{
+  color:#fff;
+  border-color:#444;
+}
 
-    button.classList.add("active");
-
-  }
-
-
-  document
-    .querySelectorAll(".sports-panel")
-    .forEach(panel=>{
-      panel.classList.remove("active");
-    });
-
-
-  if(tab === "live"){
-
-    document
-      .getElementById(
-        "sportsLivePanel"
-      )
-      .classList.add("active");
-
-  }
-
-
-  if(tab === "football"){
-
-    document
-      .getElementById(
-        "sportsFootballPanel"
-      )
-      .classList.add("active");
-
-  }
-
-
-  if(tab === "basketball"){
-
-    document
-      .getElementById(
-        "sportsBasketballPanel"
-      )
-      .classList.add("active");
-
-  }
-
-
-  if(tab === "tennis"){
-
-    document
-      .getElementById(
-        "sportsTennisPanel"
-      )
-      .classList.add("active");
-
-  }
-
-
-  if(tab === "all"){
-
-    document
-      .getElementById(
-        "sportsAllPanel"
-      )
-      .classList.add("active");
-
-  }
-
-
-  renderSportsTabs();
-
+.sports-tab.active{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
 }
 
 
 /* =========================================================
-   RENDER SPORTS TABS
+   SPORTS PANELS
 ========================================================= */
 
-function renderSportsTabs(){
+.sports-panel{
+  display:none;
+}
 
-  const live =
-    allSportsEvents.filter(
-      event =>
-        event.status === "live"
-    );
+.sports-panel.active{
+  display:block;
+}
 
+.sports-panel-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-bottom:9px;
+}
 
-  const football =
-    allSportsEvents.filter(
-      event =>
-        event.sport === "soccer"
-    );
+.sports-panel-heading h3{
+  font-size:17px;
+  font-weight:800;
+}
 
-
-  const basketball =
-    allSportsEvents.filter(
-      event =>
-        event.sport === "basketball"
-    );
-
-
-  const tennis =
-    allSportsEvents.filter(
-      event =>
-        event.sport === "tennis"
-    );
-
-
-  renderSportsRow(
-    "sportsLiveRow",
-    live,
-    "No sports are live right now."
-  );
-
-
-  renderSportsRow(
-    "sportsFootballRow",
-    football,
-    "No football events available."
-  );
-
-
-  renderSportsRow(
-    "sportsBasketballRow",
-    basketball,
-    "No basketball events available."
-  );
-
-
-  renderSportsRow(
-    "sportsTennisRow",
-    tennis,
-    "No tennis events available."
-  );
-
-
-  renderSportsRow(
-    "sportsAllRow",
-    allSportsEvents,
-    "No sports events available."
-  );
-
+.sports-panel-heading span{
+  color:#666;
+  font-size:10px;
 }
 
 
+/* =========================================================
+   SPORTS LIVE CARD
+========================================================= */
+
+.sports-watch-button{
+  position:absolute;
+  right:11px;
+  bottom:10px;
+  z-index:10;
+  border:0;
+  border-radius:4px;
+  padding:7px 10px;
+  background:#fff;
+  color:#000;
+  font-size:9px;
+  font-weight:900;
+  cursor:pointer;
+}
+
+.sports-watch-button:hover{
+  opacity:.85;
+}
+
+.sports-no-broadcast{
+  position:absolute;
+  right:11px;
+  bottom:10px;
+  z-index:10;
+  color:#666;
+  font-size:8px;
+}
+
+
+/* =========================================================
+   SPORTS LIVE INDICATOR
+========================================================= */
+
+.sports-live-pulse{
+  display:inline-block;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--red);
+  margin-right:4px;
+  box-shadow:0 0 9px rgba(229,9,20,.8);
+}
+
+
+/* =========================================================
+   MOBILE SPORTS
+========================================================= */
+
+@media(max-width:600px){
+
+  .sports-tabs{
+    margin-right:-15px;
+  }
+
+  .sports-tab{
+    padding:8px 12px;
+    font-size:10px;
+  }
+
+  .sports-panel-heading{
+    margin-bottom:5px;
+  }
+
+}
 /* =========================================================
    SPORTS ROW
 ========================================================= */
