@@ -2087,9 +2087,17 @@ id="sports">
 
 <div class="section-heading">
 
+<div>
+
 <h2 class="section-title">
 Sports
 </h2>
+
+<p class="section-subtitle">
+Worldwide sports — live scores, upcoming fixtures and major events.
+</p>
+
+</div>
 
 <div class="sports-heading-right">
 
@@ -2109,16 +2117,197 @@ onclick="loadSports()">
 
 </div>
 
-<p class="section-subtitle">
-Worldwide sports — live scores, upcoming fixtures and major events.
-</p>
+
+<!-- SPORTS TABS -->
+
+<div class="sports-tabs">
+
+<button
+class="sports-tab active"
+data-sport-tab="live"
+onclick="showSportsTab('live',this)">
+🔴 Live Now
+</button>
+
+<button
+class="sports-tab"
+data-sport-tab="football"
+onclick="showSportsTab('football',this)">
+⚽ Football
+</button>
+
+<button
+class="sports-tab"
+data-sport-tab="basketball"
+onclick="showSportsTab('basketball',this)">
+🏀 Basketball
+</button>
+
+<button
+class="sports-tab"
+data-sport-tab="tennis"
+onclick="showSportsTab('tennis',this)">
+🎾 Tennis
+</button>
+
+<button
+class="sports-tab"
+data-sport-tab="all"
+onclick="showSportsTab('all',this)">
+🌍 All Sports
+</button>
+
+</div>
+
+
+<!-- =====================================================
+     LIVE NOW
+===================================================== -->
+
+<div
+class="sports-panel active"
+id="sportsLivePanel">
+
+<div class="sports-panel-heading">
+
+<div>
+
+<h3>
+🔴 Live Now
+</h3>
+
+<span>
+Live sports scores and authorized broadcasts
+</span>
+
+</div>
+
+</div>
 
 <div
 class="sports-row"
-id="sportsRow">
+id="sportsLiveRow">
+
+<div class="sports-empty">
+Loading live sports...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     FOOTBALL
+===================================================== -->
+
+<div
+class="sports-panel"
+id="sportsFootballPanel">
+
+<div class="sports-panel-heading">
+
+<h3>
+⚽ Football
+</h3>
+
+</div>
+
+<div
+class="sports-row"
+id="sportsFootballRow">
+
+<div class="sports-empty">
+Loading football...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     BASKETBALL
+===================================================== -->
+
+<div
+class="sports-panel"
+id="sportsBasketballPanel">
+
+<div class="sports-panel-heading">
+
+<h3>
+🏀 Basketball
+</h3>
+
+</div>
+
+<div
+class="sports-row"
+id="sportsBasketballRow">
+
+<div class="sports-empty">
+Loading basketball...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     TENNIS
+===================================================== -->
+
+<div
+class="sports-panel"
+id="sportsTennisPanel">
+
+<div class="sports-panel-heading">
+
+<h3>
+🎾 Tennis
+</h3>
+
+</div>
+
+<div
+class="sports-row"
+id="sportsTennisRow">
+
+<div class="sports-empty">
+Loading tennis...
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =====================================================
+     ALL SPORTS
+===================================================== -->
+
+<div
+class="sports-panel"
+id="sportsAllPanel">
+
+<div class="sports-panel-heading">
+
+<h3>
+🌍 All Sports
+</h3>
+
+</div>
+
+<div
+class="sports-row"
+id="sportsAllRow">
 
 <div class="sports-empty">
 Loading worldwide sports...
+</div>
+
 </div>
 
 </div>
