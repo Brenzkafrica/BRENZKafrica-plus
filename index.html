@@ -2333,7 +2333,17 @@ youtubePlayer.style.display="none";
 playerTitle.textContent=name||"BRENZKafrica";
 playerDescription.textContent=description||"";
 
-if(youtubeId){
+/* CLOUDINARY PLAYER */
+
+if(cleanUrl.includes("player.cloudinary.com/embed/")){
+
+youtubePlayer.src=cleanUrl;
+
+youtubePlayer.style.display="block";
+
+/* YOUTUBE */
+
+}else if(youtubeId){
 
 youtubePlayer.src=
 "https://www.youtube.com/embed/"+
@@ -2341,6 +2351,8 @@ youtubeId+
 "?autoplay=1&rel=0";
 
 youtubePlayer.style.display="block";
+
+/* VIMEO */
 
 }else if(vimeoId){
 
@@ -2351,6 +2363,8 @@ vimeoId+
 
 youtubePlayer.style.display="block";
 
+/* GOOGLE DRIVE */
+
 }else if(googleDriveId){
 
 video.src=convertGoogleDriveUrl(cleanUrl);
@@ -2358,10 +2372,13 @@ video.style.display="block";
 
 video.play().catch(()=>{});
 
+/* DIRECT VIDEO */
+
 }else{
 
 video.src=cleanUrl;
 video.style.display="block";
+
 video.play().catch(()=>{});
 
 }
@@ -2370,6 +2387,7 @@ player.classList.add("active");
 document.body.classList.add("modal-open");
 }
 
+function closePlayer(){
 function closePlayer(){
 
 video.pause();
