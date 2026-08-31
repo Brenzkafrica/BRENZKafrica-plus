@@ -2301,55 +2301,67 @@ encodeURIComponent(id);
 /* =========================================================
    PLAYER
 ========================================================= */
+
 function playVideo(name,url,description=""){
+
 if(!url){
 showToast("This video is not available yet.");
 return;
 }
+
 const cleanUrl=String(url).trim();
+
 const youtubeId=extractYouTubeId(cleanUrl);
 const vimeoId=extractVimeoId(cleanUrl);
 const googleDriveId=extractGoogleDriveId(cleanUrl);
+
 video.pause();
 video.removeAttribute("src");
 youtubePlayer.src="";
+
 video.style.display="none";
 youtubePlayer.style.display="none";
+
 playerTitle.textContent=name||"BRENZKafrica";
 playerDescription.textContent=description||"";
-/* CLOUDINARY PLAYER */
-if(cleanUrl.includes("player.cloudinary.com/embed/")){
-youtubePlayer.src=cleanUrl;
-youtubePlayer.style.display="block";
-/* YOUTUBE */
-}else if(youtubeId){
+
+if(youtubeId){
+
 youtubePlayer.src=
 "https://www.youtube.com/embed/"+
 youtubeId+
 "?autoplay=1&rel=0";
+
 youtubePlayer.style.display="block";
-/* VIMEO */
+
 }else if(vimeoId){
+
 youtubePlayer.src=
 "https://player.vimeo.com/video/"+
 vimeoId+
 "?autoplay=1";
+
 youtubePlayer.style.display="block";
-/* GOOGLE DRIVE */
+
 }else if(googleDriveId){
+
 video.src=convertGoogleDriveUrl(cleanUrl);
 video.style.display="block";
+
 video.play().catch(()=>{});
-/* DIRECT VIDEO */
+
 }else{
+
 video.src=cleanUrl;
 video.style.display="block";
 video.play().catch(()=>{});
+
 }
+
 player.classList.add("active");
 document.body.classList.add("modal-open");
 }
-function closePlayer(){
+
 function closePlayer(){
 
 video.pause();
