@@ -1,4 +1,6 @@
-look i<!DOCTYPE html>
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1626,7 +1628,6 @@ onclick="showEntertainmentTab('awards',this)">
 
 </div>
 
-<!-- MUSIC -->
 <div class="entertainment-panel active" id="entertainmentMusicPanel">
 
 <div class="section-heading">
@@ -1644,7 +1645,6 @@ Global music from Africa and every corner of the world.
 
 </div>
 
-<!-- TRENDING MUSIC -->
 <div class="entertainment-panel" id="entertainmentTrendingPanel">
 
 <div class="section-heading">
@@ -1662,7 +1662,6 @@ What's moving across the global music scene.
 
 </div>
 
-<!-- CELEBRITY NEWS -->
 <div class="entertainment-panel" id="entertainmentCelebrityPanel">
 
 <div class="section-heading">
@@ -1680,7 +1679,6 @@ Latest celebrity stories, releases, interviews and entertainment headlines.
 
 </div>
 
-<!-- THEATRE -->
 <div class="entertainment-panel" id="entertainmentTheatrePanel">
 
 <div class="section-heading">
@@ -1698,7 +1696,6 @@ Exclusive theatre and film-industry productions, performances and showcases.
 
 </div>
 
-<!-- EVENTS -->
 <div class="entertainment-panel" id="entertainmentEventsPanel">
 
 <div class="section-heading">
@@ -1716,7 +1713,6 @@ Major entertainment events, premieres, concerts and industry gatherings.
 
 </div>
 
-<!-- AWARDS -->
 <div class="entertainment-panel" id="entertainmentAwardsPanel">
 
 <div class="section-heading">
@@ -1735,8 +1731,6 @@ Celebrating excellence across music, film, television and the creative industrie
 </div>
 
 </section>
-</section>
-
 
 <section class="section" id="documentaries">
 
@@ -2333,17 +2327,7 @@ youtubePlayer.style.display="none";
 playerTitle.textContent=name||"BRENZKafrica";
 playerDescription.textContent=description||"";
 
-/* CLOUDINARY PLAYER */
-
-if(cleanUrl.includes("player.cloudinary.com/embed/")){
-
-youtubePlayer.src=cleanUrl;
-
-youtubePlayer.style.display="block";
-
-/* YOUTUBE */
-
-}else if(youtubeId){
+if(youtubeId){
 
 youtubePlayer.src=
 "https://www.youtube.com/embed/"+
@@ -2351,8 +2335,6 @@ youtubeId+
 "?autoplay=1&rel=0";
 
 youtubePlayer.style.display="block";
-
-/* VIMEO */
 
 }else if(vimeoId){
 
@@ -2363,8 +2345,6 @@ vimeoId+
 
 youtubePlayer.style.display="block";
 
-/* GOOGLE DRIVE */
-
 }else if(googleDriveId){
 
 video.src=convertGoogleDriveUrl(cleanUrl);
@@ -2372,13 +2352,10 @@ video.style.display="block";
 
 video.play().catch(()=>{});
 
-/* DIRECT VIDEO */
-
 }else{
 
 video.src=cleanUrl;
 video.style.display="block";
-
 video.play().catch(()=>{});
 
 }
@@ -2387,7 +2364,6 @@ player.classList.add("active");
 document.body.classList.add("modal-open");
 }
 
-function closePlayer(){
 function closePlayer(){
 
 video.pause();
@@ -4887,266 +4863,7 @@ setInterval(
 loadEntertainment,
 15*60*1000
 );
-/* =========================================================
-   BRENZKAFRICA PLUS
-   LIVE ENTERTAINMENT SYSTEM
-========================================================= */
 
-const entertainmentRows = {
-  music: "musicRow",
-  trending: "trendingMusicRow",
-  celebrity: "celebrityNewsRow",
-  theatre: "theatreRow",
-  events: "eventsRow",
-  awards: "awardsRow"
-};
-
-
-/* =========================================================
-   LOAD ENTERTAINMENT
-========================================================= */
-
-async function loadEntertainment() {
-
-  try {
-
-    const response = await fetch("/api/entertainment", {
-      method: "GET",
-      cache: "no-store"
-    });
-
-    if (!response.ok) {
-      throw new Error(
-        `Entertainment API returned ${response.status}`
-      );
-    }
-
-    const result = await response.json();
-
-    if (!result.success) {
-      throw new Error(
-        result.error || "Entertainment API failed"
-      );
-    }
-
-    const data = result.data || {};
-
-    Object.keys(entertainmentRows).forEach(category => {
-
-      const rowId = entertainmentRows[category];
-
-      const row = document.getElementById(rowId);
-
-      if (!row) return;
-
-      renderEntertainmentItems(
-        row,
-        data[category] || []
-      );
-
-    });
-
-  } catch (error) {
-
-    console.error(
-      "Entertainment loading failed:",
-      error
-    );
-
-    Object.values(entertainmentRows).forEach(rowId => {
-
-      const row = document.getElementById(rowId);
-
-      if (!row) return;
-
-      row.innerHTML = `
-        <div class="news-loading">
-          Entertainment updates temporarily unavailable.
-        </div>
-      `;
-
-    });
-
-  }
-
-}
-
-
-/* =========================================================
-   RENDER ENTERTAINMENT CARDS
-========================================================= */
-
-function renderEntertainmentItems(row, items) {
-
-  if (!items.length) {
-
-    row.innerHTML = `
-      <div class="news-loading">
-        No new entertainment stories available.
-      </div>
-    `;
-
-    return;
-  }
-
-  row.innerHTML = items.map(item => {
-
-    const image = item.image ||
-      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80";
-
-    const title =
-      escapeEntertainmentHTML(item.title);
-
-    const description =
-      escapeEntertainmentHTML(
-        item.description || ""
-      );
-
-    const source =
-      escapeEntertainmentHTML(
-        item.source || "Entertainment"
-      );
-
-    const date =
-      formatEntertainmentDate(
-        item.pubDate
-      );
-
-    return `
-      <article class="entertainment-card">
-
-        <a
-          href="${escapeEntertainmentAttribute(item.link)}"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="entertainment-card-link"
-        >
-
-          <div class="entertainment-card-image">
-
-            <img
-              src="${escapeEntertainmentAttribute(image)}"
-              alt="${escapeEntertainmentAttribute(title)}"
-              loading="lazy"
-              onerror="this.style.display='none';"
-            >
-
-          </div>
-
-          <div class="entertainment-card-content">
-
-            <div class="entertainment-card-source">
-              ${source}
-            </div>
-
-            <h3 class="entertainment-card-title">
-              ${title}
-            </h3>
-
-            ${
-              description
-                ? `
-                  <p class="entertainment-card-description">
-                    ${description}
-                  </p>
-                `
-                : ""
-            }
-
-            <div class="entertainment-card-date">
-              ${date}
-            </div>
-
-          </div>
-
-        </a>
-
-      </article>
-    `;
-
-  }).join("");
-
-}
-
-
-/* =========================================================
-   DATE FORMAT
-========================================================= */
-
-function formatEntertainmentDate(dateString) {
-
-  if (!dateString) {
-    return "Latest update";
-  }
-
-  const date = new Date(dateString);
-
-  if (Number.isNaN(date.getTime())) {
-    return "Latest update";
-  }
-
-  return new Intl.DateTimeFormat(
-    "en",
-    {
-      month: "short",
-      day: "numeric",
-      year: "numeric"
-    }
-  ).format(date);
-
-}
-
-
-/* =========================================================
-   SECURITY HELPERS
-========================================================= */
-
-function escapeEntertainmentHTML(value) {
-
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-
-}
-
-
-function escapeEntertainmentAttribute(value) {
-
-  return String(value || "")
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-
-}
-
-
-/* =========================================================
-   INITIAL LOAD
-========================================================= */
-
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
-
-    loadEntertainment();
-
-  }
-);
-
-
-/* =========================================================
-   AUTOMATIC REFRESH
-   Every 10 minutes
-========================================================= */
-
-setInterval(
-  loadEntertainment,
-  10 * 60 * 1000
-);
 </script>
 
 <script src="./share.js"></script>
