@@ -2325,6 +2325,10 @@ youtubePlayer.style.display="none";
 playerTitle.textContent=name||"BRENZKafrica";
 playerDescription.textContent=description||"";
 
+/* CLOUDINARY PLAYER */
+if(cleanUrl.includes("player.cloudinary.com/embed/")){
+    youtubePlayer.src=cleanUrl;
+    youtubePlayer.style.display="block";   
 if(youtubeId){
 
 youtubePlayer.src=
