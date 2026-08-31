@@ -2350,6 +2350,11 @@ video.style.display="block";
 
 video.play().catch(()=>{});
 
+}else if(cleanUrl.includes("player.cloudinary.com/embed/")){
+
+youtubePlayer.src=cleanUrl;
+youtubePlayer.style.display="block";
+
 }else{
 
 video.src=cleanUrl;
