@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -9,1362 +10,1742 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =========================================================
+   BRENZKAFRICA PLUS
+   PREMIUM NETFLIX / PRIME STYLE
+   ========================================================= */
+
 :root{
---bg:#050505;
---bg2:#0b0b0b;
---card:#111;
---card2:#181818;
---text:#fff;
---muted:#a7a7a7;
---accent:#e50914;
---border:rgba(255,255,255,.1);
---glass:rgba(10,10,10,.82);
+    --bg:#050505;
+    --bg-soft:#0b0b0b;
+    --card:#111;
+    --card2:#171717;
+    --text:#fff;
+    --muted:#aaa;
+    --gold:#d4af37;
+    --red:#e50914;
+    --border:rgba(255,255,255,.08);
+    --glass:rgba(10,10,10,.82);
 }
 
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
 html{
-scroll-behavior:smooth;
+    scroll-behavior:smooth;
 }
 
 body{
-background:var(--bg);
-color:var(--text);
-font-family:Arial,Helvetica,sans-serif;
-overflow-x:hidden;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    overflow-x:hidden;
 }
 
 body.modal-open{
-overflow:hidden;
+    overflow:hidden;
 }
 
 button,
 input{
-font:inherit;
+    font:inherit;
 }
 
 button{
-cursor:pointer;
+    cursor:pointer;
 }
 
 a{
-color:inherit;
-text-decoration:none;
+    color:inherit;
+    text-decoration:none;
 }
 
-img{
-display:block;
-max-width:100%;
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:70px;
+    z-index:1000;
+
+    display:flex;
+    align-items:center;
+    gap:24px;
+
+    padding:0 4%;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.96),
+            rgba(0,0,0,.78),
+            transparent
+        );
+
+    transition:.3s ease;
 }
 
-.header{
-position:fixed;
-top:0;
-left:0;
-right:0;
-z-index:1000;
-height:70px;
-display:flex;
-align-items:center;
-padding:0 4%;
-background:linear-gradient(
-180deg,
-rgba(0,0,0,.96),
-rgba(0,0,0,.7),
-transparent
-);
-backdrop-filter:blur(10px);
+header.scrolled{
+    background:rgba(5,5,5,.96);
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid var(--border);
 }
 
 .logo{
-font-size:22px;
-font-weight:900;
-letter-spacing:-1px;
-white-space:nowrap;
+    font-size:23px;
+    font-weight:900;
+    letter-spacing:-1px;
+    white-space:nowrap;
 }
 
 .logo span{
-color:var(--accent);
+    color:var(--gold);
 }
 
-.nav{
-display:flex;
-align-items:center;
-gap:20px;
-margin-left:35px;
-flex:1;
+nav{
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex:1;
 }
 
-.nav a{
-font-size:14px;
-font-weight:600;
-color:#ddd;
-transition:.2s;
+nav a{
+    color:#ddd;
+    font-size:13px;
+    font-weight:600;
+    white-space:nowrap;
+    transition:.2s;
 }
 
-.nav a:hover,
-.nav a.active{
-color:#fff;
+nav a:hover,
+nav a.active{
+    color:#fff;
 }
 
 .header-actions{
-display:flex;
-align-items:center;
-gap:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
 
-.search{
-width:190px;
-padding:9px 13px;
-border:1px solid var(--border);
-border-radius:7px;
-background:rgba(255,255,255,.08);
-color:#fff;
-outline:none;
+.search-box{
+    position:relative;
 }
 
-.search::placeholder{
-color:#aaa;
+.search-box input{
+    width:180px;
+    padding:9px 14px;
+    border-radius:20px;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(0,0,0,.65);
+    color:#fff;
+    outline:none;
+}
+
+.search-box input::placeholder{
+    color:#888;
 }
 
 .btn{
-border:0;
-border-radius:6px;
-padding:10px 16px;
-font-weight:700;
-color:#fff;
-background:#272727;
+    border:0;
+    border-radius:7px;
+    padding:9px 15px;
+    font-weight:700;
 }
 
 .btn-primary{
-background:var(--accent);
+    background:#fff;
+    color:#000;
 }
 
-.btn:hover{
-filter:brightness(1.12);
+.btn-dark{
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    border:1px solid var(--border);
 }
 
-.menu-btn{
-display:none;
-background:none;
-border:0;
-color:#fff;
-font-size:26px;
+.mobile-menu{
+    display:none;
+    font-size:25px;
+    background:none;
+    border:0;
+    color:#fff;
 }
+
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .hero{
-min-height:680px;
-display:flex;
-align-items:center;
-position:relative;
-padding:130px 5% 80px;
-background:
-linear-gradient(90deg,#050505 0%,rgba(5,5,5,.82) 35%,rgba(5,5,5,.15) 75%),
-linear-gradient(0deg,#050505 0%,transparent 35%),
-url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov");
-background-size:cover;
-background-position:center;
+    min-height:90vh;
+    position:relative;
+
+    display:flex;
+    align-items:center;
+
+    padding:120px 6% 80px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.95) 0%,
+            rgba(0,0,0,.78) 38%,
+            rgba(0,0,0,.25) 75%,
+            rgba(0,0,0,.55) 100%
+        ),
+        linear-gradient(
+            0deg,
+            var(--bg) 0%,
+            transparent 25%
+        ),
+        url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov");
+
+    background-size:cover;
+    background-position:center;
 }
 
 .hero-content{
-max-width:650px;
+    max-width:650px;
+    position:relative;
+    z-index:2;
 }
 
-.hero-kicker{
-font-size:13px;
-font-weight:800;
-letter-spacing:3px;
-margin-bottom:18px;
+.hero-label{
+    color:var(--gold);
+    font-size:13px;
+    font-weight:900;
+    letter-spacing:3px;
+    margin-bottom:18px;
 }
 
-.hero-title{
-font-size:clamp(42px,6vw,78px);
-line-height:.98;
-font-weight:900;
-margin-bottom:20px;
+.hero h1{
+    font-size:clamp(42px,6vw,82px);
+    line-height:.98;
+    margin-bottom:22px;
 }
 
-.hero-subtitle{
-font-size:18px;
-line-height:1.6;
-color:#ddd;
-max-width:580px;
-margin-bottom:28px;
+.hero p{
+    max-width:560px;
+    color:#ddd;
+    line-height:1.7;
+    font-size:16px;
 }
 
 .hero-buttons{
-display:flex;
-gap:12px;
+    display:flex;
+    gap:12px;
+    margin-top:28px;
+}
+
+.hero-btn{
+    padding:13px 24px;
+    border-radius:6px;
+    border:0;
+    font-weight:800;
+    font-size:14px;
+}
+
+.hero-btn.play{
+    background:#fff;
+    color:#000;
+}
+
+.hero-btn.info{
+    background:rgba(80,80,80,.75);
+    color:#fff;
+}
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+main{
+    position:relative;
+    z-index:3;
+    margin-top:-70px;
 }
 
 .section{
-padding:35px 4%;
-position:relative;
+    padding:35px 4%;
+    scroll-margin-top:80px;
 }
 
 .section-heading{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:20px;
-margin-bottom:10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
 }
 
 .section-title{
-font-size:25px;
-font-weight:800;
+    font-size:24px;
+    font-weight:800;
 }
 
 .section-link{
-font-size:13px;
-color:#aaa;
+    color:#888;
+    font-size:13px;
 }
 
 .section-subtitle{
-color:#888;
-font-size:14px;
-margin-bottom:18px;
+    color:#888;
+    font-size:13px;
+    margin-bottom:18px;
 }
 
+/* =========================================================
+   CONTENT ROWS
+   ========================================================= */
+
 .content-row,
+.youtube-row,
+.series-row,
 .episode-row,
 .live-row,
 .news-row,
 .sports-row,
 .entertainment-row,
 .documentary-row{
-display:flex;
-gap:14px;
-overflow-x:auto;
-scrollbar-width:none;
-padding:5px 0 18px;
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    padding:5px 0 18px;
+    scrollbar-width:none;
 }
 
 .content-row::-webkit-scrollbar,
+.youtube-row::-webkit-scrollbar,
+.series-row::-webkit-scrollbar,
 .episode-row::-webkit-scrollbar,
 .live-row::-webkit-scrollbar,
 .news-row::-webkit-scrollbar,
 .sports-row::-webkit-scrollbar,
 .entertainment-row::-webkit-scrollbar,
 .documentary-row::-webkit-scrollbar{
-display:none;
+    display:none;
 }
 
-.card{
-position:relative;
-flex:0 0 190px;
-height:270px;
-background:var(--card);
-border-radius:8px;
-overflow:hidden;
-transition:.25s;
-cursor:pointer;
-border:1px solid transparent;
+/* =========================================================
+   STANDARD CARDS
+   ========================================================= */
+
+.content-card{
+    flex:0 0 230px;
+    height:135px;
+    position:relative;
+    overflow:hidden;
+    border-radius:8px;
+    background:var(--card);
+    cursor:pointer;
+    border:1px solid var(--border);
+    transition:.3s ease;
 }
 
-.card:hover{
-transform:scale(1.04);
-border-color:var(--border);
-z-index:2;
+.content-card:hover{
+    transform:scale(1.045);
+    z-index:10;
 }
 
-.card img{
-width:100%;
-height:100%;
-object-fit:cover;
+.content-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
 }
 
-.card::after{
-content:"";
-position:absolute;
-inset:40% 0 0;
-background:linear-gradient(transparent,rgba(0,0,0,.95));
+.content-card::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.9),
+            transparent 60%
+        );
 }
 
 .card-info{
-position:absolute;
-bottom:0;
-left:0;
-right:0;
-padding:15px;
-z-index:2;
+    position:absolute;
+    left:12px;
+    right:12px;
+    bottom:10px;
+    z-index:2;
 }
 
 .card-title{
-font-weight:800;
-font-size:15px;
-margin-bottom:5px;
+    font-weight:800;
+    font-size:14px;
 }
 
 .card-description{
-font-size:12px;
-line-height:1.4;
-color:#ccc;
-display:-webkit-box;
--webkit-line-clamp:2;
--webkit-box-orient:vertical;
-overflow:hidden;
+    color:#bbb;
+    font-size:11px;
+    margin-top:4px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
 }
 
+/* =========================================================
+   YOUTUBE CARDS
+   ========================================================= */
+
+.youtube-card{
+    flex:0 0 260px;
+    background:#111;
+    border-radius:9px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.3s ease;
+}
+
+.youtube-card:hover{
+    transform:translateY(-5px);
+    border-color:rgba(255,255,255,.2);
+}
+
+.youtube-thumb{
+    position:relative;
+    width:100%;
+    height:145px;
+    background:#181818;
+    overflow:hidden;
+}
+
+.youtube-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.youtube-play{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+
+    width:48px;
+    height:48px;
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(229,9,20,.95);
+    color:#fff;
+    font-size:18px;
+}
+
+.youtube-info{
+    padding:12px;
+}
+
+.youtube-title{
+    font-size:14px;
+    font-weight:800;
+    line-height:1.3;
+}
+
+.youtube-description{
+    color:#888;
+    font-size:11px;
+    line-height:1.4;
+    margin-top:5px;
+}
+
+/* =========================================================
+   SERIES
+   ========================================================= */
+
+.series-card{
+    flex:0 0 230px;
+    height:135px;
+    position:relative;
+    border-radius:8px;
+    overflow:hidden;
+    cursor:pointer;
+    background:#111;
+    border:1px solid var(--border);
+    transition:.3s;
+}
+
+.series-card:hover{
+    transform:scale(1.04);
+}
+
+.series-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.series-card .series-overlay{
+    position:absolute;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    padding:12px;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.9),
+            transparent
+        );
+}
+
+.series-title{
+    font-weight:800;
+}
+
+/* =========================================================
+   EPISODES
+   ========================================================= */
+
 .episode-card{
-position:relative;
-flex:0 0 300px;
-height:170px;
-background:#111;
-border-radius:8px;
-overflow:hidden;
-cursor:pointer;
-border:1px solid transparent;
-transition:.25s;
+    flex:0 0 270px;
+    position:relative;
+    height:155px;
+    border-radius:9px;
+    overflow:hidden;
+    background:#111;
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.3s ease;
 }
 
 .episode-card:hover{
-transform:scale(1.025);
-border-color:rgba(255,255,255,.18);
+    transform:scale(1.035);
 }
 
 .episode-card img{
-width:100%;
-height:100%;
-object-fit:cover;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
 .episode-card::after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(
-0deg,
-rgba(0,0,0,.92),
-rgba(0,0,0,.05) 65%
-);
-}
-
-.episode-number,
-.episode-premium{
-position:absolute;
-z-index:3;
-top:10px;
-padding:5px 8px;
-border-radius:4px;
-font-size:11px;
-font-weight:800;
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,.95),
+            rgba(0,0,0,.05)
+        );
 }
 
 .episode-number{
-left:10px;
-background:rgba(0,0,0,.8);
+    position:absolute;
+    top:9px;
+    left:9px;
+    z-index:3;
+    background:#000;
+    padding:5px 8px;
+    border-radius:4px;
+    font-size:10px;
+    font-weight:900;
 }
 
 .episode-premium{
-right:10px;
-background:var(--accent);
+    position:absolute;
+    right:9px;
+    top:9px;
+    z-index:3;
+    background:var(--gold);
+    color:#000;
+    padding:5px 7px;
+    border-radius:4px;
+    font-size:9px;
+    font-weight:900;
 }
 
 .episode-info{
-position:absolute;
-z-index:3;
-left:14px;
-right:14px;
-bottom:12px;
+    position:absolute;
+    left:12px;
+    right:12px;
+    bottom:10px;
+    z-index:3;
 }
 
 .episode-title{
-font-size:15px;
-font-weight:800;
-margin-bottom:4px;
+    font-size:14px;
+    font-weight:800;
 }
 
 .episode-description{
-font-size:12px;
-color:#bbb;
-display:-webkit-box;
--webkit-line-clamp:2;
--webkit-box-orient:vertical;
-overflow:hidden;
+    color:#aaa;
+    font-size:10px;
+    margin-top:4px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
 }
 
 .episode-duration{
-font-size:11px;
-color:#aaa;
-margin-top:5px;
+    color:#777;
+    font-size:10px;
+    margin-top:4px;
 }
 
 .episode-loading,
 .episode-empty,
 .episode-error{
-padding:30px;
-color:#aaa;
+    color:#888;
+    padding:20px;
 }
+
+/* =========================================================
+   LIVE / NEWS / SPORTS / ENTERTAINMENT
+   ========================================================= */
 
 .live-card,
 .news-card,
-.sports-card{
-position:relative;
-flex:0 0 300px;
-min-height:180px;
-border-radius:9px;
-overflow:hidden;
-background:#111;
-cursor:pointer;
-border:1px solid var(--border);
+.sports-card,
+.entertainment-card,
+.documentary-card{
+    flex:0 0 250px;
+    border-radius:9px;
+    overflow:hidden;
+    background:#111;
+    border:1px solid var(--border);
+    cursor:pointer;
+    transition:.3s;
 }
 
-.live-card img,
-.news-card img,
-.sports-card img{
-width:100%;
-height:180px;
-object-fit:cover;
+.live-card:hover,
+.news-card:hover,
+.sports-card:hover,
+.entertainment-card:hover,
+.documentary-card:hover{
+    transform:translateY(-4px);
 }
 
-.live-info,
-.news-info,
-.sports-info{
-padding:14px;
+.media-thumb{
+    height:140px;
+    position:relative;
+    background:#191919;
+}
+
+.media-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.media-info{
+    padding:12px;
+}
+
+.media-title{
+    font-weight:800;
+    font-size:14px;
+}
+
+.media-meta{
+    color:#888;
+    font-size:11px;
+    margin-top:5px;
 }
 
 .live-badge{
-position:absolute;
-top:10px;
-left:10px;
-z-index:3;
-background:#e50914;
-padding:5px 8px;
-border-radius:4px;
-font-size:11px;
-font-weight:800;
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:#e50914;
+    color:#fff;
+    padding:5px 8px;
+    border-radius:4px;
+    font-size:10px;
+    font-weight:900;
 }
 
-.sports-status{
-font-size:12px;
-color:#aaa;
-margin-top:5px;
+.sports-tabs,
+.entertainment-tabs{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    margin-bottom:18px;
 }
 
-.tabs{
-display:flex;
-gap:8px;
-overflow-x:auto;
-scrollbar-width:none;
-margin-bottom:18px;
+.sports-tabs::-webkit-scrollbar,
+.entertainment-tabs::-webkit-scrollbar{
+    display:none;
 }
 
-.tabs::-webkit-scrollbar{
-display:none;
+.tab-btn{
+    white-space:nowrap;
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:#111;
+    color:#aaa;
+    cursor:pointer;
 }
 
-.tab{
-border:1px solid var(--border);
-background:#141414;
-color:#bbb;
-padding:9px 15px;
-border-radius:20px;
-white-space:nowrap;
-cursor:pointer;
+.tab-btn.active{
+    background:#fff;
+    color:#000;
 }
 
-.tab.active{
-background:#fff;
-color:#000;
-}
-
-.empty-state{
-padding:35px 10px;
-color:#888;
-}
-
-.footer{
-padding:60px 5% 30px;
-border-top:1px solid var(--border);
-margin-top:40px;
-color:#888;
-}
-
-.footer-grid{
-display:grid;
-grid-template-columns:repeat(4,1fr);
-gap:30px;
-}
-
-.footer h3{
-color:#fff;
-margin-bottom:12px;
-}
-
-.footer p,
-.footer a{
-font-size:13px;
-line-height:1.7;
-color:#888;
-}
-
-.newsletter{
-display:flex;
-gap:8px;
-margin-top:15px;
-}
-
-.newsletter input{
-flex:1;
-min-width:0;
-padding:11px;
-border:1px solid var(--border);
-border-radius:6px;
-background:#111;
-color:#fff;
-outline:none;
-}
+/* =========================================================
+   PLAYER
+   ========================================================= */
 
 .player{
-position:fixed;
-inset:0;
-z-index:3000;
-display:none;
-align-items:center;
-justify-content:center;
-padding:30px;
-background:rgba(0,0,0,.94);
+    position:fixed;
+    inset:0;
+    z-index:3000;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:30px;
+
+    background:rgba(0,0,0,.94);
 }
 
 .player.active{
-display:flex;
+    display:flex;
 }
 
-.player video,
-.youtube-player{
-width:min(1100px,100%);
-max-height:72vh;
-aspect-ratio:16/9;
-background:#000;
-border:0;
-border-radius:8px;
-}
-
-.player-title{
-position:absolute;
-left:5%;
-right:5%;
-bottom:85px;
-font-size:22px;
-font-weight:800;
-}
-
-.player-description{
-position:absolute;
-left:5%;
-right:5%;
-bottom:45px;
-color:#aaa;
-font-size:14px;
+.player-inner{
+    width:min(1100px,100%);
 }
 
 .close-player{
-position:absolute;
-top:20px;
-right:25px;
-z-index:5;
-width:45px;
-height:45px;
-border:0;
-border-radius:50%;
-background:rgba(255,255,255,.12);
-color:#fff;
-font-size:28px;
+    position:absolute;
+    top:22px;
+    right:25px;
+
+    width:42px;
+    height:42px;
+
+    border:0;
+    border-radius:50%;
+
+    background:rgba(255,255,255,.1);
+    color:#fff;
+
+    font-size:27px;
+    z-index:5;
 }
 
-.modal{
-position:fixed;
-inset:0;
-z-index:2500;
-display:none;
-align-items:center;
-justify-content:center;
-padding:20px;
-background:rgba(0,0,0,.85);
+#video,
+.youtube-player{
+    width:100%;
+    max-height:72vh;
+    border-radius:8px;
+    background:#000;
 }
 
-.modal.active{
-display:flex;
-}
-
-.modal-box{
-width:min(430px,100%);
-background:#171717;
-border-radius:12px;
-padding:28px;
-border:1px solid var(--border);
-}
-
-.modal-box h2{
-margin-bottom:20px;
-}
-
-.modal-box input{
-width:100%;
-padding:12px;
-margin-bottom:12px;
-background:#0c0c0c;
-border:1px solid var(--border);
-border-radius:6px;
-color:#fff;
-outline:none;
-}
-
-.modal-actions{
-display:flex;
-gap:8px;
-margin-top:10px;
-}
-
-.toast{
-position:fixed;
-left:50%;
-bottom:30px;
-transform:translateX(-50%);
-z-index:5000;
-background:#222;
-color:#fff;
-padding:12px 18px;
-border-radius:7px;
-display:none;
-box-shadow:0 10px 30px rgba(0,0,0,.4);
-}
-
-.toast.show{
-display:block;
-}
-
-@media(max-width:1000px){
-
-.nav{
-gap:12px;
-margin-left:20px;
-}
-
-.nav a:nth-child(n+6){
-display:none;
-}
-
-.search{
-width:130px;
-}
-
-.footer-grid{
-grid-template-columns:repeat(2,1fr);
-}
-
-}
-
-@media(max-width:700px){
-
-.header{
-height:60px;
-padding:0 16px;
-}
-
-.logo{
-font-size:19px;
-}
-
-.menu-btn{
-display:block;
-}
-
-.nav{
-position:absolute;
-top:60px;
-left:0;
-right:0;
-display:none;
-flex-direction:column;
-align-items:flex-start;
-padding:20px;
-margin:0;
-background:rgba(5,5,5,.97);
-border-bottom:1px solid var(--border);
-}
-
-.nav.open{
-display:flex;
-}
-
-.nav a{
-display:block!important;
-width:100%;
-padding:8px 0;
-}
-
-.header-actions{
-margin-left:auto;
-}
-
-.header-actions .search{
-display:none;
-}
-
-.hero{
-min-height:600px;
-padding:120px 20px 70px;
-}
-
-.hero-title{
-font-size:45px;
-}
-
-.hero-subtitle{
-font-size:15px;
-}
-
-.section{
-padding:28px 16px;
-}
-
-.card{
-flex-basis:150px;
-height:220px;
-}
-
-.episode-card{
-flex-basis:270px;
-height:155px;
-}
-
-.footer-grid{
-grid-template-columns:1fr;
-}
-
-.player{
-padding:10px;
+.youtube-player{
+    aspect-ratio:16/9;
+    border:0;
 }
 
 .player-title{
-bottom:80px;
-font-size:17px;
+    font-size:21px;
+    font-weight:800;
+    margin-top:15px;
 }
 
 .player-description{
-bottom:35px;
-font-size:12px;
+    color:#999;
+    line-height:1.6;
+    margin-top:6px;
 }
 
+/* =========================================================
+   AUTH MODAL
+   ========================================================= */
+
+.auth-modal{
+    position:fixed;
+    inset:0;
+    z-index:4000;
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(0,0,0,.88);
+    padding:20px;
 }
+
+.auth-modal.active{
+    display:flex;
+}
+
+.auth-box{
+    width:min(420px,100%);
+    background:#111;
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:28px;
+}
+
+.auth-box h2{
+    margin-bottom:18px;
+}
+
+.auth-box input{
+    width:100%;
+    margin-bottom:10px;
+    padding:12px;
+    border-radius:6px;
+    border:1px solid #333;
+    background:#080808;
+    color:#fff;
+    outline:none;
+}
+
+.auth-box button{
+    width:100%;
+    padding:12px;
+    border-radius:6px;
+    border:0;
+    margin-top:6px;
+}
+
+.auth-switch{
+    margin-top:15px;
+    color:#888;
+    font-size:13px;
+    text-align:center;
+    cursor:pointer;
+}
+
+/* =========================================================
+   NEWSLETTER
+   ========================================================= */
+
+.newsletter{
+    margin:50px 4%;
+    padding:40px;
+    border-radius:12px;
+    background:
+        linear-gradient(
+            135deg,
+            #171717,
+            #090909
+        );
+    border:1px solid var(--border);
+}
+
+.newsletter h2{
+    font-size:28px;
+    margin-bottom:8px;
+}
+
+.newsletter p{
+    color:#888;
+    margin-bottom:18px;
+}
+
+.newsletter-form{
+    display:flex;
+    gap:10px;
+    max-width:600px;
+}
+
+.newsletter-form input{
+    flex:1;
+    padding:13px;
+    background:#050505;
+    color:#fff;
+    border:1px solid #333;
+    border-radius:6px;
+}
+
+.newsletter-form button{
+    padding:13px 20px;
+    border:0;
+    border-radius:6px;
+    background:#fff;
+    color:#000;
+    font-weight:800;
+}
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%) translateY(100px);
+
+    background:#fff;
+    color:#000;
+
+    padding:12px 18px;
+    border-radius:7px;
+
+    font-size:13px;
+    font-weight:700;
+
+    z-index:5000;
+
+    opacity:0;
+    transition:.3s;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer{
+    padding:50px 4%;
+    border-top:1px solid var(--border);
+    color:#777;
+    text-align:center;
+}
+
+footer strong{
+    color:#fff;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:1050px){
+
+    nav{
+        display:none;
+    }
+
+    .mobile-menu{
+        display:block;
+        margin-left:auto;
+    }
+
+    header.mobile-open nav{
+        position:absolute;
+        top:70px;
+        left:0;
+        right:0;
+
+        display:flex;
+        flex-direction:column;
+        align-items:flex-start;
+
+        padding:20px 5%;
+
+        background:#080808;
+        border-bottom:1px solid var(--border);
+    }
+
+    .search-box input{
+        width:130px;
+    }
+
+}
+
+@media(max-width:650px){
+
+    header{
+        height:62px;
+        padding:0 4%;
+    }
+
+    .logo{
+        font-size:19px;
+    }
+
+    .search-box{
+        display:none;
+    }
+
+    .hero{
+        min-height:75vh;
+        padding:100px 5% 70px;
+    }
+
+    .hero h1{
+        font-size:43px;
+    }
+
+    .hero p{
+        font-size:14px;
+    }
+
+    .section{
+        padding:25px 4%;
+    }
+
+    .section-title{
+        font-size:20px;
+    }
+
+    .content-card{
+        flex-basis:205px;
+        height:120px;
+    }
+
+    .youtube-card{
+        flex-basis:235px;
+    }
+
+    .episode-card{
+        flex-basis:250px;
+    }
+
+    .newsletter{
+        margin:35px 4%;
+        padding:25px;
+    }
+
+    .newsletter-form{
+        flex-direction:column;
+    }
+
+}
+
 </style>
 </head>
 
 <body>
 
-<header class="header">
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
 
-<div class="logo">
-BRENZKafrica<span>+</span>
-</div>
+<header id="siteHeader">
 
-<nav class="nav" id="mainNav">
-<a href="#home">Home</a>
-<a href="#watchlist">My Watchlist</a>
-<a href="#originals">Originals</a>
-<a href="#live">Live</a>
-<a href="#news">News</a>
-<a href="#series">Series</a>
-<a href="#sports">Sports</a>
-<a href="#entertainment">Entertainment</a>
-<a href="#documentaries">Documentaries</a>
-</nav>
+    <div class="logo">
+        BRENZKafrica<span>+</span>
+    </div>
 
-<div class="header-actions">
+    <nav id="mainNav">
 
-<input
-class="search"
-id="searchInput"
-type="search"
-placeholder="Search">
+        <a href="#home">Home</a>
+        <a href="#watchlist">My Watchlist</a>
+        <a href="#originals">Originals</a>
+        <a href="#live">Live</a>
+        <a href="#news">News</a>
+        <a href="#series">Series</a>
+        <a href="#sports">Sports</a>
+        <a href="#entertainment">Entertainment</a>
+        <a href="#documentaries">Documentaries</a>
 
-<button
-class="btn"
-id="authButton"
-onclick="openAuth()">
-Sign In
-</button>
+    </nav>
 
-<button
-class="menu-btn"
-onclick="toggleMenu()">
-☰
-</button>
+    <div class="header-actions">
 
-</div>
+        <div class="search-box">
+            <input
+                id="searchInput"
+                type="search"
+                placeholder="Search..."
+                autocomplete="off">
+        </div>
+
+        <button
+            class="btn btn-primary"
+            id="authButton"
+            onclick="openAuth()">
+            Sign In
+        </button>
+
+        <button
+            class="mobile-menu"
+            onclick="toggleMobileMenu()">
+            ☰
+        </button>
+
+    </div>
 
 </header>
 
 
+<!-- =====================================================
+     HERO
+     ===================================================== -->
+
 <section class="hero" id="home">
 
-<div class="hero-content">
+    <div class="hero-content">
 
-<div class="hero-kicker">
-BRENZKAFRICA ORIGINAL
-</div>
+        <div class="hero-label">
+            BRENZKAFRICA ORIGINAL
+        </div>
 
-<h1 class="hero-title">
-Stories. Creativity. Unlimited Vision.
-</h1>
+        <h1>
+            Stories.<br>
+            Creativity.<br>
+            Unlimited Vision.
+        </h1>
 
-<p class="hero-subtitle">
-Discover original African stories, global entertainment,
-documentaries, sports, news and series — all in one place.
-</p>
+        <p>
+            Discover original African stories, global entertainment,
+            documentaries, sports, news and exclusive BRENZKafrica
+            productions — all in one place.
+        </p>
 
-<div class="hero-buttons">
+        <div class="hero-buttons">
 
-<button
-class="btn btn-primary"
-onclick="playFeatured()">
-▶ Play
-</button>
+            <button
+                class="hero-btn play"
+                onclick="playFeatured()">
+                ▶ Play
+            </button>
 
-<button
-class="btn"
-onclick="scrollToSection('series')">
-More Info
-</button>
+            <button
+                class="hero-btn info"
+                onclick="document.getElementById('originals').scrollIntoView()">
+                More Info
+            </button>
 
-</div>
+        </div>
 
-</div>
+    </div>
 
 </section>
 
 
 <main>
 
+<!-- =====================================================
+     WATCHLIST
+     ===================================================== -->
+
 <section
-class="section"
-id="watchlist">
+    class="section"
+    id="watchlist">
 
-<div class="section-heading">
-<h2 class="section-title">My Watchlist</h2>
-<span class="section-link">Your saved content</span>
-</div>
+    <div class="section-heading">
 
-<div
-class="content-row"
-id="watchlistRow">
+        <h2 class="section-title">
+            My Watchlist
+        </h2>
 
-<div class="empty-state">
-Sign in to build your watchlist.
-</div>
+        <span class="section-link">
+            Saved for you
+        </span>
 
-</div>
+    </div>
+
+    <div
+        class="content-row"
+        id="watchlistRow">
+
+        <div class="episode-loading">
+            Sign in to view your watchlist.
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     ORIGINALS
+     ===================================================== -->
+
 <section
-class="section"
-id="originals">
+    class="section"
+    id="originals">
 
-<div class="section-heading">
-<h2 class="section-title">BRENZKafrica Originals</h2>
-<span class="section-link">Original stories</span>
-</div>
+    <div class="section-heading">
 
-<div
-class="content-row"
-id="originalsRow">
+        <h2 class="section-title">
+            BRENZKafrica Originals
+        </h2>
 
-<div class="empty-state">
-Loading originals...
-</div>
+        <span class="section-link">
+            Exclusive
+        </span>
 
-</div>
+    </div>
+
+    <p class="section-subtitle">
+        Original productions from BRENZKafrica.
+    </p>
+
+    <div
+        class="content-row"
+        id="originalsRow">
+
+        <div class="episode-loading">
+            Loading originals...
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     YOUTUBE
+     RESTORED FROM ORIGINAL BRENZKAFRICA PLUS
+     ===================================================== -->
+
 <section
-class="section"
-id="series">
+    class="section"
+    id="youtube">
 
-<div class="section-heading">
-<h2 class="section-title">Series</h2>
-<span class="section-link">BRENZKafrica Series</span>
-</div>
+    <div class="section-heading">
 
-<div
-class="content-row"
-id="seriesRow">
+        <h2 class="section-title">
+            BRENZKafrica on YouTube
+        </h2>
 
-<div class="empty-state">
-Loading series...
-</div>
+        <span class="section-link">
+            Latest Videos
+        </span>
 
-</div>
+    </div>
+
+    <p class="section-subtitle">
+        Watch the latest videos from the BRENZKafrica YouTube channel.
+    </p>
+
+    <div
+        class="youtube-row"
+        id="youtubeRow">
+
+        <div class="episode-loading">
+            Loading YouTube videos...
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     SERIES
+     ===================================================== -->
+
 <section
-class="section episodes-section"
-id="episodes">
+    class="section"
+    id="series">
 
-<div class="section-heading">
+    <div class="section-heading">
 
-<h2 class="section-title">
-Episodes
-</h2>
+        <h2 class="section-title">
+            Series
+        </h2>
 
-<span class="section-link">
-Season episodes
-</span>
+        <span class="section-link">
+            BRENZKafrica Series
+        </span>
 
-</div>
+    </div>
 
-<p
-class="section-subtitle"
-id="episodesSubtitle">
-Watch episodes from this series.
-</p>
+    <p class="section-subtitle">
+        Watch complete seasons and series.
+    </p>
 
-<div
-class="episode-row"
-id="episodesRow">
+    <div
+        class="series-row"
+        id="seriesRow">
 
-<div class="episode-loading">
-Loading episodes...
-</div>
+        <div class="episode-loading">
+            Loading series...
+        </div>
 
-</div>
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     EPISODES
+     ===================================================== -->
+
 <section
-class="section"
-id="live">
+    class="section episodes-section"
+    id="episodes">
 
-<div class="section-heading">
+    <div class="section-heading">
 
-<h2 class="section-title">
-🔴 BRENZKafrica Live
-</h2>
+        <h2 class="section-title">
+            Episodes
+        </h2>
 
-<span class="section-link">
-Our broadcasts
-</span>
+        <span class="section-link">
+            Season episodes
+        </span>
 
-</div>
+    </div>
 
-<div
-class="live-row"
-id="liveRow">
+    <p
+        class="section-subtitle"
+        id="episodesSubtitle">
+        Watch episodes from this series.
+    </p>
 
-<div class="empty-state">
-Loading live broadcasts...
-</div>
+    <div
+        class="episode-row"
+        id="episodesRow">
 
-</div>
+        <div class="episode-loading">
+            Loading episodes...
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     BRENZKAFRICA LIVE
+     ===================================================== -->
+
 <section
-class="section"
-id="news">
+    class="section"
+    id="live">
 
-<div class="section-heading">
+    <div class="section-heading">
 
-<h2 class="section-title">
-Breaking News
-</h2>
+        <h2 class="section-title">
+            BRENZKafrica Live
+        </h2>
 
-<span
-class="section-link"
-id="newsUpdated">
-Updating automatically
-</span>
+        <span class="section-link">
+            Broadcasts
+        </span>
 
-</div>
+    </div>
 
-<div
-class="news-row"
-id="newsRow">
+    <p class="section-subtitle">
+        Live BRENZKafrica events and broadcasts.
+    </p>
 
-<div class="empty-state">
-Loading latest news...
-</div>
+    <div
+        class="live-row"
+        id="liveRow">
 
-</div>
+        <div class="episode-loading">
+            Loading live events...
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     BREAKING NEWS
+     ===================================================== -->
+
 <section
-class="section"
-id="sports">
+    class="section"
+    id="news">
 
-<div class="section-heading">
+    <div class="section-heading">
 
-<h2 class="section-title">
-Sports
-</h2>
+        <h2 class="section-title">
+            Breaking News
+        </h2>
 
-<span
-class="section-link"
-id="sportsUpdated">
-Worldwide • Updating automatically
-</span>
+        <span class="section-link">
+            Worldwide
+        </span>
 
-</div>
+    </div>
 
-<div class="tabs" id="sportsTabs">
+    <p class="section-subtitle">
+        Latest stories from around the world.
+    </p>
 
-<button
-class="tab active"
-onclick="setSportsTab('live',this)">
-Live Now
-</button>
+    <div
+        class="news-row"
+        id="newsRow">
 
-<button
-class="tab"
-onclick="setSportsTab('football',this)">
-Football
-</button>
+        <div class="episode-loading">
+            Loading news...
+        </div>
 
-<button
-class="tab"
-onclick="setSportsTab('basketball',this)">
-Basketball
-</button>
-
-<button
-class="tab"
-onclick="setSportsTab('tennis',this)">
-Tennis
-</button>
-
-<button
-class="tab"
-onclick="setSportsTab('all',this)">
-All Sports
-</button>
-
-</div>
-
-<div
-class="sports-row"
-id="sportsRow">
-
-<div class="empty-state">
-Loading worldwide sports...
-</div>
-
-</div>
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     SPORTS
+     ===================================================== -->
+
 <section
-class="section"
-id="entertainment">
+    class="section"
+    id="sports">
 
-<div class="section-heading">
+    <div class="section-heading">
 
-<h2 class="section-title">
-Entertainment
-</h2>
+        <h2 class="section-title">
+            Sports
+        </h2>
 
-<span
-class="section-link"
-id="entertainmentUpdated">
-Updating automatically
-</span>
+        <span class="section-link">
+            Worldwide Sports
+        </span>
 
-</div>
+    </div>
 
-<div class="tabs">
+    <p class="section-subtitle">
+        Live scores, fixtures and worldwide sports.
+    </p>
 
-<button
-class="tab active"
-onclick="setEntertainmentTab('music',this)">
-Music
-</button>
+    <div class="sports-tabs">
 
-<button
-class="tab"
-onclick="setEntertainmentTab('trending',this)">
-Trending Music
-</button>
+        <button
+            class="tab-btn active"
+            onclick="loadSports('all',this)">
+            All Sports
+        </button>
 
-<button
-class="tab"
-onclick="setEntertainmentTab('celebrity',this)">
-Celebrity News
-</button>
+        <button
+            class="tab-btn"
+            onclick="loadSports('football',this)">
+            Football
+        </button>
 
-<button
-class="tab"
-onclick="setEntertainmentTab('movies',this)">
-Movies
-</button>
+        <button
+            class="tab-btn"
+            onclick="loadSports('basketball',this)">
+            Basketball
+        </button>
 
-</div>
+        <button
+            class="tab-btn"
+            onclick="loadSports('tennis',this)">
+            Tennis
+        </button>
 
-<div
-class="entertainment-row"
-id="entertainmentRow">
+        <button
+            class="tab-btn"
+            onclick="loadSports('live',this)">
+            Live Now
+        </button>
 
-<div class="empty-state">
-Loading current entertainment...
-</div>
+    </div>
 
-</div>
+    <div
+        class="sports-row"
+        id="sportsRow">
+
+        <div class="episode-loading">
+            Loading sports...
+        </div>
+
+    </div>
 
 </section>
 
 
+<!-- =====================================================
+     ENTERTAINMENT
+     ===================================================== -->
+
 <section
-class="section"
-id="documentaries">
+    class="section"
+    id="entertainment">
 
-<div class="section-heading">
+    <div class="section-heading">
 
-<h2 class="section-title">
-Documentaries
-</h2>
+        <h2 class="section-title">
+            Entertainment
+        </h2>
 
-<span
-class="section-link"
-id="documentariesUpdated">
-Global documentary catalogue
-</span>
+        <span class="section-link">
+            Worldwide
+        </span>
 
-</div>
+    </div>
 
-<div class="tabs">
+    <p class="section-subtitle">
+        Music, trending entertainment and celebrity news.
+    </p>
 
-<button
-class="tab active"
-onclick="setDocumentaryTab('all',this)">
-All
-</button>
+    <div class="entertainment-tabs">
 
-<button
-class="tab"
-onclick="setDocumentaryTab('nature',this)">
-Nature & Wildlife
-</button>
+        <button
+            class="tab-btn active"
+            onclick="loadEntertainment('all',this)">
+            All
+        </button>
 
-<button
-class="tab"
-onclick="setDocumentaryTab('science',this)">
-Science & Technology
-</button>
+        <button
+            class="tab-btn"
+            onclick="loadEntertainment('music',this)">
+            Music
+        </button>
 
-<button
-class="tab"
-onclick="setDocumentaryTab('history',this)">
-History
-</button>
+        <button
+            class="tab-btn"
+            onclick="loadEntertainment('trending',this)">
+            Trending Music
+        </button>
 
-<button
-class="tab"
-onclick="setDocumentaryTab('culture',this)">
-Culture
-</button>
+        <button
+            class="tab-btn"
+            onclick="loadEntertainment('celebrity',this)">
+            Celebrity News
+        </button>
 
-<button
-class="tab"
-onclick="setDocumentaryTab('travel',this)">
-Travel
-</button>
+        <button
+            class="tab-btn"
+            onclick="loadEntertainment('africa',this)">
+            African Entertainment
+        </button>
 
-<button
-class="tab"
-onclick="setDocumentaryTab('africa',this)">
-African Stories
-</button>
+    </div>
 
-</div>
+    <div
+        class="entertainment-row"
+        id="entertainmentRow">
 
-<div
-class="documentary-row"
-id="documentaryRow">
+        <div class="episode-loading">
+            Loading entertainment...
+        </div>
 
-<div class="empty-state">
-Loading documentaries...
-</div>
+    </div>
 
-</div>
+</section>
+
+
+<!-- =====================================================
+     DOCUMENTARIES
+     ===================================================== -->
+
+<section
+    class="section"
+    id="documentaries">
+
+    <div class="section-heading">
+
+        <h2 class="section-title">
+            Documentaries
+        </h2>
+
+        <span class="section-link">
+            Explore the world
+        </span>
+
+    </div>
+
+    <p class="section-subtitle">
+        Nature, science, history, culture, society and global stories.
+    </p>
+
+    <div
+        class="documentary-row"
+        id="documentaryRow">
+
+        <div class="episode-loading">
+            Loading documentaries...
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     NEWSLETTER
+     ===================================================== -->
+
+<section class="newsletter">
+
+    <h2>
+        Stay connected with BRENZKafrica+
+    </h2>
+
+    <p>
+        Get updates about new releases, series, documentaries,
+        live broadcasts and exclusive content.
+    </p>
+
+    <form
+        class="newsletter-form"
+        id="newsletterForm">
+
+        <input
+            type="email"
+            id="newsletterEmail"
+            placeholder="Enter your email"
+            required>
+
+        <button type="submit">
+            Subscribe
+        </button>
+
+    </form>
 
 </section>
 
 </main>
 
 
-<footer class="footer">
+<!-- =====================================================
+     PLAYER
+     ===================================================== -->
 
-<div class="footer-grid">
+<div
+    class="player"
+    id="player">
 
-<div>
-<h3>BRENZKafrica+</h3>
-<p>
-African creativity. Unlimited vision.
-A global home for stories, entertainment,
-sports, news and documentaries.
-</p>
-</div>
+    <button
+        class="close-player"
+        onclick="closePlayer()">
+        ×
+    </button>
 
-<div>
-<h3>Explore</h3>
-<p><a href="#originals">Originals</a></p>
-<p><a href="#series">Series</a></p>
-<p><a href="#sports">Sports</a></p>
-<p><a href="#documentaries">Documentaries</a></p>
-</div>
+    <div class="player-inner">
 
-<div>
-<h3>Entertainment</h3>
-<p><a href="#entertainment">Music</a></p>
-<p><a href="#entertainment">Trending Music</a></p>
-<p><a href="#entertainment">Celebrity News</a></p>
-<p><a href="#entertainment">Movies</a></p>
-</div>
+        <video
+            id="video"
+            controls
+            playsinline
+            preload="metadata">
+        </video>
 
-<div>
+        <iframe
+            id="youtubePlayer"
+            class="youtube-player"
+            style="display:none"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowfullscreen>
+        </iframe>
 
-<h3>Newsletter</h3>
+        <div
+            class="player-title"
+            id="playerTitle">
+        </div>
 
-<p>
-Get updates from BRENZKafrica.
-</p>
+        <div
+            class="player-description"
+            id="playerDescription">
+        </div>
 
-<form
-class="newsletter"
-id="newsletterForm">
-
-<input
-id="newsletterEmail"
-type="email"
-placeholder="Email address"
-required>
-
-<button
-class="btn btn-primary"
-type="submit">
-Join
-</button>
-
-</form>
+    </div>
 
 </div>
 
+
+<!-- =====================================================
+     AUTH
+     ===================================================== -->
+
+<div
+    class="auth-modal"
+    id="authModal">
+
+    <div class="auth-box">
+
+        <button
+            onclick="closeAuth()"
+            style="
+                float:right;
+                background:none;
+                border:0;
+                color:#fff;
+                font-size:22px;
+            ">
+            ×
+        </button>
+
+        <h2 id="authTitle">
+            Sign In
+        </h2>
+
+        <input
+            type="email"
+            id="authEmail"
+            placeholder="Email">
+
+        <input
+            type="password"
+            id="authPassword"
+            placeholder="Password">
+
+        <button
+            class="btn btn-primary"
+            onclick="handleAuth()"
+            id="authSubmit">
+            Sign In
+        </button>
+
+        <div
+            class="auth-switch"
+            id="authSwitch"
+            onclick="toggleAuthMode()">
+            Don't have an account? Create one
+        </div>
+
+    </div>
+
 </div>
 
-<p style="margin-top:40px;">
-© 2026 BRENZKafrica. All rights reserved.
-</p>
+
+<!-- =====================================================
+     TOAST
+     ===================================================== -->
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer>
+
+    <p>
+        <strong>BRENZKafrica+</strong>
+    </p>
+
+    <p style="margin-top:8px;">
+        Stories. Creativity. Unlimited Vision.
+    </p>
+
+    <p style="margin-top:15px;font-size:12px;">
+        © 2026 BRENZKafrica. All rights reserved.
+    </p>
 
 </footer>
 
 
-<div
-class="player"
-id="player">
-
-<button
-class="close-player"
-onclick="closePlayer()">
-×
-</button>
-
-<video
-id="video"
-controls
-playsinline
-preload="metadata">
-</video>
-
-<iframe
-id="youtubePlayer"
-class="youtube-player"
-style="display:none"
-allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-allowfullscreen>
-</iframe>
-
-<div
-class="player-title"
-id="playerTitle">
-</div>
-
-<div
-class="player-description"
-id="playerDescription">
-</div>
-
-</div>
-
-
-<div
-class="modal"
-id="authModal">
-
-<div class="modal-box">
-
-<h2 id="authTitle">
-Sign In
-</h2>
-
-<input
-id="authEmail"
-type="email"
-placeholder="Email address">
-
-<input
-id="authPassword"
-type="password"
-placeholder="Password">
-
-<div class="modal-actions">
-
-<button
-class="btn btn-primary"
-onclick="submitAuth()">
-Continue
-</button>
-
-<button
-class="btn"
-onclick="closeAuth()">
-Close
-</button>
-
-</div>
-
-<p
-id="authSwitch"
-style="margin-top:18px;color:#aaa;font-size:13px;cursor:pointer"
-onclick="toggleAuthMode()">
-Create an account
-</p>
-
-</div>
-
-</div>
-
-
-<div
-class="toast"
-id="toast">
-</div>
-
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
 
 <script>
+
+/* =========================================================
+   SUPABASE
+   ========================================================= */
 
 const SUPABASE_URL =
 "https://fcddfmfpzbilagphpsxs.supabase.co";
@@ -1374,1994 +1755,2764 @@ const SUPABASE_KEY =
 
 const supabaseClient =
 window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY,
-{
-auth:{
-persistSession:true,
-autoRefreshToken:true,
-detectSessionInUrl:true
-}
-}
+    SUPABASE_URL,
+    SUPABASE_KEY,
+    {
+        auth:{
+            persistSession:true,
+            autoRefreshToken:true,
+            detectSessionInUrl:true
+        }
+    }
 );
 
 
-const NEWS_API_URL="/api/news";
-const YOUTUBE_API_URL="/api/youtube";
-const ENTERTAINMENT_API_URL="/api/entertainment";
+/* =========================================================
+   API
+   ========================================================= */
 
-const CURRENT_SERIES_ID=1;
+const NEWS_API_URL =
+"/api/news";
 
-const CLOUDINARY_CLOUD_NAME="zveaunox";
+const YOUTUBE_API_URL =
+"/api/youtube";
 
-
-let allEpisodes=[];
-let allContent=[];
-let allLiveEvents=[];
-let allNews=[];
-let allSports=[];
-let allEntertainment=[];
-let allDocumentaries=[];
-
-let currentSportsTab="live";
-let currentEntertainmentTab="music";
-let currentDocumentaryTab="all";
-let authMode="signin";
+const ENTERTAINMENT_API_URL =
+"/api/entertainment";
 
 
-const player=document.getElementById("player");
-const video=document.getElementById("video");
-const youtubePlayer=document.getElementById("youtubePlayer");
+/* =========================================================
+   GLOBAL STATE
+   ========================================================= */
 
-const playerTitle=document.getElementById("playerTitle");
-const playerDescription=document.getElementById("playerDescription");
+const CURRENT_SERIES_ID = 1;
 
-const episodesRow=document.getElementById("episodesRow");
-const episodesSubtitle=document.getElementById("episodesSubtitle");
+let allEpisodes = [];
+let allContent = [];
+let currentUser = null;
+let authMode = "signin";
 
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const player =
+document.getElementById("player");
+
+const video =
+document.getElementById("video");
+
+const youtubePlayer =
+document.getElementById("youtubePlayer");
+
+const playerTitle =
+document.getElementById("playerTitle");
+
+const playerDescription =
+document.getElementById("playerDescription");
+
+const episodesRow =
+document.getElementById("episodesRow");
+
+const episodesSubtitle =
+document.getElementById("episodesSubtitle");
+
+const episodesSection =
+document.getElementById("episodes");
+
+const toast =
+document.getElementById("toast");
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
 
 function escapeHTML(value){
 
-return String(value??"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+    return String(value ?? "")
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
 
 function showToast(message){
 
-const toast=document.getElementById("toast");
+    toast.textContent = message;
+    toast.classList.add("show");
 
-toast.textContent=message;
-toast.classList.add("show");
+    clearTimeout(window.toastTimer);
 
-clearTimeout(window.toastTimer);
-
-window.toastTimer=setTimeout(()=>{
-toast.classList.remove("show");
-},3000);
-
-}
-
-
-function scrollToSection(id){
-
-document.getElementById(id)?.scrollIntoView({
-behavior:"smooth"
-});
-
-}
-
-
-function toggleMenu(){
-
-document
-.getElementById("mainNav")
-.classList.toggle("open");
+    window.toastTimer =
+    setTimeout(()=>{
+        toast.classList.remove("show");
+    },3000);
 
 }
 
 
 function formatDuration(seconds){
 
-if(!seconds)return"";
+    if(
+        seconds === null ||
+        seconds === undefined ||
+        seconds === ""
+    ){
+        return "";
+    }
 
-const total=Math.floor(Number(seconds));
+    const total =
+    Number(seconds);
 
-if(!Number.isFinite(total))return"";
+    if(!Number.isFinite(total)){
+        return "";
+    }
 
-const hours=Math.floor(total/3600);
+    const minutes =
+    Math.floor(total / 60);
 
-const minutes=Math.floor(
-(total%3600)/60
-);
+    const secs =
+    total % 60;
 
-const secs=total%60;
-
-if(hours){
-
-return hours+
-":"+String(minutes).padStart(2,"0")+
-":"+String(secs).padStart(2,"0");
-
-}
-
-return minutes+
-":"+String(secs).padStart(2,"0");
-
-}
-
-
-function createCard(item){
-
-const title=
-item.title||
-item.Title||
-"Untitled";
-
-const description=
-item.description||
-item.Description||
-"";
-
-const thumbnail=
-item.thumbnail_url||
-item.Thumbnail_url||
-item.thumbnail||
-"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
-
-const url=
-item.video_url||
-item.Video_url||
-"";
-
-return `
-<article
-class="card"
-onclick='playVideo(${JSON.stringify(title)},${JSON.stringify(url)},${JSON.stringify(description)})'>
-
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="card-info">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-description">
-${escapeHTML(description)}
-</div>
-
-</div>
-
-</article>
-`;
+    return (
+        minutes +
+        ":" +
+        String(secs).padStart(2,"0")
+    );
 
 }
 
 
-async function loadContent(){
+/* =========================================================
+   MOBILE MENU
+   ========================================================= */
 
-try{
+function toggleMobileMenu(){
 
-const {data,error}=await supabaseClient
-.from("content")
-.select("*")
-.order("created_at",{ascending:false});
-
-if(error)throw error;
-
-allContent=data||[];
-
-const originals=
-allContent.filter(item=>
-String(item.Content_group||item.content_group||"")
-.toLowerCase()
-.includes("original")
-||
-String(item.Category||item.category||"")
-.toLowerCase()
-.includes("original")
-);
-
-document.getElementById("originalsRow").innerHTML=
-originals.length
-?originals.map(createCard).join("")
-:'<div class="empty-state">No original content available.</div>';
-
-}catch(error){
-
-console.error("Content loading error:",error);
-
-document.getElementById("originalsRow").innerHTML=
-'<div class="empty-state">Unable to load originals right now.</div>';
-
-}
+    document
+        .getElementById("siteHeader")
+        .classList.toggle("mobile-open");
 
 }
 
 
-async function loadSeries(){
+/* =========================================================
+   HEADER SCROLL
+   ========================================================= */
 
-try{
+window.addEventListener("scroll",()=>{
 
-const {data,error}=await supabaseClient
-.from("series")
-.select("*")
-.order("created_at",{ascending:false});
+    const header =
+    document.getElementById("siteHeader");
 
-if(error)throw error;
+    if(window.scrollY > 40){
+        header.classList.add("scrolled");
+    }else{
+        header.classList.remove("scrolled");
+    }
 
-const row=document.getElementById("seriesRow");
+});
 
-if(!data||!data.length){
 
-row.innerHTML=
-'<div class="empty-state">No series available.</div>';
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
-return;
+document
+.getElementById("searchInput")
+.addEventListener("input",function(){
 
-}
+    const query =
+    this.value.toLowerCase().trim();
 
-row.innerHTML=data.map(series=>{
+    document
+    .querySelectorAll(
+        ".content-card,"+
+        ".youtube-card,"+
+        ".series-card,"+
+        ".episode-card,"+
+        ".live-card,"+
+        ".news-card,"+
+        ".sports-card,"+
+        ".entertainment-card,"+
+        ".documentary-card"
+    )
+    .forEach(card=>{
 
-const title=
-series.title||
-series.Title||
-"BRENZKafrica Series";
+        const text =
+        card.textContent.toLowerCase();
 
-const description=
-series.description||
-series.Description||
-"";
+        card.style.display =
+        !query || text.includes(query)
+        ? ""
+        : "none";
 
-const thumbnail=
-series.thumbnail_url||
-series.Thumbnail_url||
-"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
+    });
 
-return `
-<article
-class="card"
-onclick="loadEpisodes()">
+});
 
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
 
-<div class="card-info">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-description">
-${escapeHTML(description)}
-</div>
-
-</div>
-
-</article>
-`;
-
-}).join("");
-
-}catch(error){
-
-console.error("Series loading error:",error);
-
-document.getElementById("seriesRow").innerHTML=
-'<div class="empty-state">Unable to load series right now.</div>';
-
-}
-
-}
-
-
-async function loadEpisodes(){
-
-episodesRow.innerHTML=
-'<div class="episode-loading">Loading episodes...</div>';
-
-episodesSubtitle.textContent=
-"Loading episodes...";
-
-try{
-
-const {data,error}=await supabaseClient
-.from("episodes")
-.select(
-"id,season_id,episode_number,title,description,thumbnail_url,video_url,duration_seconds,is_premium,published_at,created_at,series_id"
-)
-.eq("series_id",CURRENT_SERIES_ID)
-.order("season_id",{ascending:true})
-.order("episode_number",{ascending:true});
-
-if(error)throw error;
-
-allEpisodes=data||[];
-
-if(!allEpisodes.length){
-
-episodesRow.innerHTML=
-'<div class="episode-empty">No episodes were found.</div>';
-
-episodesSubtitle.textContent=
-"No episodes found.";
-
-return;
-
-}
-
-episodesSubtitle.textContent=
-allEpisodes.length+
-" episode"+
-(allEpisodes.length===1?"":"s")+
-" available";
-
-episodesRow.innerHTML=
-allEpisodes.map(createEpisodeCard).join("");
-
-}catch(error){
-
-console.error("Episode loading error:",error);
-
-episodesRow.innerHTML=
-'<div class="episode-error">'+
-"Unable to load episodes right now."+
-"</div>";
-
-episodesSubtitle.textContent=
-"Episode loading failed.";
-
-}
-
-}
-
-
-function createEpisodeCard(episode){
-
-const id=episode.id;
-const number=episode.episode_number;
-const title=episode.title||"Episode "+number;
-const description=episode.description||"";
-
-const thumbnail=
-episode.thumbnail_url||
-"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
-
-const duration=
-formatDuration(episode.duration_seconds);
-
-return `
-<article
-class="episode-card"
-data-episode-id="${escapeHTML(id)}"
-onclick="playEpisode('${escapeHTML(id)}')">
-
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="episode-number">
-EP ${escapeHTML(number)}
-</div>
-
-${episode.is_premium===true
-?'<div class="episode-premium">PREMIUM</div>'
-:""}
-
-<div class="episode-info">
-
-<div class="episode-title">
-${escapeHTML(title)}
-</div>
-
-<div class="episode-description">
-${escapeHTML(description)}
-</div>
-
-${duration
-?`<div class="episode-duration">${escapeHTML(duration)}</div>`
-:""}
-
-</div>
-
-</article>
-`;
-
-}
-
-
-function playEpisode(id){
-
-const episode=allEpisodes.find(
-item=>String(item.id)===String(id)
-);
-
-if(!episode){
-
-showToast("This episode could not be found.");
-return;
-
-}
-
-if(!episode.video_url){
-
-showToast(
-"Video for this episode has not been connected yet."
-);
-
-return;
-
-}
-
-playVideo(
-"Episode "+
-episode.episode_number+
-" — "+
-episode.title,
-episode.video_url,
-episode.description||""
-);
-
-}
-
+/* =========================================================
+   PLAYER URL HELPERS
+   ========================================================= */
 
 function extractYouTubeId(url){
 
-if(!url)return null;
+    if(!url)return null;
 
-try{
+    try{
 
-const parsed=new URL(url);
+        const parsed =
+        new URL(url);
 
-if(parsed.hostname.includes("youtube.com")){
+        if(
+            parsed.hostname.includes(
+                "youtube.com"
+            )
+        ){
 
-if(parsed.pathname==="/watch"){
-return parsed.searchParams.get("v");
-}
+            if(
+                parsed.pathname ===
+                "/watch"
+            ){
+                return parsed.searchParams.get("v");
+            }
 
-if(parsed.pathname.startsWith("/embed/")){
-return parsed.pathname
-.split("/embed/")[1]
-.split("/")[0];
-}
+            if(
+                parsed.pathname.startsWith("/embed/")
+            ){
+                return parsed.pathname
+                    .split("/embed/")[1]
+                    .split("/")[0];
+            }
 
-if(parsed.pathname.startsWith("/shorts/")){
-return parsed.pathname
-.split("/shorts/")[1]
-.split("/")[0];
-}
+            if(
+                parsed.pathname.startsWith("/shorts/")
+            ){
+                return parsed.pathname
+                    .split("/shorts/")[1]
+                    .split("/")[0];
+            }
 
-if(parsed.pathname.startsWith("/live/")){
-return parsed.pathname
-.split("/live/")[1]
-.split("/")[0];
-}
+            if(
+                parsed.pathname.startsWith("/live/")
+            ){
+                return parsed.pathname
+                    .split("/live/")[1]
+                    .split("/")[0];
+            }
 
-}
+        }
 
-if(
-parsed.hostname==="youtu.be"||
-parsed.hostname==="www.youtu.be"
-){
+        if(
+            parsed.hostname === "youtu.be" ||
+            parsed.hostname === "www.youtu.be"
+        ){
+            return parsed.pathname
+                .replace("/","")
+                .split("/")[0];
+        }
 
-return parsed.pathname
-.replace("/","")
-.split("/")[0];
+    }catch(error){
 
-}
+        console.warn(
+            "YouTube URL error:",
+            error
+        );
 
-}catch(error){
+    }
 
-console.warn("YouTube URL error:",error);
-
-}
-
-return null;
+    return null;
 
 }
 
 
 function extractVimeoId(url){
 
-if(!url)return null;
+    if(!url)return null;
 
-const match=
-String(url).match(
-/vimeo\.com\/(?:video\/)?(\d+)/i
-);
+    const match =
+    String(url).match(
+        /vimeo\.com\/(?:video\/)?(\d+)/i
+    );
 
-return match?match[1]:null;
+    return match
+        ? match[1]
+        : null;
 
 }
 
 
 function extractGoogleDriveId(url){
 
-if(!url)return null;
+    if(!url)return null;
 
-const value=String(url).trim();
+    const value =
+    String(url).trim();
 
-let match=value.match(
-/drive\.google\.com\/file\/d\/([^/]+)/i
-);
+    let match =
+    value.match(
+        /drive\.google\.com\/file\/d\/([^/]+)/i
+    );
 
-if(match)return match[1];
+    if(match)return match[1];
 
-match=value.match(
-/drive\.google\.com\/open\?id=([^&]+)/i
-);
+    match =
+    value.match(
+        /drive\.google\.com\/open\?id=([^&]+)/i
+    );
 
-if(match)return match[1];
+    if(match)return match[1];
 
-match=value.match(
-/drive\.google\.com\/uc\?.*id=([^&]+)/i
-);
+    match =
+    value.match(
+        /drive\.google\.com\/uc\?.*id=([^&]+)/i
+    );
 
-if(match)return match[1];
+    if(match)return match[1];
 
-return null;
+    return null;
 
 }
 
 
 function convertGoogleDriveUrl(url){
 
-const id=extractGoogleDriveId(url);
+    const id =
+    extractGoogleDriveId(url);
 
-if(!id)return url;
+    if(!id)return url;
 
-return "https://drive.google.com/uc?export=download&id="+
-encodeURIComponent(id);
+    return (
+        "https://drive.google.com/uc?export=download&id=" +
+        encodeURIComponent(id)
+    );
 
 }
 
+
+/* =========================================================
+   CLOUDINARY HELPERS
+   ========================================================= */
 
 function isCloudinaryUrl(url){
 
-return /cloudinary\.com|player\.cloudinary\.com/i
-.test(String(url||""));
+    if(!url)return false;
+
+    const value =
+    String(url).toLowerCase();
+
+    return (
+        value.includes(
+            "player.cloudinary.com"
+        ) ||
+        value.includes(
+            "res.cloudinary.com"
+        ) ||
+        value.includes(
+            "cloudinary.com"
+        )
+    );
 
 }
 
 
-function extractCloudinaryPublicId(url){
+function createCloudinaryEmbedUrl(url){
 
-if(!url)return null;
+    if(!url)return null;
 
-const value=String(url).trim();
+    const clean =
+    String(url).trim();
 
-try{
+    /* Already an embed URL */
+    if(
+        clean.includes(
+            "player.cloudinary.com/embed/"
+        )
+    ){
+        return clean;
+    }
 
-const parsed=new URL(value);
+    /*
+       If a Cloudinary public ID is stored directly,
+       this function can be expanded later.
+    */
 
-if(
-parsed.hostname==="player.cloudinary.com"
-||
-parsed.hostname.endsWith(".cloudinary.com")
+    return clean;
+
+}
+
+
+/* =========================================================
+   MAIN PLAYER
+   ========================================================= */
+
+function playVideo(
+    name,
+    url,
+    description=""
 ){
 
-const publicId=
-parsed.searchParams.get("public_id");
+    if(!url){
 
-if(publicId)return publicId;
+        showToast(
+            "This video is not available yet."
+        );
 
-const uploadMatch=
-parsed.pathname.match(
-/\/upload\/(?:v\d+\/)?(.+?)(?:\.[a-z0-9]+)?$/i
-);
+        return;
+    }
 
-if(uploadMatch)return uploadMatch[1];
+    const cleanUrl =
+    String(url).trim();
+
+    const youtubeId =
+    extractYouTubeId(cleanUrl);
+
+    const vimeoId =
+    extractVimeoId(cleanUrl);
+
+    const googleDriveId =
+    extractGoogleDriveId(cleanUrl);
+
+    video.pause();
+
+    video.removeAttribute("src");
+
+    youtubePlayer.src = "";
+
+    video.style.display = "none";
+
+    youtubePlayer.style.display = "none";
+
+    playerTitle.textContent =
+    name || "BRENZKafrica";
+
+    playerDescription.textContent =
+    description || "";
+
+
+    /* =====================================================
+       YOUTUBE
+       ===================================================== */
+
+    if(youtubeId){
+
+        youtubePlayer.src =
+        "https://www.youtube.com/embed/" +
+        youtubeId +
+        "?autoplay=1&rel=0";
+
+        youtubePlayer.style.display =
+        "block";
+
+    }
+
+
+    /* =====================================================
+       VIMEO
+       ===================================================== */
+
+    else if(vimeoId){
+
+        youtubePlayer.src =
+        "https://player.vimeo.com/video/" +
+        vimeoId +
+        "?autoplay=1";
+
+        youtubePlayer.style.display =
+        "block";
+
+    }
+
+
+    /* =====================================================
+       GOOGLE DRIVE
+       ===================================================== */
+
+    else if(googleDriveId){
+
+        video.src =
+        convertGoogleDriveUrl(cleanUrl);
+
+        video.style.display =
+        "block";
+
+        video.play().catch(()=>{});
+
+    }
+
+
+    /* =====================================================
+       CLOUDINARY PLAYER
+       ===================================================== */
+
+    else if(
+        cleanUrl.includes(
+            "player.cloudinary.com/embed/"
+        )
+    ){
+
+        youtubePlayer.src =
+        createCloudinaryEmbedUrl(cleanUrl);
+
+        youtubePlayer.style.display =
+        "block";
+
+    }
+
+
+    /* =====================================================
+       CLOUDINARY DELIVERY URL
+       ===================================================== */
+
+    else if(
+        isCloudinaryUrl(cleanUrl)
+    ){
+
+        video.src =
+        cleanUrl;
+
+        video.style.display =
+        "block";
+
+        video.play().catch(()=>{});
+
+    }
+
+
+    /* =====================================================
+       DIRECT VIDEO
+       ===================================================== */
+
+    else{
+
+        video.src =
+        cleanUrl;
+
+        video.style.display =
+        "block";
+
+        video.play().catch(()=>{});
+
+    }
+
+
+    player.classList.add("active");
+
+    document.body.classList.add(
+        "modal-open"
+    );
 
 }
 
-}catch(error){}
 
-return null;
-
-}
-
-
-function buildCloudinaryPlayerUrl(url){
-
-const publicId=
-extractCloudinaryPublicId(url);
-
-if(!publicId)return url;
-
-return "https://player.cloudinary.com/embed/?cloud_name="+
-encodeURIComponent(CLOUDINARY_CLOUD_NAME)+
-"&public_id="+
-encodeURIComponent(publicId);
-
-}
-
-
-function playVideo(name,url,description=""){
-
-if(!url){
-
-showToast("This video is not available yet.");
-return;
-
-}
-
-const cleanUrl=String(url).trim();
-
-const youtubeId=
-extractYouTubeId(cleanUrl);
-
-const vimeoId=
-extractVimeoId(cleanUrl);
-
-const googleDriveId=
-extractGoogleDriveId(cleanUrl);
-
-video.pause();
-video.removeAttribute("src");
-
-youtubePlayer.src="";
-
-video.style.display="none";
-youtubePlayer.style.display="none";
-
-playerTitle.textContent=
-name||"BRENZKafrica";
-
-playerDescription.textContent=
-description||"";
-
-
-if(youtubeId){
-
-youtubePlayer.src=
-"https://www.youtube.com/embed/"+
-youtubeId+
-"?autoplay=1&rel=0";
-
-youtubePlayer.style.display="block";
-
-}else if(vimeoId){
-
-youtubePlayer.src=
-"https://player.vimeo.com/video/"+
-vimeoId+
-"?autoplay=1";
-
-youtubePlayer.style.display="block";
-
-}else if(googleDriveId){
-
-video.src=
-convertGoogleDriveUrl(cleanUrl);
-
-video.style.display="block";
-
-video.play().catch(()=>{});
-
-}else if(
-cleanUrl.includes("player.cloudinary.com/embed/")
-){
-
-youtubePlayer.src=cleanUrl;
-
-youtubePlayer.style.display="block";
-
-}else if(isCloudinaryUrl(cleanUrl)){
-
-youtubePlayer.src=
-buildCloudinaryPlayerUrl(cleanUrl);
-
-youtubePlayer.style.display="block";
-
-}else{
-
-video.src=cleanUrl;
-
-video.style.display="block";
-
-video.play().catch(()=>{});
-
-}
-
-player.classList.add("active");
-
-document.body.classList.add("modal-open");
-
-}
-
+/* =========================================================
+   CLOSE PLAYER
+   ========================================================= */
 
 function closePlayer(){
 
-video.pause();
+    video.pause();
 
-video.removeAttribute("src");
+    video.removeAttribute("src");
 
-youtubePlayer.src="";
+    youtubePlayer.src = "";
 
-youtubePlayer.style.display="none";
+    youtubePlayer.style.display =
+    "none";
 
-video.style.display="block";
+    video.style.display =
+    "block";
 
-player.classList.remove("active");
+    player.classList.remove(
+        "active"
+    );
 
-document.body.classList.remove("modal-open");
+    document.body.classList.remove(
+        "modal-open"
+    );
 
 }
 
+
+/* =========================================================
+   ESCAPE TO CLOSE PLAYER
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event=>{
+
+        if(
+            event.key === "Escape" &&
+            player.classList.contains("active")
+        ){
+            closePlayer();
+        }
+
+    }
+);
+
+
+/* =========================================================
+   FEATURED
+   ========================================================= */
 
 function playFeatured(){
 
-playVideo(
-"BRENZKafrica Cinema",
-"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
-);
+    playVideo(
+        "BRENZKafrica Cinema",
+        "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
+    );
 
 }
 
+
+/* =========================================================
+   EPISODES
+   ========================================================= */
+
+async function loadEpisodes(){
+
+    episodesSection.classList.add(
+        "visible"
+    );
+
+    episodesRow.innerHTML =
+    '<div class="episode-loading">Loading episodes...</div>';
+
+    episodesSubtitle.textContent =
+    "Loading episodes...";
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("episodes")
+        .select(
+            "id,season_id,episode_number,title,description,thumbnail_url,video_url,duration_seconds,is_premium,published_at,created_at,series_id"
+        )
+        .eq(
+            "series_id",
+            CURRENT_SERIES_ID
+        )
+        .order(
+            "season_id",
+            {ascending:true}
+        )
+        .order(
+            "episode_number",
+            {ascending:true}
+        );
+
+        if(error)throw error;
+
+        allEpisodes =
+        data || [];
+
+        if(!allEpisodes.length){
+
+            episodesRow.innerHTML =
+            '<div class="episode-empty">No episodes were found.</div>';
+
+            episodesSubtitle.textContent =
+            "No episodes found.";
+
+            return;
+        }
+
+        episodesSubtitle.textContent =
+        allEpisodes.length +
+        " episode" +
+        (
+            allEpisodes.length === 1
+            ? ""
+            : "s"
+        ) +
+        " available";
+
+        episodesRow.innerHTML =
+        allEpisodes
+            .map(createEpisodeCard)
+            .join("");
+
+    }catch(error){
+
+        console.error(
+            "Episode loading error:",
+            error
+        );
+
+        episodesRow.innerHTML =
+        '<div class="episode-error">Unable to load episodes right now.</div>';
+
+        episodesSubtitle.textContent =
+        "Episode loading failed.";
+
+    }
+
+}
+
+
+/* =========================================================
+   EPISODE CARD
+   ========================================================= */
+
+function createEpisodeCard(
+    episode
+){
+
+    const id =
+    episode.id;
+
+    const number =
+    episode.episode_number;
+
+    const title =
+    episode.title ||
+    "Episode " + number;
+
+    const description =
+    episode.description ||
+    "";
+
+    const thumbnail =
+    episode.thumbnail_url ||
+    "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
+
+    const duration =
+    formatDuration(
+        episode.duration_seconds
+    );
+
+    return `
+
+    <article
+        class="episode-card"
+        data-episode-id="${escapeHTML(id)}"
+        onclick="playEpisode('${escapeHTML(id)}')">
+
+        <img
+            src="${escapeHTML(thumbnail)}"
+            alt="${escapeHTML(title)}"
+            loading="lazy">
+
+        <div class="episode-number">
+            EP ${escapeHTML(number)}
+        </div>
+
+        ${
+            episode.is_premium === true
+            ? '<div class="episode-premium">PREMIUM</div>'
+            : ""
+        }
+
+        <div class="episode-info">
+
+            <div class="episode-title">
+                ${escapeHTML(title)}
+            </div>
+
+            <div class="episode-description">
+                ${escapeHTML(description)}
+            </div>
+
+            ${
+                duration
+                ? `
+                <div class="episode-duration">
+                    ${escapeHTML(duration)}
+                </div>
+                `
+                : ""
+            }
+
+        </div>
+
+    </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   PLAY EPISODE
+   ========================================================= */
+
+function playEpisode(id){
+
+    const episode =
+    allEpisodes.find(
+        item =>
+        String(item.id) ===
+        String(id)
+    );
+
+    if(!episode){
+
+        showToast(
+            "This episode could not be found."
+        );
+
+        return;
+    }
+
+    if(!episode.video_url){
+
+        showToast(
+            "Video for this episode has not been connected yet."
+        );
+
+        return;
+    }
+
+    playVideo(
+        "Episode " +
+        episode.episode_number +
+        " — " +
+        episode.title,
+        episode.video_url,
+        episode.description || ""
+    );
+
+}
+
+
+/* =========================================================
+   YOUTUBE
+   ========================================================= */
+
+async function loadYouTubeVideos(){
+
+    const row =
+    document.getElementById(
+        "youtubeRow"
+    );
+
+    row.innerHTML =
+    '<div class="episode-loading">Loading YouTube videos...</div>';
+
+    try{
+
+        const response =
+        await fetch(
+            YOUTUBE_API_URL,
+            {
+                cache:"no-store"
+            }
+        );
+
+        if(!response.ok){
+            throw new Error(
+                "YouTube API request failed"
+            );
+        }
+
+        const result =
+        await response.json();
+
+        /*
+           Supports either:
+           {items:[...]}
+           or directly [...]
+        */
+
+        const videos =
+        Array.isArray(result)
+        ? result
+        : (
+            Array.isArray(result.items)
+            ? result.items
+            : []
+        );
+
+        if(!videos.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">No YouTube videos found.</div>';
+
+            return;
+        }
+
+        row.innerHTML =
+        videos
+        .map(
+            createYouTubeCard
+        )
+        .join("");
+
+    }catch(error){
+
+        console.error(
+            "YouTube loading error:",
+            error
+        );
+
+        row.innerHTML =
+        '<div class="episode-error">Unable to load YouTube videos right now.</div>';
+
+    }
+
+}
+
+
+/* =========================================================
+   YOUTUBE CARD
+   ========================================================= */
+
+function createYouTubeCard(
+    item
+){
+
+    const snippet =
+    item.snippet || {};
+
+    const resource =
+    item.resourceId || {};
+
+    const videoId =
+    item.videoId ||
+    resource.videoId ||
+    (
+        item.id &&
+        typeof item.id === "string"
+        ? item.id
+        : null
+    );
+
+    const title =
+    snippet.title ||
+    item.title ||
+    "BRENZKafrica Video";
+
+    const description =
+    snippet.description ||
+    item.description ||
+    "";
+
+    const thumbnail =
+    (
+        snippet.thumbnails &&
+        (
+            snippet.thumbnails.high ||
+            snippet.thumbnails.medium ||
+            snippet.thumbnails.default
+        )
+    )?.url ||
+    item.thumbnail ||
+    (
+        videoId
+        ? "https://i.ytimg.com/vi/" +
+          videoId +
+          "/hqdefault.jpg"
+        : "https://images.unsplash.com/photo-1492619375914-88005aa9e8fb?auto=format&fit=crop&w=900&q=80"
+    );
+
+    if(!videoId){
+
+        return "";
+
+    }
+
+    return `
+
+    <article
+        class="youtube-card"
+        onclick="playYouTubeVideo(
+            '${escapeHTML(videoId)}',
+            '${escapeHTML(title)}',
+            '${escapeHTML(description)}'
+        )">
+
+        <div class="youtube-thumb">
+
+            <img
+                src="${escapeHTML(thumbnail)}"
+                alt="${escapeHTML(title)}"
+                loading="lazy">
+
+            <div class="youtube-play">
+                ▶
+            </div>
+
+        </div>
+
+        <div class="youtube-info">
+
+            <div class="youtube-title">
+                ${escapeHTML(title)}
+            </div>
+
+            <div class="youtube-description">
+                ${escapeHTML(description)}
+            </div>
+
+        </div>
+
+    </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   PLAY YOUTUBE VIDEO
+   ========================================================= */
+
+function playYouTubeVideo(
+    videoId,
+    title,
+    description
+){
+
+    playVideo(
+        title,
+        "https://www.youtube.com/watch?v=" +
+        videoId,
+        description
+    );
+
+}
+
+
+/* =========================================================
+   SERIES
+   ========================================================= */
+
+async function loadSeries(){
+
+    const row =
+    document.getElementById(
+        "seriesRow"
+    );
+
+    row.innerHTML =
+    '<div class="episode-loading">Loading series...</div>';
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("series")
+        .select("*")
+        .order(
+            "created_at",
+            {ascending:false}
+        );
+
+        if(error)throw error;
+
+        if(!data || !data.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">No series available.</div>';
+
+            return;
+        }
+
+        row.innerHTML =
+        data.map(
+            series=>`
+
+            <article
+                class="series-card"
+                onclick="selectSeries('${escapeHTML(series.id)}')">
+
+                <img
+                    src="${escapeHTML(
+                        series.thumbnail_url ||
+                        "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
+                    )}"
+                    alt="${escapeHTML(series.title || "Series")}"
+                    loading="lazy">
+
+                <div class="series-overlay">
+
+                    <div class="series-title">
+                        ${escapeHTML(
+                            series.title ||
+                            "Series"
+                        )}
+                    </div>
+
+                </div>
+
+            </article>
+
+            `
+        ).join("");
+
+    }catch(error){
+
+        console.error(
+            "Series loading error:",
+            error
+        );
+
+        /*
+           Keep current episode section
+           usable even if the optional
+           series table is unavailable.
+        */
+
+        row.innerHTML =
+        `
+        <article
+            class="series-card"
+            onclick="document.getElementById('episodes').scrollIntoView()">
+
+            <img
+                src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
+                alt="BRENZKafrica Series">
+
+            <div class="series-overlay">
+
+                <div class="series-title">
+                    BRENZKafrica Series
+                </div>
+
+            </div>
+
+        </article>
+        `;
+
+    }
+
+}
+
+
+function selectSeries(id){
+
+    /*
+       Current episode system is connected
+       to CURRENT_SERIES_ID.
+       This keeps the existing setup intact.
+    */
+
+    document
+        .getElementById("episodes")
+        .scrollIntoView({
+            behavior:"smooth"
+        });
+
+    loadEpisodes();
+
+}
+
+
+/* =========================================================
+   CONTENT / ORIGINALS
+   ========================================================= */
+
+async function loadOriginals(){
+
+    const row =
+    document.getElementById(
+        "originalsRow"
+    );
+
+    row.innerHTML =
+    '<div class="episode-loading">Loading originals...</div>';
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("content")
+        .select("*")
+        .eq(
+            "Content_type",
+            "Video"
+        )
+        .order(
+            "created_at",
+            {ascending:false}
+        );
+
+        if(error)throw error;
+
+        allContent =
+        data || [];
+
+        const originals =
+        allContent.filter(item=>{
+
+            const group =
+            String(
+                item.Content_group ||
+                ""
+            ).toLowerCase();
+
+            const category =
+            String(
+                item.Category ||
+                ""
+            ).toLowerCase();
+
+            return (
+                group.includes("original") ||
+                category.includes("original")
+            );
+
+        });
+
+        const list =
+        originals.length
+        ? originals
+        : allContent.slice(0,10);
+
+        if(!list.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">No originals available.</div>';
+
+            return;
+        }
+
+        row.innerHTML =
+        list.map(
+            createContentCard
+        ).join("");
+
+    }catch(error){
+
+        console.error(
+            "Originals loading error:",
+            error
+        );
+
+        row.innerHTML =
+        '<div class="episode-error">Unable to load originals.</div>';
+
+    }
+
+}
+
+
+function createContentCard(
+    item
+){
+
+    const title =
+    item.Title ||
+    item.title ||
+    "Untitled";
+
+    const description =
+    item.Description ||
+    item.description ||
+    "";
+
+    const thumbnail =
+    item.Thumbnail_url ||
+    item.thumbnail_url ||
+    "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
+
+    const videoUrl =
+    item.Video_url ||
+    item.video_url;
+
+    return `
+
+    <article
+        class="content-card"
+        onclick="playVideo(
+            '${escapeHTML(title)}',
+            '${escapeHTML(videoUrl || "")}',
+            '${escapeHTML(description)}'
+        )">
+
+        <img
+            src="${escapeHTML(thumbnail)}"
+            alt="${escapeHTML(title)}"
+            loading="lazy">
+
+        <div class="card-info">
+
+            <div class="card-title">
+                ${escapeHTML(title)}
+            </div>
+
+            <div class="card-description">
+                ${escapeHTML(description)}
+            </div>
+
+        </div>
+
+    </article>
+
+    `;
+
+}
+
+
+/* =========================================================
+   LIVE
+   ========================================================= */
+
+async function loadLive(){
+
+    const row =
+    document.getElementById(
+        "liveRow"
+    );
+
+    row.innerHTML =
+    '<div class="episode-loading">Loading live events...</div>';
+
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("live_events")
+        .select("*")
+        .order(
+            "created_at",
+            {ascending:false}
+        );
+
+        if(error)throw error;
+
+        if(!data || !data.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">No live broadcasts available.</div>';
+
+            return;
+        }
+
+        row.innerHTML =
+        data.map(
+            item=>{
+
+                const title =
+                item.title ||
+                item.name ||
+                "Live Broadcast";
+
+                const thumbnail =
+                item.thumbnail_url ||
+                item.image_url ||
+                "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
+
+                const url =
+                item.stream_url ||
+                item.video_url ||
+                item.url;
+
+                return `
+
+                <article
+                    class="live-card"
+                    onclick="playVideo(
+                        '${escapeHTML(title)}',
+                        '${escapeHTML(url || "")}',
+                        '${escapeHTML(item.description || "")}'
+                    )">
+
+                    <div class="media-thumb">
+
+                        <img
+                            src="${escapeHTML(thumbnail)}"
+                            alt="${escapeHTML(title)}">
+
+                        <div class="live-badge">
+                            🔴 LIVE
+                        </div>
+
+                    </div>
+
+                    <div class="media-info">
+
+                        <div class="media-title">
+                            ${escapeHTML(title)}
+                        </div>
+
+                        <div class="media-meta">
+                            ${escapeHTML(item.description || "BRENZKafrica Live")}
+                        </div>
+
+                    </div>
+
+                </article>
+
+                `;
+
+            }
+        ).join("");
+
+    }catch(error){
+
+        console.error(
+            "Live loading error:",
+            error
+        );
+
+        row.innerHTML =
+        '<div class="episode-error">Unable to load live broadcasts.</div>';
+
+    }
+
+}
+
+
+/* =========================================================
+   NEWS
+   ========================================================= */
 
 async function loadNews(){
 
-try{
+    const row =
+    document.getElementById(
+        "newsRow"
+    );
 
-const response=
-await fetch(
-NEWS_API_URL+
-"?t="+Date.now(),
-{
-cache:"no-store"
+    row.innerHTML =
+    '<div class="episode-loading">Loading news...</div>';
+
+    try{
+
+        const response =
+        await fetch(
+            NEWS_API_URL,
+            {
+                cache:"no-store"
+            }
+        );
+
+        if(!response.ok){
+            throw new Error(
+                "News request failed"
+            );
+        }
+
+        const result =
+        await response.json();
+
+        const articles =
+        Array.isArray(result)
+        ? result
+        : (
+            result.articles ||
+            result.items ||
+            []
+        );
+
+        if(!articles.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">No news available.</div>';
+
+            return;
+        }
+
+        row.innerHTML =
+        articles
+        .slice(0,20)
+        .map(
+            article=>{
+
+                const title =
+                article.title ||
+                "News";
+
+                const image =
+                article.urlToImage ||
+                article.image ||
+                article.thumbnail ||
+                "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=900&q=80";
+
+                const description =
+                article.description ||
+                "";
+
+                return `
+
+                <article
+                    class="news-card"
+                    onclick="window.open(
+                        '${escapeHTML(article.url || "")}',
+                        '_blank'
+                    )">
+
+                    <div class="media-thumb">
+
+                        <img
+                            src="${escapeHTML(image)}"
+                            alt="${escapeHTML(title)}"
+                            loading="lazy">
+
+                    </div>
+
+                    <div class="media-info">
+
+                        <div class="media-title">
+                            ${escapeHTML(title)}
+                        </div>
+
+                        <div class="media-meta">
+                            ${escapeHTML(description)}
+                        </div>
+
+                    </div>
+
+                </article>
+
+                `;
+
+            }
+        ).join("");
+
+    }catch(error){
+
+        console.error(
+            "News loading error:",
+            error
+        );
+
+        row.innerHTML =
+        '<div class="episode-error">Unable to load news right now.</div>';
+
+    }
+
 }
-);
 
-if(!response.ok)throw new Error("News API failed");
 
-const result=await response.json();
+/* =========================================================
+   SPORTS
+   WORLDWIDE ESPN SCOREBOARDS
+   ========================================================= */
 
-const items=
-Array.isArray(result)
-?result
-:(
-result.articles||
-result.data||
-result.news||
-[]
-);
+const sportsEndpoints = {
 
-allNews=items;
+    football:[
+        [
+            "Football",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard"
+        ],
+        [
+            "Champions League",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard"
+        ],
+        [
+            "Europa League",
+            "https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/scoreboard"
+        ]
+    ],
 
-const row=
-document.getElementById("newsRow");
+    basketball:[
+        [
+            "NBA",
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
+        ],
+        [
+            "WNBA",
+            "https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard"
+        ]
+    ],
 
-if(!items.length){
+    tennis:[
+        [
+            "Tennis",
+            "https://site.api.espn.com/apis/site/v2/sports/tennis/atp/scoreboard"
+        ]
+    ]
 
-row.innerHTML=
-'<div class="empty-state">No current news available.</div>';
+};
 
-return;
+
+async function loadSports(
+    category="all",
+    button=null
+){
+
+    if(button){
+
+        document
+        .querySelectorAll(
+            ".sports-tabs .tab-btn"
+        )
+        .forEach(
+            btn=>btn.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+    }
+
+    const row =
+    document.getElementById(
+        "sportsRow"
+    );
+
+    row.innerHTML =
+    '<div class="episode-loading">Loading sports...</div>';
+
+    let groups = [];
+
+    if(category === "all"){
+
+        groups = [
+            ...sportsEndpoints.football,
+            ...sportsEndpoints.basketball,
+            ...sportsEndpoints.tennis
+        ];
+
+    }else if(category === "live"){
+
+        groups = [
+            ...sportsEndpoints.football,
+            ...sportsEndpoints.basketball,
+            ...sportsEndpoints.tennis
+        ];
+
+    }else{
+
+        groups =
+        sportsEndpoints[category] ||
+        [];
+
+    }
+
+    try{
+
+        const responses =
+        await Promise.allSettled(
+            groups.map(
+                group=>
+                fetch(
+                    group[1],
+                    {
+                        cache:"no-store"
+                    }
+                )
+                .then(
+                    response=>response.json()
+                )
+                .then(
+                    data=>({
+                        league:group[0],
+                        data
+                    })
+                )
+            )
+        );
+
+        let events = [];
+
+        responses.forEach(
+            result=>{
+
+                if(
+                    result.status !==
+                    "fulfilled"
+                ){
+                    return;
+                }
+
+                const data =
+                result.value.data;
+
+                const league =
+                result.value.league;
+
+                const competitions =
+                data.events || [];
+
+                competitions.forEach(
+                    event=>{
+
+                        const competition =
+                        event.competitions?.[0];
+
+                        const competitors =
+                        competition?.competitors ||
+                        [];
+
+                        events.push({
+
+                            league,
+
+                            name:
+                            event.name ||
+                            event.shortName ||
+                            "Sports Event",
+
+                            status:
+                            event.status?.type?.description ||
+                            "Scheduled",
+
+                            date:
+                            event.date,
+
+                            home:
+                            competitors.find(
+                                x =>
+                                x.homeAway === "home"
+                            )?.team?.displayName ||
+                            "",
+
+                            away:
+                            competitors.find(
+                                x =>
+                                x.homeAway === "away"
+                            )?.team?.displayName ||
+                            "",
+
+                            homeScore:
+                            competitors.find(
+                                x =>
+                                x.homeAway === "home"
+                            )?.score ||
+                            "",
+
+                            awayScore:
+                            competitors.find(
+                                x =>
+                                x.homeAway === "away"
+                            )?.score ||
+                            "",
+
+                            logo:
+                            competitors.find(
+                                x =>
+                                x.homeAway === "home"
+                            )?.team?.logo ||
+                            ""
+
+                        });
+
+                    }
+                );
+
+            }
+        );
+
+        if(category === "live"){
+
+            events =
+            events.filter(
+                event =>
+                /live|in progress|halftime|period|quarter/i
+                .test(event.status)
+            );
+
+        }
+
+        if(!events.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">No sports events available right now.</div>';
+
+            return;
+
+        }
+
+        row.innerHTML =
+        events
+        .slice(0,30)
+        .map(
+            event=>`
+
+            <article
+                class="sports-card">
+
+                <div class="media-thumb">
+
+                    ${
+                        event.logo
+                        ? `
+                        <img
+                            src="${escapeHTML(event.logo)}"
+                            alt="">
+                        `
+                        : ""
+                    }
+
+                </div>
+
+                <div class="media-info">
+
+                    <div class="media-title">
+                        ${escapeHTML(event.league)}
+                    </div>
+
+                    <div class="media-meta">
+                        ${escapeHTML(event.home)}
+                        ${event.homeScore !== "" ? " " + escapeHTML(event.homeScore) : ""}
+                        —
+                        ${event.awayScore !== "" ? escapeHTML(event.awayScore) + " " : ""}
+                        ${escapeHTML(event.away)}
+                    </div>
+
+                    <div class="media-meta">
+                        ${escapeHTML(event.status)}
+                    </div>
+
+                </div>
+
+            </article>
+
+            `
+        ).join("");
+
+    }catch(error){
+
+        console.error(
+            "Sports loading error:",
+            error
+        );
+
+        row.innerHTML =
+        '<div class="episode-error">Unable to load sports right now.</div>';
+
+    }
 
 }
 
-row.innerHTML=
-items.map(item=>{
 
-const title=
-item.title||
-item.name||
-"News";
+/* =========================================================
+   ENTERTAINMENT
+   API FIRST + FALLBACK
+   ========================================================= */
 
-const description=
-item.description||
-item.summary||
-"";
+const entertainmentFallback = [
 
-const image=
-item.urlToImage||
-item.image||
-item.thumbnail||
-"https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1000&q=80";
+    {
+        category:"music",
+        title:"Global Music",
+        description:"Latest music and artists from around the world.",
+        image:"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80"
+    },
 
-const url=
-item.video_url||
-item.url||
-"";
+    {
+        category:"trending",
+        title:"Trending Music",
+        description:"Discover music currently trending worldwide.",
+        image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
+    },
 
-return `
-<article
-class="news-card"
-onclick='${url
-?`window.open(${JSON.stringify(url)},"_blank")`
-:""}'>
+    {
+        category:"celebrity",
+        title:"Celebrity News",
+        description:"The latest stories from entertainment and celebrity culture.",
+        image:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=900&q=80"
+    },
 
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
+    {
+        category:"africa",
+        title:"African Entertainment",
+        description:"Music, film and culture from Africa.",
+        image:"https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=900&q=80"
+    }
 
-<div class="news-info">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-description">
-${escapeHTML(description)}
-</div>
-
-</div>
-
-</article>
-`;
-
-}).join("");
-
-document.getElementById("newsUpdated")
-.textContent=
-"Updated "+new Date().toLocaleTimeString();
-
-}catch(error){
-
-console.error("News error:",error);
-
-document.getElementById("newsRow").innerHTML=
-'<div class="empty-state">Unable to load current news.</div>';
-
-}
-
-}
-
-
-const SPORTS_LEAGUES=[
-{
-name:"Football",
-sport:"football",
-url:"https://site.api.espn.com/apis/site/v2/sports/soccer/eng.1/scoreboard"
-},
-{
-name:"Football",
-sport:"football",
-url:"https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard"
-},
-{
-name:"Football",
-sport:"football",
-url:"https://site.api.espn.com/apis/site/v2/sports/soccer/esp.1/scoreboard"
-},
-{
-name:"Football",
-sport:"football",
-url:"https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/scoreboard"
-},
-{
-name:"Basketball",
-sport:"basketball",
-url:"https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard"
-},
-{
-name:"Basketball",
-sport:"basketball",
-url:"https://site.api.espn.com/apis/site/v2/sports/basketball/wnba/scoreboard"
-},
-{
-name:"Tennis",
-sport:"tennis",
-url:"https://site.api.espn.com/apis/site/v2/sports/tennis/atp/scoreboard"
-}
 ];
 
 
-async function fetchSportsLeague(league){
-
-try{
-
-const response=
-await fetch(
-league.url+
-(league.url.includes("?")?"&":"?")+
-"t="+Date.now(),
-{
-cache:"no-store"
-}
-);
-
-if(!response.ok)throw new Error("Sports request failed");
-
-const data=await response.json();
-
-return(data.events||[]).map(event=>({
-
-...event,
-
-_brenzSport:league.sport,
-_brenzLeague:league.name
-
-}));
-
-}catch(error){
-
-console.warn(
-"Sports source failed:",
-league.url,
-error
-);
-
-return[];
-
-}
-
-}
-
-
-async function loadSports(){
-
-const results=
-await Promise.all(
-SPORTS_LEAGUES.map(fetchSportsLeague)
-);
-
-allSports=
-results.flat();
-
-renderSports();
-
-document.getElementById("sportsUpdated")
-.textContent=
-"Updated "+new Date().toLocaleTimeString();
-
-}
-
-
-function getEventState(event){
-
-const state=
-event?.competitions?.[0]?.status?.type;
-
-if(!state)return"";
-
-if(state.completed)return"Final";
-
-if(state.state==="in")return"Live";
-
-if(state.state==="pre")return"Upcoming";
-
-return state.description||"";
-
-}
-
-
-function renderSports(){
-
-let items=[...allSports];
-
-if(currentSportsTab==="live"){
-
-items=items.filter(
-event=>getEventState(event)==="Live"
-);
-
-}else if(
-currentSportsTab==="football"
+async function loadEntertainment(
+    category="all",
+    button=null
 ){
 
-items=items.filter(
-event=>event._brenzSport==="football"
-);
+    if(button){
 
-}else if(
-currentSportsTab==="basketball"
-){
+        document
+        .querySelectorAll(
+            ".entertainment-tabs .tab-btn"
+        )
+        .forEach(
+            btn=>btn.classList.remove("active")
+        );
 
-items=items.filter(
-event=>event._brenzSport==="basketball"
-);
+        button.classList.add("active");
 
-}else if(
-currentSportsTab==="tennis"
-){
+    }
 
-items=items.filter(
-event=>event._brenzSport==="tennis"
-);
+    const row =
+    document.getElementById(
+        "entertainmentRow"
+    );
 
-}
+    row.innerHTML =
+    '<div class="episode-loading">Loading entertainment...</div>';
 
-const row=
-document.getElementById("sportsRow");
+    let data = [];
 
-if(!items.length){
+    try{
 
-row.innerHTML=
-'<div class="empty-state">No games or matches available for this category right now.</div>';
+        const response =
+        await fetch(
+            ENTERTAINMENT_API_URL,
+            {
+                cache:"no-store"
+            }
+        );
 
-return;
+        if(response.ok){
 
-}
+            const result =
+            await response.json();
 
-row.innerHTML=
-items.map(event=>{
+            data =
+            Array.isArray(result)
+            ? result
+            : (
+                result.items ||
+                result.articles ||
+                []
+            );
 
-const competition=
-event.competitions?.[0];
+        }
 
-const competitors=
-competition?.competitors||[];
+    }catch(error){
 
-const home=
-competitors.find(
-item=>item.homeAway==="home"
-);
+        console.warn(
+            "Entertainment API unavailable:",
+            error
+        );
 
-const away=
-competitors.find(
-item=>item.homeAway==="away"
-);
+    }
 
-const homeName=
-home?.team?.displayName||
-"Home";
+    if(!data.length){
 
-const awayName=
-away?.team?.displayName||
-"Away";
+        data =
+        entertainmentFallback;
 
-const homeScore=
-home?.score??"-";
+    }
 
-const awayScore=
-away?.score??"-";
+    if(category !== "all"){
 
-const status=
-getEventState(event);
+        data =
+        data.filter(
+            item =>
+            String(
+                item.category ||
+                item.type ||
+                ""
+            ).toLowerCase()
+            .includes(
+                category.toLowerCase()
+            )
+        );
 
-const logo=
-home?.team?.logo||
-away?.team?.logo||
-"https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=900&q=80";
+    }
 
-return `
-<article class="sports-card">
+    if(!data.length){
 
-<img
-src="${escapeHTML(logo)}"
-alt="${escapeHTML(homeName)}"
-loading="lazy">
+        row.innerHTML =
+        '<div class="episode-empty">No entertainment items available.</div>';
 
-<div class="sports-info">
+        return;
 
-<div class="card-title">
-${escapeHTML(homeName)}
-&nbsp;
-${escapeHTML(homeScore)}
-</div>
+    }
 
-<div class="card-title">
-${escapeHTML(awayName)}
-&nbsp;
-${escapeHTML(awayScore)}
-</div>
+    row.innerHTML =
+    data
+    .slice(0,20)
+    .map(
+        item=>{
 
-<div class="sports-status">
-${escapeHTML(status)}
- • ${escapeHTML(event._brenzLeague)}
-</div>
+            const title =
+            item.title ||
+            "Entertainment";
 
-</div>
+            const image =
+            item.image ||
+            item.thumbnail ||
+            item.urlToImage ||
+            "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
 
-</article>
-`;
+            const description =
+            item.description ||
+            "";
 
-}).join("");
+            return `
 
-}
+            <article
+                class="entertainment-card"
+                onclick="${
+                    item.url
+                    ? `window.open('${escapeHTML(item.url)}','_blank')`
+                    : `showToast('Entertainment item selected.')`
+                }">
 
+                <div class="media-thumb">
 
-function setSportsTab(tab,button){
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(title)}"
+                        loading="lazy">
 
-currentSportsTab=tab;
+                </div>
 
-document
-.querySelectorAll("#sportsTabs .tab")
-.forEach(item=>
-item.classList.remove("active")
-);
+                <div class="media-info">
 
-button.classList.add("active");
+                    <div class="media-title">
+                        ${escapeHTML(title)}
+                    </div>
 
-renderSports();
+                    <div class="media-meta">
+                        ${escapeHTML(description)}
+                    </div>
 
-}
+                </div>
 
+            </article>
 
-async function loadEntertainment(){
+            `;
 
-try{
-
-const response=
-await fetch(
-ENTERTAINMENT_API_URL+
-"?t="+Date.now(),
-{
-cache:"no-store"
-}
-);
-
-if(!response.ok)
-throw new Error("Entertainment API failed");
-
-const result=await response.json();
-
-const liveItems=
-Array.isArray(result)
-?result
-:(
-result.items||
-result.data||
-result.articles||
-result.entertainment||
-[]
-);
-
-allEntertainment=
-liveItems.length
-?liveItems
-:seedEntertainment();
-
-renderEntertainment();
-
-document.getElementById("entertainmentUpdated")
-.textContent=
-"Updated "+new Date().toLocaleTimeString();
-
-}catch(error){
-
-console.warn(
-"Entertainment API unavailable. Using fallback catalogue.",
-error
-);
-
-allEntertainment=
-seedEntertainment();
-
-renderEntertainment();
-
-document.getElementById("entertainmentUpdated")
-.textContent=
-"Fallback catalogue";
-
-}
+        }
+    ).join("");
 
 }
 
 
-function seedEntertainment(){
+/* =========================================================
+   DOCUMENTARIES
+   ========================================================= */
 
-return [
+const documentaryFallback = [
 
-{
-category:"music",
-title:"Global Music",
-description:"Discover music and artists from around the world.",
-thumbnail:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
-},
+    {
+        title:"Nature & Wildlife",
+        category:"Nature & Wildlife",
+        description:"Explore wildlife and the natural world.",
+        image:"https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=900&q=80"
+    },
 
-{
-category:"trending",
-title:"Trending Music",
-description:"What's gaining attention across the global music scene.",
-thumbnail:"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=900&q=80"
-},
+    {
+        title:"Science & Technology",
+        category:"Science & Technology",
+        description:"Discover science, innovation and technology.",
+        image:"https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=900&q=80"
+    },
 
-{
-category:"celebrity",
-title:"Celebrity News",
-description:"The latest entertainment stories and celebrity updates.",
-thumbnail:"https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=900&q=80"
-},
+    {
+        title:"History",
+        category:"History",
+        description:"Stories that shaped the world.",
+        image:"https://images.unsplash.com/photo-1568322445389-f64ac2515020?auto=format&fit=crop&w=900&q=80"
+    },
 
-{
-category:"movies",
-title:"Movies & Cinema",
-description:"Explore movies and entertainment from around the world.",
-thumbnail:"https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80"
-}
+    {
+        title:"Culture",
+        category:"Culture",
+        description:"People, traditions and cultures from around the world.",
+        image:"https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=900&q=80"
+    },
+
+    {
+        title:"Environment",
+        category:"Environment",
+        description:"Understanding our planet and its future.",
+        image:"https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=900&q=80"
+    },
+
+    {
+        title:"African Stories",
+        category:"African Stories",
+        description:"Documentary stories from across Africa.",
+        image:"https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=900&q=80"
+    },
+
+    {
+        title:"World Documentaries",
+        category:"World",
+        description:"Global stories and perspectives.",
+        image:"https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=900&q=80"
+    }
 
 ];
-
-}
-
-
-function renderEntertainment(){
-
-let items=
-allEntertainment.filter(item=>{
-
-const category=
-String(
-item.category||
-item.Category||
-item.type||
-""
-).toLowerCase();
-
-return currentEntertainmentTab==="music"
-?category.includes("music")
-:
-currentEntertainmentTab==="trending"
-?category.includes("trend")
-:
-currentEntertainmentTab==="celebrity"
-?category.includes("celeb")||
-category.includes("entertain")
-:
-category.includes("movie")||
-category.includes("film")||
-category.includes("cinema");
-
-});
-
-if(!items.length){
-
-items=allEntertainment;
-
-}
-
-const row=
-document.getElementById("entertainmentRow");
-
-row.innerHTML=
-items.map(item=>{
-
-const title=
-item.title||
-item.name||
-item.headline||
-"Entertainment";
-
-const description=
-item.description||
-item.summary||
-"";
-
-const image=
-item.image||
-item.thumbnail||
-item.urlToImage||
-"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80";
-
-const url=
-item.url||
-item.video_url||
-"";
-
-return `
-<article
-class="card"
-onclick='${url
-?`window.open(${JSON.stringify(url)},"_blank")`
-:""}'>
-
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="card-info">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-description">
-${escapeHTML(description)}
-</div>
-
-</div>
-
-</article>
-`;
-
-}).join("");
-
-}
-
-
-function setEntertainmentTab(tab,button){
-
-currentEntertainmentTab=tab;
-
-button
-.parentElement
-.querySelectorAll(".tab")
-.forEach(item=>
-item.classList.remove("active")
-);
-
-button.classList.add("active");
-
-renderEntertainment();
-
-}
-
-
-function seedDocumentaries(){
-
-return [
-
-{
-category:"nature",
-title:"Nature & Wildlife",
-description:"Explore extraordinary wildlife and natural worlds.",
-thumbnail:"https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=900&q=80"
-},
-
-{
-category:"science",
-title:"Science & Technology",
-description:"Discover science, technology and the future.",
-thumbnail:"https://images.unsplash.com/photo-1535378917042-10a22c95931a?auto=format&fit=crop&w=900&q=80"
-},
-
-{
-category:"history",
-title:"History",
-description:"Stories that shaped civilizations and the world.",
-thumbnail:"https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=900&q=80"
-},
-
-{
-category:"culture",
-title:"Culture",
-description:"People, traditions, art and identity from around the world.",
-thumbnail:"https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=900&q=80"
-},
-
-{
-category:"travel",
-title:"Travel",
-description:"Journey across extraordinary destinations.",
-thumbnail:"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80"
-},
-
-{
-category:"africa",
-title:"African Stories",
-description:"Powerful stories from Africa and its people.",
-thumbnail:"https://images.unsplash.com/photo-1489493585363-d69421e0edd3?auto=format&fit=crop&w=900&q=80"
-}
-
-];
-
-}
 
 
 async function loadDocumentaries(){
 
-try{
+    const row =
+    document.getElementById(
+        "documentaryRow"
+    );
 
-const {data,error}=await supabaseClient
-.from("content")
-.select("*")
-.or(
-"content_type.ilike.%documentary%,Content_type.ilike.%documentary%,category.ilike.%documentary%,Category.ilike.%documentary%"
-)
-.order("created_at",{ascending:false});
+    row.innerHTML =
+    '<div class="episode-loading">Loading documentaries...</div>';
 
-if(error)throw error;
+    let data = [];
 
-const apiItems=
-data||[];
+    try{
 
-allDocumentaries=
-apiItems.length
-?apiItems
-:seedDocumentaries();
+        const {
+            data:content,
+            error
+        } =
+        await supabaseClient
+        .from("content")
+        .select("*")
+        .order(
+            "created_at",
+            {ascending:false}
+        );
 
-renderDocumentaries();
+        if(error)throw error;
 
-document.getElementById("documentariesUpdated")
-.textContent=
-"Updated "+new Date().toLocaleTimeString();
+        data =
+        (content || [])
+        .filter(item=>{
 
-}catch(error){
+            const type =
+            String(
+                item.Category ||
+                item.category ||
+                ""
+            ).toLowerCase();
 
-console.warn(
-"Documentary source unavailable.",
-error
-);
+            const group =
+            String(
+                item.Content_group ||
+                item.content_group ||
+                ""
+            ).toLowerCase();
 
-allDocumentaries=
-seedDocumentaries();
+            return (
+                type.includes("document") ||
+                group.includes("document")
+            );
 
-renderDocumentaries();
+        });
 
-document.getElementById("documentariesUpdated")
-.textContent=
-"Catalogue available";
+    }catch(error){
 
-}
+        console.warn(
+            "Documentary database loading failed:",
+            error
+        );
 
-}
+    }
 
+    if(!data.length){
 
-function renderDocumentaries(){
+        data =
+        documentaryFallback;
 
-let items=
-allDocumentaries;
+    }
 
-if(currentDocumentaryTab!=="all"){
+    row.innerHTML =
+    data
+    .slice(0,20)
+    .map(
+        item=>{
 
-items=
-items.filter(item=>{
+            const title =
+            item.Title ||
+            item.title;
 
-const category=
-String(
-item.category||
-item.Category||
-""
-).toLowerCase();
+            const description =
+            item.Description ||
+            item.description ||
+            "";
 
-return category.includes(
-currentDocumentaryTab
-);
+            const image =
+            item.Thumbnail_url ||
+            item.thumbnail_url ||
+            item.image ||
+            "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=900&q=80";
 
-});
+            const url =
+            item.Video_url ||
+            item.video_url;
 
-}
+            return `
 
-if(!items.length){
+            <article
+                class="documentary-card"
+                onclick="${
+                    url
+                    ? `playVideo(
+                        '${escapeHTML(title)}',
+                        '${escapeHTML(url)}',
+                        '${escapeHTML(description)}'
+                    )`
+                    : `showToast('Documentary information selected.')`
+                }">
 
-items=
-allDocumentaries;
+                <div class="media-thumb">
 
-}
+                    <img
+                        src="${escapeHTML(image)}"
+                        alt="${escapeHTML(title)}"
+                        loading="lazy">
 
-const row=
-document.getElementById("documentaryRow");
+                </div>
 
-row.innerHTML=
-items.map(item=>{
+                <div class="media-info">
 
-const title=
-item.title||
-item.Title||
-"Documentary";
+                    <div class="media-title">
+                        ${escapeHTML(title)}
+                    </div>
 
-const description=
-item.description||
-item.Description||
-"";
+                    <div class="media-meta">
+                        ${escapeHTML(
+                            item.Category ||
+                            item.category ||
+                            description
+                        )}
+                    </div>
 
-const image=
-item.thumbnail_url||
-item.Thumbnail_url||
-item.thumbnail||
-"https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=900&q=80";
+                </div>
 
-const url=
-item.video_url||
-item.Video_url||
-"";
+            </article>
 
-return `
-<article
-class="card"
-onclick='playVideo(${JSON.stringify(title)},${JSON.stringify(url)},${JSON.stringify(description)})'>
+            `;
 
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="card-info">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-description">
-${escapeHTML(description)}
-</div>
-
-</div>
-
-</article>
-`;
-
-}).join("");
-
-}
-
-
-function setDocumentaryTab(tab,button){
-
-currentDocumentaryTab=tab;
-
-button
-.parentElement
-.querySelectorAll(".tab")
-.forEach(item=>
-item.classList.remove("active")
-);
-
-button.classList.add("active");
-
-renderDocumentaries();
+        }
+    ).join("");
 
 }
 
 
-async function loadLiveEvents(){
-
-try{
-
-const {data,error}=await supabaseClient
-.from("live_events")
-.select("*")
-.order("start_time",{ascending:false});
-
-if(error)throw error;
-
-allLiveEvents=data||[];
-
-const row=
-document.getElementById("liveRow");
-
-if(!allLiveEvents.length){
-
-row.innerHTML=
-'<div class="empty-state">No BRENZKafrica Live broadcasts are currently scheduled.</div>';
-
-return;
-
-}
-
-row.innerHTML=
-allLiveEvents.map(event=>{
-
-const title=
-event.title||
-event.name||
-"BRENZKafrica Live";
-
-const description=
-event.description||
-"";
-
-const image=
-event.thumbnail_url||
-event.image||
-"https://images.unsplash.com/photo-1501386761578-eac5c94b800a?auto=format&fit=crop&w=900&q=80";
-
-const url=
-event.stream_url||
-event.video_url||
-"";
-
-return `
-<article
-class="live-card"
-onclick='playVideo(${JSON.stringify(title)},${JSON.stringify(url)},${JSON.stringify(description)})'>
-
-<div class="live-badge">
-🔴 LIVE
-</div>
-
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="live-info">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-description">
-${escapeHTML(description)}
-</div>
-
-</div>
-
-</article>
-`;
-
-}).join("");
-
-}catch(error){
-
-console.error("Live loading error:",error);
-
-document.getElementById("liveRow").innerHTML=
-'<div class="empty-state">Unable to load live broadcasts.</div>';
-
-}
-
-}
-
+/* =========================================================
+   WATCHLIST
+   ========================================================= */
 
 async function loadWatchlist(){
 
-const row=
-document.getElementById("watchlistRow");
+    const row =
+    document.getElementById(
+        "watchlistRow"
+    );
 
-const {
-data:{session}
-}=await supabaseClient.auth.getSession();
+    if(!currentUser){
 
-if(!session){
+        row.innerHTML =
+        '<div class="episode-empty">Sign in to view your watchlist.</div>';
 
-row.innerHTML=
-'<div class="empty-state">Sign in to build your watchlist.</div>';
+        return;
+    }
 
-return;
+    try{
+
+        const {
+            data,
+            error
+        } =
+        await supabaseClient
+        .from("watchlist")
+        .select("*")
+        .eq(
+            "user_id",
+            currentUser.id
+        );
+
+        if(error)throw error;
+
+        if(!data || !data.length){
+
+            row.innerHTML =
+            '<div class="episode-empty">Your watchlist is empty.</div>';
+
+            return;
+        }
+
+        row.innerHTML =
+        data.map(
+            item=>{
+
+                return `
+                <article
+                    class="content-card">
+
+                    <img
+                        src="${escapeHTML(
+                            item.thumbnail_url ||
+                            "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
+                        )}"
+                        alt="${escapeHTML(
+                            item.title ||
+                            "Watchlist item"
+                        )}">
+
+                    <div class="card-info">
+
+                        <div class="card-title">
+                            ${escapeHTML(
+                                item.title ||
+                                "Watchlist item"
+                            )}
+                        </div>
+
+                    </div>
+
+                </article>
+                `;
+
+            }
+        ).join("");
+
+    }catch(error){
+
+        console.error(
+            "Watchlist loading error:",
+            error
+        );
+
+        row.innerHTML =
+        '<div class="episode-error">Unable to load watchlist.</div>';
+
+    }
 
 }
 
-try{
 
-const {data,error}=await supabaseClient
-.from("watchlist")
-.select("*")
-.eq("user_id",session.user.id)
-.order("created_at",{ascending:false});
-
-if(error)throw error;
-
-if(!data||!data.length){
-
-row.innerHTML=
-'<div class="empty-state">Your watchlist is empty.</div>';
-
-return;
-
-}
-
-const items=
-data.map(item=>{
-
-return{
-title:item.title,
-description:item.description,
-thumbnail_url:item.thumbnail_url,
-video_url:item.video_url
-};
-
-});
-
-row.innerHTML=
-items.map(createCard).join("");
-
-}catch(error){
-
-console.error("Watchlist error:",error);
-
-row.innerHTML=
-'<div class="empty-state">Unable to load your watchlist.</div>';
-
-}
-
-}
-
+/* =========================================================
+   AUTH
+   ========================================================= */
 
 function openAuth(){
 
-document
-.getElementById("authModal")
-.classList.add("active");
+    document
+    .getElementById("authModal")
+    .classList.add("active");
 
 }
 
 
 function closeAuth(){
 
-document
-.getElementById("authModal")
-.classList.remove("active");
+    document
+    .getElementById("authModal")
+    .classList.remove("active");
 
 }
 
 
 function toggleAuthMode(){
 
-authMode=
-authMode==="signin"
-?"signup"
-:"signin";
+    authMode =
+    authMode === "signin"
+    ? "signup"
+    : "signin";
 
-document.getElementById("authTitle").textContent=
-authMode==="signin"
-?"Sign In"
-:"Create Account";
+    document
+    .getElementById("authTitle")
+    .textContent =
+    authMode === "signin"
+    ? "Sign In"
+    : "Create Account";
 
-document.getElementById("authSwitch").textContent=
-authMode==="signin"
-?"Create an account"
-:"Already have an account? Sign in";
+    document
+    .getElementById("authSubmit")
+    .textContent =
+    authMode === "signin"
+    ? "Sign In"
+    : "Create Account";
 
-}
-
-
-async function submitAuth(){
-
-const email=
-document.getElementById("authEmail").value.trim();
-
-const password=
-document.getElementById("authPassword").value;
-
-if(!email||!password){
-
-showToast("Enter your email and password.");
-
-return;
-
-}
-
-try{
-
-if(authMode==="signin"){
-
-const {error}=
-await supabaseClient.auth.signInWithPassword({
-email,
-password
-});
-
-if(error)throw error;
-
-showToast("Signed in successfully.");
-
-}else{
-
-const {error}=
-await supabaseClient.auth.signUp({
-email,
-password
-});
-
-if(error)throw error;
-
-showToast(
-"Account created. Check your email if confirmation is required."
-);
-
-}
-
-closeAuth();
-
-updateAuthButton();
-
-loadWatchlist();
-
-}catch(error){
-
-console.error(error);
-
-showToast(
-error.message||
-"Authentication failed."
-);
-
-}
+    document
+    .getElementById("authSwitch")
+    .textContent =
+    authMode === "signin"
+    ? "Don't have an account? Create one"
+    : "Already have an account? Sign in";
 
 }
 
 
-async function updateAuthButton(){
+async function handleAuth(){
 
-const {
-data:{session}
-}=await supabaseClient.auth.getSession();
+    const email =
+    document
+    .getElementById("authEmail")
+    .value
+    .trim();
 
-const button=
-document.getElementById("authButton");
+    const password =
+    document
+    .getElementById("authPassword")
+    .value;
 
-if(session){
+    if(!email || !password){
 
-button.textContent="Account";
+        showToast(
+            "Please enter your email and password."
+        );
 
-button.onclick=async()=>{
+        return;
+    }
 
-const confirmed=
-confirm(
-"Do you want to sign out?"
-);
+    try{
 
-if(!confirmed)return;
+        if(authMode === "signin"){
 
-await supabaseClient.auth.signOut();
+            const {
+                error
+            } =
+            await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
 
-updateAuthButton();
+            if(error)throw error;
 
-loadWatchlist();
+            showToast(
+                "Signed in successfully."
+            );
 
-};
+        }else{
 
-}else{
+            const {
+                error
+            } =
+            await supabaseClient.auth.signUp({
+                email,
+                password
+            });
 
-button.textContent="Sign In";
+            if(error)throw error;
 
-button.onclick=openAuth;
+            showToast(
+                "Account created successfully."
+            );
+
+        }
+
+        closeAuth();
+
+        await checkAuth();
+
+    }catch(error){
+
+        console.error(
+            "Authentication error:",
+            error
+        );
+
+        showToast(
+            error.message ||
+            "Authentication failed."
+        );
+
+    }
 
 }
 
+
+/* =========================================================
+   CHECK AUTH
+   ========================================================= */
+
+async function checkAuth(){
+
+    const {
+        data
+    } =
+    await supabaseClient.auth.getSession();
+
+    currentUser =
+    data.session?.user ||
+    null;
+
+    const authButton =
+    document.getElementById(
+        "authButton"
+    );
+
+    if(currentUser){
+
+        authButton.textContent =
+        "Sign Out";
+
+        authButton.onclick =
+        signOut;
+
+    }else{
+
+        authButton.textContent =
+        "Sign In";
+
+        authButton.onclick =
+        openAuth;
+
+    }
+
+    loadWatchlist();
+
 }
 
+
+async function signOut(){
+
+    await supabaseClient.auth.signOut();
+
+    currentUser =
+    null;
+
+    showToast(
+        "Signed out."
+    );
+
+    checkAuth();
+
+}
+
+
+/* =========================================================
+   NEWSLETTER
+   ========================================================= */
 
 document
 .getElementById("newsletterForm")
 .addEventListener(
-"submit",
-async event=>{
+    "submit",
+    async function(event){
 
-event.preventDefault();
+        event.preventDefault();
 
-const email=
-document
-.getElementById("newsletterEmail")
-.value
-.trim();
+        const email =
+        document
+        .getElementById(
+            "newsletterEmail"
+        )
+        .value
+        .trim();
 
-if(!email)return;
+        if(!email)return;
 
-try{
+        try{
 
-const {error}=await supabaseClient
-.from("newsletter_subscribers")
-.insert({
-email
-});
+            const {
+                error
+            } =
+            await supabaseClient
+            .from(
+                "newsletter_subscribers"
+            )
+            .insert({
+                email
+            });
 
-if(error)throw error;
+            if(error)throw error;
 
-showToast(
-"Thanks for subscribing."
+            showToast(
+                "You have subscribed successfully."
+            );
+
+            document
+            .getElementById(
+                "newsletterEmail"
+            )
+            .value = "";
+
+        }catch(error){
+
+            console.error(
+                "Newsletter error:",
+                error
+            );
+
+            if(
+                error.code === "23505"
+            ){
+
+                showToast(
+                    "This email is already subscribed."
+                );
+
+            }else{
+
+                showToast(
+                    "Unable to subscribe right now."
+                );
+
+            }
+
+        }
+
+    }
 );
 
-document
-.getElementById("newsletterEmail")
-.value="";
 
-}catch(error){
-
-console.error(error);
-
-showToast(
-"Unable to subscribe right now."
-);
-
-}
-
-});
-
-
-document
-.getElementById("searchInput")
-.addEventListener(
-"input",
-event=>{
-
-const query=
-event.target.value
-.trim()
-.toLowerCase();
-
-document
-.querySelectorAll(
-".card,.episode-card,.live-card,.news-card,.sports-card"
-)
-.forEach(card=>{
-
-const text=
-card.innerText.toLowerCase();
-
-card.style.display=
-!query||
-text.includes(query)
-?""
-:"none";
-
-});
-
-});
-
+/* =========================================================
+   SUPABASE AUTH STATE
+   ========================================================= */
 
 supabaseClient.auth.onAuthStateChange(
-()=>{
-setTimeout(()=>{
-updateAuthButton();
-loadWatchlist();
-},0);
+    (_event,session)=>{
+
+        currentUser =
+        session?.user ||
+        null;
+
+        const authButton =
+        document.getElementById(
+            "authButton"
+        );
+
+        if(currentUser){
+
+            authButton.textContent =
+            "Sign Out";
+
+            authButton.onclick =
+            signOut;
+
+        }else{
+
+            authButton.textContent =
+            "Sign In";
+
+            authButton.onclick =
+            openAuth;
+
+        }
+
+        loadWatchlist();
+
+    }
+);
+
+
+/* =========================================================
+   INITIAL LOAD
+   ========================================================= */
+
+async function initializePlatform(){
+
+    await checkAuth();
+
+    await Promise.allSettled([
+
+        loadOriginals(),
+
+        loadYouTubeVideos(),
+
+        loadSeries(),
+
+        loadEpisodes(),
+
+        loadLive(),
+
+        loadNews(),
+
+        loadSports("all"),
+
+        loadEntertainment("all"),
+
+        loadDocumentaries()
+
+    ]);
+
 }
-);
 
 
-document
-.addEventListener(
-"keydown",
-event=>{
+/* =========================================================
+   AUTO REFRESH
+   ========================================================= */
 
-if(event.key==="Escape"){
-
-closePlayer();
-closeAuth();
-
-}
-
-});
-
-
-async function initialize(){
-
-await Promise.allSettled([
-
-loadContent(),
-loadSeries(),
-loadEpisodes(),
-loadLiveEvents(),
-loadNews(),
-loadSports(),
-loadEntertainment(),
-loadDocumentaries(),
-loadWatchlist(),
-updateAuthButton()
-
-]);
-
-}
-
-
-initialize();
-
+/*
+   YouTube:
+   Refresh every 15 minutes.
+*/
 
 setInterval(
-loadNews,
-10*60*1000
+    loadYouTubeVideos,
+    15 * 60 * 1000
 );
 
-setInterval(
-loadSports,
-2*60*1000
-);
+
+/*
+   Episodes / Content:
+   Refresh every 10 minutes.
+*/
 
 setInterval(
-loadEntertainment,
-15*60*1000
+    loadEpisodes,
+    10 * 60 * 1000
 );
 
-setInterval(
-loadDocumentaries,
-15*60*1000
-);
+
+/*
+   Live:
+   Refresh every 30 seconds.
+*/
 
 setInterval(
-loadLiveEvents,
-30*1000
+    loadLive,
+    30 * 1000
 );
 
-setInterval(
-loadContent,
-10*60*1000
-);
+
+/*
+   News:
+   Refresh every 10 minutes.
+*/
 
 setInterval(
-loadEpisodes,
-10*60*1000
+    loadNews,
+    10 * 60 * 1000
 );
+
+
+/*
+   Sports:
+   Refresh every 2 minutes.
+*/
+
+setInterval(
+    ()=>loadSports("all"),
+    2 * 60 * 1000
+);
+
+
+/*
+   Entertainment:
+   Refresh every 15 minutes.
+*/
+
+setInterval(
+    ()=>loadEntertainment("all"),
+    15 * 60 * 1000
+);
+
+
+/*
+   Documentaries:
+   Refresh every 15 minutes.
+*/
+
+setInterval(
+    loadDocumentaries,
+    15 * 60 * 1000
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+initializePlatform();
 
 </script>
 
+
+<!-- =====================================================
+     EXISTING EXTERNAL SCRIPTS
+     ===================================================== -->
 
 <script src="./share.js"></script>
 <script src="/notifications.js"></script>
