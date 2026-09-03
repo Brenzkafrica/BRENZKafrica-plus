@@ -2300,95 +2300,119 @@ encodeURIComponent(id);
 
 /* =========================================================
    PLAYER
+   YouTube • Vimeo • Google Drive • Cloudinary • Direct Video
 ========================================================= */
-
-function playVideo(name,url,description=""){
-
-if(!url){
-showToast("This video is not available yet.");
-return;
+function playVideo(name, url, description = "") {
+    if (!url) {
+        showToast("This video is not available yet.");
+        return;
+    }
+    const cleanUrl = String(url).trim();
+    /* ---------------------------------------------------------
+       DETECT VIDEO SOURCES
+    --------------------------------------------------------- */
+    const youtubeId = extractYouTubeId(cleanUrl);
+    const vimeoId = extractVimeoId(cleanUrl);
+    const googleDriveId = extractGoogleDriveId(cleanUrl);
+    const isCloudinary =
+        cleanUrl.includes("player.cloudinary.com/embed/");
+    /* ---------------------------------------------------------
+       RESET PLAYER
+    --------------------------------------------------------- */
+    video.pause();
+    video.removeAttribute("src");
+    youtubePlayer.src = "";
+    video.style.display = "none";
+    youtubePlayer.style.display = "none";
+    /* ---------------------------------------------------------
+       PLAYER INFORMATION
+    --------------------------------------------------------- */
+    playerTitle.textContent =
+        name || "BRENZKafrica";
+    playerDescription.textContent =
+        description || "";
+    /* ---------------------------------------------------------
+       YOUTUBE
+    --------------------------------------------------------- */
+    if (youtubeId) {
+        youtubePlayer.src =
+            "https://www.youtube.com/embed/" +
+            youtubeId +
+            "?autoplay=1&rel=0";
+        youtubePlayer.style.display = "block";
+    }
+    /* ---------------------------------------------------------
+       VIMEO
+    --------------------------------------------------------- */
+    else if (vimeoId) {
+        youtubePlayer.src =
+            "https://player.vimeo.com/video/" +
+            vimeoId +
+            "?autoplay=1";
+        youtubePlayer.style.display = "block";
+    }
+    /* ---------------------------------------------------------
+       CLOUDINARY
+    --------------------------------------------------------- */
+    else if (isCloudinary) {
+        /*
+           Cloudinary Player Embed URLs must be loaded
+           inside the iframe, NOT inside the <video> element.
+        */
+        youtubePlayer.src = cleanUrl;
+        youtubePlayer.style.display = "block";
+    }
+    /* ---------------------------------------------------------
+       GOOGLE DRIVE
+    --------------------------------------------------------- */
+    else if (googleDriveId) {
+        video.src = convertGoogleDriveUrl(cleanUrl);
+        video.style.display = "block";
+        video.play().catch(() => {});
+    }
+    /* ---------------------------------------------------------
+       DIRECT VIDEO URL
+    --------------------------------------------------------- */
+    else {
+        video.src = cleanUrl;
+        video.style.display = "block";
+        video.play().catch(() => {});
+    }
+    /* ---------------------------------------------------------
+       OPEN PLAYER
+    --------------------------------------------------------- */
+    player.classList.add("active");
+    document.body.classList.add("modal-open");
 }
-
-const cleanUrl=String(url).trim();
-
-const youtubeId=extractYouTubeId(cleanUrl);
-const vimeoId=extractVimeoId(cleanUrl);
-const googleDriveId=extractGoogleDriveId(cleanUrl);
-
-video.pause();
-video.removeAttribute("src");
-youtubePlayer.src="";
-
-video.style.display="none";
-youtubePlayer.style.display="none";
-
-playerTitle.textContent=name||"BRENZKafrica";
-playerDescription.textContent=description||"";
-
-if(youtubeId){
-
-youtubePlayer.src=
-"https://www.youtube.com/embed/"+
-youtubeId+
-"?autoplay=1&rel=0";
-
-youtubePlayer.style.display="block";
-
-}else if(vimeoId){
-
-youtubePlayer.src=
-"https://player.vimeo.com/video/"+
-vimeoId+
-"?autoplay=1";
-
-youtubePlayer.style.display="block";
-
-}else if(googleDriveId){
-
-video.src=convertGoogleDriveUrl(cleanUrl);
-video.style.display="block";
-
-video.play().catch(()=>{});
-
-}else{
-
-video.src=cleanUrl;
-video.style.display="block";
-video.play().catch(()=>{});
-
-}
-
-player.classList.add("active");
-document.body.classList.add("modal-open");
-}
-
+/* =========================================================
+   CLOSE PLAYER
+========================================================= */
 function closePlayer(){
-
-video.pause();
-video.removeAttribute("src");
-youtubePlayer.src="";
-youtubePlayer.style.display="none";
-video.style.display="block";
-
-player.classList.remove("active");
-document.body.classList.remove("modal-open");
+    video.pause();
+    video.removeAttribute("src");
+    youtubePlayer.src = "";
+    youtubePlayer.style.display = "none";
+    video.style.display = "block";
+    player.classList.remove("active");
+    document.body.classList.remove("modal-open");
 }
-
+/* =========================================================
+   FEATURED VIDEO
+========================================================= */
 function playFeatured(){
-
-playVideo(
-"BRENZKafrica Cinema",
-"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
-);
-
+    playVideo(
+        "BRENZKafrica Cinema",
+        "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
+    );
 }
-
+/* =========================================================
+   PLAYER INFO
+========================================================= */
 function showInfo(){
-showToast(
-"BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
-);
+    showToast(
+        "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
+    );
 }
-
 /* =========================================================
    DATE
 ========================================================= */
