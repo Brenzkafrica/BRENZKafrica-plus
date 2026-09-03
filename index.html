@@ -2931,136 +2931,132 @@ title,
 
 async function loadYouTubeOriginals(){
 
-const originalsRow=document.getElementById("originalsRow");
+    const originalsRow =
+        document.getElementById("originalsRow");
 
-try{
+    if(!originalsRow){
+        return;
+    }
 
-const response=await fetch(
-YOUTUBE_API_URL,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
-}
-);
+    try{
 
-if(!response.ok){
-throw new Error("YouTube API returned "+response.status);
-}
+        const response = await fetch(YOUTUBE_API_URL);
 
-const data=await response.json();
+        if(!response.ok){
+            throw new Error("YouTube API error");
+        }
 
-let videos=[];
+        const data = await response.json();
 
-if(Array.isArray(data)){
-videos=data;
-}else if(Array.isArray(data.videos)){
-videos=data.videos;
-}else if(Array.isArray(data.items)){
-videos=data.items;
-}else if(Array.isArray(data.data)){
-videos=data.data;
-}
+        let videos = [];
 
-youtubeOriginals=videos
-.map(item=>{
+        if(Array.isArray(data)){
+            videos = data;
+        }
+        else if(Array.isArray(data.videos)){
+            videos = data.videos;
+        }
+        else if(Array.isArray(data.items)){
+            videos = data.items;
+        }
+        else if(Array.isArray(data.data)){
+            videos = data.data;
+        }
 
-const snippet=item.snippet||item;
+        youtubeOriginals = videos
+            .map(item => {
 
-let videoId="";
+                const snippet =
+                    item.snippet || item;
 
-const resourceId=
-snippet.resourceId||
-item.resourceId||
-item.videoId||
-item.id;
+                let videoId =
+                    item.videoId ||
+                    item.video_id ||
+                    snippet.videoId ||
+                    "";
 
-if(typeof resourceId==="string"){
-videoId=resourceId;
-}else if(resourceId?.videoId){
-videoId=resourceId.videoId;
-}
+                if(!videoId && item.id){
 
-if(!videoId&&item.video_id){
-videoId=item.video_id;
-}
+                    if(typeof item.id === "string"){
+                        videoId = item.id;
+                    }
+                    else if(item.id.videoId){
+                        videoId = item.id.videoId;
+                    }
 
-let url=
-item.url||
-item.video_url||
-snippet.url||
-"";
+                }
 
-if(!videoId){
-videoId=extractYouTubeId(url)||"";
-}
+                const title =
+                    item.title ||
+                    snippet.title ||
+                    "BRENZKafrica Original";
 
-if(!url&&videoId){
-url="https://www.youtube.com/watch?v="+videoId;
-}
+                const thumbnail =
+                    item.thumbnail ||
+                    item.thumbnail_url ||
+                    snippet.thumbnail ||
+                    snippet.thumbnails?.high?.url ||
+                    snippet.thumbnails?.medium?.url ||
+                    snippet.thumbnails?.default?.url ||
+                    (videoId
+                        ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                        : "");
 
-return {
-videoId,
-url,
-title:item.title||snippet.title||"BRENZKafrica Tutorial",
-description:item.description||snippet.description||"",
-thumbnail:
-item.thumbnail||
-item.thumbnail_url||
-snippet.thumbnail||
-snippet.thumbnails?.high?.url||
-snippet.thumbnails?.medium?.url||
-snippet.thumbnails?.default?.url||
-(videoId?`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`:""),
-publishedAt:
-item.publishedAt||
-item.published_at||
-snippet.publishedAt||
-""
-};
+                return {
+                    videoId,
+                    url:
+                        "https://www.youtube.com/watch?v=" +
+                        videoId,
+                    title,
+                    description:
+                        item.description ||
+                        snippet.description ||
+                        "",
+                    thumbnail,
+                    publishedAt:
+                        item.publishedAt ||
+                        item.published_at ||
+                        snippet.publishedAt ||
+                        ""
+                };
 
-})
-.filter(item=>item.videoId)
-.slice(0,20);
+            })
+            .filter(video => video.videoId)
+            .slice(0,20);
 
-if(youtubeOriginals.length){
 
-const html=youtubeOriginals
-.map(createYouTubeOriginalCard)
-.join("");
+        if(youtubeOriginals.length === 0){
 
-const existing=originalsRow.innerHTML.trim();
+            originalsRow.innerHTML =
+                `<div class="news-loading">
+                    No originals available yet.
+                </div>`;
 
-if(
-!existing||
-existing.includes("Loading originals")||
-existing.includes("No content available yet")
-){
+            return;
+        }
 
-originalsRow.innerHTML=html;
 
-}else{
+        originalsRow.innerHTML =
+            youtubeOriginals
+                .map(createYouTubeOriginalCard)
+                .join("");
 
-originalsRow.insertAdjacentHTML(
-"beforeend",
-html
-);
 
-}
+    }catch(error){
 
-}
+        console.error(
+            "BRENZKafrica Originals error:",
+            error
+        );
 
-}catch(error){
+        originalsRow.innerHTML =
+            `<div class="news-loading">
+                Unable to load content right now.
+            </div>`;
 
-console.warn(
-"BRENZKafrica YouTube loading error:",
-error
-);
-
-}
+    }
 
 }
-
 /* =========================================================
    EPISODES — THE POLYGAMIST SEASON 1
    ALL 22 CLOUDINARY EPISODES
