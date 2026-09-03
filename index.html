@@ -5012,3 +5012,26 @@ loadSports,
 );
 
 setInterval(
+async function(){
+
+await Promise.allSettled([
+loadContent(),
+loadEpisodes()
+]);
+
+},
+10*60*1000
+);
+
+setInterval(
+loadEntertainment,
+15*60*1000
+);
+
+</script>
+
+<script src="./share.js"></script>
+<script src="/notifications.js"></script>
+
+</body>
+</html>
