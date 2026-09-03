@@ -3188,9 +3188,9 @@ const polygamistEpisodes = [
 
 let currentEpisodeIndex = 0;
 
-
 /* =========================================================
    LOAD ALL 22 EPISODES
+   THE POLYGAMIST — SEASON 1
 ========================================================= */
 
 function loadPolygamistEpisodes(){
@@ -3205,6 +3205,9 @@ function loadPolygamistEpisodes(){
     episodesSubtitle.textContent =
         polygamistEpisodes.length + " episodes available";
 
+    const polygamistThumbnail =
+        "https://res.cloudinary.com/zveaunox/image/upload/v1788455560/IMG_2009.jpg";
+
     episodesRow.innerHTML =
         polygamistEpisodes.map((episode,index)=>{
 
@@ -3214,8 +3217,22 @@ function loadPolygamistEpisodes(){
                     data-episode-index="${index}"
                     onclick="playEpisode(${index})">
 
-                    <div class="episode-number">
-                        EP ${episode.episode}
+                    <div class="episode-image">
+
+                        <img
+                            src="${polygamistThumbnail}"
+                            alt="${escapeHTML(episode.title)}"
+                            loading="lazy"
+                        >
+
+                        <div class="episode-number">
+                            EP ${episode.episode}
+                        </div>
+
+                        <div class="episode-play-overlay">
+                            ▶
+                        </div>
+
                     </div>
 
                     <div class="episode-info">
@@ -3241,8 +3258,6 @@ function loadPolygamistEpisodes(){
 
         }).join("");
 }
-
-
 /* =========================================================
    PLAY EPISODE
 ========================================================= */
