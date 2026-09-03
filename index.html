@@ -3043,151 +3043,128 @@ error
 /* =========================================================
    EPISODES
 ========================================================= */
-
 async function loadEpisodes(){
-
-episodesSection.classList.add("visible");
-
-episodesRow.innerHTML=
-'<div class="episode-loading">Loading episodes...</div>';
-
-episodesSubtitle.textContent=
-"Loading episodes...";
-
-try{
-
-const {data,error}=await supabaseClient
-.from("episodes")
-.select(
-"id,season_id,episode_number,title,description,thumbnail_url,video_url,duration_seconds,is_premium,published_at,created_at,series_id"
-)
-.eq("series_id",CURRENT_SERIES_ID)
-.order("season_id",{ascending:true})
-.order("episode_number",{ascending:true});
-
-if(error)throw error;
-
-allEpisodes=data||[];
-
-if(!allEpisodes.length){
-
-episodesRow.innerHTML=
-'<div class="episode-empty">No episodes were found.</div>';
-
-episodesSubtitle.textContent=
-"No episodes found.";
-
-return;
+    episodesSection.classList.add("visible");
+    episodesRow.innerHTML =
+        '<div class="episode-loading">Loading episodes...</div>';
+    episodesSubtitle.textContent =
+        "Loading episodes...";
+    try{
+        const {data,error}=await supabaseClient
+            .from("episodes")
+            .select(
+                "id,season_id,episode_number,title,description,thumbnail_url,video_url,duration_seconds,is_premium,published_at,created_at,series_id"
+            )
+            .eq("series_id",CURRENT_SERIES_ID)
+            .order("season_id",{ascending:true})
+            .order("episode_number",{ascending:true});
+        if(error) throw error;
+        allEpisodes=data||[];
+        if(!allEpisodes.length){
+            episodesRow.innerHTML =
+                '<div class="episode-empty">No episodes were found.</div>';
+            episodesSubtitle.textContent =
+                "No episodes found.";
+            return;
+        }
+        episodesSubtitle.textContent =
+            allEpisodes.length+
+            " episode"+
+            (allEpisodes.length===1?"":"s")+
+            " available";
+        episodesRow.innerHTML =
+            allEpisodes.map(createEpisodeCard).join("");
+    }catch(error){
+        console.error("Episode loading error:",error);
+        episodesRow.innerHTML =
+            '<div class="episode-error">'+
+            'Unable to load episodes right now.'+
+            '</div>';
+        episodesSubtitle.textContent =
+            "Episode loading failed.";
+    }
 }
-
-episodesSubtitle.textContent=
-allEpisodes.length+
-" episode"+
-(allEpisodes.length===1?"":"s")+
-" available";
-
-episodesRow.innerHTML=
-allEpisodes.map(createEpisodeCard).join("");
-
-}catch(error){
-
-console.error("Episode loading error:",error);
-
-episodesRow.innerHTML=
-'<div class="episode-error">'+
-'Unable to load episodes right now.'+
-'</div>';
-
-episodesSubtitle.textContent=
-"Episode loading failed.";
-
-}
-
-}
-
 function createEpisodeCard(episode){
-
-const id=episode.id;
-const number=episode.episode_number;
-const title=episode.title||"Episode "+number;
-const description=episode.description||"";
-
-const thumbnail=
-episode.thumbnail_url||
-"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
-
-const duration=formatDuration(episode.duration_seconds);
-
-return `
-<article
-class="episode-card"
-data-episode-id="${escapeHTML(id)}"
-onclick="playEpisode('${escapeHTML(id)}')">
-
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="episode-number">
-EP ${escapeHTML(number)}
-</div>
-
-${episode.is_premium===true
-?'<div class="episode-premium">PREMIUM</div>'
-:""}
-
-<div class="episode-info">
-
-<div class="episode-title">
-${escapeHTML(title)}
-</div>
-
-<div class="episode-description">
-${escapeHTML(description)}
-</div>
-
-${duration
-?`<div class="episode-duration">${escapeHTML(duration)}</div>`
-:""}
-
-</div>
-
-</article>
-`;
-
+    const id=episode.id;
+    const number=episode.episode_number;
+    const title=episode.title||"Episode "+number;
+    const description=episode.description||"";
+    const thumbnail=
+        episode.thumbnail_url||
+        "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
+    const duration=formatDuration(episode.duration_seconds);
+    return `
+    <article
+        class="episode-card"
+        data-episode-id="${escapeHTML(id)}"
+        onclick="playEpisode('${escapeHTML(id)}')">
+        <img
+            src="${escapeHTML(thumbnail)}"
+            alt="${escapeHTML(title)}"
+            loading="lazy">
+        <div class="episode-number">
+            EP ${escapeHTML(number)}
+        </div>
+        ${episode.is_premium===true
+        ?'<div class="episode-premium">PREMIUM</div>'
+        :""}
+        <div class="episode-info">
+            <div class="episode-title">
+                ${escapeHTML(title)}
+            </div>
+            <div class="episode-description">
+                ${escapeHTML(description)}
+            </div>
+            ${duration
+            ?`<div class="episode-duration">${escapeHTML(duration)}</div>`
+            :""}
+        </div>
+    </article>
+    `;
 }
-
+/* =========================================================
+   PLAY EPISODE
+   ========================================================= */
 function playEpisode(id){
-
-const episode=allEpisodes.find(
-item=>String(item.id)===String(id)
-);
-
-if(!episode){
-
-showToast("This episode could not be found.");
-return;
+    const episode=allEpisodes.find(
+        item=>String(item.id)===String(id)
+    );
+    if(!episode){
+        showToast("This episode could not be found.");
+        return;
+    }
+    if(!episode.video_url){
+        showToast(
+            "Video for this episode has not been connected yet."
+        );
+        return;
+    }
+    /* -----------------------------------------
+       CLOUDINARY EPISODE
+       ----------------------------------------- */
+    const videoUrl=episode.video_url.trim();
+    if(
+        videoUrl.includes("player.cloudinary.com") ||
+        videoUrl.includes("res.cloudinary.com")
+    ){
+        playVideo(
+            "Episode "+episode.episode_number+
+            " — "+episode.title,
+            videoUrl,
+            episode.description||""
+        );
+        return;
+    }
+    /* -----------------------------------------
+       OTHER VIDEO SOURCES
+       ----------------------------------------- */
+    playVideo(
+        "Episode "+episode.episode_number+
+        " — "+episode.title,
+        videoUrl,
+        episode.description||""
+    );
 }
-
-if(!episode.video_url){
-
-showToast(
-"Video for this episode has not been connected yet."
-);
-
-return;
-}
-
-playVideo(
-"Episode "+episode.episode_number+
-" — "+episode.title,
-episode.video_url,
-episode.description||""
-);
-
-}
-
 /* =========================================================
    BRENZKAFRICA LIVE
 ========================================================= */
