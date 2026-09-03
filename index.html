@@ -3193,7 +3193,8 @@ error
 
 const POLYGAMIST_THUMBNAIL =
 "https://res.cloudinary.com/zveaunox/image/upload/v1788455560/IMG_2009";
-function loadPolygamistEpisodes(){
+
+function loadEpisodes(){
 
     if(!episodesRow){
         console.error("Episodes row not found.");
@@ -3207,6 +3208,7 @@ function loadPolygamistEpisodes(){
 
     episodesRow.innerHTML =
         polygamistEpisodes.map((episode,index)=>{
+
             return `
                 <article
                     class="episode-card"
@@ -3218,6 +3220,7 @@ function loadPolygamistEpisodes(){
                     </div>
 
                     <div class="episode-info">
+
                         <div class="episode-title">
                             ${escapeHTML(episode.title)}
                         </div>
@@ -3225,6 +3228,7 @@ function loadPolygamistEpisodes(){
                         <div class="episode-description">
                             The Polygamist • Season 1 • Episode ${episode.episode}
                         </div>
+
                     </div>
 
                     <button
@@ -3235,9 +3239,9 @@ function loadPolygamistEpisodes(){
 
                 </article>
             `;
+
         }).join("");
 }
-
 /* =========================================================
    CURRENT EPISODE
 ========================================================= */
