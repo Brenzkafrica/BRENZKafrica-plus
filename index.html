@@ -2300,239 +2300,93 @@ encodeURIComponent(id);
 
 /* =========================================================
    PLAYER
-   YouTube • Vimeo • Google Drive • Cloudinary
 ========================================================= */
 
 function playVideo(name,url,description=""){
 
-    if(!url){
-        showToast("This video is not available yet.");
-        return;
-    }
+if(!url){
+showToast("This video is not available yet.");
+return;
+}
 
-    const cleanUrl = String(url).trim();
+const cleanUrl=String(url).trim();
 
-    /*
-       Detect video sources
-    */
+const youtubeId=extractYouTubeId(cleanUrl);
+const vimeoId=extractVimeoId(cleanUrl);
+const googleDriveId=extractGoogleDriveId(cleanUrl);
 
-    const youtubeId =
-        extractYouTubeId(cleanUrl);
+video.pause();
+video.removeAttribute("src");
+youtubePlayer.src="";
 
-    const vimeoId =
-        extractVimeoId(cleanUrl);
+video.style.display="none";
+youtubePlayer.style.display="none";
 
-    const googleDriveId =
-        extractGoogleDriveId(cleanUrl);
+playerTitle.textContent=name||"BRENZKafrica";
+playerDescription.textContent=description||"";
 
+if(youtubeId){
 
-    /*
-       Reset players before loading
-    */
+youtubePlayer.src=
+"https://www.youtube.com/embed/"+
+youtubeId+
+"?autoplay=1&rel=0";
 
-    video.pause();
-    video.removeAttribute("src");
+youtubePlayer.style.display="block";
 
-    youtubePlayer.src = "";
+}else if(vimeoId){
 
-    video.style.display = "none";
-    youtubePlayer.style.display = "none";
+youtubePlayer.src=
+"https://player.vimeo.com/video/"+
+vimeoId+
+"?autoplay=1";
 
+youtubePlayer.style.display="block";
 
-    /*
-       Update player information
-    */
+}else if(googleDriveId){
 
-    playerTitle.textContent =
-        name || "BRENZKafrica";
+video.src=convertGoogleDriveUrl(cleanUrl);
+video.style.display="block";
 
-    playerDescription.textContent =
-        description || "";
+video.play().catch(()=>{});
 
+}else{
 
-    /* =====================================================
-       YOUTUBE
-    ===================================================== */
-
-    if(youtubeId){
-
-        youtubePlayer.src =
-            "https://www.youtube.com/embed/" +
-            youtubeId +
-            "?autoplay=1&rel=0";
-
-        youtubePlayer.style.display =
-            "block";
-
-    }
-
-
-    /* =====================================================
-       VIMEO
-    ===================================================== */
-
-    else if(vimeoId){
-
-        youtubePlayer.src =
-            "https://player.vimeo.com/video/" +
-            vimeoId +
-            "?autoplay=1";
-
-        youtubePlayer.style.display =
-            "block";
-
-    }
-
-
-    /* =====================================================
-       CLOUDINARY
-    ===================================================== */
-
-    else if(
-        cleanUrl.includes(
-            "player.cloudinary.com/embed/"
-        )
-    ){
-
-        /*
-           Cloudinary Player URLs are iframe embeds.
-           Therefore they must NOT be loaded into
-           the HTML5 <video> element.
-        */
-
-        youtubePlayer.src =
-            cleanUrl;
-
-        youtubePlayer.style.display =
-            "block";
-
-    }
-
-
-    /* =====================================================
-       GOOGLE DRIVE
-    ===================================================== */
-
-    else if(googleDriveId){
-
-        video.src =
-            convertGoogleDriveUrl(
-                cleanUrl
-            );
-
-        video.style.display =
-            "block";
-
-        video.play().catch(()=>{});
-
-    }
-
-
-    /* =====================================================
-       NORMAL VIDEO URL
-    ===================================================== */
-
-    else{
-
-        video.src =
-            cleanUrl;
-
-        video.style.display =
-            "block";
-
-        video.play().catch(()=>{});
-
-    }
-
-
-    /* =====================================================
-       OPEN PLAYER
-    ===================================================== */
-
-    player.classList.add("active");
-
-    document.body.classList.add(
-        "modal-open"
-    );
+video.src=cleanUrl;
+video.style.display="block";
+video.play().catch(()=>{});
 
 }
 
-
-/* =========================================================
-   CLOSE PLAYER
-========================================================= */
+player.classList.add("active");
+document.body.classList.add("modal-open");
+}
 
 function closePlayer(){
 
-    /*
-       Stop HTML5 video
-    */
+video.pause();
+video.removeAttribute("src");
+youtubePlayer.src="";
+youtubePlayer.style.display="none";
+video.style.display="block";
 
-    video.pause();
-
-    video.removeAttribute("src");
-
-
-    /*
-       Stop iframe
-    */
-
-    youtubePlayer.src = "";
-
-    youtubePlayer.style.display =
-        "none";
-
-
-    /*
-       Restore video element
-    */
-
-    video.style.display =
-        "block";
-
-
-    /*
-       Close modal
-    */
-
-    player.classList.remove(
-        "active"
-    );
-
-    document.body.classList.remove(
-        "modal-open"
-    );
-
+player.classList.remove("active");
+document.body.classList.remove("modal-open");
 }
-
-
-/* =========================================================
-   FEATURED VIDEO
-========================================================= */
 
 function playFeatured(){
 
-    playVideo(
-
-        "BRENZKafrica Cinema",
-
-        "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
-
-    );
+playVideo(
+"BRENZKafrica Cinema",
+"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
+);
 
 }
 
-
-/* =========================================================
-   INFO
-========================================================= */
-
 function showInfo(){
-
-    showToast(
-        "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
-    );
-
+showToast(
+"BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
+);
 }
 
 /* =========================================================
@@ -3191,57 +3045,143 @@ error
    ALL 22 CLOUDINARY EPISODES
 ========================================================= */
 
-const POLYGAMIST_THUMBNAIL =
-"https://res.cloudinary.com/zveaunox/image/upload/v1788455560/IMG_2009";
+const polygamistEpisodes = [
 
-function loadEpisodes(){
+    {
+        episode: 1,
+        title: "The Polygamist — Episode 1",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E01.540p.X265.AAC._9jaRocks.Com"
+    },
 
-    if(!episodesRow){
-        console.error("Episodes row not found.");
-        return;
+    {
+        episode: 2,
+        title: "The Polygamist — Episode 2",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E02.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 3,
+        title: "The Polygamist — Episode 3",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E03.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 4,
+        title: "The Polygamist — Episode 4",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E04.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 5,
+        title: "The Polygamist — Episode 5",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E05.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 6,
+        title: "The Polygamist — Episode 6",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E06.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 7,
+        title: "The Polygamist — Episode 7",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E07.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 8,
+        title: "The Polygamist — Episode 8",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E08.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 9,
+        title: "The Polygamist — Episode 9",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E09.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 10,
+        title: "The Polygamist — Episode 10",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E10.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 11,
+        title: "The Polygamist — Episode 11",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E11.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 12,
+        title: "The Polygamist — Episode 12",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E12.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 13,
+        title: "The Polygamist — Episode 13",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E13.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 14,
+        title: "The Polygamist — Episode 14",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E14.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 15,
+        title: "The Polygamist — Episode 15",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E15.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 16,
+        title: "The Polygamist — Episode 16",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E16.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 17,
+        title: "The Polygamist — Episode 17",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E17.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 18,
+        title: "The Polygamist — Episode 18",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E18.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 19,
+        title: "The Polygamist — Episode 19",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E19.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 20,
+        title: "The Polygamist — Episode 20",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E20.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 21,
+        title: "The Polygamist — Episode 21",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E21.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 22,
+        title: "The Polygamist — Episode 22",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E22.540p.X265.AAC._9jaRocks.Com"
     }
 
-    episodesSection.classList.add("visible");
+];
 
-    episodesSubtitle.textContent =
-        polygamistEpisodes.length + " episodes available";
 
-    episodesRow.innerHTML =
-        polygamistEpisodes.map((episode,index)=>{
-
-            return `
-                <article
-                    class="episode-card"
-                    data-episode-index="${index}"
-                    onclick="playEpisode(${index})">
-
-                    <div class="episode-number">
-                        EP ${episode.episode}
-                    </div>
-
-                    <div class="episode-info">
-
-                        <div class="episode-title">
-                            ${escapeHTML(episode.title)}
-                        </div>
-
-                        <div class="episode-description">
-                            The Polygamist • Season 1 • Episode ${episode.episode}
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="episode-play-btn"
-                        onclick="event.stopPropagation(); playEpisode(${index})">
-                        ▶ Play
-                    </button>
-
-                </article>
-            `;
-
-        }).join("");
-}
 /* =========================================================
    CURRENT EPISODE
 ========================================================= */
@@ -5072,26 +5012,3 @@ loadSports,
 );
 
 setInterval(
-async function(){
-
-await Promise.allSettled([
-loadContent(),
-loadEpisodes()
-]);
-
-},
-10*60*1000
-);
-
-setInterval(
-loadEntertainment,
-15*60*1000
-);
-
-</script>
-
-<script src="./share.js"></script>
-<script src="/notifications.js"></script>
-
-</body>
-</html>
