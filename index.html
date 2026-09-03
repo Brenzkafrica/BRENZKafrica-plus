@@ -3041,130 +3041,319 @@ error
 }
 
 /* =========================================================
-   EPISODES
+   EPISODES — THE POLYGAMIST SEASON 1
+   ALL 22 CLOUDINARY EPISODES
 ========================================================= */
-async function loadEpisodes(){
-    episodesSection.classList.add("visible");
-    episodesRow.innerHTML =
-        '<div class="episode-loading">Loading episodes...</div>';
-    episodesSubtitle.textContent =
-        "Loading episodes...";
-    try{
-        const {data,error}=await supabaseClient
-            .from("episodes")
-            .select(
-                "id,season_id,episode_number,title,description,thumbnail_url,video_url,duration_seconds,is_premium,published_at,created_at,series_id"
-            )
-            .eq("series_id",CURRENT_SERIES_ID)
-            .order("season_id",{ascending:true})
-            .order("episode_number",{ascending:true});
-        if(error) throw error;
-        allEpisodes=data||[];
-        if(!allEpisodes.length){
-            episodesRow.innerHTML =
-                '<div class="episode-empty">No episodes were found.</div>';
-            episodesSubtitle.textContent =
-                "No episodes found.";
-            return;
-        }
-        episodesSubtitle.textContent =
-            allEpisodes.length+
-            " episode"+
-            (allEpisodes.length===1?"":"s")+
-            " available";
-        episodesRow.innerHTML =
-            allEpisodes.map(createEpisodeCard).join("");
-    }catch(error){
-        console.error("Episode loading error:",error);
-        episodesRow.innerHTML =
-            '<div class="episode-error">'+
-            'Unable to load episodes right now.'+
-            '</div>';
-        episodesSubtitle.textContent =
-            "Episode loading failed.";
+
+const polygamistEpisodes = [
+
+    {
+        episode: 1,
+        title: "The Polygamist — Episode 1",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E01.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 2,
+        title: "The Polygamist — Episode 2",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E02.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 3,
+        title: "The Polygamist — Episode 3",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E03.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 4,
+        title: "The Polygamist — Episode 4",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E04.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 5,
+        title: "The Polygamist — Episode 5",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E05.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 6,
+        title: "The Polygamist — Episode 6",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E06.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 7,
+        title: "The Polygamist — Episode 7",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E07.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 8,
+        title: "The Polygamist — Episode 8",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E08.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 9,
+        title: "The Polygamist — Episode 9",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E09.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 10,
+        title: "The Polygamist — Episode 10",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E10.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 11,
+        title: "The Polygamist — Episode 11",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E11.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 12,
+        title: "The Polygamist — Episode 12",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E12.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 13,
+        title: "The Polygamist — Episode 13",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E13.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 14,
+        title: "The Polygamist — Episode 14",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E14.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 15,
+        title: "The Polygamist — Episode 15",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E15.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 16,
+        title: "The Polygamist — Episode 16",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E16.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 17,
+        title: "The Polygamist — Episode 17",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E17.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 18,
+        title: "The Polygamist — Episode 18",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E18.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 19,
+        title: "The Polygamist — Episode 19",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E19.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 20,
+        title: "The Polygamist — Episode 20",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E20.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 21,
+        title: "The Polygamist — Episode 21",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E21.540p.X265.AAC._9jaRocks.Com"
+    },
+
+    {
+        episode: 22,
+        title: "The Polygamist — Episode 22",
+        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E22.540p.X265.AAC._9jaRocks.Com"
     }
+
+];
+
+
+/* =========================================================
+   CURRENT EPISODE
+========================================================= */
+
+let currentEpisodeIndex = 0;
+
+
+/* =========================================================
+   LOAD ALL 22 EPISODES
+========================================================= */
+
+function loadPolygamistEpisodes(){
+
+    if(!episodesRow){
+        console.error("Episodes row not found.");
+        return;
+    }
+
+    episodesSection.classList.add("visible");
+
+    episodesSubtitle.textContent =
+        polygamistEpisodes.length + " episodes available";
+
+    episodesRow.innerHTML =
+        polygamistEpisodes.map((episode,index)=>{
+
+            return `
+                <article
+                    class="episode-card"
+                    data-episode-index="${index}"
+                    onclick="playEpisode(${index})">
+
+                    <div class="episode-number">
+                        EP ${episode.episode}
+                    </div>
+
+                    <div class="episode-info">
+
+                        <div class="episode-title">
+                            ${escapeHTML(episode.title)}
+                        </div>
+
+                        <div class="episode-description">
+                            The Polygamist • Season 1 • Episode ${episode.episode}
+                        </div>
+
+                    </div>
+
+                    <button
+                        class="episode-play-btn"
+                        onclick="event.stopPropagation(); playEpisode(${index})">
+                        ▶ Play
+                    </button>
+
+                </article>
+            `;
+
+        }).join("");
 }
-function createEpisodeCard(episode){
-    const id=episode.id;
-    const number=episode.episode_number;
-    const title=episode.title||"Episode "+number;
-    const description=episode.description||"";
-    const thumbnail=
-        episode.thumbnail_url||
-        "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80";
-    const duration=formatDuration(episode.duration_seconds);
-    return `
-    <article
-        class="episode-card"
-        data-episode-id="${escapeHTML(id)}"
-        onclick="playEpisode('${escapeHTML(id)}')">
-        <img
-            src="${escapeHTML(thumbnail)}"
-            alt="${escapeHTML(title)}"
-            loading="lazy">
-        <div class="episode-number">
-            EP ${escapeHTML(number)}
-        </div>
-        ${episode.is_premium===true
-        ?'<div class="episode-premium">PREMIUM</div>'
-        :""}
-        <div class="episode-info">
-            <div class="episode-title">
-                ${escapeHTML(title)}
-            </div>
-            <div class="episode-description">
-                ${escapeHTML(description)}
-            </div>
-            ${duration
-            ?`<div class="episode-duration">${escapeHTML(duration)}</div>`
-            :""}
-        </div>
-    </article>
-    `;
-}
+
+
 /* =========================================================
    PLAY EPISODE
-   ========================================================= */
-function playEpisode(id){
-    const episode=allEpisodes.find(
-        item=>String(item.id)===String(id)
-    );
-    if(!episode){
+========================================================= */
+
+function playEpisode(index){
+
+    if(
+        index < 0 ||
+        index >= polygamistEpisodes.length
+    ){
         showToast("This episode could not be found.");
         return;
     }
-    if(!episode.video_url){
-        showToast(
-            "Video for this episode has not been connected yet."
-        );
-        return;
-    }
-    /* -----------------------------------------
-       CLOUDINARY EPISODE
-       ----------------------------------------- */
-    const videoUrl=episode.video_url.trim();
-    if(
-        videoUrl.includes("player.cloudinary.com") ||
-        videoUrl.includes("res.cloudinary.com")
-    ){
-        playVideo(
-            "Episode "+episode.episode_number+
-            " — "+episode.title,
-            videoUrl,
-            episode.description||""
-        );
-        return;
-    }
-    /* -----------------------------------------
-       OTHER VIDEO SOURCES
-       ----------------------------------------- */
+
+    currentEpisodeIndex = index;
+
+    const episode =
+        polygamistEpisodes[index];
+
+    /*
+       Use the existing BRENZKafrica Plus player.
+       Cloudinary embed URL is passed directly to playVideo().
+    */
+
     playVideo(
-        "Episode "+episode.episode_number+
-        " — "+episode.title,
-        videoUrl,
-        episode.description||""
+        episode.title,
+        episode.url,
+        "The Polygamist • Season 1 • Episode " +
+        episode.episode
     );
+
+    updateEpisodeButtons();
 }
+
+
+/* =========================================================
+   NEXT EPISODE
+========================================================= */
+
+function playNextEpisode(){
+
+    if(
+        currentEpisodeIndex <
+        polygamistEpisodes.length - 1
+    ){
+
+        playEpisode(
+            currentEpisodeIndex + 1
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   PREVIOUS EPISODE
+========================================================= */
+
+function playPreviousEpisode(){
+
+    if(currentEpisodeIndex > 0){
+
+        playEpisode(
+            currentEpisodeIndex - 1
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   UPDATE EPISODE BUTTONS
+========================================================= */
+
+function updateEpisodeButtons(){
+
+    const previousButton =
+        document.getElementById(
+            "previousEpisodeBtn"
+        );
+
+    const nextButton =
+        document.getElementById(
+            "nextEpisodeBtn"
+        );
+
+    if(previousButton){
+
+        previousButton.disabled =
+            currentEpisodeIndex === 0;
+
+    }
+
+    if(nextButton){
+
+        nextButton.disabled =
+            currentEpisodeIndex ===
+            polygamistEpisodes.length - 1;
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD EPISODES
+========================================================= */
+
+loadPolygamistEpisodes();
 /* =========================================================
    BRENZKAFRICA LIVE
 ========================================================= */
