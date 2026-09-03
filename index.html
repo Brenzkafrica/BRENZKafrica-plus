@@ -2860,74 +2860,96 @@ row.innerHTML=
 }
 
 /* =========================================================
-   YOUTUBE
+   YOUTUBE — BRENZKAFRICA ORIGINALS
 ========================================================= */
 
 function createYouTubeOriginalCard(item){
 
-const videoId=
-item.videoId||
-extractYouTubeId(item.url)||
-extractYouTubeId(item.video_url);
+    const videoId =
+        item.videoId ||
+        extractYouTubeId(item.url) ||
+        extractYouTubeId(item.video_url);
 
-if(!videoId)return "";
+    if(!videoId) return "";
 
-const title=item.title||"BRENZKafrica Tutorial";
+    const title =
+        item.title ||
+        "BRENZKafrica Original";
 
-const thumbnail=
-item.thumbnail||
-`https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
+    const thumbnail =
+        item.thumbnail ||
+        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
 
-return `
-<article
-class="card youtube-original-card"
-data-youtube-id="${escapeHTML(videoId)}"
-data-title="${escapeHTML(title)}"
-onclick="playYouTubeOriginal(this)">
+    return `
+        <article
+            class="card youtube-original-card"
+            data-youtube-id="${escapeHTML(videoId)}"
+            data-title="${escapeHTML(title)}"
+            onclick="playYouTubeOriginal(this)"
+        >
 
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
+            <img
+                src="${escapeHTML(thumbnail)}"
+                alt="${escapeHTML(title)}"
+                loading="lazy"
+            >
 
-<span class="card-badge">BRENZKAFRICA</span>
+            <span class="card-badge">
+                BRENZKAFRICA
+            </span>
 
-<div class="card-overlay">
+            <div class="card-overlay">
 
-<div class="card-title">
-${escapeHTML(title)}
-</div>
+                <div class="card-title">
+                    ${escapeHTML(title)}
+                </div>
 
-<div class="youtube-label">
-YouTube Tutorial
-</div>
+                <div class="youtube-label">
+                    YouTube
+                </div>
 
-<div class="card-type">
-${escapeHTML(formatDate(item.publishedAt||item.published_at||""))}
-</div>
+                <div class="card-type">
+                    ${escapeHTML(
+                        formatDate(
+                            item.publishedAt ||
+                            item.published_at ||
+                            ""
+                        )
+                    )}
+                </div>
 
-</div>
+            </div>
 
-</article>
-`;
+        </article>
+    `;
 }
+
 
 function playYouTubeOriginal(card){
 
-const videoId=card?.dataset?.youtubeId;
-const title=card?.dataset?.title||"BRENZKafrica Tutorial";
+    const videoId =
+        card?.dataset?.youtubeId;
 
-if(!videoId){
-showToast("This YouTube video is unavailable.");
-return;
+    const title =
+        card?.dataset?.title ||
+        "BRENZKafrica Original";
+
+    if(!videoId){
+
+        showToast(
+            "This YouTube video is unavailable."
+        );
+
+        return;
+    }
+
+    playVideo(
+        title,
+        "https://www.youtube.com/watch?v=" +
+        videoId
+    );
 }
 
-playVideo(
-title,
-"https://www.youtube.com/watch?v="+videoId
-);
-
-}
 
 async function loadYouTubeOriginals(){
 
@@ -2935,84 +2957,161 @@ async function loadYouTubeOriginals(){
         document.getElementById("originalsRow");
 
     if(!originalsRow){
+
+        console.error(
+            "Originals row not found."
+        );
+
         return;
     }
 
     try{
 
-        const response = await fetch(YOUTUBE_API_URL);
+        const response =
+            await fetch(
+                YOUTUBE_API_URL,
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        Accept:"application/json"
+                    }
+                }
+            );
 
         if(!response.ok){
-            throw new Error("YouTube API error");
+
+            throw new Error(
+                "YouTube API returned " +
+                response.status
+            );
         }
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
         let videos = [];
 
         if(Array.isArray(data)){
+
             videos = data;
-        }
-        else if(Array.isArray(data.videos)){
+
+        }else if(
+            Array.isArray(data.videos)
+        ){
+
             videos = data.videos;
-        }
-        else if(Array.isArray(data.items)){
+
+        }else if(
+            Array.isArray(data.items)
+        ){
+
             videos = data.items;
-        }
-        else if(Array.isArray(data.data)){
+
+        }else if(
+            Array.isArray(data.data)
+        ){
+
             videos = data.data;
         }
 
-        youtubeOriginals = videos
+
+        youtubeOriginals =
+            videos
             .map(item => {
 
                 const snippet =
                     item.snippet || item;
 
-                let videoId =
+                let videoId = "";
+
+                const resourceId =
+                    snippet.resourceId ||
+                    item.resourceId ||
                     item.videoId ||
-                    item.video_id ||
-                    snippet.videoId ||
-                    "";
+                    item.id;
 
-                if(!videoId && item.id){
 
-                    if(typeof item.id === "string"){
-                        videoId = item.id;
-                    }
-                    else if(item.id.videoId){
-                        videoId = item.id.videoId;
-                    }
+                if(typeof resourceId === "string"){
 
+                    videoId =
+                        resourceId;
+
+                }else if(
+                    resourceId?.videoId
+                ){
+
+                    videoId =
+                        resourceId.videoId;
                 }
 
-                const title =
-                    item.title ||
-                    snippet.title ||
-                    "BRENZKafrica Original";
 
-                const thumbnail =
-                    item.thumbnail ||
-                    item.thumbnail_url ||
-                    snippet.thumbnail ||
-                    snippet.thumbnails?.high?.url ||
-                    snippet.thumbnails?.medium?.url ||
-                    snippet.thumbnails?.default?.url ||
-                    (videoId
-                        ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
-                        : "");
+                if(
+                    !videoId &&
+                    item.video_id
+                ){
+
+                    videoId =
+                        item.video_id;
+                }
+
+
+                let url =
+                    item.url ||
+                    item.video_url ||
+                    snippet.url ||
+                    "";
+
+
+                if(!videoId){
+
+                    videoId =
+                        extractYouTubeId(
+                            url
+                        ) || "";
+                }
+
+
+                if(
+                    !url &&
+                    videoId
+                ){
+
+                    url =
+                        "https://www.youtube.com/watch?v=" +
+                        videoId;
+                }
+
 
                 return {
+
                     videoId,
-                    url:
-                        "https://www.youtube.com/watch?v=" +
-                        videoId,
-                    title,
+
+                    url,
+
+                    title:
+                        item.title ||
+                        snippet.title ||
+                        "BRENZKafrica Original",
+
                     description:
                         item.description ||
                         snippet.description ||
                         "",
-                    thumbnail,
+
+                    thumbnail:
+                        item.thumbnail ||
+                        item.thumbnail_url ||
+                        snippet.thumbnail ||
+                        snippet.thumbnails?.high?.url ||
+                        snippet.thumbnails?.medium?.url ||
+                        snippet.thumbnails?.default?.url ||
+                        (
+                            videoId
+                            ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+                            : ""
+                        ),
+
                     publishedAt:
                         item.publishedAt ||
                         item.published_at ||
@@ -3021,41 +3120,44 @@ async function loadYouTubeOriginals(){
                 };
 
             })
-            .filter(video => video.videoId)
+            .filter(
+                item => item.videoId
+            )
             .slice(0,20);
 
 
-        if(youtubeOriginals.length === 0){
+        if(youtubeOriginals.length){
 
             originalsRow.innerHTML =
-                `<div class="news-loading">
-                    No originals available yet.
-                </div>`;
-
-            return;
-        }
-
-
-        originalsRow.innerHTML =
-            youtubeOriginals
-                .map(createYouTubeOriginalCard)
+                youtubeOriginals
+                .map(
+                    createYouTubeOriginalCard
+                )
                 .join("");
+
+        }else{
+
+            originalsRow.innerHTML = `
+                <div class="news-loading">
+                    No YouTube videos available yet.
+                </div>
+            `;
+        }
 
 
     }catch(error){
 
         console.error(
-            "BRENZKafrica Originals error:",
+            "BRENZKafrica YouTube loading error:",
             error
         );
 
-        originalsRow.innerHTML =
-            `<div class="news-loading">
+        originalsRow.innerHTML = `
+            <div class="news-loading">
                 Unable to load content right now.
-            </div>`;
-
+            </div>
+        `;
     }
-
 }
 /* =========================================================
    EPISODES — THE POLYGAMIST SEASON 1
