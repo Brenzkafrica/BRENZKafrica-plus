@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+u<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -2951,17 +2951,17 @@ function playYouTubeOriginal(card){
 }
 
 
+/* =========================================================
+   LOAD BRENZKAFRICA ORIGINALS FROM YOUTUBE API
+========================================================= */
+
 async function loadYouTubeOriginals(){
 
     const originalsRow =
         document.getElementById("originalsRow");
 
     if(!originalsRow){
-
-        console.error(
-            "Originals row not found."
-        );
-
+        console.error("Originals row not found.");
         return;
     }
 
@@ -2971,16 +2971,15 @@ async function loadYouTubeOriginals(){
             await fetch(
                 YOUTUBE_API_URL,
                 {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        Accept:"application/json"
+                    method: "GET",
+                    cache: "no-store",
+                    headers: {
+                        Accept: "application/json"
                     }
                 }
             );
 
         if(!response.ok){
-
             throw new Error(
                 "YouTube API returned " +
                 response.status
@@ -2990,149 +2989,70 @@ async function loadYouTubeOriginals(){
         const data =
             await response.json();
 
-        let videos = [];
+        /* -------------------------------------------------
+           API RETURNS:
+           {
+               success: true,
+               videos: [...]
+           }
+        ------------------------------------------------- */
 
-        if(Array.isArray(data)){
-
-            videos = data;
-
-        }else if(
+        const videos =
             Array.isArray(data.videos)
-        ){
-
-            videos = data.videos;
-
-        }else if(
-            Array.isArray(data.items)
-        ){
-
-            videos = data.items;
-
-        }else if(
-            Array.isArray(data.data)
-        ){
-
-            videos = data.data;
-        }
-
+                ? data.videos
+                : [];
 
         youtubeOriginals =
             videos
             .map(item => {
 
-                const snippet =
-                    item.snippet || item;
-
-                let videoId = "";
-
-                const resourceId =
-                    snippet.resourceId ||
-                    item.resourceId ||
-                    item.videoId ||
-                    item.id;
-
-
-                if(typeof resourceId === "string"){
-
-                    videoId =
-                        resourceId;
-
-                }else if(
-                    resourceId?.videoId
-                ){
-
-                    videoId =
-                        resourceId.videoId;
-                }
-
-
-                if(
-                    !videoId &&
-                    item.video_id
-                ){
-
-                    videoId =
-                        item.video_id;
-                }
-
-
-                let url =
-                    item.url ||
-                    item.video_url ||
-                    snippet.url ||
-                    "";
-
+                const videoId =
+                    item.id || "";
 
                 if(!videoId){
-
-                    videoId =
-                        extractYouTubeId(
-                            url
-                        ) || "";
+                    return null;
                 }
-
-
-                if(
-                    !url &&
-                    videoId
-                ){
-
-                    url =
-                        "https://www.youtube.com/watch?v=" +
-                        videoId;
-                }
-
 
                 return {
 
-                    videoId,
+                    videoId: videoId,
 
-                    url,
+                    url:
+                        "https://www.youtube.com/watch?v=" +
+                        videoId,
 
                     title:
                         item.title ||
-                        snippet.title ||
                         "BRENZKafrica Original",
 
                     description:
                         item.description ||
-                        snippet.description ||
                         "",
 
                     thumbnail:
                         item.thumbnail ||
-                        item.thumbnail_url ||
-                        snippet.thumbnail ||
-                        snippet.thumbnails?.high?.url ||
-                        snippet.thumbnails?.medium?.url ||
-                        snippet.thumbnails?.default?.url ||
-                        (
-                            videoId
-                            ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
-                            : ""
-                        ),
+                        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
 
                     publishedAt:
                         item.publishedAt ||
-                        item.published_at ||
-                        snippet.publishedAt ||
                         ""
+
                 };
 
             })
-            .filter(
-                item => item.videoId
-            )
+            .filter(Boolean)
             .slice(0,20);
 
+
+        /* -------------------------------------------------
+           RENDER ORIGINALS
+        ------------------------------------------------- */
 
         if(youtubeOriginals.length){
 
             originalsRow.innerHTML =
                 youtubeOriginals
-                .map(
-                    createYouTubeOriginalCard
-                )
+                .map(createYouTubeOriginalCard)
                 .join("");
 
         }else{
@@ -3145,6 +3065,20 @@ async function loadYouTubeOriginals(){
         }
 
 
+    }catch(error){
+
+        console.error(
+            "BRENZKafrica YouTube loading error:",
+            error
+        );
+
+        originalsRow.innerHTML = `
+            <div class="news-loading">
+                Unable to load content right now.
+            </div>
+        `;
+    }
+}
     }catch(error){
 
         console.error(
