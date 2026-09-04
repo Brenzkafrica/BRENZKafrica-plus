@@ -1,4 +1,4 @@
-u<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1411,23 +1411,26 @@ and global creative work from BRENZKafrica.
 </div>
 </section>
 
+<section class="section" id="series">
+<div class="section-heading">
+<h2 class="section-title">Series</h2>
+<a href="#series" class="section-link">View all →</a>
+</div>
+<p class="section-subtitle">African stories, journeys and creative voices.</p>
+<div class="row" id="seriesRow">
+<div class="news-loading">Loading series...</div>
+</div>
+</section>
+
 <section class="section episodes-section" id="episodes">
-    <div class="section-heading">
-        <h2 class="section-title">
-            TRENDING SERIES
-        </h2>
-        <span class="section-link">
-            NOW PLAYING
-        </span>
-    </div>
-    <p class="section-subtitle" id="episodesSubtitle">
-        THE POLYGAMIST
-    </p>
-    <div class="episode-row" id="episodesRow">
-        <div class="episode-loading">
-            Loading episodes...
-        </div>
-    </div>
+<div class="section-heading">
+<h2 class="section-title">Episodes</h2>
+<span class="section-link">Season episodes</span>
+</div>
+<p class="section-subtitle" id="episodesSubtitle">Watch episodes from this series.</p>
+<div class="episode-row" id="episodesRow">
+<div class="episode-loading">Loading episodes...</div>
+</div>
 </section>
 
 <section class="live-section" id="live">
@@ -2860,239 +2863,207 @@ row.innerHTML=
 }
 
 /* =========================================================
-   YOUTUBE — BRENZKAFRICA ORIGINALS
+   YOUTUBE
 ========================================================= */
 
 function createYouTubeOriginalCard(item){
 
-    const videoId =
-        item.videoId ||
-        extractYouTubeId(item.url) ||
-        extractYouTubeId(item.video_url);
+const videoId=
+item.videoId||
+extractYouTubeId(item.url)||
+extractYouTubeId(item.video_url);
 
-    if(!videoId) return "";
+if(!videoId)return "";
 
-    const title =
-        item.title ||
-        "BRENZKafrica Original";
+const title=item.title||"BRENZKafrica Tutorial";
 
-    const thumbnail =
-        item.thumbnail ||
-        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+const thumbnail=
+item.thumbnail||
+`https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
 
-    return `
-        <article
-            class="card youtube-original-card"
-            data-youtube-id="${escapeHTML(videoId)}"
-            data-title="${escapeHTML(title)}"
-            onclick="playYouTubeOriginal(this)"
-        >
+return `
+<article
+class="card youtube-original-card"
+data-youtube-id="${escapeHTML(videoId)}"
+data-title="${escapeHTML(title)}"
+onclick="playYouTubeOriginal(this)">
 
-            <img
-                src="${escapeHTML(thumbnail)}"
-                alt="${escapeHTML(title)}"
-                loading="lazy"
-            >
+<img
+src="${escapeHTML(thumbnail)}"
+alt="${escapeHTML(title)}"
+loading="lazy">
 
-            <span class="card-badge">
-                BRENZKAFRICA
-            </span>
+<span class="card-badge">BRENZKAFRICA</span>
 
-            <div class="card-overlay">
+<div class="card-overlay">
 
-                <div class="card-title">
-                    ${escapeHTML(title)}
-                </div>
+<div class="card-title">
+${escapeHTML(title)}
+</div>
 
-                <div class="youtube-label">
-                    YouTube
-                </div>
+<div class="youtube-label">
+YouTube Tutorial
+</div>
 
-                <div class="card-type">
-                    ${escapeHTML(
-                        formatDate(
-                            item.publishedAt ||
-                            item.published_at ||
-                            ""
-                        )
-                    )}
-                </div>
+<div class="card-type">
+${escapeHTML(formatDate(item.publishedAt||item.published_at||""))}
+</div>
 
-            </div>
+</div>
 
-        </article>
-    `;
+</article>
+`;
 }
-
 
 function playYouTubeOriginal(card){
 
-    const videoId =
-        card?.dataset?.youtubeId;
+const videoId=card?.dataset?.youtubeId;
+const title=card?.dataset?.title||"BRENZKafrica Tutorial";
 
-    const title =
-        card?.dataset?.title ||
-        "BRENZKafrica Original";
-
-    if(!videoId){
-
-        showToast(
-            "This YouTube video is unavailable."
-        );
-
-        return;
-    }
-
-    playVideo(
-        title,
-        "https://www.youtube.com/watch?v=" +
-        videoId
-    );
+if(!videoId){
+showToast("This YouTube video is unavailable.");
+return;
 }
 
+playVideo(
+title,
+"https://www.youtube.com/watch?v="+videoId
+);
 
-/* =========================================================
-   LOAD BRENZKAFRICA ORIGINALS FROM YOUTUBE API
-========================================================= */
+}
 
 async function loadYouTubeOriginals(){
 
-    const originalsRow =
-        document.getElementById("originalsRow");
+const originalsRow=document.getElementById("originalsRow");
 
-    if(!originalsRow){
-        console.error("Originals row not found.");
-        return;
-    }
+try{
 
-    try{
-
-        const response =
-            await fetch(
-                YOUTUBE_API_URL,
-                {
-                    method: "GET",
-                    cache: "no-store",
-                    headers: {
-                        Accept: "application/json"
-                    }
-                }
-            );
-
-        if(!response.ok){
-            throw new Error(
-                "YouTube API returned " +
-                response.status
-            );
-        }
-
-        const data =
-            await response.json();
-
-        /* -------------------------------------------------
-           API RETURNS:
-           {
-               success: true,
-               videos: [...]
-           }
-        ------------------------------------------------- */
-
-        const videos =
-            Array.isArray(data.videos)
-                ? data.videos
-                : [];
-
-        youtubeOriginals =
-            videos
-            .map(item => {
-
-                const videoId =
-                    item.id || "";
-
-                if(!videoId){
-                    return null;
-                }
-
-                return {
-
-                    videoId: videoId,
-
-                    url:
-                        "https://www.youtube.com/watch?v=" +
-                        videoId,
-
-                    title:
-                        item.title ||
-                        "BRENZKafrica Original",
-
-                    description:
-                        item.description ||
-                        "",
-
-                    thumbnail:
-                        item.thumbnail ||
-                        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-
-                    publishedAt:
-                        item.publishedAt ||
-                        ""
-
-                };
-
-            })
-            .filter(Boolean)
-            .slice(0,20);
-
-
-        /* -------------------------------------------------
-           RENDER ORIGINALS
-        ------------------------------------------------- */
-
-        if(youtubeOriginals.length){
-
-            originalsRow.innerHTML =
-                youtubeOriginals
-                .map(createYouTubeOriginalCard)
-                .join("");
-
-        }else{
-
-            originalsRow.innerHTML = `
-                <div class="news-loading">
-                    No YouTube videos available yet.
-                </div>
-            `;
-        }
-
-
-    }catch(error){
-
-        console.error(
-            "BRENZKafrica YouTube loading error:",
-            error
-        );
-
-        originalsRow.innerHTML = `
-            <div class="news-loading">
-                Unable to load content right now.
-            </div>
-        `;
-    }
+const response=await fetch(
+YOUTUBE_API_URL,
+{
+method:"GET",
+cache:"no-store",
+headers:{Accept:"application/json"}
 }
-    }catch(error){
+);
 
-        console.error(
-            "BRENZKafrica YouTube loading error:",
-            error
-        );
-
-        originalsRow.innerHTML = `
-            <div class="news-loading">
-                Unable to load content right now.
-            </div>
-        `;
-    }
+if(!response.ok){
+throw new Error("YouTube API returned "+response.status);
 }
+
+const data=await response.json();
+
+let videos=[];
+
+if(Array.isArray(data)){
+videos=data;
+}else if(Array.isArray(data.videos)){
+videos=data.videos;
+}else if(Array.isArray(data.items)){
+videos=data.items;
+}else if(Array.isArray(data.data)){
+videos=data.data;
+}
+
+youtubeOriginals=videos
+.map(item=>{
+
+const snippet=item.snippet||item;
+
+let videoId="";
+
+const resourceId=
+snippet.resourceId||
+item.resourceId||
+item.videoId||
+item.id;
+
+if(typeof resourceId==="string"){
+videoId=resourceId;
+}else if(resourceId?.videoId){
+videoId=resourceId.videoId;
+}
+
+if(!videoId&&item.video_id){
+videoId=item.video_id;
+}
+
+let url=
+item.url||
+item.video_url||
+snippet.url||
+"";
+
+if(!videoId){
+videoId=extractYouTubeId(url)||"";
+}
+
+if(!url&&videoId){
+url="https://www.youtube.com/watch?v="+videoId;
+}
+
+return {
+videoId,
+url,
+title:item.title||snippet.title||"BRENZKafrica Tutorial",
+description:item.description||snippet.description||"",
+thumbnail:
+item.thumbnail||
+item.thumbnail_url||
+snippet.thumbnail||
+snippet.thumbnails?.high?.url||
+snippet.thumbnails?.medium?.url||
+snippet.thumbnails?.default?.url||
+(videoId?`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`:""),
+publishedAt:
+item.publishedAt||
+item.published_at||
+snippet.publishedAt||
+""
+};
+
+})
+.filter(item=>item.videoId)
+.slice(0,20);
+
+if(youtubeOriginals.length){
+
+const html=youtubeOriginals
+.map(createYouTubeOriginalCard)
+.join("");
+
+const existing=originalsRow.innerHTML.trim();
+
+if(
+!existing||
+existing.includes("Loading originals")||
+existing.includes("No content available yet")
+){
+
+originalsRow.innerHTML=html;
+
+}else{
+
+originalsRow.insertAdjacentHTML(
+"beforeend",
+html
+);
+
+}
+
+}
+
+}catch(error){
+
+console.warn(
+"BRENZKafrica YouTube loading error:",
+error
+);
+
+}
+
+}
+
 /* =========================================================
    EPISODES — THE POLYGAMIST SEASON 1
    ALL 22 CLOUDINARY EPISODES
