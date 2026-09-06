@@ -3531,126 +3531,127 @@ playVideo(title,streamUrl);
 }
 
 /* =========================================================
-   NEWS
+   NEWS — BRENZKAFRICA PLUS
 ========================================================= */
-
 async function loadBreakingNews(){
-
-newsStatus.textContent="Updating...";
-
-newsRow.innerHTML=
-'<div class="news-loading">Loading latest African news...</div>';
-
-try{
-
-const response=await fetch(
-NEWS_API_URL,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
+    if(!newsRow || !newsStatus){
+        console.error("News elements not found.");
+        return;
+    }
+    newsStatus.textContent="Updating...";
+    newsRow.innerHTML=
+        '<div class="news-loading">Loading latest African news...</div>';
+    try{
+        const response=await fetch(
+            NEWS_API_URL,
+            {
+                method:"GET",
+                cache:"no-store",
+                headers:{
+                    Accept:"application/json"
+                }
+            }
+        );
+        if(!response.ok){
+            throw new Error(
+                "News API error "+response.status
+            );
+        }
+        const data=await response.json();
+        if(!data || data.success!==true){
+            throw new Error(
+                data?.error ||
+                "Invalid news response"
+            );
+        }
+        if(!Array.isArray(data.news) || !data.news.length){
+            newsRow.innerHTML=
+                '<div class="news-empty">'+
+                'No breaking news available right now.'+
+                '</div>';
+            newsStatus.textContent="No updates";
+            return;
+        }
+        newsRow.innerHTML=data.news.map(item=>{
+            const link=
+                encodeURIComponent(
+                    item.link || ""
+                );
+            return `
+                <article
+                    class="news-card"
+                    onclick="openNewsArticle('${link}')">
+                    <div>
+                        <div class="news-source">
+                            ${escapeHTML(
+                                item.source || "News"
+                            )}
+                        </div>
+                        <div class="news-title">
+                            ${escapeHTML(
+                                item.title || ""
+                            )}
+                        </div>
+                        <div class="news-description">
+                            ${escapeHTML(
+                                item.description || ""
+                            )}
+                        </div>
+                    </div>
+                    <div class="news-date">
+                        ${escapeHTML(
+                            formatDate(item.date)
+                        )}
+                    </div>
+                </article>
+            `;
+        }).join("");
+        newsStatus.textContent=
+            (data.count || data.news.length)+
+            " fresh stories";
+        console.log(
+            "BRENZKafrica Plus: News loaded successfully."
+        );
+    }catch(error){
+        console.error(
+            "BRENZKafrica Plus News loading error:",
+            error
+        );
+        newsRow.innerHTML=
+            '<div class="news-error">'+
+            'Unable to load breaking news right now.'+
+            '</div>';
+        newsStatus.textContent=
+            "News unavailable";
+    }
 }
-);
-
-if(!response.ok){
-throw new Error("News API error "+response.status);
-}
-
-const data=await response.json();
-
-if(!data||data.success!==true){
-throw new Error(data?.error||"Invalid news response");
-}
-
-if(!data.news||!data.news.length){
-
-newsRow.innerHTML=
-'<div class="news-empty">'+
-'No breaking news available right now.'+
-'</div>';
-
-newsStatus.textContent="No updates";
-
-return;
-}
-
-newsRow.innerHTML=data.news.map(item=>{
-
-const link=encodeURIComponent(item.link||"");
-
-return `
-<article
-class="news-card"
-onclick="openNewsArticle('${link}')">
-
-<div>
-
-<div class="news-source">
-${escapeHTML(item.source||"News")}
-</div>
-
-<div class="news-title">
-${escapeHTML(item.title||"")}
-</div>
-
-<div class="news-description">
-${escapeHTML(item.description||"")}
-</div>
-
-</div>
-
-<div class="news-date">
-${escapeHTML(formatDate(item.date))}
-</div>
-
-</article>
-`;
-
-}).join("");
-
-newsStatus.textContent=
-(data.count||data.news.length)+
-" fresh stories";
-
-}catch(error){
-
-console.error("News loading error:",error);
-
-newsRow.innerHTML=
-'<div class="news-error">'+
-'Unable to load breaking news right now.'+
-'</div>';
-
-newsStatus.textContent="News unavailable";
-
-}
-
-}
-
+/* =========================================================
+   NEWS ARTICLE
+========================================================= */
 function openNewsArticle(encoded){
-
-if(!encoded)return;
-
-try{
-
-const url=decodeURIComponent(encoded);
-
-if(!/^https?:\/\//i.test(url))return;
-
-window.open(
-url,
-"_blank",
-"noopener,noreferrer"
-);
-
-}catch(error){
-
-console.error(error);
-
+    if(!encoded)return;
+    try{
+        const url=
+            decodeURIComponent(encoded);
+        if(!/^https?:\/\//i.test(url)){
+            return;
+        }
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+    }catch(error){
+        console.error(
+            "News article error:",
+            error
+        );
+    }
 }
-
-}
-
+/* =========================================================
+   INITIAL NEWS LOAD
+========================================================= */
+loadBreakingNews();
 /* =========================================================
    SPORTS
 ========================================================= */
