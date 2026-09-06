@@ -1901,32 +1901,51 @@ const CURRENT_SERIES_ID=1;
 /* =========================================================
    SPORTS
 ========================================================= */
-
 const SPORTS_LEAGUES=[
-{sport:"soccer",league:"eng.1",name:"Premier League",category:"football"},
-{sport:"soccer",league:"esp.1",name:"LaLiga",category:"football"},
-{sport:"soccer",league:"ger.1",name:"Bundesliga",category:"football"},
-{sport:"soccer",league:"ita.1",name:"Serie A",category:"football"},
-{sport:"soccer",league:"fra.1",name:"Ligue 1",category:"football"},
-{sport:"soccer",league:"uefa.champions",name:"UEFA Champions League",category:"football"},
-{sport:"soccer",league:"usa.1",name:"MLS",category:"football"},
-{sport:"soccer",league:"usa.nwsl",name:"NWSL",category:"football"},
-{sport:"soccer",league:"mex.1",name:"Liga MX",category:"football"},
-{sport:"soccer",league:"bra.1",name:"Brasileirão",category:"football"},
-{sport:"soccer",league:"arg.1",name:"Argentina Liga",category:"football"},
-{sport:"basketball",league:"nba",name:"NBA",category:"basketball"},
-{sport:"basketball",league:"wnba",name:"WNBA",category:"basketball"},
-{sport:"basketball",league:"euroleague",name:"EuroLeague",category:"basketball"},
-{sport:"football",league:"nfl",name:"NFL",category:"football-american"},
-{sport:"baseball",league:"mlb",name:"MLB",category:"baseball"},
-{sport:"hockey",league:"nhl",name:"NHL",category:"hockey"},
-{sport:"racing",league:"f1",name:"Formula 1",category:"racing"},
-{sport:"golf",league:"pga",name:"PGA Tour",category:"golf"},
-{sport:"tennis",league:"atp",name:"ATP Tennis",category:"tennis"},
-{sport:"tennis",league:"wta",name:"WTA Tennis",category:"tennis"},
-{sport:"mma",league:"ufc",name:"UFC",category:"mma"}
+    {sport:"soccer",league:"eng.1",name:"Premier League",category:"football"},
+    {sport:"soccer",league:"esp.1",name:"LaLiga",category:"football"},
+    {sport:"soccer",league:"ger.1",name:"Bundesliga",category:"football"},
+    {sport:"soccer",league:"ita.1",name:"Serie A",category:"football"},
+    {sport:"soccer",league:"fra.1",name:"Ligue 1",category:"football"},
+    {sport:"soccer",league:"uefa.champions",name:"UEFA Champions League",category:"football"},
+    {sport:"soccer",league:"usa.1",name:"MLS",category:"football"},
+    {sport:"soccer",league:"usa.nwsl",name:"NWSL",category:"football"},
+    {sport:"soccer",league:"mex.1",name:"Liga MX",category:"football"},
+    {sport:"soccer",league:"bra.1",name:"Brasileirão",category:"football"},
+    {sport:"soccer",league:"arg.1",name:"Argentina Liga",category:"football"},
+    {sport:"basketball",league:"nba",name:"NBA",category:"basketball"},
+    {sport:"basketball",league:"wnba",name:"WNBA",category:"basketball"},
+    {sport:"basketball",league:"euroleague",name:"EuroLeague",category:"basketball"},
+    {sport:"football",league:"nfl",name:"NFL",category:"football-american"},
+    {sport:"baseball",league:"mlb",name:"MLB",category:"baseball"},
+    {sport:"hockey",league:"nhl",name:"NHL",category:"hockey"},
+    {sport:"racing",league:"f1",name:"Formula 1",category:"racing"},
+    {sport:"golf",league:"pga",name:"PGA Tour",category:"golf"},
+    {sport:"tennis",league:"atp",name:"ATP Tennis",category:"tennis"},
+    {sport:"tennis",league:"wta",name:"WTA Tennis",category:"tennis"},
+    {sport:"mma",league:"ufc",name:"UFC",category:"mma"}
 ];
-
+/* =========================================================
+   INITIAL SPORTS LOAD
+========================================================= */
+if(typeof loadSports==="function"){
+    loadSports();
+}else{
+    console.error(
+        "BRENZKafrica Plus: loadSports() function not found."
+    );
+}
+/* =========================================================
+   SPORTS AUTO REFRESH
+========================================================= */
+setInterval(
+    ()=>{
+        if(typeof loadSports==="function"){
+            loadSports();
+        }
+    },
+    2*60*1000
+);
 /* =========================================================
    GLOBAL ENTERTAINMENT CATALOGUE
    Global music + entertainment starter content.
