@@ -4199,333 +4199,1040 @@ row.innerHTML=
 }
 
 /* =========================================================
-   ENTERTAINMENT
+   ENTERTAINMENT — GLOBAL LIVE ENTERTAINMENT
+========================================================= */
+
+/*
+   BRENZKafrica Entertainment
+   --------------------------------
+   Global coverage:
+   • Music
+   • Trending entertainment
+   • Celebrity
+   • Theatre
+   • Events
+   • Awards
+   • Movies / TV / streaming
+   • African entertainment
+   • Hollywood
+   • Bollywood
+   • K-pop / K-drama
+   • European entertainment
+   • Latin entertainment
+   • Global pop culture
+
+   The API provides fresh content.
+   The manual catalogue remains as a fallback.
+*/
+
+
+/* =========================================================
+   ENTERTAINMENT TABS
 ========================================================= */
 
 function showEntertainmentTab(tab,button){
 
-document.querySelectorAll(".entertainment-tab")
-.forEach(item=>{
-item.classList.remove("active");
-});
+    document.querySelectorAll(".entertainment-tab")
+    .forEach(item=>{
+        item.classList.remove("active");
+    });
 
-if(button){
-button.classList.add("active");
+    if(button){
+        button.classList.add("active");
+    }
+
+    document.querySelectorAll(".entertainment-panel")
+    .forEach(panel=>{
+        panel.classList.remove("active");
+    });
+
+    const panels={
+        music:"entertainmentMusicPanel",
+        trending:"entertainmentTrendingPanel",
+        celebrity:"entertainmentCelebrityPanel",
+        theatre:"entertainmentTheatrePanel",
+        events:"entertainmentEventsPanel",
+        awards:"entertainmentAwardsPanel"
+    };
+
+    const panel=document.getElementById(panels[tab]);
+
+    if(panel){
+        panel.classList.add("active");
+    }
+
 }
 
-document.querySelectorAll(".entertainment-panel")
-.forEach(panel=>{
-panel.classList.remove("active");
-});
 
-const panels={
-music:"entertainmentMusicPanel",
-trending:"entertainmentTrendingPanel",
-celebrity:"entertainmentCelebrityPanel",
-theatre:"entertainmentTheatrePanel",
-events:"entertainmentEventsPanel",
-awards:"entertainmentAwardsPanel"
-};
+/* =========================================================
+   SAFE IMAGE
+========================================================= */
 
-const panel=document.getElementById(panels[tab]);
+function entertainmentImage(url,fallback){
 
-if(panel){
-panel.classList.add("active");
+    if(
+        url &&
+        typeof url==="string" &&
+        /^https?:\/\//i.test(url)
+    ){
+        return url;
+    }
+
+    return fallback;
 }
 
-}
+
+/* =========================================================
+   MUSIC CARD
+========================================================= */
 
 function createMusicCard(item){
 
-const title=item.title||"Global Music";
-const artist=item.artist||"Global Artist";
-const region=item.region||"Worldwide";
-const image=item.image||
-"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80";
+    const title=
+        item.title||
+        item.name||
+        "Global Music";
 
-const hasUrl=
-item.url&&
-/^(https?:\/\/|\/)/i.test(item.url);
+    const artist=
+        item.artist||
+        item.creator||
+        item.author||
+        "Global Artist";
 
-return `
-<article
-class="music-card"
-onclick="${
-hasUrl
-?`playMusic('${escapeHTML(title)}','${escapeHTML(item.url)}','${escapeHTML(artist)}')`
-:`showToast('Music playback will be connected when a licensed music source is added.')`
-}">
+    const region=
+        item.region||
+        item.country||
+        "Worldwide";
 
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
+    const image=
+        entertainmentImage(
+            item.image||
+            item.thumbnail||
+            item.thumbnail_url||
+            item.image_url,
+            "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80"
+        );
 
-<div class="music-play">
-▶
-</div>
+    const url=
+        item.url||
+        item.link||
+        item.video_url||
+        "";
 
-<div class="music-info">
+    const hasUrl=
+        /^(https?:\/\/|\/)/i.test(url);
 
-<div class="music-title">
-${escapeHTML(title)}
-</div>
+    const safeTitle=
+        escapeHTML(title)
+        .replace(/'/g,"&#39;");
 
-<div class="music-artist">
-${escapeHTML(artist)}
-</div>
+    const safeArtist=
+        escapeHTML(artist)
+        .replace(/'/g,"&#39;");
 
-<div class="music-region">
-${escapeHTML(region)}
-</div>
+    const safeUrl=
+        escapeHTML(url)
+        .replace(/'/g,"&#39;");
 
-</div>
+    return `
+        <article
+            class="music-card"
+            onclick="${
+                hasUrl
+                ?
+                `playMusic('${safeTitle}','${safeUrl}','${safeArtist}')`
+                :
+                `showToast('Music playback will be connected when a licensed music source is available.')`
+            }">
 
-</article>
-`;
+            <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(title)}"
+                loading="lazy"
+                onerror="this.style.display='none';">
+
+            <div class="music-play">
+                ▶
+            </div>
+
+            <div class="music-info">
+
+                <div class="music-title">
+                    ${escapeHTML(title)}
+                </div>
+
+                <div class="music-artist">
+                    ${escapeHTML(artist)}
+                </div>
+
+                <div class="music-region">
+                    ${escapeHTML(region)}
+                </div>
+
+            </div>
+
+        </article>
+    `;
 
 }
+
+
+/* =========================================================
+   GENERAL ENTERTAINMENT CARD
+========================================================= */
 
 function createEntertainmentCard(item,type){
 
-const title=item.title||"Entertainment";
-const meta=item.meta||type;
-const image=item.image||
-"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
+    const title=
+        item.title||
+        item.name||
+        "Entertainment";
 
-return `
-<article
-class="entertainment-card"
-onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
+    const meta=
+        item.meta||
+        item.category||
+        item.region||
+        item.country||
+        item.source||
+        type;
 
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
+    const image=
+        entertainmentImage(
+            item.image||
+            item.thumbnail||
+            item.thumbnail_url||
+            item.image_url,
+            "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+        );
 
-<div class="entertainment-badge">
-${escapeHTML(type)}
-</div>
+    const url=
+        item.url||
+        item.link||
+        item.article_url||
+        "";
 
-<div class="entertainment-info">
+    return `
+        <article
+            class="entertainment-card"
+            onclick="openEntertainmentItem(
+                '${encodeURIComponent(url)}',
+                '${encodeURIComponent(title)}'
+            )">
 
-<div class="entertainment-label">
-BRENZKafrica Entertainment
-</div>
+            <img
+                src="${escapeHTML(image)}"
+                alt="${escapeHTML(title)}"
+                loading="lazy"
+                onerror="this.style.display='none';">
 
-<div class="entertainment-title">
-${escapeHTML(title)}
-</div>
+            <div class="entertainment-badge">
+                ${escapeHTML(type)}
+            </div>
 
-<div class="entertainment-meta">
-${escapeHTML(meta)}
-</div>
+            <div class="entertainment-info">
 
-</div>
+                <div class="entertainment-label">
+                    BRENZKafrica Entertainment
+                </div>
 
-</article>
-`;
+                <div class="entertainment-title">
+                    ${escapeHTML(title)}
+                </div>
+
+                <div class="entertainment-meta">
+                    ${escapeHTML(meta)}
+                </div>
+
+            </div>
+
+        </article>
+    `;
 
 }
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+function entertainmentEmpty(message){
+
+    return `
+        <div class="entertainment-empty">
+            ${escapeHTML(
+                message||
+                "No entertainment updates available right now."
+            )}
+        </div>
+    `;
+
+}
+
+
+/* =========================================================
+   RENDER ENTERTAINMENT
+========================================================= */
 
 function renderEntertainment(){
 
-const musicRow=document.getElementById("musicRow");
-const trendingRow=document.getElementById("trendingMusicRow");
-const celebrityRow=document.getElementById("celebrityNewsRow");
-const theatreRow=document.getElementById("theatreRow");
-const eventsRow=document.getElementById("eventsRow");
-const awardsRow=document.getElementById("awardsRow");
+    const musicRow=
+        document.getElementById("musicRow");
 
-musicRow.innerHTML=
-GLOBAL_MUSIC
-.map(createMusicCard)
-.join("");
+    const trendingRow=
+        document.getElementById("trendingMusicRow");
 
-trendingRow.innerHTML=
-TRENDING_MUSIC
-.map(item=>createEntertainmentCard(item,"TRENDING"))
-.join("");
+    const celebrityRow=
+        document.getElementById("celebrityNewsRow");
 
-celebrityRow.innerHTML=
-CELEBRITY_NEWS
-.map(item=>createEntertainmentCard(item,"CELEBRITY"))
-.join("");
+    const theatreRow=
+        document.getElementById("theatreRow");
 
-theatreRow.innerHTML=
-THEATRE_CONTENT
-.map(item=>createEntertainmentCard(item,"THEATRE"))
-.join("");
+    const eventsRow=
+        document.getElementById("eventsRow");
 
-eventsRow.innerHTML=
-ENTERTAINMENT_EVENTS
-.map(item=>createEntertainmentCard(item,"EVENT"))
-.join("");
+    const awardsRow=
+        document.getElementById("awardsRow");
 
-awardsRow.innerHTML=
-ENTERTAINMENT_AWARDS
-.map(item=>createEntertainmentCard(item,"AWARD"))
-.join("");
+
+    /* MUSIC */
+
+    if(musicRow){
+
+        musicRow.innerHTML=
+            Array.isArray(window.GLOBAL_MUSIC)
+            ?
+            GLOBAL_MUSIC
+                .map(createMusicCard)
+                .join("")
+            :
+            entertainmentEmpty("No music updates available.");
+
+    }
+
+
+    /* TRENDING */
+
+    if(trendingRow){
+
+        trendingRow.innerHTML=
+            Array.isArray(window.TRENDING_MUSIC)
+            ?
+            TRENDING_MUSIC
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "TRENDING"
+                    )
+                )
+                .join("")
+            :
+            entertainmentEmpty("No trending entertainment available.");
+
+    }
+
+
+    /* CELEBRITY */
+
+    if(celebrityRow){
+
+        celebrityRow.innerHTML=
+            Array.isArray(window.CELEBRITY_NEWS)
+            ?
+            CELEBRITY_NEWS
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "CELEBRITY"
+                    )
+                )
+                .join("")
+            :
+            entertainmentEmpty("No celebrity updates available.");
+
+    }
+
+
+    /* THEATRE */
+
+    if(theatreRow){
+
+        theatreRow.innerHTML=
+            Array.isArray(window.THEATRE_CONTENT)
+            ?
+            THEATRE_CONTENT
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "THEATRE"
+                    )
+                )
+                .join("")
+            :
+            entertainmentEmpty("No theatre updates available.");
+
+    }
+
+
+    /* EVENTS */
+
+    if(eventsRow){
+
+        eventsRow.innerHTML=
+            Array.isArray(window.ENTERTAINMENT_EVENTS)
+            ?
+            ENTERTAINMENT_EVENTS
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "EVENT"
+                    )
+                )
+                .join("")
+            :
+            entertainmentEmpty("No entertainment events available.");
+
+    }
+
+
+    /* AWARDS */
+
+    if(awardsRow){
+
+        awardsRow.innerHTML=
+            Array.isArray(window.ENTERTAINMENT_AWARDS)
+            ?
+            ENTERTAINMENT_AWARDS
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "AWARD"
+                    )
+                )
+                .join("")
+            :
+            entertainmentEmpty("No awards updates available.");
+
+    }
 
 }
+
+
+/* =========================================================
+   MUSIC PLAYER
+========================================================= */
 
 function playMusic(title,url,artist){
 
-playVideo(
-title,
-url,
-"Music by "+artist
-);
+    playVideo(
+        title,
+        url,
+        "Music by "+artist
+    );
 
 }
 
-function openEntertainmentItem(encodedUrl,encodedTitle){
 
-const url=decodeURIComponent(encodedUrl||"");
-const title=decodeURIComponent(encodedTitle||"Entertainment");
+/* =========================================================
+   OPEN ENTERTAINMENT ARTICLE
+========================================================= */
 
-if(url&&/^https?:\/\//i.test(url)){
+function openEntertainmentItem(
+    encodedUrl,
+    encodedTitle
+){
 
-window.open(
-url,
-"_blank",
-"noopener,noreferrer"
-);
+    const url=
+        decodeURIComponent(
+            encodedUrl||""
+        );
 
-return;
+    const title=
+        decodeURIComponent(
+            encodedTitle||"Entertainment"
+        );
+
+    if(
+        url &&
+        /^https?:\/\//i.test(url)
+    ){
+
+        window.open(
+            url,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+        return;
+
+    }
+
+    showToast(
+        title+
+        " — content source unavailable."
+    );
+
 }
 
-showToast(
-title+
-" — content source will be connected when available."
-);
+
+/* =========================================================
+   NORMALIZE ENTERTAINMENT DATA
+========================================================= */
+
+function normalizeEntertainmentItem(
+    item,
+    type
+){
+
+    if(!item || typeof item!=="object"){
+        return null;
+    }
+
+    return {
+
+        title:
+            item.title||
+            item.name||
+            "Entertainment",
+
+        artist:
+            item.artist||
+            item.creator||
+            item.author||
+            "",
+
+        region:
+            item.region||
+            item.country||
+            "Worldwide",
+
+        image:
+            item.image||
+            item.thumbnail||
+            item.thumbnail_url||
+            item.image_url||
+            "",
+
+        url:
+            item.url||
+            item.link||
+            item.article_url||
+            item.video_url||
+            "",
+
+        meta:
+            item.meta||
+            item.category||
+            item.region||
+            item.country||
+            item.source||
+            type,
+
+        date:
+            item.date||
+            item.published_at||
+            item.published||
+            ""
+
+    };
 
 }
 
-/*
-  Optional future live entertainment endpoint.
-  If /api/entertainment exists and returns arrays,
-  its data can be merged without breaking the manual
-  global catalogue.
-*/
+
+/* =========================================================
+   REMOVE DUPLICATES
+========================================================= */
+
+function removeEntertainmentDuplicates(items){
+
+    const seen=new Set();
+
+    return items.filter(item=>{
+
+        const key=
+            (
+                item.url||
+                item.title||
+                ""
+            )
+            .toString()
+            .trim()
+            .toLowerCase();
+
+        if(!key){
+            return true;
+        }
+
+        if(seen.has(key)){
+            return false;
+        }
+
+        seen.add(key);
+
+        return true;
+
+    });
+
+}
+
+
+/* =========================================================
+   SORT NEWEST FIRST
+========================================================= */
+
+function sortEntertainmentNewest(items){
+
+    return [...items].sort((a,b)=>{
+
+        const dateA=
+            Date.parse(
+                a.date||""
+            )||0;
+
+        const dateB=
+            Date.parse(
+                b.date||""
+            )||0;
+
+        return dateB-dateA;
+
+    });
+
+}
+
+
+/* =========================================================
+   LOAD GLOBAL ENTERTAINMENT
+========================================================= */
+
 async function loadEntertainment(){
 
-renderEntertainment();
+    console.log(
+        "BRENZKafrica Entertainment: loading global updates..."
+    );
 
-try{
 
-const response=await fetch(
-ENTERTAINMENT_API_URL,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
+    /*
+       Always show the existing catalogue first.
+       This prevents a blank section while the API loads.
+    */
+
+    renderEntertainment();
+
+
+    try{
+
+        if(
+            typeof ENTERTAINMENT_API_URL==="undefined" ||
+            !ENTERTAINMENT_API_URL
+        ){
+
+            console.warn(
+                "ENTERTAINMENT_API_URL is not configured."
+            );
+
+            return;
+
+        }
+
+
+        const response=
+            await fetch(
+                ENTERTAINMENT_API_URL,
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        Accept:"application/json"
+                    }
+                }
+            );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Entertainment API error "+
+                response.status
+            );
+
+        }
+
+
+        const data=
+            await response.json();
+
+
+        if(
+            !data ||
+            typeof data!=="object"
+        ){
+
+            throw new Error(
+                "Invalid entertainment response."
+            );
+
+        }
+
+
+        /*
+           Accept several API naming formats.
+        */
+
+        const music=
+            Array.isArray(data.music)
+            ?
+            data.music
+            :
+            Array.isArray(data.global_music)
+            ?
+            data.global_music
+            :
+            [];
+
+
+        const trending=
+            Array.isArray(data.trending_music)
+            ?
+            data.trending_music
+            :
+            Array.isArray(data.trending)
+            ?
+            data.trending
+            :
+            [];
+
+
+        const celebrity=
+            Array.isArray(data.celebrity_news)
+            ?
+            data.celebrity_news
+            :
+            Array.isArray(data.celebrity)
+            ?
+            data.celebrity
+            :
+            [];
+
+
+        const theatre=
+            Array.isArray(data.theatre)
+            ?
+            data.theatre
+            :
+            [];
+
+
+        const events=
+            Array.isArray(data.events)
+            ?
+            data.events
+            :
+            Array.isArray(data.entertainment_events)
+            ?
+            data.entertainment_events
+            :
+            [];
+
+
+        const awards=
+            Array.isArray(data.awards)
+            ?
+            data.awards
+            :
+            Array.isArray(data.entertainment_awards)
+            ?
+            data.entertainment_awards
+            :
+            [];
+
+
+        /*
+           Normalize + remove duplicates + newest first.
+        */
+
+        const cleanMusic=
+            sortEntertainmentNewest(
+                removeEntertainmentDuplicates(
+                    music
+                    .map(item=>
+                        normalizeEntertainmentItem(
+                            item,
+                            "MUSIC"
+                        )
+                    )
+                    .filter(Boolean)
+                )
+            );
+
+
+        const cleanTrending=
+            sortEntertainmentNewest(
+                removeEntertainmentDuplicates(
+                    trending
+                    .map(item=>
+                        normalizeEntertainmentItem(
+                            item,
+                            "TRENDING"
+                        )
+                    )
+                    .filter(Boolean)
+                )
+            );
+
+
+        const cleanCelebrity=
+            sortEntertainmentNewest(
+                removeEntertainmentDuplicates(
+                    celebrity
+                    .map(item=>
+                        normalizeEntertainmentItem(
+                            item,
+                            "CELEBRITY"
+                        )
+                    )
+                    .filter(Boolean)
+                )
+            );
+
+
+        const cleanTheatre=
+            sortEntertainmentNewest(
+                removeEntertainmentDuplicates(
+                    theatre
+                    .map(item=>
+                        normalizeEntertainmentItem(
+                            item,
+                            "THEATRE"
+                        )
+                    )
+                    .filter(Boolean)
+                )
+            );
+
+
+        const cleanEvents=
+            sortEntertainmentNewest(
+                removeEntertainmentDuplicates(
+                    events
+                    .map(item=>
+                        normalizeEntertainmentItem(
+                            item,
+                            "EVENT"
+                        )
+                    )
+                    .filter(Boolean)
+                )
+            );
+
+
+        const cleanAwards=
+            sortEntertainmentNewest(
+                removeEntertainmentDuplicates(
+                    awards
+                    .map(item=>
+                        normalizeEntertainmentItem(
+                            item,
+                            "AWARD"
+                        )
+                    )
+                    .filter(Boolean)
+                )
+            );
+
+
+        /*
+           Replace the displayed content
+           only when fresh API data exists.
+        */
+
+        const musicRow=
+            document.getElementById("musicRow");
+
+        const trendingRow=
+            document.getElementById(
+                "trendingMusicRow"
+            );
+
+        const celebrityRow=
+            document.getElementById(
+                "celebrityNewsRow"
+            );
+
+        const theatreRow=
+            document.getElementById(
+                "theatreRow"
+            );
+
+        const eventsRow=
+            document.getElementById(
+                "eventsRow"
+            );
+
+        const awardsRow=
+            document.getElementById(
+                "awardsRow"
+            );
+
+
+        if(
+            musicRow &&
+            cleanMusic.length
+        ){
+
+            musicRow.innerHTML=
+                cleanMusic
+                .map(createMusicCard)
+                .join("");
+
+        }
+
+
+        if(
+            trendingRow &&
+            cleanTrending.length
+        ){
+
+            trendingRow.innerHTML=
+                cleanTrending
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "TRENDING"
+                    )
+                )
+                .join("");
+
+        }
+
+
+        if(
+            celebrityRow &&
+            cleanCelebrity.length
+        ){
+
+            celebrityRow.innerHTML=
+                cleanCelebrity
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "CELEBRITY"
+                    )
+                )
+                .join("");
+
+        }
+
+
+        if(
+            theatreRow &&
+            cleanTheatre.length
+        ){
+
+            theatreRow.innerHTML=
+                cleanTheatre
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "THEATRE"
+                    )
+                )
+                .join("");
+
+        }
+
+
+        if(
+            eventsRow &&
+            cleanEvents.length
+        ){
+
+            eventsRow.innerHTML=
+                cleanEvents
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "EVENT"
+                    )
+                )
+                .join("");
+
+        }
+
+
+        if(
+            awardsRow &&
+            cleanAwards.length
+        ){
+
+            awardsRow.innerHTML=
+                cleanAwards
+                .map(item=>
+                    createEntertainmentCard(
+                        item,
+                        "AWARD"
+                    )
+                )
+                .join("");
+
+        }
+
+
+        console.log(
+            "BRENZKafrica Entertainment updated:",
+            {
+                music:cleanMusic.length,
+                trending:cleanTrending.length,
+                celebrity:cleanCelebrity.length,
+                theatre:cleanTheatre.length,
+                events:cleanEvents.length,
+                awards:cleanAwards.length
+            }
+        );
+
+
+    }catch(error){
+
+        console.warn(
+            "Entertainment API unavailable. Existing catalogue retained.",
+            error
+        );
+
+    }
+
 }
-);
 
-if(!response.ok)return;
 
-const data=await response.json();
+/* =========================================================
+   INITIAL ENTERTAINMENT LOAD
+========================================================= */
 
-if(!data)return;
+loadEntertainment();
 
-const music=
-Array.isArray(data.music)
-?data.music
-:[];
 
-const trending=
-Array.isArray(data.trending_music)
-?data.trending_music
-:Array.isArray(data.trending)
-?data.trending
-:[];
+/* =========================================================
+   ENTERTAINMENT AUTO REFRESH
+========================================================= */
 
-const celebrity=
-Array.isArray(data.celebrity_news)
-?data.celebrity_news
-:Array.isArray(data.celebrity)
-?data.celebrity
-:[];
+/*
+   Prevent duplicate refresh timers if this block
+   is accidentally initialized more than once.
+*/
 
-const theatre=
-Array.isArray(data.theatre)
-?data.theatre
-:[];
+if(
+    !window.brenzkafricaEntertainmentRefresh
+){
 
-const events=
-Array.isArray(data.events)
-?data.events
-:[];
+    window.brenzkafricaEntertainmentRefresh=
+        setInterval(
+            function(){
 
-const awards=
-Array.isArray(data.awards)
-?data.awards
-:[];
+                loadEntertainment();
 
-if(music.length){
-
-document.getElementById("musicRow").innerHTML=
-music.map(createMusicCard).join("");
+            },
+            5*60*1000
+        );
 
 }
-
-if(trending.length){
-
-document.getElementById("trendingMusicRow").innerHTML=
-trending
-.map(item=>createEntertainmentCard(item,"TRENDING"))
-.join("");
-
-}
-
-if(celebrity.length){
-
-document.getElementById("celebrityNewsRow").innerHTML=
-celebrity
-.map(item=>createEntertainmentCard(item,"CELEBRITY"))
-.join("");
-
-}
-
-if(theatre.length){
-
-document.getElementById("theatreRow").innerHTML=
-theatre
-.map(item=>createEntertainmentCard(item,"THEATRE"))
-.join("");
-
-}
-
-if(events.length){
-
-document.getElementById("eventsRow").innerHTML=
-events
-.map(item=>createEntertainmentCard(item,"EVENT"))
-.join("");
-
-}
-
-if(awards.length){
-
-document.getElementById("awardsRow").innerHTML=
-awards
-.map(item=>createEntertainmentCard(item,"AWARD"))
-.join("");
-
-}
-
-}catch(error){
-
-console.warn(
-"Entertainment API unavailable; using global manual catalogue.",
-error
-);
-
-}
-
-}
-
 /* =========================================================
    AUTH
 ========================================================= */
