@@ -3531,175 +3531,653 @@ playVideo(title,streamUrl);
 }
 
 /* =========================================================
-   NEWS — BRENZKAFRICA PLUS
+   NEWS
 ========================================================= */
+
 async function loadBreakingNews(){
-    if(!newsRow || !newsStatus){
-        console.error("News elements not found.");
-        return;
-    }
-    newsStatus.textContent="Updating...";
-    newsRow.innerHTML=
-        '<div class="news-loading">Loading latest African news...</div>';
-    try{
-        const response=await fetch(
-            NEWS_API_URL,
-            {
-                method:"GET",
-                cache:"no-store",
-                headers:{
-                    Accept:"application/json"
-                }
-            }
-        );
-        if(!response.ok){
-            throw new Error(
-                "News API error "+response.status
-            );
-        }
-        const data=await response.json();
-        if(!data || data.success!==true){
-            throw new Error(
-                data?.error ||
-                "Invalid news response"
-            );
-        }
-        if(!Array.isArray(data.news) || !data.news.length){
-            newsRow.innerHTML=
-                '<div class="news-empty">'+
-                'No breaking news available right now.'+
-                '</div>';
-            newsStatus.textContent="No updates";
-            return;
-        }
-        newsRow.innerHTML=data.news.map(item=>{
-            const link=
-                encodeURIComponent(
-                    item.link || ""
-                );
-            return `
-                <article
-                    class="news-card"
-                    onclick="openNewsArticle('${link}')">
-                    <div>
-                        <div class="news-source">
-                            ${escapeHTML(
-                                item.source || "News"
-                            )}
-                        </div>
-                        <div class="news-title">
-                            ${escapeHTML(
-                                item.title || ""
-                            )}
-                        </div>
-                        <div class="news-description">
-                            ${escapeHTML(
-                                item.description || ""
-                            )}
-                        </div>
-                    </div>
-                    <div class="news-date">
-                        ${escapeHTML(
-                            formatDate(item.date)
-                        )}
-                    </div>
-                </article>
-            `;
-        }).join("");
-        newsStatus.textContent=
-            (data.count || data.news.length)+
-            " fresh stories";
-        console.log(
-            "BRENZKafrica Plus: News loaded successfully."
-        );
-    }catch(error){
-        console.error(
-            "BRENZKafrica Plus News loading error:",
-            error
-        );
-        newsRow.innerHTML=
-            '<div class="news-error">'+
-            'Unable to load breaking news right now.'+
-            '</div>';
-        newsStatus.textContent=
-            "News unavailable";
-    }
+
+newsStatus.textContent="Updating...";
+
+newsRow.innerHTML=
+'<div class="news-loading">Loading latest African news...</div>';
+
+try{
+
+const response=await fetch(
+NEWS_API_URL,
+{
+method:"GET",
+cache:"no-store",
+headers:{Accept:"application/json"}
 }
-/* =========================================================
-   NEWS ARTICLE
-========================================================= */
+);
+
+if(!response.ok){
+throw new Error("News API error "+response.status);
+}
+
+const data=await response.json();
+
+if(!data||data.success!==true){
+throw new Error(data?.error||"Invalid news response");
+}
+
+if(!data.news||!data.news.length){
+
+newsRow.innerHTML=
+'<div class="news-empty">'+
+'No breaking news available right now.'+
+'</div>';
+
+newsStatus.textContent="No updates";
+
+return;
+}
+
+newsRow.innerHTML=data.news.map(item=>{
+
+const link=encodeURIComponent(item.link||"");
+
+return `
+<article
+class="news-card"
+onclick="openNewsArticle('${link}')">
+
+<div>
+
+<div class="news-source">
+${escapeHTML(item.source||"News")}
+</div>
+
+<div class="news-title">
+${escapeHTML(item.title||"")}
+</div>
+
+<div class="news-description">
+${escapeHTML(item.description||"")}
+</div>
+
+</div>
+
+<div class="news-date">
+${escapeHTML(formatDate(item.date))}
+</div>
+
+</article>
+`;
+
+}).join("");
+
+newsStatus.textContent=
+(data.count||data.news.length)+
+" fresh stories";
+
+}catch(error){
+
+console.error("News loading error:",error);
+
+newsRow.innerHTML=
+'<div class="news-error">'+
+'Unable to load breaking news right now.'+
+'</div>';
+
+newsStatus.textContent="News unavailable";
+
+}
+
+}
+
 function openNewsArticle(encoded){
-    if(!encoded)return;
-    try{
-        const url=
-            decodeURIComponent(encoded);
-        if(!/^https?:\/\//i.test(url)){
-            return;
-        }
-        window.open(
-            url,
-            "_blank",
-            "noopener,noreferrer"
-        );
-    }catch(error){
-        console.error(
-            "News article error:",
-            error
-        );
-    }
+
+if(!encoded)return;
+
+try{
+
+const url=decodeURIComponent(encoded);
+
+if(!/^https?:\/\//i.test(url))return;
+
+window.open(
+url,
+"_blank",
+"noopener,noreferrer"
+);
+
+}catch(error){
+
+console.error(error);
+
 }
-/* =========================================================
-   INITIAL NEWS LOAD
-========================================================= */
-loadBreakingNews();
+
+}
+
 /* =========================================================
    SPORTS
 ========================================================= */
-const SPORTS_LEAGUES=[
-    {sport:"soccer",league:"eng.1",name:"Premier League",category:"football"},
-    {sport:"soccer",league:"esp.1",name:"LaLiga",category:"football"},
-    {sport:"soccer",league:"ger.1",name:"Bundesliga",category:"football"},
-    {sport:"soccer",league:"ita.1",name:"Serie A",category:"football"},
-    {sport:"soccer",league:"fra.1",name:"Ligue 1",category:"football"},
-    {sport:"soccer",league:"uefa.champions",name:"UEFA Champions League",category:"football"},
-    {sport:"soccer",league:"usa.1",name:"MLS",category:"football"},
-    {sport:"soccer",league:"usa.nwsl",name:"NWSL",category:"football"},
-    {sport:"soccer",league:"mex.1",name:"Liga MX",category:"football"},
-    {sport:"soccer",league:"bra.1",name:"Brasileirão",category:"football"},
-    {sport:"soccer",league:"arg.1",name:"Argentina Liga",category:"football"},
-    {sport:"basketball",league:"nba",name:"NBA",category:"basketball"},
-    {sport:"basketball",league:"wnba",name:"WNBA",category:"basketball"},
-    {sport:"basketball",league:"euroleague",name:"EuroLeague",category:"basketball"},
-    {sport:"football",league:"nfl",name:"NFL",category:"football-american"},
-    {sport:"baseball",league:"mlb",name:"MLB",category:"baseball"},
-    {sport:"hockey",league:"nhl",name:"NHL",category:"hockey"},
-    {sport:"racing",league:"f1",name:"Formula 1",category:"racing"},
-    {sport:"golf",league:"pga",name:"PGA Tour",category:"golf"},
-    {sport:"tennis",league:"atp",name:"ATP Tennis",category:"tennis"},
-    {sport:"tennis",league:"wta",name:"WTA Tennis",category:"tennis"},
-    {sport:"mma",league:"ufc",name:"UFC",category:"mma"}
-];
-/* =========================================================
-   INITIAL SPORTS LOAD
-========================================================= */
-if(typeof loadSports==="function"){
-    loadSports();
-}else{
-    console.error(
-        "BRENZKafrica Plus: loadSports() function not found."
-    );
+
+async function fetchSportsLeague(config){
+
+const url=
+"https://site.api.espn.com/apis/site/v2/sports/"+
+encodeURIComponent(config.sport)+
+"/"+
+encodeURIComponent(config.league)+
+"/scoreboard";
+
+try{
+
+const response=await fetch(
+url,
+{
+method:"GET",
+cache:"no-store",
+headers:{Accept:"application/json"}
 }
-/* =========================================================
-   SPORTS AUTO REFRESH
-========================================================= */
-setInterval(
-    ()=>{
-        if(typeof loadSports==="function"){
-            loadSports();
-        }
-    },
-    2*60*1000
 );
+
+if(!response.ok){
+
+console.warn(
+"Sports endpoint failed:",
+config.name,
+response.status
+);
+
+return [];
+
+}
+
+const data=await response.json();
+
+if(!data||!Array.isArray(data.events)){
+return [];
+}
+
+return data.events.map(event=>{
+
+const competition=
+event.competitions?.[0]||null;
+
+const competitors=
+competition?.competitors||[];
+
+const home=competitors.find(
+item=>item.homeAway==="home"
+);
+
+const away=competitors.find(
+item=>item.homeAway==="away"
+);
+
+const state=
+competition?.status?.type?.state||"pre";
+
+let status="upcoming";
+
+if(state==="in")status="live";
+if(state==="post")status="final";
+
+const homeTeam=home?.team||{};
+const awayTeam=away?.team||{};
+
+return {
+
+id:event.id,
+
+sport:config.sport,
+
+category:config.category,
+
+league:config.name,
+
+eventName:event.name||config.name,
+
+home:
+homeTeam.displayName||
+homeTeam.shortDisplayName||
+homeTeam.name||
+"Home",
+
+away:
+awayTeam.displayName||
+awayTeam.shortDisplayName||
+awayTeam.name||
+"Away",
+
+homeLogo:
+homeTeam.logo||homeTeam.logos?.[0]?.href||"",
+
+awayLogo:
+awayTeam.logo||awayTeam.logos?.[0]?.href||"",
+
+homeScore:home?.score??"",
+awayScore:away?.score??"",
+
+status,
+
+detail:
+competition?.status?.type?.shortDetail||
+competition?.status?.type?.detail||
+"",
+
+date:event.date||"",
+
+eventUrl:
+event.links?.find(
+link=>Array.isArray(link.rel)&&
+link.rel.includes("desktop")
+)?.href||
+event.links?.[0]?.href||
+"",
+
+broadcastUrl:""
+
+};
+
+});
+
+}catch(error){
+
+console.warn(
+"Sports request error:",
+config.name,
+error
+);
+
+return [];
+
+}
+
+}
+
+function createSportsCard(event){
+
+const isLive=event.status==="live";
+const isFinal=event.status==="final";
+
+let badgeHTML=
+'<span class="sports-upcoming-badge">UPCOMING</span>';
+
+if(isLive){
+
+badgeHTML=
+'<span class="sports-live-badge">'+
+'<span class="sports-live-pulse"></span>'+
+'LIVE</span>';
+
+}
+
+if(isFinal){
+
+badgeHTML=
+'<span class="sports-final-badge">FINAL</span>';
+
+}
+
+const broadcastButton=event.broadcastUrl
+?`
+<button
+class="sports-watch-button"
+onclick="event.stopPropagation();playSportsBroadcast('${escapeHTML(event.eventName)}','${escapeHTML(event.broadcastUrl)}')">
+▶ Watch Live
+</button>
+`
+:isLive
+?'<span class="sports-no-broadcast">Live data</span>'
+:"";
+
+return `
+
+<article
+class="sports-card"
+data-sports-event="${escapeHTML(event.id)}"
+data-sports-category="${escapeHTML(event.category)}"
+onclick="openSportsEvent(this)">
+
+<div class="sports-card-bg"></div>
+
+<div class="sports-top">
+
+<div class="sports-league">
+${escapeHTML(event.league)}
+</div>
+
+${badgeHTML}
+
+</div>
+
+<div class="sports-match">
+
+<div class="sports-team">
+
+${event.homeLogo
+?`
+<img
+class="sports-team-logo"
+src="${escapeHTML(event.homeLogo)}"
+alt="${escapeHTML(event.home)}"
+loading="lazy"
+onerror="this.style.display='none'">
+`
+:""}
+
+<div class="sports-team-name">
+${escapeHTML(event.home)}
+</div>
+
+</div>
+
+<div class="sports-vs">
+
+${isLive||isFinal
+?`
+<div class="sports-score">
+${escapeHTML(event.homeScore)}
+</div>
+`
+:"VS"}
+
+</div>
+
+<div class="sports-team">
+
+${event.awayLogo
+?`
+<img
+class="sports-team-logo"
+src="${escapeHTML(event.awayLogo)}"
+alt="${escapeHTML(event.away)}"
+loading="lazy"
+onerror="this.style.display='none'">
+`
+:""}
+
+<div class="sports-team-name">
+${escapeHTML(event.away)}
+</div>
+
+</div>
+
+</div>
+
+<div class="sports-bottom">
+
+<div class="sports-event-name">
+${escapeHTML(event.eventName)}
+</div>
+
+<div class="sports-time">
+
+${
+isLive
+?escapeHTML(event.detail||"LIVE NOW")
+:isFinal
+?"Final"
+:escapeHTML(formatSportsDate(event.date))
+}
+
+</div>
+
+</div>
+
+${broadcastButton}
+
+</article>
+
+`;
+
+}
+
+function renderSportsRow(elementId,events,emptyMessage){
+
+const row=document.getElementById(elementId);
+
+if(!row)return;
+
+if(!events||!events.length){
+
+row.innerHTML=
+'<div class="sports-empty">'+
+escapeHTML(emptyMessage)+
+'</div>';
+
+return;
+}
+
+row.innerHTML=
+events.map(createSportsCard).join("");
+
+}
+
+function openSportsEvent(card){
+
+if(!card)return;
+
+const event=
+allSportsEvents.find(
+item=>String(item.id)===
+String(card.dataset.sportsEvent)
+);
+
+if(
+event?.eventUrl&&
+/^https?:\/\//i.test(event.eventUrl)
+){
+
+window.open(
+event.eventUrl,
+"_blank",
+"noopener,noreferrer"
+);
+
+return;
+}
+
+showToast(
+"Sports event information is currently unavailable."
+);
+
+}
+
+function playSportsBroadcast(title,url){
+
+if(
+!url||
+!/^https?:\/\//i.test(url)
+){
+
+showToast(
+"No authorized broadcast is connected."
+);
+
+return;
+}
+
+playVideo(
+title||"Live Sports",
+url,
+"Authorized live sports broadcast"
+);
+
+}
+
+function showSportsTab(tab,button){
+
+document.querySelectorAll(".sports-tab")
+.forEach(item=>{
+item.classList.remove("active");
+});
+
+if(button){
+button.classList.add("active");
+}
+
+document.querySelectorAll(".sports-panel")
+.forEach(panel=>{
+panel.classList.remove("active");
+});
+
+const panelMap={
+live:"sportsLivePanel",
+football:"sportsFootballPanel",
+basketball:"sportsBasketballPanel",
+tennis:"sportsTennisPanel",
+all:"sportsAllPanel"
+};
+
+const panel=document.getElementById(panelMap[tab]);
+
+if(panel){
+panel.classList.add("active");
+}
+
+}
+
+function renderSportsTabs(){
+
+const live=
+allSportsEvents.filter(
+event=>event.status==="live"
+);
+
+const football=
+allSportsEvents.filter(
+event=>event.category==="football"
+);
+
+const basketball=
+allSportsEvents.filter(
+event=>event.category==="basketball"
+);
+
+const tennis=
+allSportsEvents.filter(
+event=>event.category==="tennis"
+);
+
+renderSportsRow(
+"sportsLiveRow",
+live,
+"No sports matches are live right now."
+);
+
+renderSportsRow(
+"sportsFootballRow",
+football,
+"No football events available right now."
+);
+
+renderSportsRow(
+"sportsBasketballRow",
+basketball,
+"No basketball events available right now."
+);
+
+renderSportsRow(
+"sportsTennisRow",
+tennis,
+"No tennis events available right now."
+);
+
+renderSportsRow(
+"sportsAllRow",
+allSportsEvents,
+"No worldwide sports events available right now."
+);
+
+}
+
+async function loadSports(){
+
+sportsStatus.textContent="Updating...";
+
+try{
+
+const results=await Promise.all(
+SPORTS_LEAGUES.map(fetchSportsLeague)
+);
+
+allSportsEvents=
+results
+.flat()
+.filter(Boolean);
+
+allSportsEvents.sort((a,b)=>{
+
+const priority={
+live:0,
+upcoming:1,
+final:2
+};
+
+const difference=
+(priority[a.status]??3)-
+(priority[b.status]??3);
+
+if(difference!==0)return difference;
+
+return new Date(a.date||0)-
+new Date(b.date||0);
+
+});
+
+const liveEvents=
+allSportsEvents.filter(
+event=>event.status==="live"
+);
+
+const others=
+allSportsEvents.filter(
+event=>event.status!=="live"
+);
+
+allSportsEvents=[
+...liveEvents,
+...others
+].slice(0,100);
+
+renderSportsTabs();
+
+sportsStatus.textContent=
+liveEvents.length
+?liveEvents.length+" live now"
+:allSportsEvents.length+" events";
+
+}catch(error){
+
+console.error(
+"Worldwide sports loading error:",
+error
+);
+
+sportsStatus.textContent=
+"Sports unavailable";
+
+[
+"sportsLiveRow",
+"sportsFootballRow",
+"sportsBasketballRow",
+"sportsTennisRow",
+"sportsAllRow"
+].forEach(id=>{
+
+const row=document.getElementById(id);
+
+if(row){
+
+row.innerHTML=
+'<div class="sports-error">'+
+'Unable to load sports right now.'+
+'</div>';
+
+}
+
+});
+
+}
+
+}
+
 /* =========================================================
    ENTERTAINMENT
 ========================================================= */
