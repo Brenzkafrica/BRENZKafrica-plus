@@ -5032,6 +5032,14 @@ checkSession()
 });
 
 /* =========================================================
+   INITIAL CONTENT LOAD
+========================================================= */
+
+loadBreakingNews();
+loadSports();
+
+
+/* =========================================================
    AUTO REFRESH
 ========================================================= */
 
@@ -5049,28 +5057,3 @@ setInterval(
 loadSports,
 2*60*1000
 );
-
-setInterval(
-async function(){
-
-await Promise.allSettled([
-loadContent(),
-loadEpisodes()
-]);
-
-},
-10*60*1000
-);
-
-setInterval(
-loadEntertainment,
-15*60*1000
-);
-
-</script>
-
-<script src="./share.js"></script>
-<script src="/notifications.js"></script>
-
-</body>
-</html>
