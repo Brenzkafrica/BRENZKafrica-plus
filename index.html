@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ok<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -3412,62 +3412,143 @@ function updateEpisodeButtons(){
 ========================================================= */
 
 loadPolygamistEpisodes();
-=========================================================
-     LIVE
-========================================================= -->
+/* =========================================================
+   BRENZKAFRICA LIVE
+========================================================= */
 
-<section
-    id="liveSection"
-    class="content-section">
+async function loadLiveEvents(){
 
-    <div class="section-header">
+liveStatus.textContent="Updating...";
 
-        <div>
+liveRow.innerHTML=
+'<div class="live-empty">Loading live events...</div>';
 
-            <span class="section-kicker">
-                BRENZKAFRICA LIVE
-            </span>
+try{
 
-            <h2>
-                Live
-            </h2>
+const {data,error}=await supabaseClient
+.from("live_events")
+.select(
+"id,title,description,thumbnail,status,start_time,end_time,is_featured,stream_url"
+);
 
-            <p>
-                Live programming and special events.
-            </p>
+if(error)throw error;
 
-        </div>
+if(!data||!data.length){
 
-    </div>
+liveRow.innerHTML=
+'<div class="live-empty">'+
+'No live events are available right now.'+
+'</div>';
 
-    <div class="content-row">
+liveStatus.textContent="No live events";
 
-        <article class="live-card">
+return;
+}
 
-            <div class="live-content">
+liveRow.innerHTML=data.map(event=>{
 
-                <span class="live-badge">
-                    ● LIVE
-                </span>
+const status=
+String(event.status||"upcoming")
+.toLowerCase()
+.trim();
 
-                <h3>
-                    BRENZKafrica Live
-                </h3>
+const isLive=
+status==="live"||
+status==="live_now"||
+status==="active";
 
-                <p>
-                    Live programming coming soon.
-                </p>
+return `
+<article
+class="live-card"
+onclick="handleLiveCard(
+'${escapeHTML(event.title||"BRENZKafrica Live")}',
+'${escapeHTML(event.stream_url||"")}',
+'${escapeHTML(status)}'
+)">
 
-            </div>
+<img
+src="${escapeHTML(
+event.thumbnail||
+"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+)}"
+alt="${escapeHTML(event.title||"Live")}"
+loading="lazy">
 
-        </article>
+<div class="live-badge ${isLive?"":"upcoming-badge"}">
+${isLive?"🔴 LIVE NOW":"UPCOMING"}
+</div>
 
-    </div>
+<div class="live-card-info">
 
-</section>
+<div class="live-card-title">
+${escapeHTML(event.title||"BRENZKafrica Live")}
+</div>
 
+<div class="live-card-description">
+${escapeHTML(
+event.description||"BRENZKafrica Live broadcast"
+)}
+</div>
 
-<!-- 
+${event.start_time
+?`<div class="live-card-time">${escapeHTML(formatDate(event.start_time))}</div>`
+:""}
+
+</div>
+
+</article>
+`;
+
+}).join("");
+
+liveStatus.textContent=data.some(event=>{
+
+const s=String(event.status||"").toLowerCase();
+
+return s==="live"||
+s==="live_now"||
+s==="active";
+
+})
+?"Live now"
+:"Upcoming broadcasts";
+
+}catch(error){
+
+console.error("Live events error:",error);
+
+liveRow.innerHTML=
+'<div class="live-empty">'+
+'Unable to load Live right now.'+
+'</div>';
+
+liveStatus.textContent="Live unavailable";
+
+}
+
+}
+
+function handleLiveCard(title,streamUrl,status){
+
+if(status==="upcoming"){
+
+showToast("This event is upcoming.");
+return;
+}
+
+if(!streamUrl){
+
+showToast(
+"This live event does not have a broadcast stream connected yet."
+);
+
+return;
+}
+
+playVideo(title,streamUrl);
+
+}
+
 /* =========================================================
    NEWS — BRENZKAFRICA PLUS
 ========================================================= */
