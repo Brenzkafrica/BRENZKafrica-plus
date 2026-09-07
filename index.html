@@ -1,5096 +1,4637 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>BRENZKafrica Plus</title>
-<meta name="description" content="BRENZKafrica Plus — African stories, series, documentaries, sports, entertainment, music, news and creative vision.">
-<meta name="theme-color" content="#080808">
+
+<meta
+    name="description"
+    content="BRENZKafrica Plus — African stories, entertainment, business, finance, sports, documentaries, originals and global media."
+>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =========================================================
+   BRENZKAFRICA PLUS
+   GLOBAL PREMIUM STREAMING PLATFORM
+========================================================= */
+
 :root{
---bg:#070707;
---surface:#111;
---surface2:#171717;
---text:#fff;
---muted:#888;
---red:#e50914;
---border:rgba(255,255,255,.09);
---max:1600px
+    --bg:#050505;
+    --bg2:#0b0b0b;
+    --card:#111;
+    --card2:#151515;
+    --text:#fff;
+    --muted:rgba(255,255,255,.62);
+    --soft:rgba(255,255,255,.08);
+    --border:rgba(255,255,255,.09);
+    --radius:16px;
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;background:var(--bg)}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-background:var(--bg);
-color:var(--text);
-font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
-min-height:100vh;
-overflow-x:hidden
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Inter,
+        Arial,
+        Helvetica,
+        sans-serif;
+    overflow-x:hidden;
 }
-body.modal-open{overflow:hidden}
-button,input{font:inherit}
-button{cursor:pointer}
-img{display:block;max-width:100%}
-a{color:inherit}
 
-::-webkit-scrollbar{width:8px;height:8px}
-::-webkit-scrollbar-track{background:#080808}
-::-webkit-scrollbar-thumb{background:#333;border-radius:20px}
-
-/* HEADER */
-header{
-position:fixed;
-top:0;
-left:0;
-right:0;
-height:72px;
-z-index:3000;
-display:flex;
-align-items:center;
-padding:0 4.5%;
-background:linear-gradient(to bottom,rgba(0,0,0,.96),rgba(0,0,0,.78),transparent);
-transition:.25s
-}
-header.scrolled{
-height:66px;
-background:rgba(7,7,7,.94);
-backdrop-filter:blur(18px);
-border-bottom:1px solid rgba(255,255,255,.08)
-}
-.header-inner{
-width:100%;
-max-width:var(--max);
-margin:auto;
-display:flex;
-align-items:center;
-gap:24px
-}
-.logo{
-flex-shrink:0;
-font-size:24px;
-font-weight:900;
-letter-spacing:-1.3px;
-text-decoration:none
-}
-.logo span{color:var(--red)}
-.logo-plus{color:#fff!important;margin-left:2px}
-
-nav{
-display:flex;
-align-items:center;
-gap:19px;
-margin-left:10px;
-flex:1
-}
-nav a{
-position:relative;
-color:#aaa;
-text-decoration:none;
-font-size:12px;
-font-weight:700;
-padding:24px 0;
-transition:.2s
-}
-nav a:hover,nav a.active{color:#fff}
-nav a:after{
-content:"";
-position:absolute;
-left:0;
-right:0;
-bottom:16px;
-height:2px;
-background:var(--red);
-transform:scaleX(0);
-transition:.2s
-}
-nav a:hover:after,nav a.active:after{transform:scaleX(1)}
-
-.nav-right{
-display:flex;
-align-items:center;
-gap:10px;
-flex-shrink:0
-}
-.search-wrap{position:relative}
-.search-icon{
-position:absolute;
-left:11px;
-top:50%;
-transform:translateY(-50%);
-color:#888;
-pointer-events:none
-}
-.search{
-width:170px;
-padding:9px 12px 9px 31px;
-border-radius:5px;
-border:1px solid rgba(255,255,255,.18);
-background:rgba(0,0,0,.55);
-color:#fff;
-outline:none;
-transition:.2s
-}
-.search:focus{width:210px;border-color:#555;background:#151515}
-
-.signin,.signout{border-radius:5px;font-weight:800}
-.signin{
-border:0;
-background:var(--red);
-color:#fff;
-padding:10px 17px
-}
-.signout{
-border:1px solid #383838;
-background:#202020;
-color:#fff;
-padding:8px 12px;
-font-size:11px
-}
-.account-status{display:none;align-items:center;gap:8px}
-.account-status span{
-color:#ccc;
-font-size:12px;
-max-width:130px;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap
-}
-.mobile-menu-button{
-display:none;
-width:40px;
-height:40px;
-background:#171717;
-border:1px solid #333;
-color:#fff;
-border-radius:6px;
-font-size:18px
-}
-
-/* MOBILE MENU */
-.mobile-menu{
-display:none;
-position:fixed;
-top:66px;
-left:0;
-right:0;
-z-index:2900;
-background:rgba(9,9,9,.98);
-backdrop-filter:blur(18px);
-border-bottom:1px solid #222;
-padding:12px 20px 20px
-}
-.mobile-menu.active{display:block}
-.mobile-menu a{
-display:block;
-color:#bbb;
-text-decoration:none;
-padding:14px 4px;
-border-bottom:1px solid #222;
-font-size:14px;
-font-weight:700
-}
-
-/* HERO */
-.hero{
-position:relative;
-min-height:720px;
-height:91vh;
-display:flex;
-align-items:center;
-overflow:hidden;
-background:
-linear-gradient(90deg,rgba(0,0,0,.98),rgba(0,0,0,.78) 30%,rgba(0,0,0,.40) 60%,rgba(0,0,0,.05)),
-linear-gradient(0deg,var(--bg),transparent 35%),
-url("https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg");
-background-size:cover;
-background-position:center
-}
-.hero:after{
-content:"";
-position:absolute;
-left:0;
-right:0;
-bottom:0;
-height:220px;
-background:linear-gradient(to bottom,transparent,var(--bg))
-}
-.hero-content{
-position:relative;
-z-index:2;
-width:100%;
-max-width:var(--max);
-margin:auto;
-padding:110px 4.5% 50px
-}
-.hero-label{
-color:#ff3340;
-font-size:11px;
-font-weight:900;
-letter-spacing:3px;
-margin-bottom:18px
-}
-.hero h1{
-max-width:760px;
-font-size:clamp(48px,7vw,88px);
-line-height:.91;
-letter-spacing:-4px;
-margin-bottom:25px;
-font-weight:900
-}
-.hero-meta{
-display:flex;
-align-items:center;
-gap:12px;
-color:#aaa;
-font-size:12px;
-margin-bottom:23px
-}
-.hero-meta strong{color:#fff}
-.meta-dot{width:4px;height:4px;border-radius:50%;background:#777}
-.hero p{
-max-width:600px;
-color:#ccc;
-font-size:16px;
-line-height:1.7;
-margin-bottom:28px
-}
-.hero-buttons{display:flex;gap:10px}
-.play-btn,.info-btn{
-min-height:46px;
-padding:0 22px;
-border:0;
-border-radius:5px;
-font-size:14px;
-font-weight:800
-}
-.play-btn{background:#fff;color:#000}
-.info-btn{background:rgba(90,90,90,.7);color:#fff}
-
-/* MAIN */
-main{
-position:relative;
-z-index:10;
-margin-top:-80px
-}
-.content-container{
-width:100%;
-max-width:var(--max);
-margin:auto
-}
-.section,.live-section,.breaking-news{
-padding-left:4.5%;
-padding-right:4.5%
-}
-.section{padding-top:28px;margin-bottom:30px}
-.section-heading{
-display:flex;
-align-items:flex-end;
-justify-content:space-between;
-gap:15px;
-margin-bottom:8px
-}
-.section-title{font-size:22px;font-weight:800}
-.section-title span{color:var(--red)}
-.section-subtitle{
-color:#7f7f7f;
-font-size:12px;
-line-height:1.5;
-margin-bottom:16px
-}
-.section-link{
-color:#999;
-text-decoration:none;
-font-size:11px;
-font-weight:700
-}
-
-/* ROW */
-.row,.live-row,.news-row,.episode-row,.sports-row,.music-row,.entertainment-row{
-display:flex;
-gap:14px;
-overflow-x:auto;
-padding:5px 3px 18px;
-scrollbar-width:none;
--webkit-overflow-scrolling:touch
-}
-.row::-webkit-scrollbar,
-.live-row::-webkit-scrollbar,
-.news-row::-webkit-scrollbar,
-.episode-row::-webkit-scrollbar,
-.sports-row::-webkit-scrollbar,
-.music-row::-webkit-scrollbar,
-.entertainment-row::-webkit-scrollbar{display:none}
-
-/* CARDS */
-.card{
-position:relative;
-flex:0 0 235px;
-height:132px;
-overflow:hidden;
-background:#151515;
-border:1px solid rgba(255,255,255,.07);
-border-radius:8px;
-cursor:pointer;
-transition:.25s ease
-}
-.card:hover{
-transform:translateY(-5px) scale(1.02);
-z-index:20;
-border-color:#444;
-box-shadow:0 15px 35px rgba(0,0,0,.55)
-}
-.card img{
-width:100%;
-height:100%;
-object-fit:cover;
-transition:.45s ease
-}
-.card:hover img{transform:scale(1.06)}
-.card:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.2) 55%,transparent);
-pointer-events:none
-}
-.card-overlay{
-position:absolute;
-left:0;
-right:0;
-bottom:0;
-z-index:3;
-padding:35px 11px 10px
-}
-.card-title{
-font-size:13px;
-font-weight:800;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.card-type{color:#aaa;font-size:10px;margin-top:4px}
-.card-badge{
-position:absolute;
-top:9px;
-left:9px;
-z-index:5;
-background:var(--red);
-color:#fff;
-padding:4px 7px;
-border-radius:3px;
-font-size:8px;
-font-weight:900
-}
-
-/* TRENDING SERIES : THE POLYGAMIST */
-.episodes-section{display:none}
-.episodes-section.visible{display:block}
-.episode-card{
-position:relative;
-flex:0 0 285px;
-height:165px;
-overflow:hidden;
-background:#151515;
-border:1px solid rgba(255,255,255,.08);
-border-radius:9px;
-cursor:pointer;
-transition:.25s ease
-}
-.episode-card:hover{
-transform:translateY(-5px);
-border-color:#444;
-box-shadow:0 15px 35px rgba(0,0,0,.55)
-}
-.episode-card img{
-width:100%;
-height:100%;
-object-fit:cover;
-transition:.4s
-}
-.episode-card:hover img{transform:scale(1.05)}
-.episode-card:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(to top,rgba(0,0,0,.96),rgba(0,0,0,.15) 60%,transparent)
-}
-.episode-number{
-position:absolute;
-top:10px;
-left:10px;
-z-index:5;
-background:rgba(0,0,0,.78);
-border:1px solid rgba(255,255,255,.18);
-padding:5px 8px;
-border-radius:4px;
-font-size:9px;
-font-weight:900
-}
-.episode-premium{
-position:absolute;
-top:10px;
-right:10px;
-z-index:5;
-background:#d4a017;
-color:#000;
-padding:5px 7px;
-border-radius:4px;
-font-size:8px;
-font-weight:900
-}
-.episode-info{
-position:absolute;
-left:12px;
-right:12px;
-bottom:12px;
-z-index:5
-}
-.episode-title{
-font-size:14px;
-font-weight:900;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.episode-description{
-color:#aaa;
-font-size:10px;
-margin-top:4px;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.episode-duration{color:#777;font-size:9px;margin-top:5px}
-.episode-empty,.episode-error,.episode-loading{
-color:#777;
-padding:35px 3px;
-font-size:12px
-}
-
-/* YOUTUBE */
-.youtube-original-card{flex:0 0 235px;height:132px}
-.youtube-original-card .youtube-label{
-color:#ff3b45;
-font-size:9px;
-font-weight:900;
-margin-top:4px;
-text-transform:uppercase
-}
-.portrait-card{flex-basis:180px;height:270px}
-.portrait-card .card-overlay{padding-top:80px}
-
-/* WATCHLIST */
-.watchlist-button{
-position:absolute;
-right:9px;
-top:9px;
-z-index:8;
-width:34px;
-height:34px;
-border-radius:50%;
-border:1px solid rgba(255,255,255,.25);
-background:rgba(0,0,0,.70);
-backdrop-filter:blur(8px);
-color:#fff;
-font-size:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-transition:.2s
-}
-.watchlist-button:hover,.watchlist-button.saved{
-background:var(--red);
-border-color:var(--red)
-}
-#watchlist{scroll-margin-top:90px}
-.watchlist-empty{
-width:100%;
-padding:45px 10px;
-color:#666;
-font-size:13px
-}
-
-/* LIVE */
-.live-section{padding-top:28px;margin-bottom:28px}
-.live-header,.breaking-news-header{
-display:flex;
-align-items:center;
-gap:12px;
-margin-bottom:8px
-}
-.live-title,.breaking-news-title{
-display:flex;
-align-items:center;
-gap:9px;
-font-size:22px;
-font-weight:800
-}
-.live-dot,.breaking-dot{
-width:9px;
-height:9px;
-border-radius:50%;
-background:var(--red);
-box-shadow:0 0 12px rgba(229,9,20,.7)
-}
-.live-status,.breaking-news-status{
-flex:1;
-color:#707070;
-font-size:11px
-}
-.live-refresh,.news-refresh{
-background:#171717;
-border:1px solid #303030;
-color:#aaa;
-padding:7px 11px;
-border-radius:4px;
-font-size:10px;
-font-weight:700
-}
-.live-card{
-position:relative;
-flex:0 0 330px;
-height:190px;
-overflow:hidden;
-border:1px solid #262626;
-border-radius:9px;
-cursor:pointer
-}
-.live-card img{
-width:100%;
-height:100%;
-object-fit:cover
-}
-.live-card:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(transparent 25%,rgba(0,0,0,.9))
-}
-.live-badge{
-position:absolute;
-top:11px;
-left:11px;
-z-index:3;
-background:var(--red);
-color:#fff;
-padding:5px 8px;
-border-radius:3px;
-font-size:8px;
-font-weight:900
-}
-.upcoming-badge{background:#333}
-.live-card-info{
-position:absolute;
-left:13px;
-right:13px;
-bottom:12px;
-z-index:3
-}
-.live-card-title{font-size:16px;font-weight:800}
-.live-card-description{
-color:#aaa;
-font-size:11px;
-margin-top:4px;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.live-card-time{color:#888;font-size:10px;margin-top:6px}
-.live-empty{color:#686868;padding:30px 2px;font-size:12px}
-
-/* NEWS */
-.breaking-news{padding-top:25px;margin-bottom:25px}
-.news-card{
-position:relative;
-flex:0 0 315px;
-min-height:185px;
-background:linear-gradient(145deg,#181818,#0e0e0e);
-border:1px solid #292929;
-border-radius:9px;
-padding:18px;
-cursor:pointer;
-display:flex;
-flex-direction:column;
-justify-content:space-between
-}
-.news-source{
-color:#ff3943;
-font-size:9px;
-font-weight:900;
-letter-spacing:1px;
-text-transform:uppercase;
-margin-bottom:10px
-}
-.news-title{font-size:16px;line-height:1.35;font-weight:800;margin-bottom:9px}
-.news-description{
-color:#8f8f8f;
-font-size:12px;
-line-height:1.5;
-display:-webkit-box;
--webkit-line-clamp:3;
--webkit-box-orient:vertical;
-overflow:hidden
-}
-.news-date{color:#5f5f5f;font-size:9px;margin-top:14px}
-.news-loading,.news-error,.news-empty{
-color:#686868;
-padding:30px 2px;
-font-size:12px
-}
-
-/* SPORTS */
-.sports-section{position:relative}
-.sports-heading-right{
-display:flex;
-align-items:center;
-gap:10px
-}
-.sports-status{color:#666;font-size:10px}
-.sports-refresh{
-background:#171717;
-border:1px solid #303030;
-color:#aaa;
-padding:7px 11px;
-border-radius:4px;
-font-size:10px;
-font-weight:700
-}
-.sports-tabs{
-display:flex;
-align-items:center;
-gap:9px;
-overflow-x:auto;
-padding:4px 2px 17px;
-scrollbar-width:none;
--webkit-overflow-scrolling:touch
-}
-.sports-tabs::-webkit-scrollbar{display:none}
-.sports-tab{
-flex:0 0 auto;
-border:1px solid rgba(255,255,255,.10);
-background:#151515;
-color:#aaa;
-padding:9px 15px;
-border-radius:20px;
-font-size:11px;
-font-weight:800;
-transition:.2s
-}
-.sports-tab:hover{color:#fff;border-color:#444}
-.sports-tab.active{background:#fff;color:#000;border-color:#fff}
-.sports-panel{display:none}
-.sports-panel.active{display:block}
-.sports-panel-heading{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:15px;
-margin-bottom:9px
-}
-.sports-panel-heading h3{font-size:17px;font-weight:800}
-.sports-panel-heading span{color:#666;font-size:10px}
-
-.sports-card{
-position:relative;
-flex:0 0 300px;
-height:175px;
-overflow:hidden;
-background:
-radial-gradient(circle at 50% 15%,rgba(255,255,255,.08),transparent 45%),
-linear-gradient(145deg,#181818,#0c0c0c);
-border:1px solid rgba(255,255,255,.09);
-border-radius:10px;
-cursor:pointer;
-transition:.25s ease
-}
-.sports-card:hover{
-transform:translateY(-5px) scale(1.015);
-border-color:#444;
-box-shadow:0 18px 38px rgba(0,0,0,.55)
-}
-.sports-card-bg{
-position:absolute;
-inset:0;
-opacity:.18;
-background:radial-gradient(circle at 50% 0%,rgba(229,9,20,.7),transparent 48%)
-}
-.sports-top{
-position:absolute;
-top:11px;
-left:12px;
-right:12px;
-z-index:5;
-display:flex;
-align-items:center;
-justify-content:space-between
-}
-.sports-league{
-color:#aaa;
-font-size:9px;
-font-weight:900;
-letter-spacing:1px;
-text-transform:uppercase;
-max-width:180px;
-overflow:hidden;
-text-overflow:ellipsis;
-white-space:nowrap
-}
-.sports-live-badge,.sports-upcoming-badge,.sports-final-badge{
-padding:5px 8px;
-border-radius:4px;
-font-size:8px;
-font-weight:900
-}
-.sports-live-badge{background:var(--red);color:#fff}
-.sports-upcoming-badge{background:#303030;color:#ddd}
-.sports-final-badge{background:#555;color:#fff}
-.sports-match{
-position:absolute;
-left:15px;
-right:15px;
-top:48px;
-z-index:4;
-display:flex;
-align-items:center;
-justify-content:center;
-gap:18px
-}
-.sports-team{
-width:100px;
-display:flex;
-flex-direction:column;
-align-items:center;
-text-align:center
-}
-.sports-team-logo{
-width:48px;
-height:48px;
-object-fit:contain;
-margin-bottom:7px;
-filter:drop-shadow(0 4px 10px rgba(0,0,0,.6))
-}
-.sports-team-name{
-color:#ddd;
-font-size:10px;
-font-weight:800;
-line-height:1.2;
-display:-webkit-box;
--webkit-line-clamp:2;
--webkit-box-orient:vertical;
-overflow:hidden
-}
-.sports-vs{
-flex-shrink:0;
-width:35px;
-height:35px;
-display:flex;
-align-items:center;
-justify-content:center;
-border-radius:50%;
-background:#111;
-border:1px solid #333;
-color:#777;
-font-size:9px;
-font-weight:900
-}
-.sports-score{color:#fff;font-size:18px;font-weight:900}
-.sports-bottom{
-position:absolute;
-left:13px;
-right:13px;
-bottom:11px;
-z-index:5;
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px
-}
-.sports-event-name{
-color:#777;
-font-size:9px;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.sports-time{color:#aaa;font-size:9px;white-space:nowrap}
-.sports-watch-button{
-position:absolute;
-right:11px;
-bottom:10px;
-z-index:10;
-border:0;
-border-radius:4px;
-padding:7px 10px;
-background:#fff;
-color:#000;
-font-size:9px;
-font-weight:900
-}
-.sports-no-broadcast{
-position:absolute;
-right:11px;
-bottom:10px;
-z-index:10;
-color:#666;
-font-size:8px
-}
-.sports-live-pulse{
-display:inline-block;
-width:6px;
-height:6px;
-border-radius:50%;
-background:var(--red);
-margin-right:4px;
-box-shadow:0 0 9px rgba(229,9,20,.8)
-}
-.sports-empty,.sports-error{
-color:#686868;
-padding:35px 3px;
-font-size:12px
-}
-
-/* ENTERTAINMENT */
-.entertainment-section{
-position:relative
-}
-.entertainment-tabs{
-display:flex;
-align-items:center;
-gap:9px;
-overflow-x:auto;
-padding:4px 2px 17px;
-scrollbar-width:none;
--webkit-overflow-scrolling:touch
-}
-.entertainment-tabs::-webkit-scrollbar{display:none}
-.entertainment-tab{
-flex:0 0 auto;
-border:1px solid rgba(255,255,255,.10);
-background:#151515;
-color:#aaa;
-padding:9px 15px;
-border-radius:20px;
-font-size:11px;
-font-weight:800;
-transition:.2s
-}
-.entertainment-tab:hover{
-color:#fff;
-border-color:#444
-}
-.entertainment-tab.active{
-background:#fff;
-color:#000;
-border-color:#fff
-}
-.entertainment-panel{display:none}
-.entertainment-panel.active{display:block}
-.entertainment-card{
-position:relative;
-flex:0 0 275px;
-height:165px;
-overflow:hidden;
-background:#151515;
-border:1px solid rgba(255,255,255,.08);
-border-radius:9px;
-cursor:pointer;
-transition:.25s ease
-}
-.entertainment-card:hover{
-transform:translateY(-5px) scale(1.015);
-border-color:#444;
-box-shadow:0 16px 35px rgba(0,0,0,.55)
-}
-.entertainment-card img{
-width:100%;
-height:100%;
-object-fit:cover;
-transition:.4s
-}
-.entertainment-card:hover img{transform:scale(1.06)}
-.entertainment-card:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(to top,rgba(0,0,0,.97),rgba(0,0,0,.1) 62%,transparent)
-}
-.entertainment-info{
-position:absolute;
-left:13px;
-right:13px;
-bottom:12px;
-z-index:3
-}
-.entertainment-label{
-color:#ff3943;
-font-size:8px;
-font-weight:900;
-letter-spacing:1.5px;
-text-transform:uppercase;
-margin-bottom:5px
-}
-.entertainment-title{
-font-size:14px;
-font-weight:900;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.entertainment-meta{
-color:#999;
-font-size:9px;
-margin-top:4px
-}
-.entertainment-badge{
-position:absolute;
-top:10px;
-left:10px;
-z-index:5;
-background:var(--red);
-color:#fff;
-padding:5px 7px;
-border-radius:4px;
-font-size:8px;
-font-weight:900
-}
-
-/* MUSIC */
-.music-card{
-position:relative;
-flex:0 0 205px;
-height:205px;
-overflow:hidden;
-background:#151515;
-border:1px solid rgba(255,255,255,.08);
-border-radius:9px;
-cursor:pointer;
-transition:.25s ease
-}
-.music-card:hover{
-transform:translateY(-5px);
-border-color:#444;
-box-shadow:0 15px 35px rgba(0,0,0,.55)
-}
-.music-card img{
-width:100%;
-height:100%;
-object-fit:cover;
-transition:.4s
-}
-.music-card:hover img{transform:scale(1.06)}
-.music-card:after{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(to top,rgba(0,0,0,.98),rgba(0,0,0,.05) 65%,transparent)
-}
-.music-play{
-position:absolute;
-right:11px;
-bottom:48px;
-z-index:5;
-width:38px;
-height:38px;
-border:0;
-border-radius:50%;
-background:#fff;
-color:#000;
-font-size:15px
-}
-.music-info{
-position:absolute;
-left:12px;
-right:12px;
-bottom:11px;
-z-index:4
-}
-.music-title{
-font-size:13px;
-font-weight:900;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.music-artist{
-color:#999;
-font-size:10px;
-margin-top:4px;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
-}
-.music-region{
-color:#666;
-font-size:9px;
-margin-top:3px
-}
-
-/* PLAYER */
-.player{
-display:none;
-position:fixed;
-inset:0;
-z-index:8000;
-background:rgba(0,0,0,.97);
-align-items:center;
-justify-content:center;
-flex-direction:column;
-padding:40px 20px
-}
-.player.active{display:flex}
-.player video,.youtube-player{
-width:min(1200px,94vw);
-height:min(70vh,680px);
-background:#000;
-border:1px solid #222;
-border-radius:5px
-}
-.player video{object-fit:contain}
-.close-player{
-position:absolute;
-top:22px;
-right:25px;
-width:44px;
-height:44px;
-background:rgba(255,255,255,.1);
-color:#fff;
-border:1px solid rgba(255,255,255,.15);
-border-radius:50%;
-font-size:23px
-}
-.player-title{
-width:min(1200px,94vw);
-margin-top:14px;
-font-size:17px;
-font-weight:700
-}
-.player-description{
-width:min(1200px,94vw);
-color:#888;
-font-size:12px;
-margin-top:7px;
-line-height:1.5
-}
-
-/* AUTH */
-.auth-section{
-display:none;
-position:fixed;
-inset:0;
-z-index:10000;
-background:rgba(0,0,0,.86);
-backdrop-filter:blur(10px);
-align-items:center;
-justify-content:center;
-padding:20px
-}
-.auth-section.active{display:flex}
-.auth-box{
-width:100%;
-max-width:430px;
-background:linear-gradient(145deg,#171717,#0c0c0c);
-border:1px solid rgba(255,255,255,.12);
-border-radius:12px;
-padding:32px;
-position:relative
-}
-.auth-box h2{font-size:28px;margin-bottom:8px}
-.auth-description{
-color:#818181;
-font-size:13px;
-line-height:1.55;
-margin-bottom:22px
-}
-.auth-box input{
-width:100%;
-background:#080808;
-color:#fff;
-border:1px solid #303030;
-padding:14px;
-border-radius:6px;
-margin-bottom:11px;
-outline:none
-}
-#auth-button{
-width:100%;
-padding:14px;
-border:0;
-border-radius:6px;
-background:var(--red);
-color:#fff;
-font-weight:800
-}
-#auth-message{
-min-height:20px;
-margin-top:14px;
-color:#aaa;
-font-size:12px;
-text-align:center
-}
-.auth-switch{
-margin-top:18px;
-color:#777;
-font-size:12px;
-text-align:center
-}
-.auth-switch button{
-background:none;
-border:0;
-color:#fff;
-font-weight:700
-}
-.auth-close{
-position:absolute;
-top:12px;
-right:15px;
-width:35px;
-height:35px;
-background:transparent;
-border:0;
-color:#aaa;
-font-size:25px
-}
-
-/* NEWSLETTER */
-.newsletter{
-width:calc(100% - 9%);
-max-width:1455px;
-margin:65px auto 25px;
-padding:52px 30px;
-background:
-radial-gradient(circle at 50% 0%,rgba(229,9,20,.12),transparent 45%),
-linear-gradient(135deg,#151515,#0c0c0c);
-border:1px solid #292929;
-border-radius:12px;
-text-align:center
-}
-.newsletter-kicker{
-color:#ef1b25;
-font-size:9px;
-font-weight:900;
-letter-spacing:2px;
-margin-bottom:10px
-}
-.newsletter h2{font-size:29px;margin-bottom:9px}
-.newsletter p{
-color:#898989;
-max-width:600px;
-margin:0 auto 25px;
-line-height:1.6;
-font-size:13px
-}
-.newsletter-form{
-display:flex;
-justify-content:center;
-gap:9px;
-max-width:600px;
-margin:auto
-}
-.newsletter-form input{
-flex:1;
-min-width:0;
-background:#060606;
-border:1px solid #3a3a3a;
-color:#fff;
-padding:14px;
-border-radius:5px;
-outline:none
-}
-.newsletter-form button{
-background:var(--red);
-color:#fff;
-border:0;
-padding:14px 22px;
-border-radius:5px;
-font-weight:800
-}
-
-/* FOOTER */
-footer{
-padding:55px 5% 35px;
-color:#666;
-text-align:center;
-border-top:1px solid #1d1d1d;
-margin-top:45px
-}
-footer h3{color:#ddd;font-size:18px;margin-bottom:8px}
-footer p{font-size:11px;line-height:1.6}
-.footer-links{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:20px;
-margin:25px 0
-}
-.footer-links a{
-color:#777;
-text-decoration:none;
-font-size:11px
-}
-
-/* TOAST */
-.toast{
-position:fixed;
-left:50%;
-bottom:25px;
-z-index:15000;
-transform:translate(-50%,30px);
-opacity:0;
-pointer-events:none;
-background:rgba(25,25,25,.96);
-border:1px solid #3a3a3a;
-color:#fff;
-padding:12px 17px;
-border-radius:6px;
-font-size:12px;
-transition:.2s
-}
-.toast.show{
-opacity:1;
-transform:translate(-50%,0)
-}
-
-/* MOBILE */
-@media(max-width:850px){
-header{padding:0 20px}
-nav{display:none}
-.mobile-menu-button{display:block}
-.nav-right{margin-left:auto}
-.search{width:120px}
-.hero{min-height:650px;height:82vh;background-position:62% center}
-.hero-content{padding:100px 20px 45px}
-.section,.live-section,.breaking-news{padding-left:20px;padding-right:20px}
-}
-
-@media(max-width:600px){
-header{height:60px;padding:0 15px}
-header.scrolled{height:60px}
-.logo{font-size:19px}
-.search-wrap{display:none}
-.signin{padding:8px 11px;font-size:10px}
-.mobile-menu{top:60px}
-.hero{min-height:580px;height:78vh;background-position:63% center}
-.hero-content{padding:90px 20px 35px}
-.hero h1{font-size:48px;line-height:.94;letter-spacing:-2px}
-.hero p{font-size:13px}
-main{margin-top:-55px}
-.section,.live-section,.breaking-news{padding-left:15px;padding-right:15px}
-.section-title{font-size:19px}
-.card,.youtube-original-card{flex-basis:175px;height:100px}
-.portrait-card{flex-basis:140px;height:210px}
-.episode-card{flex-basis:250px;height:145px}
-.live-card,.news-card{flex-basis:280px}
-.sports-card{flex-basis:265px;height:160px}
-.sports-team{width:82px}
-.sports-team-logo{width:40px;height:40px}
-.sports-match{gap:8px}
-.sports-tabs{margin-right:-15px}
-.sports-tab{padding:8px 12px;font-size:10px}
-.entertainment-card{flex-basis:250px;height:150px}
-.music-card{flex-basis:165px;height:165px}
-.player{padding:60px 10px 20px}
-.player video,.youtube-player{width:100%;height:55vh}
-.newsletter{width:calc(100% - 30px);padding:38px 18px}
-.newsletter-form{flex-direction:column}
-.newsletter-form button{width:100%}
-.account-status span{display:none}
-}
-</style>
-</head>
-
-<body>
-
-<header id="siteHeader">
-<div class="header-inner">
-
-<a href="#" class="logo">
-BRENZK<span>africa</span><span class="logo-plus">+</span>
-</a>
-
-<nav id="desktopNav">
-<a href="#" class="active">Home</a>
-<a href="#watchlist">My Watchlist</a>
-<a href="#originals">Originals</a>
-<a href="#live">🔴 Live</a>
-<a href="#news">News</a>
-<a href="#series">Series</a>
-<a href="#sports">Sports</a>
-<a href="#entertainment">Entertainment</a>
-<a href="#documentaries">Documentaries</a>
-</nav>
-
-<div class="nav-right">
-
-<div class="search-wrap">
-<span class="search-icon">⌕</span>
-<input class="search" id="search" type="search" placeholder="Search" autocomplete="off">
-</div>
-
-<button class="signin" id="signinButton" onclick="openAccount()">Sign In</button>
-
-<div class="account-status" id="accountStatus">
-<span id="userEmail"></span>
-<button class="signout" onclick="signOut()">Sign Out</button>
-</div>
-
-<button class="mobile-menu-button" onclick="toggleMobileMenu()">☰</button>
-
-</div>
-</div>
-</header>
-
-<div class="mobile-menu" id="mobileMenu">
-<a href="#" onclick="closeMobileMenu()">Home</a>
-<a href="#watchlist" onclick="closeMobileMenu()">My Watchlist</a>
-<a href="#originals" onclick="closeMobileMenu()">Originals</a>
-<a href="#live" onclick="closeMobileMenu()">🔴 Live</a>
-<a href="#news" onclick="closeMobileMenu()">News</a>
-<a href="#series" onclick="closeMobileMenu()">Series</a>
-<a href="#sports" onclick="closeMobileMenu()">Sports</a>
-<a href="#entertainment" onclick="closeMobileMenu()">Entertainment</a>
-<a href="#documentaries" onclick="closeMobileMenu()">Documentaries</a>
-</div>
-
-<section class="hero">
-<div class="hero-content">
-
-<div class="hero-label">BRENZKAFRICA ORIGINAL</div>
-
-<h1>
-Stories.<br>
-Creativity.<br>
-Unlimited Vision.
-</h1>
-
-<div class="hero-meta">
-<strong>2026</strong>
-<span class="meta-dot"></span>
-<span>Original</span>
-<span class="meta-dot"></span>
-<span>Africa</span>
-</div>
-
-<p>
-Discover original African stories, films,
-series, documentaries, sports, entertainment
-and global creative work from BRENZKafrica.
-</p>
-
-<div class="hero-buttons">
-<button class="play-btn" onclick="playFeatured()">▶ Play</button>
-<button class="info-btn" onclick="showInfo()">ⓘ More Info</button>
-</div>
-
-</div>
-</section>
-
-<main>
-<div class="content-container">
-
-<section class="section" id="watchlist">
-<div class="section-heading">
-<h2 class="section-title">My Watchlist</h2>
-</div>
-<p class="section-subtitle">Save films, series and documentaries to watch later.</p>
-<div class="row" id="watchlistRow">
-<div class="watchlist-empty">Sign in to see your Watchlist.</div>
-</div>
-</section>
-
-<section class="section" id="originals">
-<div class="section-heading">
-<h2 class="section-title">BRENZKafrica Originals</h2>
-<a href="#originals" class="section-link">Explore →</a>
-</div>
-<p class="section-subtitle">Stories created by Africa. For the world.</p>
-<div class="row" id="originalsRow">
-<div class="news-loading">Loading originals...</div>
-</div>
-</section>
-
-<section class="section" id="series">
-<div class="section-heading">
-<h2 class="section-title">Series</h2>
-<a href="#series" class="section-link">View all →</a>
-</div>
-<p class="section-subtitle">African stories, journeys and creative voices.</p>
-<div class="row" id="seriesRow">
-<div class="news-loading">Loading series...</div>
-</div>
-</section>
-
-<section class="section episodes-section" id="episodes">
-<div class="section-heading">
-<h2 class="section-title">Episodes</h2>
-<span class="section-link">Season episodes</span>
-</div>
-<p class="section-subtitle" id="episodesSubtitle">Watch episodes from this series.</p>
-<div class="episode-row" id="episodesRow">
-<div class="episode-loading">Loading episodes...</div>
-</div>
-</section>
-
-<section class="live-section" id="live">
-
-<div class="live-header">
-<div class="live-title">
-<span class="live-dot"></span>
-Live
-</div>
-<div class="live-status" id="liveStatus">Loading live events...</div>
-<button class="live-refresh" onclick="loadLiveEvents()">↻ Refresh</button>
-</div>
-
-<p class="section-subtitle">
-Watch BRENZKafrica live events and broadcasts.
-</p>
-
-<div class="live-row" id="liveRow">
-<div class="live-empty">Loading live events...</div>
-</div>
-
-</section>
-
-<section class="breaking-news" id="news">
-
-<div class="breaking-news-header">
-<div class="breaking-news-title">
-<span class="breaking-dot"></span>
-Breaking News
-</div>
-<div class="breaking-news-status" id="newsStatus">
-Loading latest African news...
-</div>
-<button class="news-refresh" onclick="loadBreakingNews()">↻ Refresh</button>
-</div>
-
-<p class="section-subtitle">
-The latest stories and developments from across Africa.
-</p>
-
-<div class="news-row" id="newsRow">
-<div class="news-loading">Loading breaking news...</div>
-</div>
-
-</section>
-
-<section class="section sports-section" id="sports">
-
-<div class="section-heading">
-
-<div>
-<h2 class="section-title">Sports</h2>
-<p class="section-subtitle">
-Worldwide sports — live scores, upcoming fixtures and major events.
-</p>
-</div>
-
-<div class="sports-heading-right">
-<span class="sports-status" id="sportsStatus">Updating...</span>
-<button class="sports-refresh" onclick="loadSports()">↻ Refresh</button>
-</div>
-
-</div>
-
-<div class="sports-tabs">
-
-<button class="sports-tab active" data-sport-tab="live"
-onclick="showSportsTab('live',this)">
-🔴 Live Now
-</button>
-
-<button class="sports-tab" data-sport-tab="football"
-onclick="showSportsTab('football',this)">
-⚽ Football
-</button>
-
-<button class="sports-tab" data-sport-tab="basketball"
-onclick="showSportsTab('basketball',this)">
-🏀 Basketball
-</button>
-
-<button class="sports-tab" data-sport-tab="tennis"
-onclick="showSportsTab('tennis',this)">
-🎾 Tennis
-</button>
-
-<button class="sports-tab" data-sport-tab="all"
-onclick="showSportsTab('all',this)">
-🌍 All Sports
-</button>
-
-</div>
-
-<div class="sports-panel active" id="sportsLivePanel">
-<div class="sports-panel-heading">
-<div>
-<h3>🔴 Live Now</h3>
-<span>Live sports scores and authorized broadcasts</span>
-</div>
-</div>
-<div class="sports-row" id="sportsLiveRow">
-<div class="sports-empty">Loading live sports...</div>
-</div>
-</div>
-
-<div class="sports-panel" id="sportsFootballPanel">
-<div class="sports-panel-heading">
-<h3>⚽ Football</h3>
-</div>
-<div class="sports-row" id="sportsFootballRow">
-<div class="sports-empty">Loading football...</div>
-</div>
-</div>
-
-<div class="sports-panel" id="sportsBasketballPanel">
-<div class="sports-panel-heading">
-<h3>🏀 Basketball</h3>
-</div>
-<div class="sports-row" id="sportsBasketballRow">
-<div class="sports-empty">Loading basketball...</div>
-</div>
-</div>
-
-<div class="sports-panel" id="sportsTennisPanel">
-<div class="sports-panel-heading">
-<h3>🎾 Tennis</h3>
-</div>
-<div class="sports-row" id="sportsTennisRow">
-<div class="sports-empty">Loading tennis...</div>
-</div>
-</div>
-
-<div class="sports-panel" id="sportsAllPanel">
-<div class="sports-panel-heading">
-<h3>🌍 All Sports</h3>
-</div>
-<div class="sports-row" id="sportsAllRow">
-<div class="sports-empty">Loading worldwide sports...</div>
-</div>
-</div>
-
-</section>
-
-<!-- ENTERTAINMENT -->
-<section class="section entertainment-section" id="entertainment">
-
-<div class="section-heading">
-<div>
-<h2 class="section-title">Entertainment</h2>
-<p class="section-subtitle">
-Global entertainment — music, trending music, celebrity news, theatre, events and awards.
-</p>
-</div>
-</div>
-
-<div class="entertainment-tabs">
-
-<button class="entertainment-tab active"
-data-entertainment-tab="music"
-onclick="showEntertainmentTab('music',this)">
-🎵 Music
-</button>
-
-<button class="entertainment-tab"
-data-entertainment-tab="trending"
-onclick="showEntertainmentTab('trending',this)">
-🔥 Trending Music
-</button>
-
-<button class="entertainment-tab"
-data-entertainment-tab="celebrity"
-onclick="showEntertainmentTab('celebrity',this)">
-⭐ Celebrity News
-</button>
-
-<button class="entertainment-tab"
-data-entertainment-tab="theatre"
-onclick="showEntertainmentTab('theatre',this)">
-🎭 Theatre
-</button>
-
-<button class="entertainment-tab"
-data-entertainment-tab="events"
-onclick="showEntertainmentTab('events',this)">
-🎟️ Events
-</button>
-
-<button class="entertainment-tab"
-data-entertainment-tab="awards"
-onclick="showEntertainmentTab('awards',this)">
-🏆 Awards
-</button>
-
-</div>
-
-<div class="entertainment-panel active" id="entertainmentMusicPanel">
-
-<div class="section-heading">
-<div>
-<h3 class="section-title">BRENZKafrica Music</h3>
-<p class="section-subtitle">
-Global music from Africa and every corner of the world.
-</p>
-</div>
-</div>
-
-<div class="music-row" id="musicRow">
-<div class="news-loading">Loading global music...</div>
-</div>
-
-</div>
-
-<div class="entertainment-panel" id="entertainmentTrendingPanel">
-
-<div class="section-heading">
-<div>
-<h3 class="section-title">Trending Music</h3>
-<p class="section-subtitle">
-What's moving across the global music scene.
-</p>
-</div>
-</div>
-
-<div class="entertainment-row" id="trendingMusicRow">
-<div class="news-loading">Loading trending music...</div>
-</div>
-
-</div>
-
-<div class="entertainment-panel" id="entertainmentCelebrityPanel">
-
-<div class="section-heading">
-<div>
-<h3 class="section-title">Celebrity News</h3>
-<p class="section-subtitle">
-Latest celebrity stories, releases, interviews and entertainment headlines.
-</p>
-</div>
-</div>
-
-<div class="entertainment-row" id="celebrityNewsRow">
-<div class="news-loading">Loading celebrity news...</div>
-</div>
-
-</div>
-
-<div class="entertainment-panel" id="entertainmentTheatrePanel">
-
-<div class="section-heading">
-<div>
-<h3 class="section-title">Theatre</h3>
-<p class="section-subtitle">
-Exclusive theatre and film-industry productions, performances and showcases.
-</p>
-</div>
-</div>
-
-<div class="entertainment-row" id="theatreRow">
-<div class="news-loading">Loading theatre...</div>
-</div>
-
-</div>
-
-<div class="entertainment-panel" id="entertainmentEventsPanel">
-
-<div class="section-heading">
-<div>
-<h3 class="section-title">Events</h3>
-<p class="section-subtitle">
-Major entertainment events, premieres, concerts and industry gatherings.
-</p>
-</div>
-</div>
-
-<div class="entertainment-row" id="eventsRow">
-<div class="news-loading">Loading events...</div>
-</div>
-
-</div>
-
-<div class="entertainment-panel" id="entertainmentAwardsPanel">
-
-<div class="section-heading">
-<div>
-<h3 class="section-title">Events & Awards</h3>
-<p class="section-subtitle">
-Celebrating excellence across music, film, television and the creative industries.
-</p>
-</div>
-</div>
-
-<div class="entertainment-row" id="awardsRow">
-<div class="news-loading">Loading awards...</div>
-</div>
-
-</div>
-
-</section>
-
-<section class="section" id="documentaries">
-
-<div class="section-heading">
-<h2 class="section-title">Documentaries</h2>
-<a href="#documentaries" class="section-link">View all →</a>
-</div>
-
-<p class="section-subtitle">
-Real people. Real places. African perspectives.
-</p>
-
-<div class="row" id="documentaryRow">
-<div class="news-loading">Loading documentaries...</div>
-</div>
-
-</section>
-
-</div>
-</main>
-
-<div class="player" id="player">
-
-<button class="close-player" onclick="closePlayer()">×</button>
-
-<video id="video" controls playsinline preload="metadata"></video>
-
-<iframe
-id="youtubePlayer"
-class="youtube-player"
-style="display:none"
-allow="autoplay; encrypted-media; picture-in-picture"
-allowfullscreen>
-</iframe>
-
-<div class="player-title" id="playerTitle"></div>
-<div class="player-description" id="playerDescription"></div>
-
-</div>
-
-<div id="auth-section" class="auth-section">
-
-<div class="auth-box">
-
-<button class="auth-close" onclick="closeAccount()">×</button>
-
-<h2 id="auth-title">Sign In</h2>
-
-<p class="auth-description">
-Sign in to your BRENZKafrica Plus account
-or create a new viewer account.
-</p>
-
-<input type="email" id="email" placeholder="Email address" autocomplete="email">
-
-<input type="password" id="password" placeholder="Password" autocomplete="current-password">
-
-<button id="auth-button" onclick="signIn()">Sign In</button>
-
-<p id="auth-message"></p>
-
-<p class="auth-switch">
-Don't have an account?
-<button onclick="showSignUp()">Create Account</button>
-</p>
-
-</div>
-</div>
-
-<section class="newsletter">
-
-<div class="newsletter-kicker">BRENZKAFRICA PLUS</div>
-
-<h2>Stay in the loop</h2>
-
-<p>
-Get the latest African stories, films, series,
-documentaries, sports, music, entertainment and
-creative updates from BRENZKafrica.
-</p>
-
-<form class="newsletter-form" id="newsletterForm">
-
-<input
-type="email"
-id="newsletterEmail"
-placeholder="Enter your email address"
-required>
-
-<button type="submit" id="newsletterButton">
-Subscribe
-</button>
-
-</form>
-
-<p id="newsletter-message"></p>
-
-</section>
-
-<footer>
-
-<h3>BRENZKafrica+</h3>
-
-<p>African Creativity. Unlimited Vision.</p>
-
-<div class="footer-links">
-<a href="#">Home</a>
-<a href="#watchlist">My Watchlist</a>
-<a href="#originals">Originals</a>
-<a href="#news">News</a>
-<a href="#live">Live</a>
-<a href="#series">Series</a>
-<a href="#sports">Sports</a>
-<a href="#entertainment">Entertainment</a>
-<a href="#documentaries">Documentaries</a>
-</div>
-
-<p>© 2026 BRENZKafrica. All rights reserved.</p>
-
-</footer>
-
-<div class="toast" id="toast"></div>
-
-<script>
-"use strict";
-
-/* =========================================================
-   SUPABASE
-========================================================= */
-
-const SUPABASE_URL=
-"https://fcddfmfpzbilagphpsxs.supabase.co";
-
-const SUPABASE_KEY=
-"sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u";
-
-const supabaseClient=
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY,
-{
-auth:{
-persistSession:true,
-autoRefreshToken:true,
-detectSessionInUrl:true
-}
-}
-);
-
-/* =========================================================
-   API
-========================================================= */
-
-const NEWS_API_URL="/api/news";
-const YOUTUBE_API_URL="/api/youtube";
-
-/*
-  Entertainment API is intentionally optional.
-  The Entertainment section still works with the manual
-  global catalogue below if no API is configured.
-*/
-const ENTERTAINMENT_API_URL="/api/entertainment";
-
-/* =========================================================
-   SERIES
-========================================================= */
-
-const CURRENT_SERIES_ID=1;
-
-/* =========================================================
-   SPORTS
-========================================================= */
-const SPORTS_LEAGUES=[
-    {sport:"soccer",league:"eng.1",name:"Premier League",category:"football"},
-    {sport:"soccer",league:"esp.1",name:"LaLiga",category:"football"},
-    {sport:"soccer",league:"ger.1",name:"Bundesliga",category:"football"},
-    {sport:"soccer",league:"ita.1",name:"Serie A",category:"football"},
-    {sport:"soccer",league:"fra.1",name:"Ligue 1",category:"football"},
-    {sport:"soccer",league:"uefa.champions",name:"UEFA Champions League",category:"football"},
-    {sport:"soccer",league:"usa.1",name:"MLS",category:"football"},
-    {sport:"soccer",league:"usa.nwsl",name:"NWSL",category:"football"},
-    {sport:"soccer",league:"mex.1",name:"Liga MX",category:"football"},
-    {sport:"soccer",league:"bra.1",name:"Brasileirão",category:"football"},
-    {sport:"soccer",league:"arg.1",name:"Argentina Liga",category:"football"},
-    {sport:"basketball",league:"nba",name:"NBA",category:"basketball"},
-    {sport:"basketball",league:"wnba",name:"WNBA",category:"basketball"},
-    {sport:"basketball",league:"euroleague",name:"EuroLeague",category:"basketball"},
-    {sport:"football",league:"nfl",name:"NFL",category:"football-american"},
-    {sport:"baseball",league:"mlb",name:"MLB",category:"baseball"},
-    {sport:"hockey",league:"nhl",name:"NHL",category:"hockey"},
-    {sport:"racing",league:"f1",name:"Formula 1",category:"racing"},
-    {sport:"golf",league:"pga",name:"PGA Tour",category:"golf"},
-    {sport:"tennis",league:"atp",name:"ATP Tennis",category:"tennis"},
-    {sport:"tennis",league:"wta",name:"WTA Tennis",category:"tennis"},
-    {sport:"mma",league:"ufc",name:"UFC",category:"mma"}
-];
-/* =========================================================
-   INITIAL SPORTS LOAD
-========================================================= */
-if(typeof loadSports==="function"){
-    loadSports();
-}else{
-    console.error(
-        "BRENZKafrica Plus: loadSports() function not found."
-    );
-}
-/* =========================================================
-   SPORTS AUTO REFRESH
-========================================================= */
-setInterval(
-    ()=>{
-        if(typeof loadSports==="function"){
-            loadSports();
-        }
-    },
-    2*60*1000
-);
-/* =========================================================
-   GLOBAL ENTERTAINMENT CATALOGUE
-   Global music + entertainment starter content.
-========================================================= */
-
-const GLOBAL_MUSIC=[
-{
-title:"Global Music",
-artist:"Worldwide Music",
-region:"Global",
-image:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"African Sounds",
-artist:"Africa",
-region:"Africa",
-image:"https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Afrobeats",
-artist:"Global Afrobeats",
-region:"Africa / Global",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Amapiano",
-artist:"South Africa",
-region:"Africa / Global",
-image:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Hip-Hop",
-artist:"Global Hip-Hop",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1571266028243-d220c9c3b1f4?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"R&B",
-artist:"Global R&B",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Pop",
-artist:"Global Pop",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Reggae",
-artist:"Global Reggae",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Electronic",
-artist:"Electronic Music",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1571266028243-3716f02d4c5b?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Latin Music",
-artist:"Latin Sounds",
-region:"Latin America",
-image:"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
-url:""
-}
-];
-
-const TRENDING_MUSIC=[
-{
-title:"Global Music Trends",
-meta:"Worldwide • Trending",
-image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Afrobeats Worldwide",
-meta:"Africa • Global",
-image:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Amapiano Global",
-meta:"South Africa • Trending",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Hip-Hop Worldwide",
-meta:"Global • Trending",
-image:"https://images.unsplash.com/photo-1571266028243-d220c9c3b1f4?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Pop Around the World",
-meta:"Global • Trending",
-image:"https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?auto=format&fit=crop&w=900&q=80"
-}
-];
-
-const CELEBRITY_NEWS=[
-{
-title:"Global Celebrity Spotlight",
-meta:"Celebrity News",
-image:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Music Stars",
-meta:"Music • Celebrity",
-image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film & Television Stars",
-meta:"Film • Television",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"African Entertainment Stars",
-meta:"Africa • Entertainment",
-image:"https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"International Celebrity News",
-meta:"Worldwide",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
+button,
+input,
+select{
+    font:inherit;
 }
-];
 
-const THEATRE_CONTENT=[
-{
-title:"Theatre & Film Industry",
-meta:"Exclusive Theatre",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Stage Productions",
-meta:"Theatre",
-image:"https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Behind The Curtain",
-meta:"Theatre • Exclusive",
-image:"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film Industry Showcase",
-meta:"Film • Theatre",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
+button{
+    cursor:pointer;
 }
-];
-
-const ENTERTAINMENT_EVENTS=[
-{
-title:"Global Entertainment Events",
-meta:"Events",
-image:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Music Festivals",
-meta:"Music • Events",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film Premieres",
-meta:"Film • Events",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Red Carpet Events",
-meta:"Celebrity • Events",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-}
-];
-
-const ENTERTAINMENT_AWARDS=[
-{
-title:"Global Music Awards",
-meta:"Music • Awards",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film Awards",
-meta:"Film • Awards",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Television Awards",
-meta:"Television • Awards",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"African Creative Awards",
-meta:"Africa • Creative Industry",
-image:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
-}
-];
-
-/* =========================================================
-   ELEMENTS
-========================================================= */
 
-const player=document.getElementById("player");
-const video=document.getElementById("video");
-const youtubePlayer=document.getElementById("youtubePlayer");
-const playerTitle=document.getElementById("playerTitle");
-const playerDescription=document.getElementById("playerDescription");
-
-const liveRow=document.getElementById("liveRow");
-const liveStatus=document.getElementById("liveStatus");
-
-const newsRow=document.getElementById("newsRow");
-const newsStatus=document.getElementById("newsStatus");
-
-const siteHeader=document.getElementById("siteHeader");
-const mobileMenu=document.getElementById("mobileMenu");
-
-const watchlistRow=document.getElementById("watchlistRow");
-const episodesSection=document.getElementById("episodes");
-const episodesRow=document.getElementById("episodesRow");
-const episodesSubtitle=document.getElementById("episodesSubtitle");
-
-const sportsStatus=document.getElementById("sportsStatus");
-
-let currentUser=null;
-let watchlistIds=new Set();
-let allContent=[];
-let allEpisodes=[];
-let youtubeOriginals=[];
-let allSportsEvents=[];
-
-/* =========================================================
-   SAFE HTML
-========================================================= */
-
-function escapeHTML(value){
-if(value===null||value===undefined)return "";
-return String(value)
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+a{
+    color:inherit;
+    text-decoration:none;
 }
 
-/* =========================================================
-   TOAST
-========================================================= */
-
-let toastTimer=null;
-
-function showToast(message){
-const toast=document.getElementById("toast");
-toast.textContent=message;
-toast.classList.add("show");
-clearTimeout(toastTimer);
-toastTimer=setTimeout(()=>{
-toast.classList.remove("show");
-},3000);
-}
 
 /* =========================================================
    HEADER
 ========================================================= */
 
-function updateHeader(){
-if(window.scrollY>30){
-siteHeader.classList.add("scrolled");
-}else{
-siteHeader.classList.remove("scrolled");
-}
+.site-header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:5000;
+
+    height:70px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 5%;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,0,0,.96),
+            rgba(0,0,0,.65),
+            transparent
+        );
+
+    backdrop-filter:blur(10px);
 }
 
-window.addEventListener("scroll",updateHeader,{passive:true});
-updateHeader();
+.logo{
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:-.7px;
+    white-space:nowrap;
+}
+
+.logo span{
+    opacity:.55;
+    font-weight:500;
+}
+
+.main-nav{
+    display:flex;
+    align-items:center;
+    gap:23px;
+    margin-left:40px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+.main-nav::-webkit-scrollbar{
+    display:none;
+}
+
+.main-nav button{
+    border:0;
+    background:transparent;
+    color:rgba(255,255,255,.7);
+    font-size:12px;
+    white-space:nowrap;
+    transition:.2s ease;
+}
+
+.main-nav button:hover,
+.main-nav button.active{
+    color:#fff;
+}
+
+.header-actions{
+    margin-left:auto;
+    display:flex;
+    gap:9px;
+}
+
+.header-btn{
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.06);
+    color:#fff;
+    border-radius:50%;
+    width:38px;
+    height:38px;
+}
+
 
 /* =========================================================
-   MOBILE MENU
+   HERO
 ========================================================= */
 
-function toggleMobileMenu(){
-mobileMenu.classList.toggle("active");
+.hero{
+    min-height:720px;
+    position:relative;
+
+    display:flex;
+    align-items:flex-end;
+
+    padding:0 6% 90px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.96) 0%,
+            rgba(0,0,0,.72) 42%,
+            rgba(0,0,0,.15) 100%
+        ),
+        linear-gradient(
+            0deg,
+            #050505 0%,
+            transparent 45%
+        ),
+        url("https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=2000&q=85")
+        center/cover no-repeat;
 }
 
-function closeMobileMenu(){
-mobileMenu.classList.remove("active");
+.hero-content{
+    max-width:680px;
 }
+
+.hero-kicker{
+    font-size:11px;
+    letter-spacing:3px;
+    font-weight:800;
+    opacity:.7;
+    margin-bottom:15px;
+}
+
+.hero h1{
+    font-size:clamp(42px,6vw,82px);
+    line-height:.95;
+    letter-spacing:-3px;
+    margin-bottom:22px;
+}
+
+.hero p{
+    max-width:580px;
+    color:var(--muted);
+    line-height:1.7;
+    font-size:14px;
+}
+
+.hero-actions{
+    display:flex;
+    gap:12px;
+    margin-top:28px;
+}
+
+.primary-btn,
+.secondary-btn{
+    border:0;
+    border-radius:7px;
+    padding:13px 22px;
+    font-weight:800;
+}
+
+.primary-btn{
+    background:#fff;
+    color:#000;
+}
+
+.secondary-btn{
+    background:rgba(255,255,255,.1);
+    color:#fff;
+    border:1px solid var(--border);
+}
+
 
 /* =========================================================
-   URL HELPERS
+   MAIN
 ========================================================= */
 
-function extractYouTubeId(url){
-if(!url)return null;
-
-try{
-const parsed=new URL(url);
-
-if(parsed.hostname.includes("youtube.com")){
-if(parsed.pathname==="/watch"){
-return parsed.searchParams.get("v");
-}
-if(parsed.pathname.startsWith("/embed/")){
-return parsed.pathname.split("/embed/")[1].split("/")[0];
-}
-if(parsed.pathname.startsWith("/shorts/")){
-return parsed.pathname.split("/shorts/")[1].split("/")[0];
-}
-if(parsed.pathname.startsWith("/live/")){
-return parsed.pathname.split("/live/")[1].split("/")[0];
-}
+main{
+    position:relative;
+    z-index:2;
 }
 
-if(
-parsed.hostname==="youtu.be"||
-parsed.hostname==="www.youtu.be"
-){
-return parsed.pathname.replace("/","").split("/")[0];
+.content-section{
+    padding:55px 5%;
 }
 
-}catch(error){
-console.warn("YouTube URL error:",error);
+.section-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    margin-bottom:22px;
 }
 
-return null;
+.section-header h2{
+    font-size:30px;
+    letter-spacing:-1px;
 }
 
-function extractVimeoId(url){
-if(!url)return null;
-const match=String(url).match(/vimeo\.com\/(?:video\/)?(\d+)/i);
-return match?match[1]:null;
+.section-header p{
+    margin-top:7px;
+    font-size:12px;
+    color:var(--muted);
 }
 
-function extractGoogleDriveId(url){
-if(!url)return null;
-
-const value=String(url).trim();
-
-let match=value.match(
-/drive\.google\.com\/file\/d\/([^/]+)/i
-);
-
-if(match)return match[1];
-
-match=value.match(
-/drive\.google\.com\/open\?id=([^&]+)/i
-);
-
-if(match)return match[1];
-
-match=value.match(
-/drive\.google\.com\/uc\?.*id=([^&]+)/i
-);
-
-if(match)return match[1];
-
-return null;
+.section-kicker{
+    display:block;
+    font-size:9px;
+    letter-spacing:2px;
+    font-weight:800;
+    opacity:.5;
+    margin-bottom:7px;
 }
 
-function convertGoogleDriveUrl(url){
-const id=extractGoogleDriveId(url);
-if(!id)return url;
-return "https://drive.google.com/uc?export=download&id="+
-encodeURIComponent(id);
+.section-link{
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-weight:700;
 }
+
 
 /* =========================================================
-   PLAYER
-   YouTube • Vimeo • Google Drive • Cloudinary • Direct Video
-========================================================= */
-function playVideo(name, url, description = "") {
-    if (!url) {
-        showToast("This video is not available yet.");
-        return;
-    }
-    const cleanUrl = String(url).trim();
-    /* ---------------------------------------------------------
-       DETECT VIDEO SOURCES
-    --------------------------------------------------------- */
-    const youtubeId = extractYouTubeId(cleanUrl);
-    const vimeoId = extractVimeoId(cleanUrl);
-    const googleDriveId = extractGoogleDriveId(cleanUrl);
-    const isCloudinary =
-        cleanUrl.includes("player.cloudinary.com/embed/");
-    /* ---------------------------------------------------------
-       RESET PLAYER
-    --------------------------------------------------------- */
-    video.pause();
-    video.removeAttribute("src");
-    youtubePlayer.src = "";
-    video.style.display = "none";
-    youtubePlayer.style.display = "none";
-    /* ---------------------------------------------------------
-       PLAYER INFORMATION
-    --------------------------------------------------------- */
-    playerTitle.textContent =
-        name || "BRENZKafrica";
-    playerDescription.textContent =
-        description || "";
-    /* ---------------------------------------------------------
-       YOUTUBE
-    --------------------------------------------------------- */
-    if (youtubeId) {
-        youtubePlayer.src =
-            "https://www.youtube.com/embed/" +
-            youtubeId +
-            "?autoplay=1&rel=0";
-        youtubePlayer.style.display = "block";
-    }
-    /* ---------------------------------------------------------
-       VIMEO
-    --------------------------------------------------------- */
-    else if (vimeoId) {
-        youtubePlayer.src =
-            "https://player.vimeo.com/video/" +
-            vimeoId +
-            "?autoplay=1";
-        youtubePlayer.style.display = "block";
-    }
-    /* ---------------------------------------------------------
-       CLOUDINARY
-    --------------------------------------------------------- */
-    else if (isCloudinary) {
-        /*
-           Cloudinary Player Embed URLs must be loaded
-           inside the iframe, NOT inside the <video> element.
-        */
-        youtubePlayer.src = cleanUrl;
-        youtubePlayer.style.display = "block";
-    }
-    /* ---------------------------------------------------------
-       GOOGLE DRIVE
-    --------------------------------------------------------- */
-    else if (googleDriveId) {
-        video.src = convertGoogleDriveUrl(cleanUrl);
-        video.style.display = "block";
-        video.play().catch(() => {});
-    }
-    /* ---------------------------------------------------------
-       DIRECT VIDEO URL
-    --------------------------------------------------------- */
-    else {
-        video.src = cleanUrl;
-        video.style.display = "block";
-        video.play().catch(() => {});
-    }
-    /* ---------------------------------------------------------
-       OPEN PLAYER
-    --------------------------------------------------------- */
-    player.classList.add("active");
-    document.body.classList.add("modal-open");
-}
-/* =========================================================
-   CLOSE PLAYER
-========================================================= */
-function closePlayer(){
-    video.pause();
-    video.removeAttribute("src");
-    youtubePlayer.src = "";
-    youtubePlayer.style.display = "none";
-    video.style.display = "block";
-    player.classList.remove("active");
-    document.body.classList.remove("modal-open");
-}
-/* =========================================================
-   FEATURED VIDEO
-========================================================= */
-function playFeatured(){
-    playVideo(
-        "BRENZKafrica Cinema",
-        "https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov"
-    );
-}
-/* =========================================================
-   PLAYER INFO
-========================================================= */
-function showInfo(){
-    showToast(
-        "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
-    );
-}
-/* =========================================================
-   DATE
+   CONTENT ROWS
 ========================================================= */
 
-function formatDate(value){
-
-if(!value)return "";
-
-const date=new Date(value);
-
-if(Number.isNaN(date.getTime()))return "";
-
-return date.toLocaleString(undefined,{
-day:"numeric",
-month:"short",
-year:"numeric"
-});
-
+.content-row{
+    display:flex;
+    gap:15px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    padding-bottom:8px;
 }
 
-function formatSportsDate(value){
-
-if(!value)return "";
-
-const date=new Date(value);
-
-if(Number.isNaN(date.getTime()))return "";
-
-return date.toLocaleString(undefined,{
-weekday:"short",
-day:"numeric",
-month:"short",
-hour:"numeric",
-minute:"2-digit"
-});
-
+.content-row::-webkit-scrollbar{
+    display:none;
 }
 
-function formatDuration(seconds){
-
-const total=Number(seconds);
-
-if(!Number.isFinite(total)||total<=0)return "";
-
-const hours=Math.floor(total/3600);
-const minutes=Math.floor((total%3600)/60);
-const secs=Math.floor(total%60);
-
-if(hours>0){
-return hours+
-":"+
-String(minutes).padStart(2,"0")+
-":"+
-String(secs).padStart(2,"0");
+.content-card{
+    flex:0 0 210px;
+    height:295px;
+    position:relative;
+    overflow:hidden;
+    border-radius:12px;
+    background:#111;
+    border:1px solid var(--border);
+    transition:.25s ease;
 }
 
-return minutes+
-":"+
-String(secs).padStart(2,"0");
+.content-card:hover{
+    transform:scale(1.035);
+    z-index:5;
 }
+
+.content-card img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.card-gradient{
+    position:absolute;
+    inset:0;
+    background:
+        linear-gradient(
+            0deg,
+            rgba(0,0,0,.95),
+            transparent 60%
+        );
+}
+
+.card-info{
+    position:absolute;
+    left:15px;
+    right:15px;
+    bottom:15px;
+}
+
+.card-info small{
+    font-size:8px;
+    letter-spacing:1.5px;
+    opacity:.6;
+}
+
+.card-info h3{
+    font-size:15px;
+    margin-top:6px;
+}
+
+.card-info p{
+    font-size:10px;
+    opacity:.6;
+    margin-top:4px;
+}
+
 
 /* =========================================================
    WATCHLIST
 ========================================================= */
 
-async function loadWatchlist(){
-
-if(!currentUser){
-
-watchlistIds=new Set();
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Sign in to create your Watchlist.'+
-'</div>';
-
-updateWatchlistButtons();
-
-return;
+.watchlist-row{
+    display:flex;
+    gap:14px;
+    overflow-x:auto;
+    scrollbar-width:none;
 }
 
-try{
-
-const {data,error}=await supabaseClient
-.from("watchlist")
-.select("content_id")
-.eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
-
-if(error)throw error;
-
-watchlistIds=new Set(
-(data||[]).map(item=>String(item.content_id))
-);
-
-updateWatchlistButtons();
-await renderWatchlist();
-
-}catch(error){
-
-console.error("Watchlist loading error:",error);
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Unable to load your Watchlist right now.'+
-'</div>';
-
+.watchlist-row::-webkit-scrollbar{
+    display:none;
 }
 
-}
-
-async function toggleWatchlist(contentId,button){
-
-if(!contentId){
-showToast("This content cannot be added to Watchlist yet.");
-return;
-}
-
-if(!currentUser){
-showToast("Please sign in to use My Watchlist.");
-openAccount();
-return;
-}
-
-button.disabled=true;
-
-const id=String(contentId);
-const isSaved=watchlistIds.has(id);
-
-try{
-
-if(isSaved){
-
-const {error}=await supabaseClient
-.from("watchlist")
-.delete()
-.eq("user_id",currentUser.id)
-.eq("content_id",contentId);
-
-if(error)throw error;
-
-watchlistIds.delete(id);
-
-showToast("Removed from My Watchlist.");
-
-}else{
-
-const {error}=await supabaseClient
-.from("watchlist")
-.insert({
-user_id:currentUser.id,
-content_id:contentId
-});
-
-if(error&&error.code!=="23505")throw error;
-
-watchlistIds.add(id);
-
-showToast("Added to My Watchlist.");
-
-}
-
-updateWatchlistButtons();
-await renderWatchlist();
-
-}catch(error){
-
-console.error("Watchlist error:",error);
-showToast("Unable to update Watchlist right now.");
-
-}finally{
-
-button.disabled=false;
-
-}
-
-}
-
-function updateWatchlistButtons(){
-
-document.querySelectorAll(".watchlist-button").forEach(button=>{
-
-const id=String(button.dataset.contentId||"");
-const saved=watchlistIds.has(id);
-
-button.classList.toggle("saved",saved);
-button.textContent=saved?"✓":"＋";
-
-button.setAttribute(
-"aria-label",
-saved?"Remove from Watchlist":"Add to Watchlist"
-);
-
-button.title=
-saved?"Remove from Watchlist":"Add to Watchlist";
-
-});
-
-}
-
-/* =========================================================
-   CONTENT CARDS
-========================================================= */
-
-function createContentCard(item){
-
-const id=item.id;
-const title=item.title||"Untitled";
-
-const thumbnail=
-item.thumbnail_url||
-"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80";
-
-const type=
-item.category||
-item.content_type||
-"Content";
-
-const country=
-item.country?" • "+item.country:"";
-
-const featured=item.is_featured===true;
-const saved=watchlistIds.has(String(id));
-
-return `
-<article
-class="card"
-data-content-id="${escapeHTML(id)}"
-data-title="${escapeHTML(title)}"
-onclick="playContentCard(this)">
-
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy"
-onerror="this.src='https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80'">
-
-${featured?'<span class="card-badge">FEATURED</span>':""}
-
-<button
-class="watchlist-button ${saved?"saved":""}"
-data-content-id="${escapeHTML(id)}"
-onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(id)}',this)"
-aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">
-${saved?"✓":"＋"}
-</button>
-
-<div class="card-overlay">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="card-type">
-${escapeHTML(type)}${escapeHTML(country)}
-</div>
-
-</div>
-
-</article>
-`;
-}
-
-function playContentCard(card){
-
-if(!card)return;
-
-const id=card.dataset.contentId;
-
-const content=allContent.find(
-item=>String(item.id)===String(id)
-);
-
-if(!content){
-showToast("This content is not available yet.");
-return;
-}
-
-playVideo(
-content.title,
-content.video_url,
-content.description
-);
-
-}
-
-/* =========================================================
-   CATEGORY
-========================================================= */
-
-function matchesCategory(item,category){
-
-const value=(
-String(item.category||"")+
-" "+
-String(item.content_type||"")
-).toLowerCase();
-
-if(category==="originals"){
-return item.is_original===true||
-value.includes("original");
-}
-
-if(category==="series"){
-return value.includes("series");
-}
-
-if(category==="documentary"){
-return value.includes("documentary");
-}
-
-return false;
-}
-
-/* =========================================================
-   RENDER CONTENT
-========================================================= */
-
-function renderContentSections(){
-
-const groups={
-originals:document.getElementById("originalsRow"),
-series:document.getElementById("seriesRow"),
-documentary:document.getElementById("documentaryRow")
-};
-
-Object.keys(groups).forEach(group=>{
-
-const row=groups[group];
-
-const items=allContent.filter(
-item=>matchesCategory(item,group)
-);
-
-if(!items.length){
-
-row.innerHTML=
-'<div class="news-empty">No content available yet.</div>';
-
-return;
-}
-
-row.innerHTML=
-items.map(createContentCard).join("");
-
-});
-
-updateWatchlistButtons();
-
-}
-
-/* =========================================================
-   RENDER WATCHLIST
-========================================================= */
-
-async function renderWatchlist(){
-
-if(!currentUser){
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Sign in to create your Watchlist.'+
-'</div>';
-
-return;
-}
-
-if(!watchlistIds.size){
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Your Watchlist is empty. Tap ＋ on a title to save it here.'+
-'</div>';
-
-return;
-}
-
-const ids=Array.from(watchlistIds);
-
-const {data,error}=await supabaseClient
-.from("content")
-.select(
-"id,title,description,content_type,category,country,thumbnail_url,video_url,is_featured,release_date"
-)
-.in("id",ids);
-
-if(error){
-
-console.error(error);
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Unable to load Watchlist content.'+
-'</div>';
-
-return;
-}
-
-const ordered=(data||[]).sort(
-(a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id))
-);
-
-watchlistRow.innerHTML=ordered.length
-?ordered.map(createContentCard).join("")
-:'<div class="watchlist-empty">Your Watchlist is empty.</div>';
-
-}
-
-/* =========================================================
-   LOAD CONTENT
-========================================================= */
-
-async function loadContent(){
-
-const originalsRow=document.getElementById("originalsRow");
-const seriesRow=document.getElementById("seriesRow");
-const documentaryRow=document.getElementById("documentaryRow");
-
-try{
-
-const {data,error}=await supabaseClient
-.from("content")
-.select(
-"id,title,description,content_type,category,country,thumbnail_url,video_url,creator,license,attribution,is_original,is_featured,is_published,release_date"
-)
-.eq("is_published",true)
-.order("is_featured",{ascending:false})
-.order("release_date",{ascending:false,nullsFirst:false});
-
-if(error)throw error;
-
-allContent=data||[];
-
-renderContentSections();
-await loadYouTubeOriginals();
-
-}catch(error){
-
-console.error("Content loading error:",error);
-
-[originalsRow,seriesRow,documentaryRow].forEach(row=>{
-row.innerHTML=
-'<div class="news-error">Unable to load content right now.</div>';
-});
-
-}
-
-}
-
-/* =========================================================
-   YOUTUBE
-========================================================= */
-
-function createYouTubeOriginalCard(item){
-
-const videoId=
-item.videoId||
-extractYouTubeId(item.url)||
-extractYouTubeId(item.video_url);
-
-if(!videoId)return "";
-
-const title=item.title||"BRENZKafrica Tutorial";
-
-const thumbnail=
-item.thumbnail||
-`https://i.ytimg.com/vi/${encodeURIComponent(videoId)}/hqdefault.jpg`;
-
-return `
-<article
-class="card youtube-original-card"
-data-youtube-id="${escapeHTML(videoId)}"
-data-title="${escapeHTML(title)}"
-onclick="playYouTubeOriginal(this)">
-
-<img
-src="${escapeHTML(thumbnail)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<span class="card-badge">BRENZKAFRICA</span>
-
-<div class="card-overlay">
-
-<div class="card-title">
-${escapeHTML(title)}
-</div>
-
-<div class="youtube-label">
-YouTube Tutorial
-</div>
-
-<div class="card-type">
-${escapeHTML(formatDate(item.publishedAt||item.published_at||""))}
-</div>
-
-</div>
-
-</article>
-`;
-}
-
-function playYouTubeOriginal(card){
-
-const videoId=card?.dataset?.youtubeId;
-const title=card?.dataset?.title||"BRENZKafrica Tutorial";
-
-if(!videoId){
-showToast("This YouTube video is unavailable.");
-return;
-}
-
-playVideo(
-title,
-"https://www.youtube.com/watch?v="+videoId
-);
-
-}
-
-async function loadYouTubeOriginals(){
-
-const originalsRow=document.getElementById("originalsRow");
-
-try{
-
-const response=await fetch(
-YOUTUBE_API_URL,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
-}
-);
-
-if(!response.ok){
-throw new Error("YouTube API returned "+response.status);
-}
-
-const data=await response.json();
-
-let videos=[];
-
-if(Array.isArray(data)){
-videos=data;
-}else if(Array.isArray(data.videos)){
-videos=data.videos;
-}else if(Array.isArray(data.items)){
-videos=data.items;
-}else if(Array.isArray(data.data)){
-videos=data.data;
-}
-
-youtubeOriginals=videos
-.map(item=>{
-
-const snippet=item.snippet||item;
-
-let videoId="";
-
-const resourceId=
-snippet.resourceId||
-item.resourceId||
-item.videoId||
-item.id;
-
-if(typeof resourceId==="string"){
-videoId=resourceId;
-}else if(resourceId?.videoId){
-videoId=resourceId.videoId;
-}
-
-if(!videoId&&item.video_id){
-videoId=item.video_id;
-}
-
-let url=
-item.url||
-item.video_url||
-snippet.url||
-"";
-
-if(!videoId){
-videoId=extractYouTubeId(url)||"";
-}
-
-if(!url&&videoId){
-url="https://www.youtube.com/watch?v="+videoId;
-}
-
-return {
-videoId,
-url,
-title:item.title||snippet.title||"BRENZKafrica Tutorial",
-description:item.description||snippet.description||"",
-thumbnail:
-item.thumbnail||
-item.thumbnail_url||
-snippet.thumbnail||
-snippet.thumbnails?.high?.url||
-snippet.thumbnails?.medium?.url||
-snippet.thumbnails?.default?.url||
-(videoId?`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`:""),
-publishedAt:
-item.publishedAt||
-item.published_at||
-snippet.publishedAt||
-""
-};
-
-})
-.filter(item=>item.videoId)
-.slice(0,20);
-
-if(youtubeOriginals.length){
-
-const html=youtubeOriginals
-.map(createYouTubeOriginalCard)
-.join("");
-
-const existing=originalsRow.innerHTML.trim();
-
-if(
-!existing||
-existing.includes("Loading originals")||
-existing.includes("No content available yet")
-){
-
-originalsRow.innerHTML=html;
-
-}else{
-
-originalsRow.insertAdjacentHTML(
-"beforeend",
-html
-);
-
-}
-
-}
-
-}catch(error){
-
-console.warn(
-"BRENZKafrica YouTube loading error:",
-error
-);
-
-}
-
-}
-
-/* =========================================================
-   EPISODES — THE POLYGAMIST SEASON 1
-   ALL 22 CLOUDINARY EPISODES
-========================================================= */
-
-const polygamistEpisodes = [
-
-    {
-        episode: 1,
-        title: "The Polygamist — Episode 1",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E01.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 2,
-        title: "The Polygamist — Episode 2",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E02.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 3,
-        title: "The Polygamist — Episode 3",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E03.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 4,
-        title: "The Polygamist — Episode 4",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E04.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 5,
-        title: "The Polygamist — Episode 5",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E05.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 6,
-        title: "The Polygamist — Episode 6",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E06.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 7,
-        title: "The Polygamist — Episode 7",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E07.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 8,
-        title: "The Polygamist — Episode 8",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E08.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 9,
-        title: "The Polygamist — Episode 9",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E09.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 10,
-        title: "The Polygamist — Episode 10",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E10.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 11,
-        title: "The Polygamist — Episode 11",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E11.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 12,
-        title: "The Polygamist — Episode 12",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E12.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 13,
-        title: "The Polygamist — Episode 13",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E13.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 14,
-        title: "The Polygamist — Episode 14",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E14.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 15,
-        title: "The Polygamist — Episode 15",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E15.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 16,
-        title: "The Polygamist — Episode 16",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E16.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 17,
-        title: "The Polygamist — Episode 17",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E17.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 18,
-        title: "The Polygamist — Episode 18",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E18.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 19,
-        title: "The Polygamist — Episode 19",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E19.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 20,
-        title: "The Polygamist — Episode 20",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E20.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 21,
-        title: "The Polygamist — Episode 21",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E21.540p.X265.AAC._9jaRocks.Com"
-    },
-
-    {
-        episode: 22,
-        title: "The Polygamist — Episode 22",
-        url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E22.540p.X265.AAC._9jaRocks.Com"
-    }
-
-];
-
-
-/* =========================================================
-   CURRENT EPISODE
-========================================================= */
-
-let currentEpisodeIndex = 0;
-
-/* =========================================================
-   LOAD ALL 22 EPISODES
-   THE POLYGAMIST — SEASON 1
-========================================================= */
-
-function loadPolygamistEpisodes(){
-
-    if(!episodesRow){
-        console.error("Episodes row not found.");
-        return;
-    }
-
-    episodesSection.classList.add("visible");
-
-    episodesSubtitle.textContent =
-        polygamistEpisodes.length + " episodes available";
-
-    const polygamistThumbnail =
-        "https://res.cloudinary.com/zveaunox/image/upload/v1788455560/IMG_2009.jpg";
-
-    episodesRow.innerHTML =
-        polygamistEpisodes.map((episode,index)=>{
-
-            return `
-                <article
-                    class="episode-card"
-                    data-episode-index="${index}"
-                    onclick="playEpisode(${index})">
-
-                    <div class="episode-image">
-
-                        <img
-                            src="${polygamistThumbnail}"
-                            alt="${escapeHTML(episode.title)}"
-                            loading="lazy"
-                        >
-
-                        <div class="episode-number">
-                            EP ${episode.episode}
-                        </div>
-
-                        <div class="episode-play-overlay">
-                            ▶
-                        </div>
-
-                    </div>
-
-                    <div class="episode-info">
-
-                        <div class="episode-title">
-                            ${escapeHTML(episode.title)}
-                        </div>
-
-                        <div class="episode-description">
-                            The Polygamist • Season 1 • Episode ${episode.episode}
-                        </div>
-
-                    </div>
-
-                    <button
-                        class="episode-play-btn"
-                        onclick="event.stopPropagation(); playEpisode(${index})">
-                        ▶ Play
-                    </button>
-
-                </article>
-            `;
-
-        }).join("");
-}
-/* =========================================================
-   PLAY EPISODE
-========================================================= */
-
-function playEpisode(index){
-
-    if(
-        index < 0 ||
-        index >= polygamistEpisodes.length
-    ){
-        showToast("This episode could not be found.");
-        return;
-    }
-
-    currentEpisodeIndex = index;
-
-    const episode =
-        polygamistEpisodes[index];
-
-    /*
-       Use the existing BRENZKafrica Plus player.
-       Cloudinary embed URL is passed directly to playVideo().
-    */
-
-    playVideo(
-        episode.title,
-        episode.url,
-        "The Polygamist • Season 1 • Episode " +
-        episode.episode
-    );
-
-    updateEpisodeButtons();
+.watchlist-empty{
+    padding:35px;
+    border:1px dashed var(--border);
+    border-radius:15px;
+    width:100%;
+    color:var(--muted);
+    text-align:center;
+    font-size:13px;
 }
 
 
 /* =========================================================
-   NEXT EPISODE
+   LIVE
 ========================================================= */
 
-function playNextEpisode(){
-
-    if(
-        currentEpisodeIndex <
-        polygamistEpisodes.length - 1
-    ){
-
-        playEpisode(
-            currentEpisodeIndex + 1
+.live-card{
+    flex:0 0 310px;
+    min-height:175px;
+    position:relative;
+    border-radius:15px;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:
+        linear-gradient(
+            135deg,
+            #191919,
+            #070707
         );
+}
 
-    }
+.live-content{
+    padding:25px;
+}
 
+.live-badge{
+    display:inline-flex;
+    padding:5px 8px;
+    border-radius:5px;
+    background:#fff;
+    color:#000;
+    font-size:8px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.live-content h3{
+    margin-top:35px;
+    font-size:19px;
+}
+
+.live-content p{
+    margin-top:7px;
+    font-size:11px;
+    color:var(--muted);
 }
 
 
 /* =========================================================
-   PREVIOUS EPISODE
+   NEWS
 ========================================================= */
 
-function playPreviousEpisode(){
+.news-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:17px;
+}
 
-    if(currentEpisodeIndex > 0){
+.news-card{
+    overflow:hidden;
+    border-radius:15px;
+    border:1px solid var(--border);
+    background:var(--card);
+}
 
-        playEpisode(
-            currentEpisodeIndex - 1
+.news-image{
+    height:190px;
+    background:#151515;
+}
+
+.news-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.news-body{
+    padding:19px;
+}
+
+.news-body span{
+    font-size:8px;
+    letter-spacing:1.5px;
+    opacity:.5;
+}
+
+.news-body h3{
+    margin-top:9px;
+    font-size:17px;
+}
+
+.news-body p{
+    margin-top:8px;
+    font-size:11px;
+    line-height:1.6;
+    color:var(--muted);
+}
+
+
+/* =========================================================
+   BUSINESS & FINANCE
+========================================================= */
+
+#businessFinanceSection{
+    padding:70px 5%;
+    color:#fff;
+}
+
+#businessFinanceSection *{
+    box-sizing:border-box;
+}
+
+#businessFinanceSection .finance-dashboard{
+    padding:28px;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.025)
         );
-
-    }
-
+    border:1px solid var(--border);
+    margin-bottom:45px;
 }
 
+#businessFinanceSection .finance-dashboard-header,
+#businessFinanceSection .finance-block-header{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:25px;
+    margin-bottom:25px;
+}
 
-/* =========================================================
-   UPDATE EPISODE BUTTONS
-========================================================= */
+#businessFinanceSection .dashboard-label{
+    display:block;
+    font-size:10px;
+    letter-spacing:2px;
+    font-weight:800;
+    opacity:.55;
+    margin-bottom:7px;
+}
 
-function updateEpisodeButtons(){
+#businessFinanceSection .finance-dashboard-header h3,
+#businessFinanceSection .finance-block-header h3{
+    font-size:28px;
+}
 
-    const previousButton =
-        document.getElementById(
-            "previousEpisodeBtn"
+#businessFinanceSection .finance-block-header p{
+    margin-top:7px;
+    font-size:12px;
+    color:var(--muted);
+}
+
+#businessFinanceSection .market-status{
+    font-size:9px;
+    letter-spacing:1.5px;
+    opacity:.55;
+}
+
+#businessFinanceSection .market-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+#businessFinanceSection .market-card{
+    padding:22px;
+    border-radius:15px;
+    background:rgba(0,0,0,.25);
+    border:1px solid var(--border);
+}
+
+#businessFinanceSection .market-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+#businessFinanceSection .market-icon{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:rgba(255,255,255,.08);
+    font-size:19px;
+    font-weight:900;
+}
+
+#businessFinanceSection .market-category{
+    font-size:8px;
+    letter-spacing:1.5px;
+    opacity:.5;
+}
+
+#businessFinanceSection .market-card h4{
+    font-size:14px;
+    margin-bottom:9px;
+}
+
+#businessFinanceSection .market-price{
+    font-size:23px;
+    font-weight:900;
+}
+
+#businessFinanceSection .market-change{
+    font-size:10px;
+    opacity:.55;
+    margin-top:6px;
+}
+
+#businessFinanceSection .finance-categories{
+    display:grid;
+    grid-template-columns:repeat(6,1fr);
+    gap:11px;
+    margin-bottom:55px;
+}
+
+#businessFinanceSection .finance-categories button{
+    min-height:110px;
+    text-align:left;
+    padding:18px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,.035);
+    color:#fff;
+    transition:.25s ease;
+}
+
+#businessFinanceSection .finance-categories button:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,.08);
+}
+
+#businessFinanceSection .finance-categories strong,
+#businessFinanceSection .finance-categories span{
+    display:block;
+}
+
+#businessFinanceSection .finance-categories strong{
+    margin-top:10px;
+    font-size:12px;
+}
+
+#businessFinanceSection .finance-categories span{
+    margin-top:5px;
+    font-size:9px;
+    opacity:.5;
+}
+
+#businessFinanceSection .finance-content-block{
+    margin-bottom:60px;
+}
+
+#businessFinanceSection .finance-block-header button{
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-weight:800;
+}
+
+#businessFinanceSection .currency-row{
+    display:flex;
+    gap:13px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+#businessFinanceSection .currency-row::-webkit-scrollbar{
+    display:none;
+}
+
+#businessFinanceSection .currency-pair{
+    min-width:190px;
+    padding:20px;
+    border-radius:14px;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+}
+
+#businessFinanceSection .currency-pair span{
+    font-weight:900;
+}
+
+#businessFinanceSection .currency-pair strong{
+    opacity:.4;
+    margin:0 5px;
+}
+
+#businessFinanceSection .currency-pair small{
+    display:block;
+    margin-top:9px;
+    font-size:9px;
+    opacity:.5;
+}
+
+#businessFinanceSection .crypto-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+#businessFinanceSection .crypto-feature{
+    padding:25px;
+    border-radius:17px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.07),
+            rgba(255,255,255,.025)
         );
+    border:1px solid var(--border);
+}
 
-    const nextButton =
-        document.getElementById(
-            "nextEpisodeBtn"
+#businessFinanceSection .crypto-symbol{
+    width:48px;
+    height:48px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,.08);
+    font-size:24px;
+    font-weight:900;
+    margin-bottom:20px;
+}
+
+#businessFinanceSection .crypto-feature span{
+    font-size:8px;
+    letter-spacing:1.5px;
+    opacity:.5;
+}
+
+#businessFinanceSection .crypto-feature h4{
+    margin:8px 0;
+    font-size:20px;
+}
+
+#businessFinanceSection .crypto-feature p{
+    font-size:11px;
+    line-height:1.6;
+    color:var(--muted);
+}
+
+#businessFinanceSection .crypto-feature button{
+    margin-top:16px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-weight:800;
+}
+
+#businessFinanceSection .business-story-row{
+    display:flex;
+    gap:17px;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+
+#businessFinanceSection .business-story-row::-webkit-scrollbar{
+    display:none;
+}
+
+#businessFinanceSection .business-story-card{
+    min-width:310px;
+    border-radius:17px;
+    overflow:hidden;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+}
+
+#businessFinanceSection .story-image{
+    height:170px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.1),
+            rgba(255,255,255,.02)
         );
-
-    if(previousButton){
-
-        previousButton.disabled =
-            currentEpisodeIndex === 0;
-
-    }
-
-    if(nextButton){
-
-        nextButton.disabled =
-            currentEpisodeIndex ===
-            polygamistEpisodes.length - 1;
-
-    }
-
 }
 
-
-/* =========================================================
-   LOAD EPISODES
-========================================================= */
-
-loadPolygamistEpisodes();
-/* =========================================================
-   BRENZKAFRICA LIVE
-========================================================= */
-
-async function loadLiveEvents(){
-
-liveStatus.textContent="Updating...";
-
-liveRow.innerHTML=
-'<div class="live-empty">Loading live events...</div>';
-
-try{
-
-const {data,error}=await supabaseClient
-.from("live_events")
-.select(
-"id,title,description,thumbnail,status,start_time,end_time,is_featured,stream_url"
-);
-
-if(error)throw error;
-
-if(!data||!data.length){
-
-liveRow.innerHTML=
-'<div class="live-empty">'+
-'No live events are available right now.'+
-'</div>';
-
-liveStatus.textContent="No live events";
-
-return;
+#businessFinanceSection .story-placeholder{
+    font-size:11px;
+    letter-spacing:3px;
+    opacity:.3;
 }
 
-liveRow.innerHTML=data.map(event=>{
-
-const status=
-String(event.status||"upcoming")
-.toLowerCase()
-.trim();
-
-const isLive=
-status==="live"||
-status==="live_now"||
-status==="active";
-
-return `
-<article
-class="live-card"
-onclick="handleLiveCard(
-'${escapeHTML(event.title||"BRENZKafrica Live")}',
-'${escapeHTML(event.stream_url||"")}',
-'${escapeHTML(status)}'
-)">
-
-<img
-src="${escapeHTML(
-event.thumbnail||
-"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
-)}"
-alt="${escapeHTML(event.title||"Live")}"
-loading="lazy">
-
-<div class="live-badge ${isLive?"":"upcoming-badge"}">
-${isLive?"🔴 LIVE NOW":"UPCOMING"}
-</div>
-
-<div class="live-card-info">
-
-<div class="live-card-title">
-${escapeHTML(event.title||"BRENZKafrica Live")}
-</div>
-
-<div class="live-card-description">
-${escapeHTML(
-event.description||"BRENZKafrica Live broadcast"
-)}
-</div>
-
-${event.start_time
-?`<div class="live-card-time">${escapeHTML(formatDate(event.start_time))}</div>`
-:""}
-
-</div>
-
-</article>
-`;
-
-}).join("");
-
-liveStatus.textContent=data.some(event=>{
-
-const s=String(event.status||"").toLowerCase();
-
-return s==="live"||
-s==="live_now"||
-s==="active";
-
-})
-?"Live now"
-:"Upcoming broadcasts";
-
-}catch(error){
-
-console.error("Live events error:",error);
-
-liveRow.innerHTML=
-'<div class="live-empty">'+
-'Unable to load Live right now.'+
-'</div>';
-
-liveStatus.textContent="Live unavailable";
-
+#businessFinanceSection .story-content{
+    padding:20px;
 }
 
+#businessFinanceSection .story-content span{
+    font-size:8px;
+    letter-spacing:1.5px;
+    opacity:.5;
 }
 
-function handleLiveCard(title,streamUrl,status){
-
-if(status==="upcoming"){
-
-showToast("This event is upcoming.");
-return;
+#businessFinanceSection .story-content h4{
+    font-size:17px;
+    margin:9px 0;
 }
 
-if(!streamUrl){
-
-showToast(
-"This live event does not have a broadcast stream connected yet."
-);
-
-return;
+#businessFinanceSection .story-content p{
+    font-size:11px;
+    line-height:1.6;
+    color:var(--muted);
 }
 
-playVideo(title,streamUrl);
-
+#businessFinanceSection .story-content button{
+    border:0;
+    background:transparent;
+    color:#fff;
+    padding:0;
+    margin-top:12px;
+    font-weight:800;
 }
 
-/* =========================================================
-   NEWS — BRENZKAFRICA PLUS
-========================================================= */
-async function loadBreakingNews(){
-    if(!newsRow || !newsStatus){
-        console.error("News elements not found.");
-        return;
-    }
-    newsStatus.textContent="Updating...";
-    newsRow.innerHTML=
-        '<div class="news-loading">Loading latest African news...</div>';
-    try{
-        const response=await fetch(
-            NEWS_API_URL,
-            {
-                method:"GET",
-                cache:"no-store",
-                headers:{
-                    Accept:"application/json"
-                }
-            }
+#businessFinanceSection .finance-original{
+    min-height:390px;
+    border-radius:22px;
+    overflow:hidden;
+    display:flex;
+    align-items:flex-end;
+    margin-top:70px;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0,0,0,.95),
+            rgba(0,0,0,.45),
+            rgba(0,0,0,.1)
+        ),
+        linear-gradient(
+            135deg,
+            #161616,
+            #050505
         );
-        if(!response.ok){
-            throw new Error(
-                "News API error "+response.status
-            );
-        }
-        const data=await response.json();
-        if(!data || data.success!==true){
-            throw new Error(
-                data?.error ||
-                "Invalid news response"
-            );
-        }
-        if(!Array.isArray(data.news) || !data.news.length){
-            newsRow.innerHTML=
-                '<div class="news-empty">'+
-                'No breaking news available right now.'+
-                '</div>';
-            newsStatus.textContent="No updates";
-            return;
-        }
-        newsRow.innerHTML=data.news.map(item=>{
-            const link=
-                encodeURIComponent(
-                    item.link || ""
-                );
-            return `
-                <article
-                    class="news-card"
-                    onclick="openNewsArticle('${link}')">
-                    <div>
-                        <div class="news-source">
-                            ${escapeHTML(
-                                item.source || "News"
-                            )}
-                        </div>
-                        <div class="news-title">
-                            ${escapeHTML(
-                                item.title || ""
-                            )}
-                        </div>
-                        <div class="news-description">
-                            ${escapeHTML(
-                                item.description || ""
-                            )}
-                        </div>
-                    </div>
-                    <div class="news-date">
-                        ${escapeHTML(
-                            formatDate(item.date)
-                        )}
-                    </div>
-                </article>
-            `;
-        }).join("");
-        newsStatus.textContent=
-            (data.count || data.news.length)+
-            " fresh stories";
-        console.log(
-            "BRENZKafrica Plus: News loaded successfully."
-        );
-    }catch(error){
-        console.error(
-            "BRENZKafrica Plus News loading error:",
-            error
-        );
-        newsRow.innerHTML=
-            '<div class="news-error">'+
-            'Unable to load breaking news right now.'+
-            '</div>';
-        newsStatus.textContent=
-            "News unavailable";
-    }
-}
-/* =========================================================
-   NEWS ARTICLE
-========================================================= */
-function openNewsArticle(encoded){
-    if(!encoded)return;
-    try{
-        const url=
-            decodeURIComponent(encoded);
-        if(!/^https?:\/\//i.test(url)){
-            return;
-        }
-        window.open(
-            url,
-            "_blank",
-            "noopener,noreferrer"
-        );
-    }catch(error){
-        console.error(
-            "News article error:",
-            error
-        );
-    }
-}
-/* =========================================================
-   INITIAL NEWS LOAD
-========================================================= */
-loadBreakingNews();
-/* =========================================================
-   SPORTS
-========================================================= */
-
-async function fetchSportsLeague(config){
-
-const url=
-"https://site.api.espn.com/apis/site/v2/sports/"+
-encodeURIComponent(config.sport)+
-"/"+
-encodeURIComponent(config.league)+
-"/scoreboard";
-
-try{
-
-const response=await fetch(
-url,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
-}
-);
-
-if(!response.ok){
-
-console.warn(
-"Sports endpoint failed:",
-config.name,
-response.status
-);
-
-return [];
-
+    border:1px solid var(--border);
 }
 
-const data=await response.json();
-
-if(!data||!Array.isArray(data.events)){
-return [];
+#businessFinanceSection .original-overlay{
+    max-width:600px;
+    padding:50px;
 }
 
-return data.events.map(event=>{
-
-const competition=
-event.competitions?.[0]||null;
-
-const competitors=
-competition?.competitors||[];
-
-const home=competitors.find(
-item=>item.homeAway==="home"
-);
-
-const away=competitors.find(
-item=>item.homeAway==="away"
-);
-
-const state=
-competition?.status?.type?.state||"pre";
-
-let status="upcoming";
-
-if(state==="in")status="live";
-if(state==="post")status="final";
-
-const homeTeam=home?.team||{};
-const awayTeam=away?.team||{};
-
-return {
-
-id:event.id,
-
-sport:config.sport,
-
-category:config.category,
-
-league:config.name,
-
-eventName:event.name||config.name,
-
-home:
-homeTeam.displayName||
-homeTeam.shortDisplayName||
-homeTeam.name||
-"Home",
-
-away:
-awayTeam.displayName||
-awayTeam.shortDisplayName||
-awayTeam.name||
-"Away",
-
-homeLogo:
-homeTeam.logo||homeTeam.logos?.[0]?.href||"",
-
-awayLogo:
-awayTeam.logo||awayTeam.logos?.[0]?.href||"",
-
-homeScore:home?.score??"",
-awayScore:away?.score??"",
-
-status,
-
-detail:
-competition?.status?.type?.shortDetail||
-competition?.status?.type?.detail||
-"",
-
-date:event.date||"",
-
-eventUrl:
-event.links?.find(
-link=>Array.isArray(link.rel)&&
-link.rel.includes("desktop")
-)?.href||
-event.links?.[0]?.href||
-"",
-
-broadcastUrl:""
-
-};
-
-});
-
-}catch(error){
-
-console.warn(
-"Sports request error:",
-config.name,
-error
-);
-
-return [];
-
+#businessFinanceSection .original-overlay span{
+    font-size:9px;
+    letter-spacing:2px;
+    opacity:.6;
 }
 
+#businessFinanceSection .original-overlay h3{
+    font-size:38px;
+    margin:12px 0;
 }
 
-function createSportsCard(event){
-
-const isLive=event.status==="live";
-const isFinal=event.status==="final";
-
-let badgeHTML=
-'<span class="sports-upcoming-badge">UPCOMING</span>';
-
-if(isLive){
-
-badgeHTML=
-'<span class="sports-live-badge">'+
-'<span class="sports-live-pulse"></span>'+
-'LIVE</span>';
-
+#businessFinanceSection .original-overlay p{
+    font-size:13px;
+    line-height:1.7;
+    color:var(--muted);
 }
 
-if(isFinal){
-
-badgeHTML=
-'<span class="sports-final-badge">FINAL</span>';
-
+#businessFinanceSection .original-overlay button{
+    margin-top:17px;
+    padding:12px 20px;
+    border:0;
+    border-radius:8px;
+    background:#fff;
+    color:#000;
+    font-weight:900;
 }
 
-const broadcastButton=event.broadcastUrl
-?`
-<button
-class="sports-watch-button"
-onclick="event.stopPropagation();playSportsBroadcast('${escapeHTML(event.eventName)}','${escapeHTML(event.broadcastUrl)}')">
-▶ Watch Live
-</button>
-`
-:isLive
-?'<span class="sports-no-broadcast">Live data</span>'
-:"";
-
-return `
-
-<article
-class="sports-card"
-data-sports-event="${escapeHTML(event.id)}"
-data-sports-category="${escapeHTML(event.category)}"
-onclick="openSportsEvent(this)">
-
-<div class="sports-card-bg"></div>
-
-<div class="sports-top">
-
-<div class="sports-league">
-${escapeHTML(event.league)}
-</div>
-
-${badgeHTML}
-
-</div>
-
-<div class="sports-match">
-
-<div class="sports-team">
-
-${event.homeLogo
-?`
-<img
-class="sports-team-logo"
-src="${escapeHTML(event.homeLogo)}"
-alt="${escapeHTML(event.home)}"
-loading="lazy"
-onerror="this.style.display='none'">
-`
-:""}
-
-<div class="sports-team-name">
-${escapeHTML(event.home)}
-</div>
-
-</div>
-
-<div class="sports-vs">
-
-${isLive||isFinal
-?`
-<div class="sports-score">
-${escapeHTML(event.homeScore)}
-</div>
-`
-:"VS"}
-
-</div>
-
-<div class="sports-team">
-
-${event.awayLogo
-?`
-<img
-class="sports-team-logo"
-src="${escapeHTML(event.awayLogo)}"
-alt="${escapeHTML(event.away)}"
-loading="lazy"
-onerror="this.style.display='none'">
-`
-:""}
-
-<div class="sports-team-name">
-${escapeHTML(event.away)}
-</div>
-
-</div>
-
-</div>
-
-<div class="sports-bottom">
-
-<div class="sports-event-name">
-${escapeHTML(event.eventName)}
-</div>
-
-<div class="sports-time">
-
-${
-isLive
-?escapeHTML(event.detail||"LIVE NOW")
-:isFinal
-?"Final"
-:escapeHTML(formatSportsDate(event.date))
-}
-
-</div>
-
-</div>
-
-${broadcastButton}
-
-</article>
-
-`;
-
-}
-
-function renderSportsRow(elementId,events,emptyMessage){
-
-const row=document.getElementById(elementId);
-
-if(!row)return;
-
-if(!events||!events.length){
-
-row.innerHTML=
-'<div class="sports-empty">'+
-escapeHTML(emptyMessage)+
-'</div>';
-
-return;
-}
-
-row.innerHTML=
-events.map(createSportsCard).join("");
-
-}
-
-function openSportsEvent(card){
-
-if(!card)return;
-
-const event=
-allSportsEvents.find(
-item=>String(item.id)===
-String(card.dataset.sportsEvent)
-);
-
-if(
-event?.eventUrl&&
-/^https?:\/\//i.test(event.eventUrl)
-){
-
-window.open(
-event.eventUrl,
-"_blank",
-"noopener,noreferrer"
-);
-
-return;
-}
-
-showToast(
-"Sports event information is currently unavailable."
-);
-
-}
-
-function playSportsBroadcast(title,url){
-
-if(
-!url||
-!/^https?:\/\//i.test(url)
-){
-
-showToast(
-"No authorized broadcast is connected."
-);
-
-return;
-}
-
-playVideo(
-title||"Live Sports",
-url,
-"Authorized live sports broadcast"
-);
-
-}
-
-function showSportsTab(tab,button){
-
-document.querySelectorAll(".sports-tab")
-.forEach(item=>{
-item.classList.remove("active");
-});
-
-if(button){
-button.classList.add("active");
-}
-
-document.querySelectorAll(".sports-panel")
-.forEach(panel=>{
-panel.classList.remove("active");
-});
-
-const panelMap={
-live:"sportsLivePanel",
-football:"sportsFootballPanel",
-basketball:"sportsBasketballPanel",
-tennis:"sportsTennisPanel",
-all:"sportsAllPanel"
-};
-
-const panel=document.getElementById(panelMap[tab]);
-
-if(panel){
-panel.classList.add("active");
-}
-
-}
-
-function renderSportsTabs(){
-
-const live=
-allSportsEvents.filter(
-event=>event.status==="live"
-);
-
-const football=
-allSportsEvents.filter(
-event=>event.category==="football"
-);
-
-const basketball=
-allSportsEvents.filter(
-event=>event.category==="basketball"
-);
-
-const tennis=
-allSportsEvents.filter(
-event=>event.category==="tennis"
-);
-
-renderSportsRow(
-"sportsLiveRow",
-live,
-"No sports matches are live right now."
-);
-
-renderSportsRow(
-"sportsFootballRow",
-football,
-"No football events available right now."
-);
-
-renderSportsRow(
-"sportsBasketballRow",
-basketball,
-"No basketball events available right now."
-);
-
-renderSportsRow(
-"sportsTennisRow",
-tennis,
-"No tennis events available right now."
-);
-
-renderSportsRow(
-"sportsAllRow",
-allSportsEvents,
-"No worldwide sports events available right now."
-);
-
-}
-
-async function loadSports(){
-
-sportsStatus.textContent="Updating...";
-
-try{
-
-const results=await Promise.all(
-SPORTS_LEAGUES.map(fetchSportsLeague)
-);
-
-allSportsEvents=
-results
-.flat()
-.filter(Boolean);
-
-allSportsEvents.sort((a,b)=>{
-
-const priority={
-live:0,
-upcoming:1,
-final:2
-};
-
-const difference=
-(priority[a.status]??3)-
-(priority[b.status]??3);
-
-if(difference!==0)return difference;
-
-return new Date(a.date||0)-
-new Date(b.date||0);
-
-});
-
-const liveEvents=
-allSportsEvents.filter(
-event=>event.status==="live"
-);
-
-const others=
-allSportsEvents.filter(
-event=>event.status!=="live"
-);
-
-allSportsEvents=[
-...liveEvents,
-...others
-].slice(0,100);
-
-renderSportsTabs();
-
-sportsStatus.textContent=
-liveEvents.length
-?liveEvents.length+" live now"
-:allSportsEvents.length+" events";
-
-}catch(error){
-
-console.error(
-"Worldwide sports loading error:",
-error
-);
-
-sportsStatus.textContent=
-"Sports unavailable";
-
-[
-"sportsLiveRow",
-"sportsFootballRow",
-"sportsBasketballRow",
-"sportsTennisRow",
-"sportsAllRow"
-].forEach(id=>{
-
-const row=document.getElementById(id);
-
-if(row){
-
-row.innerHTML=
-'<div class="sports-error">'+
-'Unable to load sports right now.'+
-'</div>';
-
-}
-
-});
-
-}
-
-}
 
 /* =========================================================
-   ENTERTAINMENT
+   EPISODES
 ========================================================= */
 
-function showEntertainmentTab(tab,button){
-
-document.querySelectorAll(".entertainment-tab")
-.forEach(item=>{
-item.classList.remove("active");
-});
-
-if(button){
-button.classList.add("active");
+.episode-card{
+    flex:0 0 280px;
+    border-radius:14px;
+    overflow:hidden;
+    background:var(--card);
+    border:1px solid var(--border);
 }
 
-document.querySelectorAll(".entertainment-panel")
-.forEach(panel=>{
-panel.classList.remove("active");
-});
-
-const panels={
-music:"entertainmentMusicPanel",
-trending:"entertainmentTrendingPanel",
-celebrity:"entertainmentCelebrityPanel",
-theatre:"entertainmentTheatrePanel",
-events:"entertainmentEventsPanel",
-awards:"entertainmentAwardsPanel"
-};
-
-const panel=document.getElementById(panels[tab]);
-
-if(panel){
-panel.classList.add("active");
+.episode-thumb{
+    height:158px;
+    background:#151515;
 }
 
+.episode-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-function createMusicCard(item){
-
-const title=item.title||"Global Music";
-const artist=item.artist||"Global Artist";
-const region=item.region||"Worldwide";
-const image=item.image||
-"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80";
-
-const hasUrl=
-item.url&&
-/^(https?:\/\/|\/)/i.test(item.url);
-
-return `
-<article
-class="music-card"
-onclick="${
-hasUrl
-?`playMusic('${escapeHTML(title)}','${escapeHTML(item.url)}','${escapeHTML(artist)}')`
-:`showToast('Music playback will be connected when a licensed music source is added.')`
-}">
-
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="music-play">
-▶
-</div>
-
-<div class="music-info">
-
-<div class="music-title">
-${escapeHTML(title)}
-</div>
-
-<div class="music-artist">
-${escapeHTML(artist)}
-</div>
-
-<div class="music-region">
-${escapeHTML(region)}
-</div>
-
-</div>
-
-</article>
-`;
-
+.episode-body{
+    padding:16px;
 }
 
-function createEntertainmentCard(item,type){
-
-const title=item.title||"Entertainment";
-const meta=item.meta||type;
-const image=item.image||
-"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
-
-return `
-<article
-class="entertainment-card"
-onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
-
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="entertainment-badge">
-${escapeHTML(type)}
-</div>
-
-<div class="entertainment-info">
-
-<div class="entertainment-label">
-BRENZKafrica Entertainment
-</div>
-
-<div class="entertainment-title">
-${escapeHTML(title)}
-</div>
-
-<div class="entertainment-meta">
-${escapeHTML(meta)}
-</div>
-
-</div>
-
-</article>
-`;
-
+.episode-body small{
+    opacity:.5;
+    font-size:9px;
 }
 
-function renderEntertainment(){
-
-const musicRow=document.getElementById("musicRow");
-const trendingRow=document.getElementById("trendingMusicRow");
-const celebrityRow=document.getElementById("celebrityNewsRow");
-const theatreRow=document.getElementById("theatreRow");
-const eventsRow=document.getElementById("eventsRow");
-const awardsRow=document.getElementById("awardsRow");
-
-musicRow.innerHTML=
-GLOBAL_MUSIC
-.map(createMusicCard)
-.join("");
-
-trendingRow.innerHTML=
-TRENDING_MUSIC
-.map(item=>createEntertainmentCard(item,"TRENDING"))
-.join("");
-
-celebrityRow.innerHTML=
-CELEBRITY_NEWS
-.map(item=>createEntertainmentCard(item,"CELEBRITY"))
-.join("");
-
-theatreRow.innerHTML=
-THEATRE_CONTENT
-.map(item=>createEntertainmentCard(item,"THEATRE"))
-.join("");
-
-eventsRow.innerHTML=
-ENTERTAINMENT_EVENTS
-.map(item=>createEntertainmentCard(item,"EVENT"))
-.join("");
-
-awardsRow.innerHTML=
-ENTERTAINMENT_AWARDS
-.map(item=>createEntertainmentCard(item,"AWARD"))
-.join("");
-
+.episode-body h3{
+    margin-top:7px;
+    font-size:15px;
 }
 
-function playMusic(title,url,artist){
-
-playVideo(
-title,
-url,
-"Music by "+artist
-);
-
+.episode-body button{
+    margin-top:13px;
+    border:0;
+    background:#fff;
+    color:#000;
+    padding:8px 12px;
+    border-radius:6px;
+    font-size:10px;
+    font-weight:800;
 }
 
-function openEntertainmentItem(encodedUrl,encodedTitle){
 
-const url=decodeURIComponent(encodedUrl||"");
-const title=decodeURIComponent(encodedTitle||"Entertainment");
+/* =========================================================
+   FOOTER
+========================================================= */
 
-if(url&&/^https?:\/\//i.test(url)){
-
-window.open(
-url,
-"_blank",
-"noopener,noreferrer"
-);
-
-return;
+footer{
+    padding:60px 5% 35px;
+    border-top:1px solid var(--border);
+    background:#030303;
 }
 
-showToast(
-title+
-" — content source will be connected when available."
-);
-
+.footer-grid{
+    display:grid;
+    grid-template-columns:2fr repeat(3,1fr);
+    gap:35px;
 }
 
-/*
-  Optional future live entertainment endpoint.
-  If /api/entertainment exists and returns arrays,
-  its data can be merged without breaking the manual
-  global catalogue.
-*/
-async function loadEntertainment(){
-
-renderEntertainment();
-
-try{
-
-const response=await fetch(
-ENTERTAINMENT_API_URL,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
-}
-);
-
-if(!response.ok)return;
-
-const data=await response.json();
-
-if(!data)return;
-
-const music=
-Array.isArray(data.music)
-?data.music
-:[];
-
-const trending=
-Array.isArray(data.trending_music)
-?data.trending_music
-:Array.isArray(data.trending)
-?data.trending
-:[];
-
-const celebrity=
-Array.isArray(data.celebrity_news)
-?data.celebrity_news
-:Array.isArray(data.celebrity)
-?data.celebrity
-:[];
-
-const theatre=
-Array.isArray(data.theatre)
-?data.theatre
-:[];
-
-const events=
-Array.isArray(data.events)
-?data.events
-:[];
-
-const awards=
-Array.isArray(data.awards)
-?data.awards
-:[];
-
-if(music.length){
-
-document.getElementById("musicRow").innerHTML=
-music.map(createMusicCard).join("");
-
+.footer-brand{
+    font-size:22px;
+    font-weight:900;
 }
 
-if(trending.length){
-
-document.getElementById("trendingMusicRow").innerHTML=
-trending
-.map(item=>createEntertainmentCard(item,"TRENDING"))
-.join("");
-
+.footer-description{
+    margin-top:12px;
+    max-width:400px;
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.7;
 }
 
-if(celebrity.length){
-
-document.getElementById("celebrityNewsRow").innerHTML=
-celebrity
-.map(item=>createEntertainmentCard(item,"CELEBRITY"))
-.join("");
-
+.footer-column h4{
+    font-size:11px;
+    margin-bottom:14px;
 }
 
-if(theatre.length){
-
-document.getElementById("theatreRow").innerHTML=
-theatre
-.map(item=>createEntertainmentCard(item,"THEATRE"))
-.join("");
-
+.footer-column button{
+    display:block;
+    border:0;
+    background:transparent;
+    color:var(--muted);
+    margin:9px 0;
+    font-size:10px;
 }
 
-if(events.length){
-
-document.getElementById("eventsRow").innerHTML=
-events
-.map(item=>createEntertainmentCard(item,"EVENT"))
-.join("");
-
+.footer-bottom{
+    margin-top:45px;
+    padding-top:20px;
+    border-top:1px solid var(--border);
+    color:rgba(255,255,255,.4);
+    font-size:9px;
 }
 
-if(awards.length){
 
-document.getElementById("awardsRow").innerHTML=
-awards
-.map(item=>createEntertainmentCard(item,"AWARD"))
-.join("");
+/* =========================================================
+   PLAYER
+========================================================= */
 
+.player-modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.94);
+    z-index:9000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
 }
 
-}catch(error){
-
-console.warn(
-"Entertainment API unavailable; using global manual catalogue.",
-error
-);
-
+.player-modal.active{
+    display:flex;
 }
 
+.player-box{
+    width:min(1100px,100%);
+    background:#050505;
+    border-radius:15px;
+    overflow:hidden;
+    border:1px solid var(--border);
 }
+
+.player-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 17px;
+}
+
+.player-title{
+    font-size:13px;
+    font-weight:800;
+}
+
+.player-close{
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-size:25px;
+}
+
+.player-screen{
+    width:100%;
+    aspect-ratio:16/9;
+    background:#000;
+}
+
+.player-screen video,
+.player-screen iframe{
+    width:100%;
+    height:100%;
+    border:0;
+}
+
+.player-description{
+    padding:18px;
+    color:var(--muted);
+    font-size:11px;
+    line-height:1.6;
+}
+
 
 /* =========================================================
    AUTH
 ========================================================= */
 
-const authSection=
-document.getElementById("auth-section");
-
-const authTitle=
-document.getElementById("auth-title");
-
-const authButton=
-document.getElementById("auth-button");
-
-const authMessage=
-document.getElementById("auth-message");
-
-const emailInput=
-document.getElementById("email");
-
-const passwordInput=
-document.getElementById("password");
-
-const signinButton=
-document.getElementById("signinButton");
-
-const accountStatus=
-document.getElementById("accountStatus");
-
-const userEmail=
-document.getElementById("userEmail");
-
-function openAccount(){
-
-showSignIn();
-
-authSection.classList.add("active");
-
-document.body.classList.add("modal-open");
-
-setTimeout(()=>{
-emailInput.focus();
-},50);
-
+.auth-modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:9500;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(15px);
+    padding:20px;
 }
 
-function closeAccount(){
-
-authSection.classList.remove("active");
-document.body.classList.remove("modal-open");
-authMessage.textContent="";
-
+.auth-modal.active{
+    display:flex;
 }
 
-function showAuthMessage(message){
-authMessage.textContent=message;
+.auth-box{
+    width:100%;
+    max-width:430px;
+    padding:32px;
+    border-radius:18px;
+    background:#111;
+    border:1px solid var(--border);
 }
 
-async function signIn(){
-
-const email=emailInput.value.trim();
-const password=passwordInput.value;
-
-if(!email||!password){
-
-showAuthMessage(
-"Please enter your email and password."
-);
-
-return;
+.auth-box h2{
+    margin-top:5px;
 }
 
-authButton.disabled=true;
-authButton.textContent="Signing in...";
-
-try{
-
-const {data,error}=await supabaseClient.auth
-.signInWithPassword({
-email,
-password
-});
-
-if(error)throw error;
-
-if(data.user){
-
-currentUser=data.user;
-
-updateAccountUI(data.user);
-
-closeAccount();
-
-await loadWatchlist();
-
-showToast(
-"Welcome back to BRENZKafrica Plus."
-);
-
+.auth-box input{
+    width:100%;
+    padding:13px;
+    margin-top:12px;
+    background:#181818;
+    border:1px solid var(--border);
+    border-radius:8px;
+    color:#fff;
+    outline:none;
 }
 
-}catch(error){
-
-showAuthMessage(error.message);
-
-}finally{
-
-authButton.disabled=false;
-authButton.textContent="Sign In";
-
+.auth-submit{
+    width:100%;
+    margin-top:16px;
+    padding:13px;
+    border:0;
+    border-radius:8px;
+    background:#fff;
+    color:#000;
+    font-weight:900;
 }
 
+.auth-switch{
+    margin-top:15px;
+    color:var(--muted);
+    font-size:11px;
+    text-align:center;
 }
 
-async function signUp(){
-
-const email=emailInput.value.trim();
-const password=passwordInput.value;
-
-if(!email||!password){
-
-showAuthMessage(
-"Please enter your email and password."
-);
-
-return;
+.auth-switch button{
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-weight:800;
 }
 
-if(password.length<6){
-
-showAuthMessage(
-"Password must be at least 6 characters."
-);
-
-return;
-}
-
-authButton.disabled=true;
-authButton.textContent="Creating account...";
-
-try{
-
-const {data,error}=await supabaseClient.auth
-.signUp({
-email,
-password
-});
-
-if(error)throw error;
-
-if(data.session&&data.user){
-
-currentUser=data.user;
-
-updateAccountUI(data.user);
-
-closeAccount();
-
-await loadWatchlist();
-
-showToast(
-"Your BRENZKafrica Plus account is ready."
-);
-
-}else{
-
-showAuthMessage(
-"Account created. Please check your email to confirm your account."
-);
-
-}
-
-}catch(error){
-
-showAuthMessage(error.message);
-
-}finally{
-
-authButton.disabled=false;
-authButton.textContent="Create Account";
-
-}
-
-}
-
-function showSignUp(){
-
-authTitle.textContent="Create Account";
-authButton.textContent="Create Account";
-authButton.onclick=signUp;
-
-passwordInput.autocomplete="new-password";
-
-document.querySelector(".auth-switch").innerHTML=
-'Already have an account? '+
-'<button onclick="showSignIn()">Sign In</button>';
-
-}
-
-function showSignIn(){
-
-authTitle.textContent="Sign In";
-authButton.textContent="Sign In";
-authButton.onclick=signIn;
-
-passwordInput.autocomplete="current-password";
-
-document.querySelector(".auth-switch").innerHTML=
-"Don't have an account? "+
-'<button onclick="showSignUp()">Create Account</button>';
-
-}
-
-function updateAccountUI(user){
-
-currentUser=user||null;
-
-if(user){
-
-signinButton.style.display="none";
-accountStatus.style.display="flex";
-userEmail.textContent=user.email||"Viewer";
-
-}else{
-
-signinButton.style.display="block";
-accountStatus.style.display="none";
-userEmail.textContent="";
-
-}
-
-}
-
-async function signOut(){
-
-try{
-
-const {error}=await supabaseClient.auth.signOut();
-
-if(error)throw error;
-
-currentUser=null;
-watchlistIds=new Set();
-
-updateAccountUI(null);
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Sign in to create your Watchlist.'+
-'</div>';
-
-updateWatchlistButtons();
-
-showToast(
-"You have been signed out."
-);
-
-}catch(error){
-
-showToast(
-"Unable to sign out right now."
-);
-
-}
-
-}
-
-async function checkSession(){
-
-try{
-
-const {data}=await supabaseClient.auth.getSession();
-
-if(data?.session){
-
-currentUser=data.session.user;
-
-updateAccountUI(data.session.user);
-
-await loadWatchlist();
-
-}else{
-
-updateAccountUI(null);
-
-}
-
-}catch(error){
-
-console.error(
-"Session error:",
-error
-);
-
-}
-
-}
-
-supabaseClient.auth.onAuthStateChange(
-(event,session)=>{
-
-currentUser=session?.user||null;
-
-updateAccountUI(currentUser);
-
-if(currentUser){
-
-setTimeout(()=>{
-loadWatchlist();
-},0);
-
-}else{
-
-watchlistIds=new Set();
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Sign in to create your Watchlist.'+
-'</div>';
-
-updateWatchlistButtons();
-
-}
-
-}
-);
 
 /* =========================================================
    SEARCH
 ========================================================= */
 
-const search=document.getElementById("search");
-
-search.addEventListener(
-"input",
-function(){
-
-const query=
-search.value.toLowerCase().trim();
-
-document.querySelectorAll(
-".card,.episode-card,.live-card,.news-card,.sports-card,.music-card,.entertainment-card"
-).forEach(card=>{
-
-const text=card.innerText.toLowerCase();
-
-card.style.display=
-!query||text.includes(query)
-?""
-:"none";
-
-});
-
+.search-modal{
+    position:fixed;
+    inset:0;
+    z-index:8500;
+    background:rgba(0,0,0,.96);
+    display:none;
+    padding:100px 7%;
 }
-);
+
+.search-modal.active{
+    display:block;
+}
+
+.search-input{
+    width:100%;
+    background:transparent;
+    border:0;
+    border-bottom:1px solid var(--border);
+    color:#fff;
+    font-size:35px;
+    padding:15px 0;
+    outline:none;
+}
+
+.search-results{
+    margin-top:30px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
 
 /* =========================================================
-   NEWSLETTER
+   CURRENCY MODAL
 ========================================================= */
 
-document.getElementById("newsletterForm")
-.addEventListener(
-"submit",
-async function(event){
-
-event.preventDefault();
-
-const email=
-document.getElementById(
-"newsletterEmail"
-).value.trim().toLowerCase();
-
-const button=
-document.getElementById(
-"newsletterButton"
-);
-
-const message=
-document.getElementById(
-"newsletter-message"
-);
-
-if(!email)return;
-
-button.disabled=true;
-button.textContent="Subscribing...";
-
-try{
-
-const {error}=await supabaseClient
-.from("newsletter_subscribers")
-.insert([{email}]);
-
-if(error){
-
-message.textContent=
-error.code==="23505"
-?"This email is already subscribed."
-:"Unable to subscribe right now.";
-
-}else{
-
-message.textContent=
-"You're subscribed! Welcome to BRENZKafrica Plus.";
-
-document.getElementById(
-"newsletterEmail"
-).value="";
-
+.currency-modal{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    background:rgba(0,0,0,.8);
+    backdrop-filter:blur(15px);
+    z-index:9999;
+    padding:20px;
 }
 
-}catch(error){
-
-console.error(
-"Newsletter error:",
-error
-);
-
-message.textContent=
-"Unable to subscribe right now.";
-
-}finally{
-
-button.disabled=false;
-button.textContent="Subscribe";
-
+.currency-modal.active{
+    display:flex;
 }
 
+.currency-modal-content{
+    position:relative;
+    width:100%;
+    max-width:500px;
+    padding:35px;
+    border-radius:20px;
+    background:#111;
+    border:1px solid var(--border);
 }
-);
+
+.currency-close{
+    position:absolute;
+    right:18px;
+    top:15px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    font-size:28px;
+}
+
+.converter-field,
+.converter-grid{
+    margin-top:20px;
+}
+
+.converter-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.converter-field label,
+.converter-grid label{
+    display:block;
+    font-size:9px;
+    opacity:.6;
+    margin-bottom:7px;
+}
+
+.converter-field input,
+.converter-grid select{
+    width:100%;
+    padding:13px;
+    border-radius:9px;
+    border:1px solid var(--border);
+    background:#181818;
+    color:#fff;
+    outline:none;
+}
+
+.convert-button{
+    width:100%;
+    margin-top:20px;
+    padding:14px;
+    border:0;
+    border-radius:9px;
+    background:#fff;
+    color:#000;
+    font-weight:900;
+}
+
+.currency-result{
+    margin-top:20px;
+    padding:18px;
+    border-radius:10px;
+    background:rgba(255,255,255,.05);
+    text-align:center;
+    font-size:18px;
+    font-weight:900;
+}
+
 
 /* =========================================================
-   MODAL EVENTS
+   MOBILE
 ========================================================= */
 
-authSection.addEventListener(
-"click",
-function(event){
+@media(max-width:900px){
 
-if(event.target===authSection){
-closeAccount();
-}
+    .main-nav{
+        margin-left:20px;
+        gap:15px;
+    }
 
-}
-);
+    .news-grid{
+        grid-template-columns:1fr 1fr;
+    }
 
-player.addEventListener(
-"click",
-function(event){
+    #businessFinanceSection .market-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
 
-if(event.target===player){
-closePlayer();
-}
+    #businessFinanceSection .finance-categories{
+        grid-template-columns:repeat(3,1fr);
+    }
 
-}
-);
+    #businessFinanceSection .crypto-grid{
+        grid-template-columns:1fr;
+    }
 
-document.addEventListener(
-"keydown",
-function(event){
-
-if(event.key==="Escape"){
-
-closePlayer();
-closeAccount();
-closeMobileMenu();
+    .footer-grid{
+        grid-template-columns:1fr 1fr;
+    }
 
 }
 
+@media(max-width:600px){
+
+    .site-header{
+        padding:0 4%;
+    }
+
+    .logo{
+        font-size:17px;
+    }
+
+    .main-nav{
+        display:none;
+    }
+
+    .hero{
+        min-height:620px;
+        padding:0 5% 65px;
+    }
+
+    .hero h1{
+        letter-spacing:-2px;
+    }
+
+    .content-section,
+    #businessFinanceSection{
+        padding:45px 5%;
+    }
+
+    .section-header,
+    #businessFinanceSection .finance-block-header,
+    #businessFinanceSection .finance-dashboard-header{
+        align-items:flex-start;
+    }
+
+    .section-header h2{
+        font-size:24px;
+    }
+
+    .news-grid{
+        grid-template-columns:1fr;
+    }
+
+    #businessFinanceSection .market-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    #businessFinanceSection .finance-categories{
+        grid-template-columns:1fr 1fr;
+    }
+
+    #businessFinanceSection .finance-dashboard{
+        padding:18px;
+    }
+
+    #businessFinanceSection .market-card{
+        padding:16px;
+    }
+
+    #businessFinanceSection .market-price{
+        font-size:18px;
+    }
+
+    #businessFinanceSection .original-overlay{
+        padding:30px;
+    }
+
+    #businessFinanceSection .original-overlay h3{
+        font-size:28px;
+    }
+
+    .footer-grid{
+        grid-template-columns:1fr;
+    }
+
 }
-);
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="site-header">
+
+    <div class="logo">
+        BRENZKafrica<span>+</span>
+    </div>
+
+    <nav class="main-nav">
+
+        <button onclick="scrollToSection('homeSection')">
+            Home
+        </button>
+
+        <button onclick="scrollToSection('watchlistSection')">
+            My List
+        </button>
+
+        <button onclick="scrollToSection('originalsSection')">
+            Originals
+        </button>
+
+        <button onclick="scrollToSection('seriesSection')">
+            Series
+        </button>
+
+        <button onclick="scrollToSection('liveSection')">
+            Live
+        </button>
+
+        <button onclick="scrollToSection('breakingNewsSection')">
+            News
+        </button>
+
+        <button onclick="scrollToSection('businessFinanceSection')">
+            Business
+        </button>
+
+        <button onclick="scrollToSection('sportsSection')">
+            Sports
+        </button>
+
+        <button onclick="scrollToSection('entertainmentSection')">
+            Entertainment
+        </button>
+
+        <button onclick="scrollToSection('documentariesSection')">
+            Documentaries
+        </button>
+
+    </nav>
+
+    <div class="header-actions">
+
+        <button
+            class="header-btn"
+            onclick="openSearch()">
+            🔍
+        </button>
+
+        <button
+            class="header-btn"
+            onclick="openAuth()">
+            👤
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section
+    id="homeSection"
+    class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-kicker">
+            BRENZKAFRICA PLUS
+        </div>
+
+        <h1>
+            African stories.<br>
+            Global vision.
+        </h1>
+
+        <p>
+            Premium entertainment, original productions,
+            documentaries, news, sports, business and
+            culture — created for Africa and the world.
+        </p>
+
+        <div class="hero-actions">
+
+            <button
+                class="primary-btn"
+                onclick="openFeaturedPlayer()">
+                ▶ Watch Now
+            </button>
+
+            <button
+                class="secondary-btn"
+                onclick="scrollToSection('originalsSection')">
+                Explore Originals
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<main>
+
+
+<!-- =========================================================
+     WATCHLIST
+========================================================= -->
+
+<section
+    id="watchlistSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                YOUR LIBRARY
+            </span>
+
+            <h2>
+                My List
+            </h2>
+
+            <p>
+                Your saved BRENZKafrica Plus content.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div
+        id="watchlistRow"
+        class="watchlist-row">
+
+        <div class="watchlist-empty">
+            Your watchlist is empty.
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ORIGINALS
+========================================================= -->
+
+<section
+    id="originalsSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                BRENZKAFRICA ORIGINALS
+            </span>
+
+            <h2>
+                Originals
+            </h2>
+
+            <p>
+                Stories created by Africa. For the world.
+            </p>
+
+        </div>
+
+        <button
+            class="section-link"
+            onclick="loadPublishedContent('Originals')">
+            Explore →
+        </button>
+
+    </div>
+
+    <div
+        id="originalsRow"
+        class="content-row">
+
+        <article class="content-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=80"
+                alt="Original production">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-info">
+
+                <small>
+                    ORIGINAL
+                </small>
+
+                <h3>
+                    BRENZKafrica Originals
+                </h3>
+
+                <p>
+                    Explore original productions.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SERIES
+========================================================= -->
+
+<section
+    id="seriesSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                SERIES
+            </span>
+
+            <h2>
+                Trending Series
+            </h2>
+
+            <p>
+                Premium episodic stories.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div
+        id="seriesRow"
+        class="content-row">
+
+        <article class="content-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=700&q=80"
+                alt="Series">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-info">
+
+                <small>
+                    BRENZKAFRICA SERIES
+                </small>
+
+                <h3>
+                    The Polygamist
+                </h3>
+
+                <p>
+                    Watch episodes.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     EPISODES
+========================================================= -->
+
+<section
+    id="episodesSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                THE POLYGAMIST
+            </span>
+
+            <h2>
+                Episodes
+            </h2>
+
+            <p id="episodesSubtitle">
+                Available episodes
+            </p>
+
+        </div>
+
+    </div>
+
+    <div
+        id="episodesRow"
+        class="content-row">
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     LIVE
+========================================================= -->
+
+<section
+    id="liveSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                BRENZKAFRICA LIVE
+            </span>
+
+            <h2>
+                Live
+            </h2>
+
+            <p>
+                Live programming and special events.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="content-row">
+
+        <article class="live-card">
+
+            <div class="live-content">
+
+                <span class="live-badge">
+                    ● LIVE
+                </span>
+
+                <h3>
+                    BRENZKafrica Live
+                </h3>
+
+                <p>
+                    Live programming coming soon.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BREAKING NEWS
+========================================================= -->
+
+<section
+    id="breakingNewsSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                BRENZKAFRICA NEWS
+            </span>
+
+            <h2>
+                Breaking News
+            </h2>
+
+            <p>
+                Stories and developments from Africa and the world.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div
+        id="newsGrid"
+        class="news-grid">
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     BUSINESS • FINANCE • CURRENCIES • CRYPTO
+========================================================= -->
+
+<section
+    id="businessFinanceSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                BRENZKAFRICA PLUS
+            </span>
+
+            <h2>
+                Business & Finance
+            </h2>
+
+            <p>
+                Markets, money, currencies, crypto and the global economy.
+            </p>
+
+        </div>
+
+        <button
+            class="section-link"
+            onclick="showBusinessCategory('all')">
+            Explore →
+        </button>
+
+    </div>
+
+
+    <!-- MARKET SNAPSHOT -->
+
+    <div class="finance-dashboard">
+
+        <div class="finance-dashboard-header">
+
+            <div>
+
+                <span class="dashboard-label">
+                    MARKET SNAPSHOT
+                </span>
+
+                <h3>
+                    Global Markets
+                </h3>
+
+            </div>
+
+            <span class="market-status">
+                ● MARKET DATA
+            </span>
+
+        </div>
+
+
+        <div class="market-grid">
+
+
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <span class="market-icon">
+                        ₿
+                    </span>
+
+                    <span class="market-category">
+                        CRYPTO
+                    </span>
+
+                </div>
+
+                <h4>
+                    Bitcoin
+                </h4>
+
+                <div
+                    class="market-price"
+                    id="btcPrice">
+                    Loading...
+                </div>
+
+                <div
+                    class="market-change"
+                    id="btcChange">
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <span class="market-icon">
+                        Ξ
+                    </span>
+
+                    <span class="market-category">
+                        CRYPTO
+                    </span>
+
+                </div>
+
+                <h4>
+                    Ethereum
+                </h4>
+
+                <div
+                    class="market-price"
+                    id="ethPrice">
+                    Loading...
+                </div>
+
+                <div
+                    class="market-change"
+                    id="ethChange">
+                    --
+                </div>
+
+            </div>
+
+
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <span class="market-icon">
+                        $
+                    </span>
+
+                    <span class="market-category">
+                        FX
+                    </span>
+
+                </div>
+
+                <h4>
+                    USD / UGX
+                </h4>
+
+                <div
+                    class="market-price"
+                    id="usdUgx">
+                    Loading...
+                </div>
+
+                <div class="market-change">
+                    Exchange Rate
+                </div>
+
+            </div>
+
+
+            <div class="market-card">
+
+                <div class="market-top">
+
+                    <span class="market-icon">
+                        €
+                    </span>
+
+                    <span class="market-category">
+                        FX
+                    </span>
+
+                </div>
+
+                <h4>
+                    EUR / USD
+                </h4>
+
+                <div
+                    class="market-price"
+                    id="eurUsd">
+                    Loading...
+                </div>
+
+                <div class="market-change">
+                    Exchange Rate
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUSINESS CATEGORIES -->
+
+    <div class="finance-categories">
+
+        <button onclick="showBusinessCategory('markets')">
+
+            📈
+
+            <strong>
+                Markets
+            </strong>
+
+            <span>
+                Stocks & indices
+            </span>
+
+        </button>
+
+
+        <button onclick="showBusinessCategory('currencies')">
+
+            💱
+
+            <strong>
+                Currencies
+            </strong>
+
+            <span>
+                Global FX markets
+            </span>
+
+        </button>
+
+
+        <button onclick="showBusinessCategory('crypto')">
+
+            ₿
+
+            <strong>
+                Crypto
+            </strong>
+
+            <span>
+                Digital assets
+            </span>
+
+        </button>
+
+
+        <button onclick="showBusinessCategory('africa')">
+
+            🌍
+
+            <strong>
+                African Business
+            </strong>
+
+            <span>
+                Companies & investment
+            </span>
+
+        </button>
+
+
+        <button onclick="showBusinessCategory('fintech')">
+
+            💳
+
+            <strong>
+                Fintech
+            </strong>
+
+            <span>
+                Digital finance
+            </span>
+
+        </button>
+
+
+        <button onclick="showBusinessCategory('economy')">
+
+            🌐
+
+            <strong>
+                Economy
+            </strong>
+
+            <span>
+                Global economic outlook
+            </span>
+
+        </button>
+
+    </div>
+
+
+    <!-- CURRENCIES -->
+
+    <div class="finance-content-block">
+
+        <div class="finance-block-header">
+
+            <div>
+
+                <span class="section-kicker">
+                    FOREIGN EXCHANGE
+                </span>
+
+                <h3>
+                    Currencies
+                </h3>
+
+                <p>
+                    Track major global and African currencies.
+                </p>
+
+            </div>
+
+            <button onclick="openCurrencyConverter()">
+                Currency Converter →
+            </button>
+
+        </div>
+
+
+        <div class="currency-row">
+
+            <div class="currency-pair">
+                <span>USD</span>
+                <strong>/</strong>
+                <span>UGX</span>
+                <small>
+                    US Dollar / Ugandan Shilling
+                </small>
+            </div>
+
+            <div class="currency-pair">
+                <span>USD</span>
+                <strong>/</strong>
+                <span>KES</span>
+                <small>
+                    US Dollar / Kenyan Shilling
+                </small>
+            </div>
+
+            <div class="currency-pair">
+                <span>USD</span>
+                <strong>/</strong>
+                <span>NGN</span>
+                <small>
+                    US Dollar / Nigerian Naira
+                </small>
+            </div>
+
+            <div class="currency-pair">
+                <span>USD</span>
+                <strong>/</strong>
+                <span>ZAR</span>
+                <small>
+                    US Dollar / South African Rand
+                </small>
+            </div>
+
+            <div class="currency-pair">
+                <span>EUR</span>
+                <strong>/</strong>
+                <span>USD</span>
+                <small>
+                    Euro / US Dollar
+                </small>
+            </div>
+
+            <div class="currency-pair">
+                <span>GBP</span>
+                <strong>/</strong>
+                <span>USD</span>
+                <small>
+                    British Pound / US Dollar
+                </small>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- CRYPTO -->
+
+    <div class="finance-content-block">
+
+        <div class="finance-block-header">
+
+            <div>
+
+                <span class="section-kicker">
+                    DIGITAL ASSETS
+                </span>
+
+                <h3>
+                    Crypto
+                </h3>
+
+                <p>
+                    Bitcoin, Ethereum, stablecoins, Web3 and the digital economy.
+                </p>
+
+            </div>
+
+            <button onclick="showBusinessCategory('crypto')">
+                Explore Crypto →
+            </button>
+
+        </div>
+
+
+        <div class="crypto-grid">
+
+
+            <article class="crypto-feature">
+
+                <div class="crypto-symbol">
+                    ₿
+                </div>
+
+                <span>
+                    BITCOIN
+                </span>
+
+                <h4>
+                    Bitcoin
+                </h4>
+
+                <p>
+                    The world's largest cryptocurrency and digital asset.
+                </p>
+
+                <button
+                    onclick="openCryptoAsset('bitcoin')">
+                    View →
+                </button>
+
+            </article>
+
+
+            <article class="crypto-feature">
+
+                <div class="crypto-symbol">
+                    Ξ
+                </div>
+
+                <span>
+                    BLOCKCHAIN
+                </span>
+
+                <h4>
+                    Ethereum
+                </h4>
+
+                <p>
+                    Smart contracts, decentralized applications and Web3.
+                </p>
+
+                <button
+                    onclick="openCryptoAsset('ethereum')">
+                    View →
+                </button>
+
+            </article>
+
+
+            <article class="crypto-feature">
+
+                <div class="crypto-symbol">
+                    ₮
+                </div>
+
+                <span>
+                    STABLECOINS
+                </span>
+
+                <h4>
+                    Digital Dollars
+                </h4>
+
+                <p>
+                    Explore stablecoins and their role in global finance.
+                </p>
+
+                <button
+                    onclick="openCryptoAsset('stablecoins')">
+                    View →
+                </button>
+
+            </article>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUSINESS STORIES -->
+
+    <div class="finance-content-block">
+
+        <div class="finance-block-header">
+
+            <div>
+
+                <span class="section-kicker">
+                    BRENZKAFRICA BUSINESS
+                </span>
+
+                <h3>
+                    Business Stories
+                </h3>
+
+                <p>
+                    The companies, people and ideas shaping the global economy.
+                </p>
+
+            </div>
+
+            <button onclick="showBusinessCategory('business')">
+                View All →
+            </button>
+
+        </div>
+
+
+        <div class="business-story-row">
+
+
+            <article class="business-story-card">
+
+                <div class="story-image">
+                    <div class="story-placeholder">
+                        BUSINESS
+                    </div>
+                </div>
+
+                <div class="story-content">
+
+                    <span>
+                        AFRICAN BUSINESS
+                    </span>
+
+                    <h4>
+                        Africa's next generation of businesses
+                    </h4>
+
+                    <p>
+                        Entrepreneurs, companies and investment shaping
+                        Africa's economic future.
+                    </p>
+
+                    <button
+                        onclick="openBusinessStory('africa-business')">
+                        Read Story →
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="business-story-card">
+
+                <div class="story-image">
+                    <div class="story-placeholder">
+                        FINTECH
+                    </div>
+                </div>
+
+                <div class="story-content">
+
+                    <span>
+                        FINTECH
+                    </span>
+
+                    <h4>
+                        The future of digital finance
+                    </h4>
+
+                    <p>
+                        Banking, mobile money, digital payments and
+                        financial technology.
+                    </p>
+
+                    <button
+                        onclick="openBusinessStory('fintech')">
+                        Read Story →
+                    </button>
+
+                </div>
+
+            </article>
+
+
+            <article class="business-story-card">
+
+                <div class="story-image">
+                    <div class="story-placeholder">
+                        ECONOMY
+                    </div>
+                </div>
+
+                <div class="story-content">
+
+                    <span>
+                        GLOBAL ECONOMY
+                    </span>
+
+                    <h4>
+                        Understanding the global economy
+                    </h4>
+
+                    <p>
+                        Inflation, interest rates, trade and the forces
+                        moving global markets.
+                    </p>
+
+                    <button
+                        onclick="openBusinessStory('economy')">
+                        Read Story →
+                    </button>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+
+    <!-- BUSINESS ORIGINAL -->
+
+    <div class="finance-original">
+
+        <div class="original-overlay">
+
+            <span>
+                BRENZKAFRICA ORIGINALS
+            </span>
+
+            <h3>
+                THE BUSINESS OF AFRICA
+            </h3>
+
+            <p>
+                Exclusive conversations with entrepreneurs,
+                investors, innovators and leaders shaping
+                Africa's economic future.
+            </p>
+
+            <button onclick="openBusinessOriginals()">
+                Watch Originals →
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     SPORTS
+========================================================= -->
+
+<section
+    id="sportsSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                WORLD SPORTS
+            </span>
+
+            <h2>
+                Sports
+            </h2>
+
+            <p>
+                Sports stories, events and global coverage.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="content-row">
+
+        <article class="content-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=700&q=80"
+                alt="Sports">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-info">
+
+                <small>
+                    SPORTS
+                </small>
+
+                <h3>
+                    Worldwide Sports
+                </h3>
+
+                <p>
+                    Global sports coverage.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     ENTERTAINMENT
+========================================================= -->
+
+<section
+    id="entertainmentSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                ENTERTAINMENT
+            </span>
+
+            <h2>
+                Entertainment
+            </h2>
+
+            <p>
+                Music, film, culture and global entertainment.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="content-row">
+
+        <article class="content-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=700&q=80"
+                alt="Music">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-info">
+
+                <small>
+                    MUSIC
+                </small>
+
+                <h3>
+                    Global Music
+                </h3>
+
+                <p>
+                    Music from Africa and the world.
+                </p>
+
+            </div>
+
+        </article>
+
+
+        <article class="content-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80"
+                alt="Film">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-info">
+
+                <small>
+                    FILM
+                </small>
+
+                <h3>
+                    Cinema
+                </h3>
+
+                <p>
+                    Film and entertainment.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     DOCUMENTARIES
+========================================================= -->
+
+<section
+    id="documentariesSection"
+    class="content-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-kicker">
+                DOCUMENTARIES
+            </span>
+
+            <h2>
+                Documentaries
+            </h2>
+
+            <p>
+                Real stories. Real people. Real places.
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="content-row">
+
+        <article class="content-card">
+
+            <img
+                src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=80"
+                alt="Documentary">
+
+            <div class="card-gradient"></div>
+
+            <div class="card-info">
+
+                <small>
+                    DOCUMENTARY
+                </small>
+
+                <h3>
+                    Stories From Africa
+                </h3>
+
+                <p>
+                    Documentary storytelling.
+                </p>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div>
+
+            <div class="footer-brand">
+                BRENZKafrica+
+            </div>
+
+            <p class="footer-description">
+                A premium African media and entertainment platform
+                connecting African creativity, stories and ideas
+                with audiences around the world.
+            </p>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                EXPLORE
+            </h4>
+
+            <button onclick="scrollToSection('originalsSection')">
+                Originals
+            </button>
+
+            <button onclick="scrollToSection('seriesSection')">
+                Series
+            </button>
+
+            <button onclick="scrollToSection('businessFinanceSection')">
+                Business
+            </button>
+
+            <button onclick="scrollToSection('sportsSection')">
+                Sports
+            </button>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                MEDIA
+            </h4>
+
+            <button onclick="scrollToSection('breakingNewsSection')">
+                News
+            </button>
+
+            <button onclick="scrollToSection('entertainmentSection')">
+                Entertainment
+            </button>
+
+            <button onclick="scrollToSection('documentariesSection')">
+                Documentaries
+            </button>
+
+            <button onclick="scrollToSection('liveSection')">
+                Live
+            </button>
+
+        </div>
+
+
+        <div class="footer-column">
+
+            <h4>
+                ACCOUNT
+            </h4>
+
+            <button onclick="openAuth()">
+                Sign In
+            </button>
+
+            <button onclick="openSearch()">
+                Search
+            </button>
+
+            <button onclick="openCurrencyConverter()">
+                Currency Converter
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+        © 2026 BRENZKafrica Plus. All rights reserved.
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     PLAYER MODAL
+========================================================= -->
+
+<div
+    id="playerModal"
+    class="player-modal">
+
+    <div class="player-box">
+
+        <div class="player-top">
+
+            <div
+                id="playerTitle"
+                class="player-title">
+                BRENZKafrica Plus
+            </div>
+
+            <button
+                class="player-close"
+                onclick="closePlayer()">
+                ×
+            </button>
+
+        </div>
+
+        <div
+            id="playerScreen"
+            class="player-screen">
+        </div>
+
+        <div
+            id="playerDescription"
+            class="player-description">
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     AUTH MODAL
+========================================================= -->
+
+<div
+    id="authModal"
+    class="auth-modal">
+
+    <div class="auth-box">
+
+        <button
+            class="player-close"
+            onclick="closeAuth()">
+            ×
+        </button>
+
+        <span class="section-kicker">
+            BRENZKAFRICA PLUS
+        </span>
+
+        <h2 id="authTitle">
+            Sign In
+        </h2>
+
+        <input
+            id="authEmail"
+            type="email"
+            placeholder="Email address">
+
+        <input
+            id="authPassword"
+            type="password"
+            placeholder="Password">
+
+        <button
+            class="auth-submit"
+            onclick="submitAuth()">
+            Continue
+        </button>
+
+        <div class="auth-switch">
+
+            <span id="authSwitchText">
+                Don't have an account?
+            </span>
+
+            <button
+                onclick="toggleAuthMode()"
+                id="authSwitchButton">
+                Create Account
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     SEARCH MODAL
+========================================================= -->
+
+<div
+    id="searchModal"
+    class="search-modal">
+
+    <button
+        class="player-close"
+        onclick="closeSearch()">
+        ×
+    </button>
+
+    <input
+        id="searchInput"
+        class="search-input"
+        type="search"
+        placeholder="Search BRENZKafrica Plus..."
+        oninput="performSearch(this.value)">
+
+    <div
+        id="searchResults"
+        class="search-results">
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     CURRENCY CONVERTER
+========================================================= -->
+
+<div
+    id="currencyConverterModal"
+    class="currency-modal">
+
+    <div class="currency-modal-content">
+
+        <button
+            class="currency-close"
+            onclick="closeCurrencyConverter()">
+            ×
+        </button>
+
+        <span class="section-kicker">
+            BRENZKAFRICA PLUS
+        </span>
+
+        <h3>
+            Currency Converter
+        </h3>
+
+        <p style="margin-top:8px;color:var(--muted);font-size:12px;">
+            Convert between major global and African currencies.
+        </p>
+
+
+        <div class="converter-field">
+
+            <label>
+                Amount
+            </label>
+
+            <input
+                type="number"
+                id="currencyAmount"
+                value="1"
+                min="0">
+
+        </div>
+
+
+        <div class="converter-grid">
+
+            <div>
+
+                <label>
+                    From
+                </label>
+
+                <select id="currencyFrom">
+
+                    <option value="USD">
+                        USD — US Dollar
+                    </option>
+
+                    <option value="UGX">
+                        UGX — Ugandan Shilling
+                    </option>
+
+                    <option value="KES">
+                        KES — Kenyan Shilling
+                    </option>
+
+                    <option value="NGN">
+                        NGN — Nigerian Naira
+                    </option>
+
+                    <option value="ZAR">
+                        ZAR — South African Rand
+                    </option>
+
+                    <option value="EUR">
+                        EUR — Euro
+                    </option>
+
+                    <option value="GBP">
+                        GBP — British Pound
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    To
+                </label>
+
+                <select id="currencyTo">
+
+                    <option value="UGX">
+                        UGX — Ugandan Shilling
+                    </option>
+
+                    <option value="USD">
+                        USD — US Dollar
+                    </option>
+
+                    <option value="KES">
+                        KES — Kenyan Shilling
+                    </option>
+
+                    <option value="NGN">
+                        NGN — Nigerian Naira
+                    </option>
+
+                    <option value="ZAR">
+                        ZAR — South African Rand
+                    </option>
+
+                    <option value="EUR">
+                        EUR — Euro
+                    </option>
+
+                    <option value="GBP">
+                        GBP — British Pound
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="convert-button"
+            onclick="convertCurrency()">
+            Convert
+        </button>
+
+
+        <div
+            id="currencyResult"
+            class="currency-result">
+
+            Enter an amount to convert.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+    "YOUR_SUPABASE_URL";
+
+const SUPABASE_ANON_KEY =
+    "YOUR_SUPABASE_ANON_KEY";
+
+let supabaseClient = null;
+
+if(
+    SUPABASE_URL !== "YOUR_SUPABASE_URL" &&
+    SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
+){
+
+    supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+}
+
+
+/* =========================================================
+   GLOBAL STATE
+========================================================= */
+
+let isSignUp = false;
+
+let currentUser = null;
+
+let catalogue = [];
+
+let watchlist = [];
+
 
 /* =========================================================
    NAVIGATION
 ========================================================= */
 
-document.querySelectorAll(
-"#desktopNav a"
-).forEach(link=>{
+function scrollToSection(id){
 
-link.addEventListener(
-"click",
-function(){
+    const element =
+        document.getElementById(id);
 
-document.querySelectorAll(
-"#desktopNav a"
-).forEach(item=>{
-item.classList.remove("active");
-});
+    if(element){
 
-link.classList.add("active");
+        element.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    }
 
 }
-);
 
-});
 
 /* =========================================================
-   SAFE INITIALIZATION
+   PLAYER
+========================================================= */
+
+function extractYouTubeId(url){
+
+    if(!url) return null;
+
+    const patterns = [
+
+        /youtube\.com\/watch\?v=([^&]+)/,
+
+        /youtu\.be\/([^?&]+)/,
+
+        /youtube\.com\/embed\/([^?&]+)/,
+
+        /youtube\.com\/shorts\/([^?&]+)/
+
+    ];
+
+    for(const pattern of patterns){
+
+        const match =
+            url.match(pattern);
+
+        if(match)
+            return match[1];
+
+    }
+
+    return null;
+
+}
+
+
+function extractVimeoId(url){
+
+    if(!url) return null;
+
+    const match =
+        url.match(
+            /vimeo\.com\/(?:video\/)?(\d+)/
+        );
+
+    return match
+        ? match[1]
+        : null;
+
+}
+
+
+function extractGoogleDriveId(url){
+
+    if(!url) return null;
+
+    const match =
+        url.match(
+            /drive\.google\.com\/file\/d\/([^/]+)/
+        );
+
+    return match
+        ? match[1]
+        : null;
+
+}
+
+
+function isCloudinaryUrl(url){
+
+    if(!url) return false;
+
+    return (
+        url.includes("res.cloudinary.com") ||
+        url.includes("cloudinary.com")
+    );
+
+}
+
+
+function playVideo(
+    title,
+    url,
+    description=""
+){
+
+    if(!url){
+
+        alert("Video source unavailable.");
+
+        return;
+
+    }
+
+    const modal =
+        document.getElementById(
+            "playerModal"
+        );
+
+    const screen =
+        document.getElementById(
+            "playerScreen"
+        );
+
+    const titleElement =
+        document.getElementById(
+            "playerTitle"
+        );
+
+    const descriptionElement =
+        document.getElementById(
+            "playerDescription"
+        );
+
+    titleElement.textContent =
+        title || "BRENZKafrica Plus";
+
+    descriptionElement.textContent =
+        description || "";
+
+    screen.innerHTML = "";
+
+
+    const youtubeId =
+        extractYouTubeId(url);
+
+    const vimeoId =
+        extractVimeoId(url);
+
+    const driveId =
+        extractGoogleDriveId(url);
+
+
+    if(youtubeId){
+
+        screen.innerHTML = `
+
+            <iframe
+                src="https://www.youtube.com/embed/${youtubeId}?autoplay=1"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+
+        `;
+
+    }
+
+    else if(vimeoId){
+
+        screen.innerHTML = `
+
+            <iframe
+                src="https://player.vimeo.com/video/${vimeoId}?autoplay=1"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+
+        `;
+
+    }
+
+    else if(driveId){
+
+        screen.innerHTML = `
+
+            <iframe
+                src="https://drive.google.com/file/d/${driveId}/preview"
+                allow="autoplay"
+                allowfullscreen>
+            </iframe>
+
+        `;
+
+    }
+
+    else{
+
+        const video =
+            document.createElement("video");
+
+        video.src = url;
+
+        video.controls = true;
+
+        video.autoplay = true;
+
+        video.playsInline = true;
+
+        video.style.width = "100%";
+
+        video.style.height = "100%";
+
+        screen.appendChild(video);
+
+    }
+
+
+    modal.classList.add("active");
+
+}
+
+
+function closePlayer(){
+
+    const modal =
+        document.getElementById(
+            "playerModal"
+        );
+
+    const screen =
+        document.getElementById(
+            "playerScreen"
+        );
+
+    modal.classList.remove("active");
+
+    screen.innerHTML = "";
+
+}
+
+
+function openFeaturedPlayer(){
+
+    playVideo(
+        "BRENZKafrica Plus",
+        "",
+        "Featured content"
+    );
+
+}
+
+
+/* =========================================================
+   EPISODES
+========================================================= */
+
+function loadPolygamistEpisodes(){
+
+    const row =
+        document.getElementById(
+            "episodesRow"
+        );
+
+    if(!row) return;
+
+    const episodes =
+        Array.from(
+            {length:22},
+            (_,index)=>({
+
+                title:
+                    `The Polygamist — Episode ${index+1}`,
+
+                episode:
+                    index+1,
+
+                thumbnail:
+                    "https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?auto=format&fit=crop&w=700&q=80",
+
+                url:""
+
+            })
+        );
+
+
+    row.innerHTML =
+        episodes.map(
+            episode => `
+
+                <article class="episode-card">
+
+                    <div class="episode-thumb">
+
+                        <img
+                            src="${episode.thumbnail}"
+                            alt="${episode.title}">
+
+                    </div>
+
+                    <div class="episode-body">
+
+                        <small>
+                            EPISODE ${episode.episode}
+                        </small>
+
+                        <h3>
+                            ${episode.title}
+                        </h3>
+
+                        <button
+                            onclick="playVideo(
+                                '${episode.title.replace(/'/g,"\\'")}',
+                                '${episode.url}',
+                                'The Polygamist'
+                            )">
+
+                            ▶ Watch
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+            `
+        ).join("");
+
+    document.getElementById(
+        "episodesSubtitle"
+    ).textContent =
+        "22 episodes available";
+
+}
+
+
+/* =========================================================
+   WATCHLIST
+========================================================= */
+
+function saveWatchlist(){
+
+    localStorage.setItem(
+        "brenzkafrica_watchlist",
+        JSON.stringify(watchlist)
+    );
+
+}
+
+
+function loadWatchlist(){
+
+    try{
+
+        watchlist =
+            JSON.parse(
+                localStorage.getItem(
+                    "brenzkafrica_watchlist"
+                )
+            ) || [];
+
+    }catch(error){
+
+        watchlist = [];
+
+    }
+
+    renderWatchlist();
+
+}
+
+
+function addToWatchlist(item){
+
+    if(!item) return;
+
+    const exists =
+        watchlist.some(
+            saved =>
+                saved.title === item.title
+        );
+
+    if(!exists){
+
+        watchlist.push(item);
+
+        saveWatchlist();
+
+        renderWatchlist();
+
+    }
+
+}
+
+
+function removeFromWatchlist(title){
+
+    watchlist =
+        watchlist.filter(
+            item =>
+                item.title !== title
+        );
+
+    saveWatchlist();
+
+    renderWatchlist();
+
+}
+
+
+function renderWatchlist(){
+
+    const row =
+        document.getElementById(
+            "watchlistRow"
+        );
+
+    if(!row) return;
+
+    if(!watchlist.length){
+
+        row.innerHTML = `
+
+            <div class="watchlist-empty">
+                Your watchlist is empty.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    row.innerHTML =
+        watchlist.map(
+            item => `
+
+                <article class="content-card">
+
+                    <img
+                        src="${item.thumbnail || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=80"}"
+                        alt="${item.title}">
+
+                    <div class="card-gradient"></div>
+
+                    <div class="card-info">
+
+                        <small>
+                            SAVED
+                        </small>
+
+                        <h3>
+                            ${item.title}
+                        </h3>
+
+                        <p>
+                            <button
+                                onclick="removeFromWatchlist('${item.title.replace(/'/g,"\\'")}')"
+                                style="
+                                    border:0;
+                                    background:transparent;
+                                    color:#fff;
+                                    padding:0;
+                                ">
+                                Remove
+                            </button>
+                        </p>
+
+                    </div>
+
+                </article>
+
+            `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   SUPABASE CONTENT
+========================================================= */
+
+async function loadPublishedContent(
+    category=""
+){
+
+    if(!supabaseClient){
+
+        console.log(
+            "Supabase not configured."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        let query =
+            supabaseClient
+                .from("content")
+                .select("*")
+                .eq("published",true);
+
+
+        if(category){
+
+            query =
+                query.eq(
+                    "category",
+                    category
+                );
+
+        }
+
+
+        const {
+            data,
+            error
+        } =
+            await query;
+
+
+        if(error){
+
+            console.error(
+                "Supabase content error:",
+                error
+            );
+
+            return;
+
+        }
+
+
+        catalogue = data || [];
+
+        renderSupabaseContent(
+            catalogue
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+    }
+
+}
+
+
+function renderSupabaseContent(items){
+
+    const row =
+        document.getElementById(
+            "originalsRow"
+        );
+
+    if(!row || !items.length)
+        return;
+
+
+    row.innerHTML =
+        items.map(
+            item => `
+
+                <article class="content-card">
+
+                    <img
+                        src="${item.thumbnail_url || item.Thumbnail_url || "https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=700&q=80"}"
+                        alt="${item.title || item.Title || "Content"}">
+
+                    <div class="card-gradient"></div>
+
+                    <div class="card-info">
+
+                        <small>
+                            ${item.category || item.Category || "ORIGINAL"}
+                        </small>
+
+                        <h3>
+                            ${item.title || item.Title || "Untitled"}
+                        </h3>
+
+                        <p>
+                            ${item.description || item.Description || ""}
+                        </p>
+
+                    </div>
+
+                </article>
+
+            `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   NEWS
+========================================================= */
+
+function loadNews(){
+
+    const news = [
+
+        {
+            category:"GLOBAL",
+            title:"Stories shaping the world",
+            description:
+                "BRENZKafrica News brings global developments into focus.",
+            image:
+                "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=900&q=80"
+        },
+
+        {
+            category:"AFRICA",
+            title:"Africa in focus",
+            description:
+                "People, ideas and developments transforming the continent.",
+            image:
+                "https://images.unsplash.com/photo-1489493585363-d69421e0edd3?auto=format&fit=crop&w=900&q=80"
+        },
+
+        {
+            category:"WORLD",
+            title:"The global picture",
+            description:
+                "The stories and events influencing the world.",
+            image:
+                "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=900&q=80"
+        }
+
+    ];
+
+
+    const grid =
+        document.getElementById(
+            "newsGrid"
+        );
+
+    if(!grid) return;
+
+
+    grid.innerHTML =
+        news.map(
+            item => `
+
+                <article class="news-card">
+
+                    <div class="news-image">
+
+                        <img
+                            src="${item.image}"
+                            alt="${item.title}">
+
+                    </div>
+
+                    <div class="news-body">
+
+                        <span>
+                            ${item.category}
+                        </span>
+
+                        <h3>
+                            ${item.title}
+                        </h3>
+
+                        <p>
+                            ${item.description}
+                        </p>
+
+                    </div>
+
+                </article>
+
+            `
+        ).join("");
+
+}
+
+
+/* =========================================================
+   BUSINESS NAVIGATION
+========================================================= */
+
+function showBusinessCategory(category){
+
+    console.log(
+        "Business category:",
+        category
+    );
+
+    const section =
+        document.getElementById(
+            "businessFinanceSection"
+        );
+
+    if(section){
+
+        section.scrollIntoView({
+            behavior:"smooth",
+            block:"start"
+        });
+
+    }
+
+}
+
+
+/* =========================================================
+   LIVE CRYPTO DATA
+========================================================= */
+
+async function loadBusinessMarketData(){
+
+    const btc =
+        document.getElementById(
+            "btcPrice"
+        );
+
+    const eth =
+        document.getElementById(
+            "ethPrice"
+        );
+
+    const btcChange =
+        document.getElementById(
+            "btcChange"
+        );
+
+    const ethChange =
+        document.getElementById(
+            "ethChange"
+        );
+
+
+    try{
+
+        const response =
+            await fetch(
+                "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true"
+            );
+
+
+        if(!response.ok)
+            throw new Error(
+                "Crypto API unavailable"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(btc){
+
+            btc.textContent =
+                "$" +
+                Number(
+                    data.bitcoin.usd
+                ).toLocaleString(
+                    undefined,
+                    {
+                        maximumFractionDigits:2
+                    }
+                );
+
+        }
+
+
+        if(eth){
+
+            eth.textContent =
+                "$" +
+                Number(
+                    data.ethereum.usd
+                ).toLocaleString(
+                    undefined,
+                    {
+                        maximumFractionDigits:2
+                    }
+                );
+
+        }
+
+
+        if(btcChange){
+
+            btcChange.textContent =
+                `${Number(
+                    data.bitcoin.usd_24h_change
+                ).toFixed(2)}% / 24h`;
+
+        }
+
+
+        if(ethChange){
+
+            ethChange.textContent =
+                `${Number(
+                    data.ethereum.usd_24h_change
+                ).toFixed(2)}% / 24h`;
+
+        }
+
+
+    }catch(error){
+
+        console.warn(
+            "Crypto market data unavailable:",
+            error
+        );
+
+        if(btc)
+            btc.textContent = "$—";
+
+        if(eth)
+            eth.textContent = "$—";
+
+        if(btcChange)
+            btcChange.textContent =
+                "Live data unavailable";
+
+        if(ethChange)
+            ethChange.textContent =
+                "Live data unavailable";
+
+    }
+
+
+    loadFXMarketData();
+
+}
+
+
+/* =========================================================
+   FX DATA
+========================================================= */
+
+let LIVE_FX_RATES = {
+    USD:1,
+    UGX:3500,
+    KES:129,
+    NGN:1500,
+    ZAR:17,
+    EUR:.85,
+    GBP:.74
+};
+
+
+async function loadFXMarketData(){
+
+    try{
+
+        const response =
+            await fetch(
+                "https://api.frankfurter.app/latest?from=USD&to=UGX,KES,NGN,ZAR,EUR,GBP"
+            );
+
+
+        if(!response.ok)
+            throw new Error(
+                "FX API unavailable"
+            );
+
+
+        const data =
+            await response.json();
+
+
+        if(data.rates){
+
+            LIVE_FX_RATES = {
+                USD:1,
+                ...data.rates
+            };
+
+        }
+
+
+        const usdUgx =
+            document.getElementById(
+                "usdUgx"
+            );
+
+        const eurUsd =
+            document.getElementById(
+                "eurUsd"
+            );
+
+
+        if(
+            usdUgx &&
+            LIVE_FX_RATES.UGX
+        ){
+
+            usdUgx.textContent =
+                Number(
+                    LIVE_FX_RATES.UGX
+                ).toLocaleString(
+                    undefined,
+                    {
+                        maximumFractionDigits:2
+                    }
+                );
+
+        }
+
+
+        if(
+            eurUsd &&
+            LIVE_FX_RATES.EUR
+        ){
+
+            eurUsd.textContent =
+                (
+                    1 /
+                    Number(
+                        LIVE_FX_RATES.EUR
+                    )
+                ).toFixed(4);
+
+        }
+
+
+    }catch(error){
+
+        console.warn(
+            "FX data unavailable:",
+            error
+        );
+
+        const usdUgx =
+            document.getElementById(
+                "usdUgx"
+            );
+
+        const eurUsd =
+            document.getElementById(
+                "eurUsd"
+            );
+
+        if(usdUgx)
+            usdUgx.textContent =
+                "Unavailable";
+
+        if(eurUsd)
+            eurUsd.textContent =
+                "Unavailable";
+
+    }
+
+}
+
+
+/* =========================================================
+   CURRENCY CONVERTER
+========================================================= */
+
+function openCurrencyConverter(){
+
+    const modal =
+        document.getElementById(
+            "currencyConverterModal"
+        );
+
+    if(modal)
+        modal.classList.add(
+            "active"
+        );
+
+}
+
+
+function closeCurrencyConverter(){
+
+    const modal =
+        document.getElementById(
+            "currencyConverterModal"
+        );
+
+    if(modal)
+        modal.classList.remove(
+            "active"
+        );
+
+}
+
+
+function convertCurrency(){
+
+    const amount =
+        parseFloat(
+            document.getElementById(
+                "currencyAmount"
+            ).value
+        ) || 0;
+
+
+    const from =
+        document.getElementById(
+            "currencyFrom"
+        ).value;
+
+
+    const to =
+        document.getElementById(
+            "currencyTo"
+        ).value;
+
+
+    const fromRate =
+        LIVE_FX_RATES[from];
+
+    const toRate =
+        LIVE_FX_RATES[to];
+
+
+    if(!fromRate || !toRate){
+
+        document.getElementById(
+            "currencyResult"
+        ).textContent =
+            "Exchange rate unavailable.";
+
+        return;
+
+    }
+
+
+    const result =
+        (amount / fromRate) *
+        toRate;
+
+
+    document.getElementById(
+        "currencyResult"
+    ).textContent =
+
+        `${amount.toLocaleString()} ${from} ≈ ${
+            result.toLocaleString(
+                undefined,
+                {
+                    maximumFractionDigits:2
+                }
+            )
+        } ${to}`;
+
+}
+
+
+/* =========================================================
+   CRYPTO ASSET
+========================================================= */
+
+function openCryptoAsset(asset){
+
+    const assets = {
+
+        bitcoin:{
+            title:"Bitcoin",
+            description:
+                "Bitcoin is a decentralized digital asset and the largest cryptocurrency by market capitalization."
+        },
+
+        ethereum:{
+            title:"Ethereum",
+            description:
+                "Ethereum is a blockchain platform supporting smart contracts, decentralized applications and digital assets."
+        },
+
+        stablecoins:{
+            title:"Stablecoins",
+            description:
+                "Stablecoins are digital assets designed to maintain a relatively stable value, commonly against fiat currencies."
+        }
+
+    };
+
+
+    const item =
+        assets[asset];
+
+
+    if(!item)
+        return;
+
+
+    alert(
+        `${item.title}\n\n${item.description}`
+    );
+
+}
+
+
+/* =========================================================
+   BUSINESS STORIES
+========================================================= */
+
+function openBusinessStory(story){
+
+    const stories = {
+
+        "africa-business":
+            "Africa's next generation of businesses",
+
+        fintech:
+            "The future of digital finance",
+
+        economy:
+            "Understanding the global economy"
+
+    };
+
+
+    alert(
+        stories[story] ||
+        "Business story"
+    );
+
+}
+
+
+function openBusinessOriginals(){
+
+    alert(
+        "BRENZKafrica Business Originals"
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function openSearch(){
+
+    const modal =
+        document.getElementById(
+            "searchModal"
+        );
+
+    modal.classList.add(
+        "active"
+    );
+
+    setTimeout(
+        () => {
+
+            document
+                .getElementById(
+                    "searchInput"
+                )
+                .focus();
+
+        },
+        100
+    );
+
+}
+
+
+function closeSearch(){
+
+    document
+        .getElementById(
+            "searchModal"
+        )
+        .classList.remove(
+            "active"
+        );
+
+}
+
+
+function performSearch(query){
+
+    const results =
+        document.getElementById(
+            "searchResults"
+        );
+
+
+    if(!query.trim()){
+
+        results.innerHTML = "";
+
+        return;
+
+    }
+
+
+    const items = [
+
+        {
+            title:"BRENZKafrica Originals",
+            category:"Originals"
+        },
+
+        {
+            title:"The Polygamist",
+            category:"Series"
+        },
+
+        {
+            title:"Business & Finance",
+            category:"Business"
+        },
+
+        {
+            title:"Currencies",
+            category:"Finance"
+        },
+
+        {
+            title:"Crypto",
+            category:"Finance"
+        },
+
+        {
+            title:"Sports",
+            category:"Sports"
+        },
+
+        {
+            title:"Entertainment",
+            category:"Entertainment"
+        },
+
+        {
+            title:"Documentaries",
+            category:"Documentaries"
+        }
+
+    ];
+
+
+    const matches =
+        items.filter(
+            item =>
+                item.title
+                    .toLowerCase()
+                    .includes(
+                        query.toLowerCase()
+                    )
+        );
+
+
+    results.innerHTML =
+        matches.map(
+            item => `
+
+                <button
+                    onclick="searchNavigate('${item.category}')"
+                    style="
+                        padding:15px 20px;
+                        border:1px solid rgba(255,255,255,.1);
+                        border-radius:10px;
+                        background:#111;
+                        color:#fff;
+                    ">
+
+                    <small
+                        style="
+                            display:block;
+                            opacity:.5;
+                            font-size:8px;
+                            margin-bottom:5px;
+                        ">
+                        ${item.category}
+                    </small>
+
+                    ${item.title}
+
+                </button>
+
+            `
+        ).join("");
+
+}
+
+
+function searchNavigate(category){
+
+    closeSearch();
+
+    const map = {
+
+        Originals:"originalsSection",
+        Series:"seriesSection",
+        Business:"businessFinanceSection",
+        Finance:"businessFinanceSection",
+        Sports:"sportsSection",
+        Entertainment:"entertainmentSection",
+        Documentaries:"documentariesSection"
+
+    };
+
+
+    scrollToSection(
+        map[category] ||
+        "homeSection"
+    );
+
+}
+
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+function openAuth(){
+
+    document
+        .getElementById(
+            "authModal"
+        )
+        .classList.add(
+            "active"
+        );
+
+}
+
+
+function closeAuth(){
+
+    document
+        .getElementById(
+            "authModal"
+        )
+        .classList.remove(
+            "active"
+        );
+
+}
+
+
+function toggleAuthMode(){
+
+    isSignUp =
+        !isSignUp;
+
+
+    document
+        .getElementById(
+            "authTitle"
+        )
+        .textContent =
+        isSignUp
+            ? "Create Account"
+            : "Sign In";
+
+
+    document
+        .getElementById(
+            "authSwitchText"
+        )
+        .textContent =
+        isSignUp
+            ? "Already have an account?"
+            : "Don't have an account?";
+
+
+    document
+        .getElementById(
+            "authSwitchButton"
+        )
+        .textContent =
+        isSignUp
+            ? "Sign In"
+            : "Create Account";
+
+}
+
+
+async function submitAuth(){
+
+    const email =
+        document
+            .getElementById(
+                "authEmail"
+            )
+            .value
+            .trim();
+
+
+    const password =
+        document
+            .getElementById(
+                "authPassword"
+            )
+            .value;
+
+
+    if(!email || !password){
+
+        alert(
+            "Please enter your email and password."
+        );
+
+        return;
+
+    }
+
+
+    if(!supabaseClient){
+
+        alert(
+            "Supabase is not configured yet."
+        );
+
+        return;
+
+    }
+
+
+    try{
+
+        let result;
+
+
+        if(isSignUp){
+
+            result =
+                await supabaseClient.auth.signUp({
+                    email,
+                    password
+                });
+
+        }else{
+
+            result =
+                await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
+
+        }
+
+
+        if(result.error){
+
+            alert(
+                result.error.message
+            );
+
+            return;
+
+        }
+
+
+        currentUser =
+            result.data.user;
+
+
+        closeAuth();
+
+
+        alert(
+            isSignUp
+                ? "Account created successfully."
+                : "Signed in successfully."
+        );
+
+
+    }catch(error){
+
+        console.error(error);
+
+        alert(
+            "Authentication failed."
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   SUPABASE AUTH STATE
+========================================================= */
+
+async function loadAuthState(){
+
+    if(!supabaseClient)
+        return;
+
+
+    const {
+        data
+    } =
+        await supabaseClient.auth.getSession();
+
+
+    currentUser =
+        data.session
+            ? data.session.user
+            : null;
+
+
+    supabaseClient.auth.onAuthStateChange(
+        (
+            event,
+            session
+        ) => {
+
+            currentUser =
+                session
+                    ? session.user
+                    : null;
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   INITIALIZATION
 ========================================================= */
 
 document.addEventListener(
-"DOMContentLoaded",
-async function(){
+    "DOMContentLoaded",
+    () => {
 
-/*
-  Entertainment is rendered immediately so it does not
-  become another blocking/loading dependency.
-*/
+        loadWatchlist();
 
-renderEntertainment();
+        loadNews();
 
-await Promise.allSettled([
+        loadPolygamistEpisodes();
 
-loadContent(),
-loadEpisodes(),
-loadLiveEvents(),
-loadBreakingNews(),
-loadSports(),
-loadEntertainment(),
-checkSession()
+        loadBusinessMarketData();
 
-]);
+        loadAuthState();
 
-});
+    }
+);
+
 
 /* =========================================================
-   AUTO REFRESH
+   ESC KEY
 ========================================================= */
 
-setInterval(
-loadLiveEvents,
-30000
-);
+document.addEventListener(
+    "keydown",
+    event => {
 
-setInterval(
-loadBreakingNews,
-10*60*1000
-);
+        if(event.key !== "Escape")
+            return;
 
-setInterval(
-loadSports,
-2*60*1000
-);
 
-setInterval(
-async function(){
+        closePlayer();
 
-await Promise.allSettled([
-loadContent(),
-loadEpisodes()
-]);
+        closeAuth();
 
-},
-10*60*1000
-);
+        closeSearch();
 
-setInterval(
-loadEntertainment,
-15*60*1000
+        closeCurrencyConverter();
+
+    }
 );
 
 </script>
 
-<script src="./share.js"></script>
-<script src="/notifications.js"></script>
-
 </body>
 </html>
+
