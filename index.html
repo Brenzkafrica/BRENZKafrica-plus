@@ -5462,14 +5462,252 @@ function loadBusinessMarketData(){
     const usdUgx=document.getElementById("usdUgx");
     const eurUsd=document.getElementById("eurUsd");
 
-    if(btc)btc.textContent="$—";
-    if(eth)eth.textContent="$—";
+    const formatUSD=value=>{
+        if(value===null||value===undefined||isNaN(value)){
+            return "—";
+        }
 
-    if(btcChange)btcChange.textContent="Live data coming soon";
-    if(ethChange)ethChange.textContent="Live data coming soon";
+        return "$"+Number(value).toLocaleString(
+            "en-US",
+            {
+                minimumFractionDigits:2,
+                maximumFractionDigits:2
+            }
+        );
+    };
 
-    if(usdUgx)usdUgx.textContent="Demo rate";
-    if(eurUsd)eurUsd.textContent="Demo rate";
+    const formatChange=value=>{
+        if(value===null||value===undefined||isNaN(value)){
+            return "—";
+        }
+
+        const number=Number(value);
+
+        return (
+            number>=0 ? "▲ " : "▼ "
+        )+
+        Math.abs(number).toFixed(2)+
+        "% · 24h";
+    };
+
+    const setChangeState=(element,value)=>{
+        if(!element)return;
+
+        element.textContent=formatChange(value);
+        element.style.opacity="1";
+        element.style.fontWeight="700";
+
+        if(Number(value)>=0){
+            element.style.color="#22c55e";
+        }else{
+            element.style.color="#ef4444";
+        }
+    };
+
+    const loadCrypto=async()=>{
+
+        try{
+
+            const response=await fetch(
+                "https://api.coingecko.com/api/v3/simple/price"+
+                "?ids=bitcoin,ethereum"+
+                "&vs_currencies=usd"+
+                "&include_24hr_change=true",
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
+                }
+            );
+
+            if(!response.ok){
+                throw new Error(
+                    "Crypto API returned "+
+                    response.status
+                );
+            }
+
+            const data=await response.json();
+
+            if(data.bitcoin){
+
+                if(btc){
+                    btc.textContent=
+                        formatUSD(data.bitcoin.usd);
+                }
+
+                setChangeState(
+                    btcChange,
+                    data.bitcoin.usd_24h_change
+                );
+
+            }else{
+
+                if(btc)btc.textContent="Unavailable";
+
+                if(btcChange){
+                    btcChange.textContent=
+                        "Live data unavailable";
+                }
+
+            }
+
+            if(data.ethereum){
+
+                if(eth){
+                    eth.textContent=
+                        formatUSD(data.ethereum.usd);
+                }
+
+                setChangeState(
+                    ethChange,
+                    data.ethereum.usd_24h_change
+                );
+
+            }else{
+
+                if(eth)eth.textContent="Unavailable";
+
+                if(ethChange){
+                    ethChange.textContent=
+                        "Live data unavailable";
+                }
+
+            }
+
+        }catch(error){
+
+            console.warn(
+                "BRENZKafrica crypto market data error:",
+                error
+            );
+
+            if(btc)btc.textContent="Unavailable";
+            if(eth)eth.textContent="Unavailable";
+
+            if(btcChange){
+                btcChange.textContent=
+                    "Live data unavailable";
+            }
+
+            if(ethChange){
+                ethChange.textContent=
+                    "Live data unavailable";
+            }
+
+        }
+
+    };
+
+    const loadFX=async()=>{
+
+        try{
+
+            const response=await fetch(
+                "https://api.frankfurter.app/latest"+
+                "?from=USD"+
+                "&to=UGX,EUR",
+                {
+                    method:"GET",
+                    cache:"no-store",
+                    headers:{
+                        "Accept":"application/json"
+                    }
+                }
+            );
+
+            if(!response.ok){
+                throw new Error(
+                    "FX API returned "+
+                    response.status
+                );
+            }
+
+            const data=await response.json();
+
+            if(
+                data.rates &&
+                data.rates.UGX
+            ){
+
+                if(usdUgx){
+
+                    usdUgx.textContent=
+                        "UGX "+
+                        Number(
+                            data.rates.UGX
+                        ).toLocaleString(
+                            "en-US",
+                            {
+                                minimumFractionDigits:2,
+                                maximumFractionDigits:2
+                            }
+                        );
+
+                }
+
+            }else{
+
+                if(usdUgx){
+                    usdUgx.textContent=
+                        "Unavailable";
+                }
+
+            }
+
+            if(
+                data.rates &&
+                data.rates.EUR
+            ){
+
+                const eurToUsd=
+                    1 /
+                    Number(
+                        data.rates.EUR
+                    );
+
+                if(eurUsd){
+
+                    eurUsd.textContent=
+                        "$"+
+                        eurToUsd.toFixed(4);
+
+                }
+
+            }else{
+
+                if(eurUsd){
+                    eurUsd.textContent=
+                        "Unavailable";
+                }
+
+            }
+
+        }catch(error){
+
+            console.warn(
+                "BRENZKafrica FX market data error:",
+                error
+            );
+
+            if(usdUgx){
+                usdUgx.textContent=
+                    "Unavailable";
+            }
+
+            if(eurUsd){
+                eurUsd.textContent=
+                    "Unavailable";
+            }
+
+        }
+
+    };
+
+    loadCrypto();
+    loadFX();
 
 }
 
