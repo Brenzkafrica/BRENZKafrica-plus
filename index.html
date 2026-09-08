@@ -1770,6 +1770,13 @@ main{margin-top:-55px}
     #businessFinanceSection .original-overlay h3{font-size:28px}
 }
 
+
+/* BUSINESS OF AFRICA LIVE ENHANCEMENTS */
+.business-live-meta{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;white-space:nowrap}.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
+.business-market-grid{grid-template-columns:repeat(4,1fr)!important}.business-market-grid .market-card{min-height:150px}.business-market-grid .market-icon{font-size:14px}.business-tabs{scroll-margin-top:90px}.business-story-row{padding-bottom:15px}.live-business-story{cursor:pointer}.live-business-story .story-image{position:relative;background:#151515}.live-business-story .story-image img{width:100%;height:100%;object-fit:cover}.live-business-story .story-content{position:relative}.live-business-story .story-content small{display:block;margin-top:8px;color:#666;font-size:9px}.business-feed-loading{color:#686868;padding:35px 3px;font-size:12px}.business-crypto-grid{grid-template-columns:repeat(3,1fr)!important}.live-crypto-feature{position:relative;overflow:hidden;cursor:pointer}.live-crypto-feature h4{font-size:22px}.crypto-market-line{margin-top:6px!important}.crypto-sparkline{height:48px;margin-top:12px;opacity:.9}.crypto-sparkline svg{width:100%;height:100%}.currency-pair b{display:block;margin-top:9px;font-size:18px}.currency-pair small{margin-top:5px!important}.live-business-story .story-content button{margin-top:12px}.live-business-story:hover{border-color:#444;transform:translateY(-4px)}
+@media(max-width:1100px){.business-market-grid{grid-template-columns:repeat(2,1fr)!important}.business-crypto-grid{grid-template-columns:repeat(2,1fr)!important}}
+@media(max-width:650px){#businessFinanceSection{padding-left:4.5%;padding-right:4.5%}.business-market-grid{grid-template-columns:1fr 1fr!important;gap:9px}.business-market-grid .market-card{padding:14px;min-height:130px}.business-market-grid .market-price{font-size:18px}.business-live-meta{font-size:9px}.business-crypto-grid{grid-template-columns:1fr!important}.business-story-card{min-width:285px}.business-live-meta .section-link{padding:0}.finance-dashboard{padding:18px!important}}
+
 </style>
 </head>
 
@@ -1959,329 +1966,86 @@ The latest stories and developments from across Africa.
 
 <section id="businessFinanceSection" class="content-section">
 
-    <div class="section-header">
-        <div>
-            <span class="section-kicker">BRENZKAFRICA PLUS</span>
-            <h2>Business & Finance</h2>
-            <p>Markets, money, currencies, crypto and the global economy.</p>
-        </div>
+<div class="section-header">
+<div>
+<span class="section-kicker">BRENZKAFRICA PLUS</span>
+<h2>Business of Africa</h2>
+<p>Live African business news, markets, currencies, fintech, crypto and economic intelligence.</p>
+</div>
+<div class="business-live-meta"><span class="business-live-dot"></span><span id="businessUpdated">Updating live feeds…</span><button class="section-link" onclick="loadBusinessOfAfrica()">↻ Refresh</button></div>
+</div>
 
-        <button class="section-link" onclick="showBusinessCategory('all')">
-            Explore →
-        </button>
-    </div>
+<div class="finance-dashboard">
+<div class="finance-dashboard-header">
+<div><span class="dashboard-label">LIVE MARKET SNAPSHOT</span><h3>Africa & Global Finance</h3></div>
+<span class="market-status" id="businessMarketStatus">● CONNECTING</span>
+</div>
+<div class="market-grid business-market-grid">
+<div class="market-card"><div class="market-top"><span class="market-icon">₿</span><span class="market-category">CRYPTO</span></div><h4>Bitcoin (BTC)</h4><div class="market-price" id="btcPrice">Loading…</div><div class="market-change" id="btcChange">--</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">Ξ</span><span class="market-category">CRYPTO</span></div><h4>Ethereum (ETH)</h4><div class="market-price" id="ethPrice">Loading…</div><div class="market-change" id="ethChange">--</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">BNB</span><span class="market-category">CRYPTO</span></div><h4>BNB</h4><div class="market-price" id="bnbPrice">Loading…</div><div class="market-change" id="bnbChange">--</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">SOL</span><span class="market-category">CRYPTO</span></div><h4>Solana (SOL)</h4><div class="market-price" id="solPrice">Loading…</div><div class="market-change" id="solChange">--</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">X</span><span class="market-category">CRYPTO</span></div><h4>XRP</h4><div class="market-price" id="xrpPrice">Loading…</div><div class="market-change" id="xrpChange">--</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">ADA</span><span class="market-category">CRYPTO</span></div><h4>Cardano (ADA)</h4><div class="market-price" id="adaPrice">Loading…</div><div class="market-change" id="adaChange">--</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">$</span><span class="market-category">AFRICAN FX</span></div><h4>USD / UGX</h4><div class="market-price" id="usdUgx">Loading…</div><div class="market-change" id="usdUgxDate">Reference rate</div></div>
+<div class="market-card"><div class="market-top"><span class="market-icon">€</span><span class="market-category">FX</span></div><h4>EUR / USD</h4><div class="market-price" id="eurUsd">Loading…</div><div class="market-change" id="eurUsdDate">Reference rate</div></div>
+</div>
+</div>
 
-    <div class="finance-dashboard">
-        <div class="finance-dashboard-header">
-            <div>
-                <span class="dashboard-label">MARKET SNAPSHOT</span>
-                <h3>Global Markets</h3>
-            </div>
-            <span class="market-status">● MARKET DATA</span>
-        </div>
+<div class="finance-categories business-tabs">
+<button onclick="showBusinessCategory('markets')">📈<strong>Markets</strong><span>Market news & indices</span></button>
+<button onclick="showBusinessCategory('currencies')">💱<strong>Currencies</strong><span>African FX rates</span></button>
+<button onclick="showBusinessCategory('crypto')">₿<strong>Crypto</strong><span>Prices & 24h moves</span></button>
+<button onclick="showBusinessCategory('africa')">🌍<strong>African Business</strong><span>Companies & investment</span></button>
+<button onclick="showBusinessCategory('fintech')">💳<strong>Fintech</strong><span>Payments & digital finance</span></button>
+<button onclick="showBusinessCategory('economy')">🌐<strong>Economy</strong><span>Growth, inflation & trade</span></button>
+</div>
 
-        <div class="market-grid">
+<div class="finance-content-block" id="businessNewsBlock">
+<div class="finance-block-header"><div><span class="section-kicker">BUSINESS OF AFRICA</span><h3>Latest African Business</h3><p>Fresh business stories aggregated from current news feeds.</p></div><button onclick="loadBusinessFeed('africa')">Refresh Stories ↻</button></div>
+<div class="business-story-row" id="africaBusinessFeed"><div class="business-feed-loading">Loading African business stories…</div></div>
+</div>
 
-            <div class="market-card crypto-card">
-                <div class="market-top">
-                    <span class="market-icon">₿</span>
-                    <span class="market-category">CRYPTO</span>
-                </div>
-                <h4>Bitcoin</h4>
-                <div class="market-price" id="btcPrice">Loading...</div>
-                <div class="market-change" id="btcChange">--</div>
-            </div>
+<div class="finance-content-block" id="marketsBusinessBlock">
+<div class="finance-block-header"><div><span class="section-kicker">MARKETS</span><h3>Africa Markets & Companies</h3><p>Current market, corporate and investment headlines.</p></div><button onclick="loadBusinessFeed('markets')">Refresh ↻</button></div>
+<div class="business-story-row" id="marketsBusinessFeed"><div class="business-feed-loading">Loading market stories…</div></div>
+</div>
 
-            <div class="market-card crypto-card">
-                <div class="market-top">
-                    <span class="market-icon">Ξ</span>
-                    <span class="market-category">CRYPTO</span>
-                </div>
-                <h4>Ethereum</h4>
-                <div class="market-price" id="ethPrice">Loading...</div>
-                <div class="market-change" id="ethChange">--</div>
-            </div>
+<div class="finance-content-block" id="fintechBusinessBlock">
+<div class="finance-block-header"><div><span class="section-kicker">FINTECH</span><h3>Africa's Digital Finance</h3><p>Mobile money, digital banking, payments, startups and financial technology.</p></div><button onclick="loadBusinessFeed('fintech')">Refresh ↻</button></div>
+<div class="business-story-row" id="fintechBusinessFeed"><div class="business-feed-loading">Loading fintech stories…</div></div>
+</div>
 
-            <div class="market-card currency-card">
-                <div class="market-top">
-                    <span class="market-icon">$</span>
-                    <span class="market-category">FX</span>
-                </div>
-                <h4>USD / UGX</h4>
-                <div class="market-price" id="usdUgx">Loading...</div>
-                <div class="market-change">Exchange Rate</div>
-            </div>
+<div class="finance-content-block" id="economyBusinessBlock">
+<div class="finance-block-header"><div><span class="section-kicker">ECONOMY</span><h3>African Economy</h3><p>Growth, inflation, trade, investment, policy and economic outlook.</p></div><button onclick="loadBusinessFeed('economy')">Refresh ↻</button></div>
+<div class="business-story-row" id="economyBusinessFeed"><div class="business-feed-loading">Loading economy stories…</div></div>
+</div>
 
-            <div class="market-card currency-card">
-                <div class="market-top">
-                    <span class="market-icon">€</span>
-                    <span class="market-category">FX</span>
-                </div>
-                <h4>EUR / USD</h4>
-                <div class="market-price" id="eurUsd">Loading...</div>
-                <div class="market-change">Exchange Rate</div>
-            </div>
+<div class="finance-content-block">
+<div class="finance-block-header"><div><span class="section-kicker">FOREIGN EXCHANGE</span><h3>African Currencies</h3><p>Reference exchange rates for major African currencies and global pairs.</p></div><button onclick="openCurrencyConverter()">Currency Converter →</button></div>
+<div class="currency-row" id="businessCurrencyRow"><div class="business-feed-loading">Loading currency rates…</div></div>
+</div>
 
-        </div>
-    </div>
+<div class="finance-content-block crypto-section">
+<div class="finance-block-header"><div><span class="section-kicker">DIGITAL ASSETS</span><h3>Crypto Market</h3><p>Bitcoin, Ethereum, BNB, Solana, XRP and Cardano with live market data.</p></div><button onclick="loadBusinessCrypto()">Refresh Market ↻</button></div>
+<div class="crypto-grid business-crypto-grid" id="businessCryptoGrid"><div class="business-feed-loading">Loading crypto market data…</div></div>
+</div>
 
-    <div class="finance-categories">
+<div class="finance-original">
+<div class="original-overlay"><span>BRENZKAFRICA ORIGINALS</span><h3>THE BUSINESS OF AFRICA</h3><p>Exclusive conversations with entrepreneurs, investors, innovators and leaders shaping Africa's economic future.</p><button onclick="openBusinessOriginals()">Watch Originals →</button></div>
+</div>
 
-        <button onclick="showBusinessCategory('markets')">
-            📈
-            <strong>Markets</strong>
-            <span>Stocks & indices</span>
-        </button>
-
-        <button onclick="showBusinessCategory('currencies')">
-            💱
-            <strong>Currencies</strong>
-            <span>Global FX markets</span>
-        </button>
-
-        <button onclick="showBusinessCategory('crypto')">
-            ₿
-            <strong>Crypto</strong>
-            <span>Digital assets</span>
-        </button>
-
-        <button onclick="showBusinessCategory('africa')">
-            🌍
-            <strong>African Business</strong>
-            <span>Companies & investment</span>
-        </button>
-
-        <button onclick="showBusinessCategory('fintech')">
-            💳
-            <strong>Fintech</strong>
-            <span>Digital finance</span>
-        </button>
-
-        <button onclick="showBusinessCategory('economy')">
-            🌐
-            <strong>Economy</strong>
-            <span>Global economic outlook</span>
-        </button>
-
-    </div>
-
-    <div class="finance-content-block">
-
-        <div class="finance-block-header">
-            <div>
-                <span class="section-kicker">FOREIGN EXCHANGE</span>
-                <h3>Currencies</h3>
-                <p>Track the world's major currencies and African FX markets.</p>
-            </div>
-
-            <button onclick="openCurrencyConverter()">
-                Currency Converter →
-            </button>
-        </div>
-
-        <div class="currency-row">
-
-            <div class="currency-pair">
-                <span>USD</span><strong>/</strong><span>UGX</span>
-                <small>US Dollar / Ugandan Shilling</small>
-            </div>
-
-            <div class="currency-pair">
-                <span>USD</span><strong>/</strong><span>KES</span>
-                <small>US Dollar / Kenyan Shilling</small>
-            </div>
-
-            <div class="currency-pair">
-                <span>USD</span><strong>/</strong><span>NGN</span>
-                <small>US Dollar / Nigerian Naira</small>
-            </div>
-
-            <div class="currency-pair">
-                <span>USD</span><strong>/</strong><span>ZAR</span>
-                <small>US Dollar / South African Rand</small>
-            </div>
-
-            <div class="currency-pair">
-                <span>EUR</span><strong>/</strong><span>USD</span>
-                <small>Euro / US Dollar</small>
-            </div>
-
-            <div class="currency-pair">
-                <span>GBP</span><strong>/</strong><span>USD</span>
-                <small>British Pound / US Dollar</small>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="finance-content-block crypto-section">
-
-        <div class="finance-block-header">
-            <div>
-                <span class="section-kicker">DIGITAL ASSETS</span>
-                <h3>Crypto</h3>
-                <p>Bitcoin, Ethereum, stablecoins, Web3 and the digital economy.</p>
-            </div>
-
-            <button onclick="showBusinessCategory('crypto')">
-                Explore Crypto →
-            </button>
-        </div>
-
-        <div class="crypto-grid">
-
-            <article class="crypto-feature">
-                <div class="crypto-symbol">₿</div>
-                <div>
-                    <span>BITCOIN</span>
-                    <h4>Bitcoin</h4>
-                    <p>The world's largest cryptocurrency and digital asset.</p>
-                </div>
-                <button onclick="openCryptoAsset('bitcoin')">View →</button>
-            </article>
-
-            <article class="crypto-feature">
-                <div class="crypto-symbol">Ξ</div>
-                <div>
-                    <span>BLOCKCHAIN</span>
-                    <h4>Ethereum</h4>
-                    <p>Smart contracts, decentralized applications and Web3.</p>
-                </div>
-                <button onclick="openCryptoAsset('ethereum')">View →</button>
-            </article>
-
-            <article class="crypto-feature">
-                <div class="crypto-symbol">₮</div>
-                <div>
-                    <span>STABLECOINS</span>
-                    <h4>Digital Dollars</h4>
-                    <p>Explore stablecoins and their role in global finance.</p>
-                </div>
-                <button onclick="openCryptoAsset('stablecoins')">View →</button>
-            </article>
-
-        </div>
-    </div>
-
-    <div class="finance-content-block">
-
-        <div class="finance-block-header">
-            <div>
-                <span class="section-kicker">BRENZKAFRICA BUSINESS</span>
-                <h3>Business Stories</h3>
-                <p>The companies, people and ideas shaping the global economy.</p>
-            </div>
-
-            <button onclick="showBusinessCategory('business')">
-                View All →
-            </button>
-        </div>
-
-        <div class="business-story-row">
-
-            <article class="business-story-card">
-                <div class="story-image">
-                    <div class="story-placeholder">BUSINESS</div>
-                </div>
-                <div class="story-content">
-                    <span>AFRICAN BUSINESS</span>
-                    <h4>Africa's next generation of businesses</h4>
-                    <p>Entrepreneurs, companies and investment shaping Africa's economic future.</p>
-                    <button onclick="openBusinessStory('africa-business')">Read Story →</button>
-                </div>
-            </article>
-
-            <article class="business-story-card">
-                <div class="story-image">
-                    <div class="story-placeholder">FINTECH</div>
-                </div>
-                <div class="story-content">
-                    <span>FINTECH</span>
-                    <h4>The future of digital finance</h4>
-                    <p>Banking, mobile money, digital payments and financial technology.</p>
-                    <button onclick="openBusinessStory('fintech')">Read Story →</button>
-                </div>
-            </article>
-
-            <article class="business-story-card">
-                <div class="story-image">
-                    <div class="story-placeholder">ECONOMY</div>
-                </div>
-                <div class="story-content">
-                    <span>GLOBAL ECONOMY</span>
-                    <h4>Understanding the global economy</h4>
-                    <p>Inflation, interest rates, trade and the forces moving global markets.</p>
-                    <button onclick="openBusinessStory('economy')">Read Story →</button>
-                </div>
-            </article>
-
-        </div>
-    </div>
-
-    <div class="finance-original">
-        <div class="original-overlay">
-            <span>BRENZKAFRICA ORIGINALS</span>
-            <h3>THE BUSINESS OF AFRICA</h3>
-            <p>Exclusive conversations with entrepreneurs, investors, innovators and leaders shaping Africa's economic future.</p>
-            <button onclick="openBusinessOriginals()">Watch Originals →</button>
-        </div>
-    </div>
-
-    <div id="currencyConverterModal">
-
-        <div class="currency-modal-content">
-
-            <button class="currency-close" onclick="closeCurrencyConverter()">×</button>
-
-            <span class="section-kicker">BRENZKAFRICA PLUS</span>
-
-            <h3>Currency Converter</h3>
-
-            <p>Convert between major global and African currencies.</p>
-
-            <div class="converter-field">
-                <label>Amount</label>
-                <input type="number" id="currencyAmount" value="1" min="0">
-            </div>
-
-            <div class="converter-grid">
-
-                <div>
-                    <label>From</label>
-                    <select id="currencyFrom">
-                        <option value="USD">USD — US Dollar</option>
-                        <option value="UGX">UGX — Ugandan Shilling</option>
-                        <option value="KES">KES — Kenyan Shilling</option>
-                        <option value="NGN">NGN — Nigerian Naira</option>
-                        <option value="ZAR">ZAR — South African Rand</option>
-                        <option value="EUR">EUR — Euro</option>
-                        <option value="GBP">GBP — British Pound</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>To</label>
-                    <select id="currencyTo">
-                        <option value="UGX">UGX — Ugandan Shilling</option>
-                        <option value="USD">USD — US Dollar</option>
-                        <option value="KES">KES — Kenyan Shilling</option>
-                        <option value="NGN">NGN — Nigerian Naira</option>
-                        <option value="ZAR">ZAR — South African Rand</option>
-                        <option value="EUR">EUR — Euro</option>
-                        <option value="GBP">GBP — British Pound</option>
-                    </select>
-                </div>
-
-            </div>
-
-            <button class="convert-button" onclick="convertCurrency()">Convert</button>
-
-            <div id="currencyResult" class="currency-result">
-                Enter an amount to convert.
-            </div>
-
-        </div>
-    </div>
+<div id="currencyConverterModal">
+<div class="currency-modal-content">
+<button class="currency-close" onclick="closeCurrencyConverter()">×</button>
+<span class="section-kicker">BRENZKAFRICA PLUS</span><h3>Currency Converter</h3><p>Convert using the latest available reference rates.</p>
+<div class="converter-field"><label>Amount</label><input type="number" id="currencyAmount" value="1" min="0"></div>
+<div class="converter-grid">
+<div><label>From</label><select id="currencyFrom"><option value="USD">USD — US Dollar</option><option value="UGX">UGX — Ugandan Shilling</option><option value="KES">KES — Kenyan Shilling</option><option value="NGN">NGN — Nigerian Naira</option><option value="ZAR">ZAR — South African Rand</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — British Pound</option></select></div>
+<div><label>To</label><select id="currencyTo"><option value="UGX">UGX — Ugandan Shilling</option><option value="USD">USD — US Dollar</option><option value="KES">KES — Kenyan Shilling</option><option value="NGN">NGN — Nigerian Naira</option><option value="ZAR">ZAR — South African Rand</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — British Pound</option></select></div>
+</div>
+<button class="convert-button" onclick="convertCurrency()">Convert</button><div id="currencyResult" class="currency-result">Enter an amount to convert.</div>
+</div></div>
 
 </section>
 
@@ -5337,398 +5101,198 @@ error
 
 
 /* =========================================================
-   BUSINESS • FINANCE • CURRENCIES • CRYPTO
+   BUSINESS OF AFRICA • LIVE DATA
 ========================================================= */
 
+const BUSINESS_API={
+    crypto:"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bnb,solana,xrp,cardano&order=market_cap_desc&per_page=6&page=1&sparkline=true&price_change_percentage=24h",
+    fx:"https://api.frankfurter.dev/v2/rates?base=USD&quotes=UGX,KES,NGN,ZAR,EUR,GBP"
+};
+
+const BUSINESS_NEWS={
+    africa:"https://news.google.com/rss/search?q=African+business+companies+investment+economy&hl=en-US&gl=US&ceid=US:en",
+    markets:"https://news.google.com/rss/search?q=Africa+markets+stocks+companies+investment&hl=en-US&gl=US&ceid=US:en",
+    fintech:"https://news.google.com/rss/search?q=Africa+fintech+mobile+money+digital+payments+banking&hl=en-US&gl=US&ceid=US:en",
+    economy:"https://news.google.com/rss/search?q=Africa+economy+GDP+inflation+trade+central+bank&hl=en-US&gl=US&ceid=US:en"
+};
+
+const BUSINESS_FX_RATES={USD:1};
+let businessNewsCache={};
+
 function showBusinessCategory(category){
-
-    const section=document.getElementById("businessFinanceSection");
-
-    if(section){
-        section.scrollIntoView({
-            behavior:"smooth",
-            block:"start"
-        });
-    }
-
+    const map={
+        markets:"marketsBusinessBlock",
+        currencies:"businessCurrencyRow",
+        crypto:"businessCryptoGrid",
+        africa:"businessNewsBlock",
+        fintech:"fintechBusinessBlock",
+        economy:"economyBusinessBlock",
+        all:"businessFinanceSection"
+    };
+    const target=document.getElementById(map[category]||"businessFinanceSection");
+    if(target)target.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 function openCurrencyConverter(){
-
     const modal=document.getElementById("currencyConverterModal");
-
-    if(modal){
-        modal.classList.add("active");
-        document.body.classList.add("modal-open");
-    }
-
+    if(modal){modal.classList.add("active");document.body.classList.add("modal-open");}
 }
-
 function closeCurrencyConverter(){
-
     const modal=document.getElementById("currencyConverterModal");
-
-    if(modal){
-        modal.classList.remove("active");
-        document.body.classList.remove("modal-open");
-    }
-
+    if(modal){modal.classList.remove("active");document.body.classList.remove("modal-open");}
 }
 
-/*
-   DEMO FX RATES
-   Replace with a live FX API before production use.
-*/
+function formatBusinessUSD(value){
+    const n=Number(value);
+    if(!Number.isFinite(n))return "—";
+    return "$"+n.toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:n<1?6:2});
+}
+function formatBusinessCompact(value){
+    const n=Number(value);
+    if(!Number.isFinite(n))return "—";
+    if(Math.abs(n)>=1e12)return "$"+(n/1e12).toFixed(2)+"T";
+    if(Math.abs(n)>=1e9)return "$"+(n/1e9).toFixed(2)+"B";
+    if(Math.abs(n)>=1e6)return "$"+(n/1e6).toFixed(2)+"M";
+    return "$"+n.toLocaleString("en-US",{maximumFractionDigits:0});
+}
+function formatBusinessChange(value){
+    const n=Number(value);
+    if(!Number.isFinite(n))return "—";
+    return (n>=0?"▲ ":"▼ ")+Math.abs(n).toFixed(2)+"% · 24h";
+}
+function setBusinessChange(id,value){
+    const el=document.getElementById(id);if(!el)return;
+    const n=Number(value);el.textContent=formatBusinessChange(value);el.style.opacity="1";el.style.fontWeight="700";el.style.color=n>=0?"#22c55e":"#ef4444";
+}
 
-const BUSINESS_FX_RATES={
-    USD:1,
-    UGX:3500,
-    KES:129,
-    NGN:1500,
-    ZAR:17,
-    EUR:0.85,
-    GBP:0.74
-};
+async function loadBusinessCrypto(){
+    const ids=["bitcoin","ethereum","bnb","solana","xrp","cardano"];
+    const meta={bitcoin:["btcPrice","btcChange"],ethereum:["ethPrice","ethChange"],bnb:["bnbPrice","bnbChange"],solana:["solPrice","solChange"],xrp:["xrpPrice","xrpChange"],cardano:["adaPrice","adaChange"]};
+    try{
+        const res=await fetch(BUSINESS_API.crypto,{cache:"no-store",headers:{Accept:"application/json"}});
+        if(!res.ok)throw new Error("Crypto API "+res.status);
+        const data=await res.json();
+        data.forEach(c=>{
+            const pair=meta[c.id];if(!pair)return;
+            const price=document.getElementById(pair[0]);if(price)price.textContent=formatBusinessUSD(c.current_price);
+            setBusinessChange(pair[1],c.price_change_percentage_24h);
+        });
+        renderBusinessCrypto(data);
+        const status=document.getElementById("businessMarketStatus");if(status)status.textContent="● LIVE MARKET DATA";
+    }catch(error){
+        console.warn("BRENZKafrica crypto market error",error);
+        const status=document.getElementById("businessMarketStatus");if(status)status.textContent="● MARKET FEED UNAVAILABLE";
+        document.querySelectorAll("[id$='Price']").forEach(el=>{if(["btcPrice","ethPrice","bnbPrice","solPrice","xrpPrice","adaPrice"].includes(el.id)&&el.textContent.includes("Loading"))el.textContent="Unavailable";});
+    }
+}
+
+function renderBusinessCrypto(data){
+    const grid=document.getElementById("businessCryptoGrid");if(!grid)return;
+    grid.innerHTML=data.map(c=>{
+        const change=Number(c.price_change_percentage_24h);
+        const spark=(c.sparkline_in_7d&&c.sparkline_in_7d.price)||[];
+        const points=spark.length?makeBusinessSparkline(spark):"";
+        return `<article class="crypto-feature live-crypto-feature" onclick="openCryptoAsset('${c.id}')">
+            <div class="crypto-symbol">${c.symbol.toUpperCase()}</div>
+            <span>${c.name.toUpperCase()} · ${c.symbol.toUpperCase()}</span>
+            <h4>${formatBusinessUSD(c.current_price)}</h4>
+            <p class="crypto-market-line"><strong style="color:${change>=0?'#22c55e':'#ef4444'}">${change>=0?'▲':'▼'} ${Math.abs(change).toFixed(2)}%</strong> 24h</p>
+            <p>Market cap ${formatBusinessCompact(c.market_cap)} · 24h volume ${formatBusinessCompact(c.total_volume)}</p>
+            <div class="crypto-sparkline">${points}</div>
+        </article>`;
+    }).join("");
+}
+function makeBusinessSparkline(values){
+    const nums=values.slice(-48).map(Number).filter(Number.isFinite);if(nums.length<2)return "";
+    const min=Math.min(...nums),max=Math.max(...nums),range=max-min||1;
+    const pts=nums.map((v,i)=>`${(i/(nums.length-1))*100},${100-((v-min)/range)*100}`).join(" ");
+    const up=nums[nums.length-1]>=nums[0];
+    return `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pts}" fill="none" stroke="${up?'#22c55e':'#ef4444'}" stroke-width="3" vector-effect="non-scaling-stroke"/></svg>`;
+}
+function openCryptoAsset(asset){showBusinessCategory("crypto");}
+
+async function loadBusinessFX(){
+    try{
+        const res=await fetch(BUSINESS_API.fx,{cache:"no-store",headers:{Accept:"application/json"}});
+        if(!res.ok)throw new Error("FX API "+res.status);
+        const rows=await res.json();
+        rows.forEach(r=>BUSINESS_FX_RATES[r.quote]=Number(r.rate));
+        renderBusinessCurrencies(rows);
+        const ugx=BUSINESS_FX_RATES.UGX,eur=BUSINESS_FX_RATES.EUR;
+        const u=document.getElementById("usdUgx"),e=document.getElementById("eurUsd");
+        if(u&&ugx)u.textContent="UGX "+ugx.toLocaleString("en-US",{maximumFractionDigits:2});
+        if(e&&eur)e.textContent=(1/eur).toFixed(4);
+        const date=new Date().toLocaleDateString();
+        ["usdUgxDate","eurUsdDate"].forEach(id=>{const x=document.getElementById(id);if(x)x.textContent="Reference rate · "+date;});
+    }catch(error){console.warn("BRENZKafrica FX error",error);}
+}
+function renderBusinessCurrencies(rows){
+    const row=document.getElementById("businessCurrencyRow");if(!row)return;
+    const quotes={UGX:"Ugandan Shilling",KES:"Kenyan Shilling",NGN:"Nigerian Naira",ZAR:"South African Rand",EUR:"Euro",GBP:"British Pound"};
+    row.innerHTML=rows.map(r=>`<div class="currency-pair"><span>USD</span><strong>/</strong><span>${r.quote}</span><b>${Number(r.rate).toLocaleString("en-US",{maximumFractionDigits:4})}</b><small>US Dollar / ${quotes[r.quote]||r.quote}</small></div>`).join("");
+    row.insertAdjacentHTML("beforeend",`<div class="currency-pair"><span>EUR</span><strong>/</strong><span>USD</span><b>${(1/(BUSINESS_FX_RATES.EUR||1)).toFixed(4)}</b><small>Euro / US Dollar</small></div>`);
+}
 
 function convertCurrency(){
-
-    const amount=parseFloat(
-        document.getElementById("currencyAmount")?.value
-    )||0;
-
+    const amount=parseFloat(document.getElementById("currencyAmount")?.value)||0;
     const from=document.getElementById("currencyFrom")?.value;
     const to=document.getElementById("currencyTo")?.value;
+    const result=document.getElementById("currencyResult");if(!result)return;
+    const fromRate=BUSINESS_FX_RATES[from],toRate=BUSINESS_FX_RATES[to];
+    if(!fromRate||!toRate){result.textContent="Live exchange rate unavailable.";return;}
+    const converted=(amount/fromRate)*toRate;
+    result.textContent=`${amount.toLocaleString()} ${from} ≈ ${converted.toLocaleString(undefined,{maximumFractionDigits:4})} ${to}`;
+}
 
-    const fromRate=BUSINESS_FX_RATES[from];
-    const toRate=BUSINESS_FX_RATES[to];
-
-    const resultElement=document.getElementById("currencyResult");
-
-    if(!resultElement)return;
-
-    if(!fromRate||!toRate){
-        resultElement.textContent="Exchange rate unavailable.";
-        return;
+function businessNewsTime(date){
+    const d=new Date(date);if(Number.isNaN(d.getTime()))return "";
+    return d.toLocaleString(undefined,{month:"short",day:"numeric",hour:"2-digit",minute:"2-digit"});
+}
+function cleanBusinessText(value){
+    return String(value||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
+}
+function businessImage(item){
+    return item.thumbnail||item.enclosure?.link||item.enclosure?.url||"";
+}
+async function loadBusinessFeed(category){
+    const target=document.getElementById(category+"BusinessFeed");if(!target)return;
+    target.innerHTML="<div class='business-feed-loading'>Loading current stories…</div>";
+    try{
+        const feedUrl=encodeURIComponent(BUSINESS_NEWS[category]);
+        const res=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`,{cache:"no-store"});
+        if(!res.ok)throw new Error("News feed "+res.status);
+        const data=await res.json();
+        const items=(data.items||[]).slice(0,10);
+        businessNewsCache[category]=items;
+        if(!items.length){target.innerHTML="<div class='business-feed-loading'>No current stories returned.</div>";return;}
+        target.innerHTML=items.map((item,index)=>{
+            const title=cleanBusinessText(item.title)||"Business story";
+            const desc=cleanBusinessText(item.description||item.content).slice(0,180);
+            const img=businessImage(item);
+            return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
+                <div class="story-image">${img?`<img src="${img.replace(/"/g,'&quot;')}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=story-placeholder>BUSINESS OF AFRICA</div>'">`:`<div class="story-placeholder">${category.toUpperCase()}</div>`}</div>
+                <div class="story-content"><span>${(item.author||item.source||category).toString().toUpperCase()}</span><h4>${title}</h4><p>${desc||"Latest reporting and developments from across Africa."}</p><button>Read Story ↗</button><small>${businessNewsTime(item.pubDate)}</small></div>
+            </article>`;
+        }).join("");
+    }catch(error){
+        console.warn("BRENZKafrica business news error",category,error);
+        target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
     }
+}
+function openBusinessArticle(category,index){
+    const item=businessNewsCache[category]?.[index];if(item?.link)window.open(item.link,"_blank","noopener,noreferrer");
+}
+function openBusinessStory(story){loadBusinessFeed(story==="africa-business"?"africa":story);}
+function openBusinessOriginals(){showToast("BRENZKafrica Business Originals will connect to the Originals catalogue.");}
 
-    const result=(amount/fromRate)*toRate;
-
-    resultElement.textContent=
-        `${amount.toLocaleString()} ${from} ≈ ${
-            result.toLocaleString(undefined,{
-                maximumFractionDigits:2
-            })
-        } ${to}`;
-
+async function loadBusinessOfAfrica(){
+    const updated=document.getElementById("businessUpdated");if(updated)updated.textContent="Updating live feeds…";
+    await Promise.allSettled([loadBusinessCrypto(),loadBusinessFX(),loadBusinessFeed("africa"),loadBusinessFeed("markets"),loadBusinessFeed("fintech"),loadBusinessFeed("economy")]);
+    if(updated)updated.textContent="Live feeds refreshed · "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
 }
 
-function openCryptoAsset(asset){
-
-    showToast(
-        `${String(asset).charAt(0).toUpperCase()+String(asset).slice(1)} information will be connected to the market feed.`
-    );
-
-}
-
-function openBusinessStory(story){
-
-    const labels={
-        "africa-business":"African Business",
-        fintech:"Fintech",
-        economy:"Global Economy"
-    };
-
-    showToast(
-        (labels[story]||"Business Story")+
-        " content will be connected to the editorial feed."
-    );
-
-}
-
-function openBusinessOriginals(){
-
-    showToast(
-        "BRENZKafrica Business Originals will be connected to the Originals catalogue."
-    );
-
-}
-
-function loadBusinessMarketData(){
-
-    const btc=document.getElementById("btcPrice");
-    const eth=document.getElementById("ethPrice");
-    const btcChange=document.getElementById("btcChange");
-    const ethChange=document.getElementById("ethChange");
-    const usdUgx=document.getElementById("usdUgx");
-    const eurUsd=document.getElementById("eurUsd");
-
-    const formatUSD=value=>{
-        if(value===null||value===undefined||isNaN(value)){
-            return "—";
-        }
-
-        return "$"+Number(value).toLocaleString(
-            "en-US",
-            {
-                minimumFractionDigits:2,
-                maximumFractionDigits:2
-            }
-        );
-    };
-
-    const formatChange=value=>{
-        if(value===null||value===undefined||isNaN(value)){
-            return "—";
-        }
-
-        const number=Number(value);
-
-        return (
-            number>=0 ? "▲ " : "▼ "
-        )+
-        Math.abs(number).toFixed(2)+
-        "% · 24h";
-    };
-
-    const setChangeState=(element,value)=>{
-        if(!element)return;
-
-        element.textContent=formatChange(value);
-        element.style.opacity="1";
-        element.style.fontWeight="700";
-
-        if(Number(value)>=0){
-            element.style.color="#22c55e";
-        }else{
-            element.style.color="#ef4444";
-        }
-    };
-
-    const loadCrypto=async()=>{
-
-        try{
-
-            const response=await fetch(
-                "https://api.coingecko.com/api/v3/simple/price"+
-                "?ids=bitcoin,ethereum"+
-                "&vs_currencies=usd"+
-                "&include_24hr_change=true",
-                {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":"application/json"
-                    }
-                }
-            );
-
-            if(!response.ok){
-                throw new Error(
-                    "Crypto API returned "+
-                    response.status
-                );
-            }
-
-            const data=await response.json();
-
-            if(data.bitcoin){
-
-                if(btc){
-                    btc.textContent=
-                        formatUSD(data.bitcoin.usd);
-                }
-
-                setChangeState(
-                    btcChange,
-                    data.bitcoin.usd_24h_change
-                );
-
-            }else{
-
-                if(btc)btc.textContent="Unavailable";
-
-                if(btcChange){
-                    btcChange.textContent=
-                        "Live data unavailable";
-                }
-
-            }
-
-            if(data.ethereum){
-
-                if(eth){
-                    eth.textContent=
-                        formatUSD(data.ethereum.usd);
-                }
-
-                setChangeState(
-                    ethChange,
-                    data.ethereum.usd_24h_change
-                );
-
-            }else{
-
-                if(eth)eth.textContent="Unavailable";
-
-                if(ethChange){
-                    ethChange.textContent=
-                        "Live data unavailable";
-                }
-
-            }
-
-        }catch(error){
-
-            console.warn(
-                "BRENZKafrica crypto market data error:",
-                error
-            );
-
-            if(btc)btc.textContent="Unavailable";
-            if(eth)eth.textContent="Unavailable";
-
-            if(btcChange){
-                btcChange.textContent=
-                    "Live data unavailable";
-            }
-
-            if(ethChange){
-                ethChange.textContent=
-                    "Live data unavailable";
-            }
-
-        }
-
-    };
-
-    const loadFX=async()=>{
-
-        try{
-
-            const response=await fetch(
-                "https://api.frankfurter.app/latest"+
-                "?from=USD"+
-                "&to=UGX,EUR",
-                {
-                    method:"GET",
-                    cache:"no-store",
-                    headers:{
-                        "Accept":"application/json"
-                    }
-                }
-            );
-
-            if(!response.ok){
-                throw new Error(
-                    "FX API returned "+
-                    response.status
-                );
-            }
-
-            const data=await response.json();
-
-            if(
-                data.rates &&
-                data.rates.UGX
-            ){
-
-                if(usdUgx){
-
-                    usdUgx.textContent=
-                        "UGX "+
-                        Number(
-                            data.rates.UGX
-                        ).toLocaleString(
-                            "en-US",
-                            {
-                                minimumFractionDigits:2,
-                                maximumFractionDigits:2
-                            }
-                        );
-
-                }
-
-            }else{
-
-                if(usdUgx){
-                    usdUgx.textContent=
-                        "Unavailable";
-                }
-
-            }
-
-            if(
-                data.rates &&
-                data.rates.EUR
-            ){
-
-                const eurToUsd=
-                    1 /
-                    Number(
-                        data.rates.EUR
-                    );
-
-                if(eurUsd){
-
-                    eurUsd.textContent=
-                        "$"+
-                        eurToUsd.toFixed(4);
-
-                }
-
-            }else{
-
-                if(eurUsd){
-                    eurUsd.textContent=
-                        "Unavailable";
-                }
-
-            }
-
-        }catch(error){
-
-            console.warn(
-                "BRENZKafrica FX market data error:",
-                error
-            );
-
-            if(usdUgx){
-                usdUgx.textContent=
-                    "Unavailable";
-            }
-
-            if(eurUsd){
-                eurUsd.textContent=
-                    "Unavailable";
-            }
-
-        }
-
-    };
-
-    loadCrypto();
-    loadFX();
-
-}
-
-document.addEventListener(
-    "DOMContentLoaded",
-    loadBusinessMarketData
-);
-
-document.addEventListener(
-    "click",
-    function(event){
-
-        const modal=document.getElementById("currencyConverterModal");
-
-        if(modal && event.target===modal){
-            closeCurrencyConverter();
-        }
-
-    }
-);
-
+document.addEventListener("DOMContentLoaded",loadBusinessOfAfrica);
+document.addEventListener("click",function(event){const modal=document.getElementById("currencyConverterModal");if(modal&&event.target===modal)closeCurrencyConverter();});
 
 /* =========================================================
    AUTH
