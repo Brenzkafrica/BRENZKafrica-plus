@@ -5088,7 +5088,6 @@ async function loadBusinessOfAfrica(){
     if(updated)updated.textContent="Live feeds refreshed · "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
 }
 
-document.addEventListener("DOMContentLoaded",loadBusinessOfAfrica);
 document.addEventListener("click",function(event){const modal=document.getElementById("currencyConverterModal");if(modal&&event.target===modal)closeCurrencyConverter();});
 
 /* =========================================================
@@ -5588,71 +5587,115 @@ link.classList.add("active");
 });
 
 /* =========================================================
-   SAFE INITIALIZATION
+   GLOBAL LIVE DATA AUTO-REFRESH SYSTEM
+   - Refreshes live information when the platform opens
+   - Refreshes again when the visitor returns to the tab/app
+   - Refreshes silently in the background without reloading the page
+   - Uses different intervals for different data types
+   - Avoids overlapping refresh requests
 ========================================================= */
 
+let brenzLiveRefreshInProgress = false;
+let brenzLastLiveRefresh = 0;
+
+async function refreshBRENZKafricaLiveData(force = false){
+    const now = Date.now();
+
+    // Prevent duplicate refreshes fired by DOMContentLoaded/pageshow/focus together.
+    if(brenzLiveRefreshInProgress) return;
+
+    // Unless explicitly forced, avoid refreshing more than once every 15 seconds.
+    if(!force && now - brenzLastLiveRefresh < 15000) return;
+
+    brenzLiveRefreshInProgress = true;
+    brenzLastLiveRefresh = now;
+
+    try{
+        await Promise.allSettled([
+            loadLiveEvents(),
+            loadBreakingNews(),
+            loadSports(),
+            loadEntertainment(),
+            loadBusinessOfAfrica(),
+            loadContent(),
+            loadEpisodes()
+        ]);
+    }finally{
+        brenzLiveRefreshInProgress = false;
+    }
+}
+
+// First load: fetch the newest information automatically when the site opens.
 document.addEventListener(
 "DOMContentLoaded",
 async function(){
-
-/*
-  Entertainment is rendered immediately so it does not
-  become another blocking/loading dependency.
-*/
-
-renderEntertainment();
-
-await Promise.allSettled([
-
-loadContent(),
-loadEpisodes(),
-loadLiveEvents(),
-loadBreakingNews(),
-loadSports(),
-loadEntertainment(),
-checkSession()
-
-]);
-
+    renderEntertainment();
+    await Promise.allSettled([
+        refreshBRENZKafricaLiveData(true),
+        checkSession()
+    ]);
 });
 
-/* =========================================================
-   AUTO REFRESH
-========================================================= */
+// If the visitor switches away from BRENZKafrica Plus and comes back,
+// refresh the live sections immediately instead of requiring a browser reload.
+document.addEventListener("visibilitychange", function(){
+    if(document.visibilityState === "visible"){
+        refreshBRENZKafricaLiveData(true);
+    }
+});
 
-setInterval(
-loadLiveEvents,
-30000
-);
+// Also handle mobile/browser page restoration and returning to the window.
+window.addEventListener("pageshow", function(){
+    refreshBRENZKafricaLiveData(true);
+});
 
-setInterval(
-loadBreakingNews,
-10*60*1000
-);
+window.addEventListener("focus", function(){
+    refreshBRENZKafricaLiveData(true);
+});
 
-setInterval(
-loadSports,
-2*60*1000
-);
+// If the device temporarily loses internet and reconnects, update immediately.
+window.addEventListener("online", function(){
+    refreshBRENZKafricaLiveData(true);
+});
 
-setInterval(
-async function(){
+/*
+  Background refresh intervals. These update only the information blocks;
+  the whole BRENZKafrica Plus page is NEVER force-reloaded.
+*/
 
-await Promise.allSettled([
-loadContent(),
-loadEpisodes()
-]);
+// Live events / live programming: 30 seconds.
+setInterval(function(){
+    if(document.visibilityState === "visible") loadLiveEvents();
+}, 30000);
 
-},
-10*60*1000
-);
+// Breaking news: 5 minutes.
+setInterval(function(){
+    if(document.visibilityState === "visible") loadBreakingNews();
+}, 5 * 60 * 1000);
 
-loadEntertainment();
+// Sports: 2 minutes.
+setInterval(function(){
+    if(document.visibilityState === "visible") loadSports();
+}, 2 * 60 * 1000);
 
-setInterval(
-loadEntertainment,
-ENTERTAINMENT_REFRESH_MS
-);
+// Business & Finance: 5 minutes.
+setInterval(function(){
+    if(document.visibilityState === "visible") loadBusinessOfAfrica();
+}, 5 * 60 * 1000);
+
+// Entertainment: use the section's configured refresh interval.
+setInterval(function(){
+    if(document.visibilityState === "visible") loadEntertainment();
+}, typeof ENTERTAINMENT_REFRESH_MS === "number" ? ENTERTAINMENT_REFRESH_MS : 5 * 60 * 1000);
+
+// Main catalogue / episodes: 10 minutes.
+setInterval(async function(){
+    if(document.visibilityState !== "visible") return;
+    await Promise.allSettled([
+        loadContent(),
+        loadEpisodes()
+    ]);
+}, 10 * 60 * 1000);
 
 </script>
 
