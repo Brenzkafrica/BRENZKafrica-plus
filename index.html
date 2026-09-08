@@ -2154,8 +2154,9 @@ onclick="showSportsTab('all',this)">
 <div>
 <h2 class="section-title">Entertainment</h2>
 <p class="section-subtitle">
-Global entertainment — music, trending music, celebrity news, theatre, events and awards.
+Live global and African entertainment news — music, film, television, celebrities, theatre, events and awards.
 </p>
+<div class="business-live-meta" style="margin-top:8px"><span class="live-dot"></span><span>LIVE ENTERTAINMENT FEED</span><span id="entertainmentLastUpdated">Updating…</span></div>
 </div>
 </div>
 
@@ -2520,207 +2521,29 @@ setInterval(
     2*60*1000
 );
 /* =========================================================
-   GLOBAL ENTERTAINMENT CATALOGUE
-   Global music + entertainment starter content.
+   LIVE ENTERTAINMENT DATA
+   Real-time entertainment information is loaded from
+   Google News RSS through RSS2JSON. The feed is global,
+   with dedicated African/Nollywood coverage.
 ========================================================= */
 
-const GLOBAL_MUSIC=[
-{
-title:"Global Music",
-artist:"Worldwide Music",
-region:"Global",
-image:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"African Sounds",
-artist:"Africa",
-region:"Africa",
-image:"https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Afrobeats",
-artist:"Global Afrobeats",
-region:"Africa / Global",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Amapiano",
-artist:"South Africa",
-region:"Africa / Global",
-image:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Hip-Hop",
-artist:"Global Hip-Hop",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1571266028243-d220c9c3b1f4?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"R&B",
-artist:"Global R&B",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Pop",
-artist:"Global Pop",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Reggae",
-artist:"Global Reggae",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Electronic",
-artist:"Electronic Music",
-region:"Worldwide",
-image:"https://images.unsplash.com/photo-1571266028243-3716f02d4c5b?auto=format&fit=crop&w=800&q=80",
-url:""
-},
-{
-title:"Latin Music",
-artist:"Latin Sounds",
-region:"Latin America",
-image:"https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80",
-url:""
-}
-];
+const GLOBAL_MUSIC=[];
+const TRENDING_MUSIC=[];
+const CELEBRITY_NEWS=[];
+const THEATRE_CONTENT=[];
+const ENTERTAINMENT_EVENTS=[];
+const ENTERTAINMENT_AWARDS=[];
 
-const TRENDING_MUSIC=[
-{
-title:"Global Music Trends",
-meta:"Worldwide • Trending",
-image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Afrobeats Worldwide",
-meta:"Africa • Global",
-image:"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Amapiano Global",
-meta:"South Africa • Trending",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Hip-Hop Worldwide",
-meta:"Global • Trending",
-image:"https://images.unsplash.com/photo-1571266028243-d220c9c3b1f4?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Pop Around the World",
-meta:"Global • Trending",
-image:"https://images.unsplash.com/photo-1521337581100-8ca9a73a5f79?auto=format&fit=crop&w=900&q=80"
-}
-];
+const ENTERTAINMENT_FEEDS={
+ music:"https://news.google.com/rss/search?q=global+music+Africa+Afrobeats+Amapiano+music+industry&hl=en-US&gl=US&ceid=US:en",
+ trending:"https://news.google.com/rss/search?q=trending+music+artists+new+music+albums+singles&hl=en-US&gl=US&ceid=US:en",
+ celebrity:"https://news.google.com/rss/search?q=celebrity+entertainment+Africa+Nollywood+Hollywood&hl=en-US&gl=US&ceid=US:en",
+ theatre:"https://news.google.com/rss/search?q=theatre+film+cinema+Africa+performances&hl=en-US&gl=US&ceid=US:en",
+ events:"https://news.google.com/rss/search?q=entertainment+events+concerts+festivals+premieres+Africa&hl=en-US&gl=US&ceid=US:en",
+ awards:"https://news.google.com/rss/search?q=music+film+television+awards+Africa+global&hl=en-US&gl=US&ceid=US:en"
+};
 
-const CELEBRITY_NEWS=[
-{
-title:"Global Celebrity Spotlight",
-meta:"Celebrity News",
-image:"https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Music Stars",
-meta:"Music • Celebrity",
-image:"https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film & Television Stars",
-meta:"Film • Television",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"African Entertainment Stars",
-meta:"Africa • Entertainment",
-image:"https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"International Celebrity News",
-meta:"Worldwide",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-}
-];
-
-const THEATRE_CONTENT=[
-{
-title:"Theatre & Film Industry",
-meta:"Exclusive Theatre",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Stage Productions",
-meta:"Theatre",
-image:"https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Behind The Curtain",
-meta:"Theatre • Exclusive",
-image:"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film Industry Showcase",
-meta:"Film • Theatre",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-}
-];
-
-const ENTERTAINMENT_EVENTS=[
-{
-title:"Global Entertainment Events",
-meta:"Events",
-image:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Music Festivals",
-meta:"Music • Events",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film Premieres",
-meta:"Film • Events",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Red Carpet Events",
-meta:"Celebrity • Events",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-}
-];
-
-const ENTERTAINMENT_AWARDS=[
-{
-title:"Global Music Awards",
-meta:"Music • Awards",
-image:"https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Film Awards",
-meta:"Film • Awards",
-image:"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"Television Awards",
-meta:"Television • Awards",
-image:"https://images.unsplash.com/photo-1503095396549-807759245b35?auto=format&fit=crop&w=900&q=80"
-},
-{
-title:"African Creative Awards",
-meta:"Africa • Creative Industry",
-image:"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
-}
-];
+const ENTERTAINMENT_REFRESH_MS=5*60*1000;
 
 /* =========================================================
    ELEMENTS
@@ -4810,24 +4633,20 @@ panel.classList.add("active");
 
 function createMusicCard(item){
 
-const title=item.title||"Global Music";
-const artist=item.artist||"Global Artist";
+const title=item.title||"Music News";
+const artist=item.artist||item.source||"Music";
 const region=item.region||"Worldwide";
 const image=item.image||
 "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80";
 
-const hasUrl=
-item.url&&
-/^(https?:\/\/|\/)/i.test(item.url);
+const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)
+?item.url
+:"";
 
 return `
 <article
 class="music-card"
-onclick="${
-hasUrl
-?`playMusic('${escapeHTML(title)}','${escapeHTML(item.url)}','${escapeHTML(artist)}')`
-:`showToast('Music playback will be connected when a licensed music source is added.')`
-}">
+onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
 
 <img
 src="${escapeHTML(image)}"
@@ -4835,7 +4654,7 @@ alt="${escapeHTML(title)}"
 loading="lazy">
 
 <div class="music-play">
-▶
+↗
 </div>
 
 <div class="music-info">
@@ -4910,45 +4729,34 @@ const theatreRow=document.getElementById("theatreRow");
 const eventsRow=document.getElementById("eventsRow");
 const awardsRow=document.getElementById("awardsRow");
 
-musicRow.innerHTML=
-GLOBAL_MUSIC
-.map(createMusicCard)
-.join("");
+musicRow.innerHTML=GLOBAL_MUSIC.map(createMusicCard).join("") ||
+'<div class="news-loading">Loading real music information...</div>';
 
-trendingRow.innerHTML=
-TRENDING_MUSIC
-.map(item=>createEntertainmentCard(item,"TRENDING"))
-.join("");
+trendingRow.innerHTML=TRENDING_MUSIC.map(item=>createEntertainmentCard(item,"TRENDING")).join("") ||
+'<div class="news-loading">Loading real trending music...</div>';
 
-celebrityRow.innerHTML=
-CELEBRITY_NEWS
-.map(item=>createEntertainmentCard(item,"CELEBRITY"))
-.join("");
+celebrityRow.innerHTML=CELEBRITY_NEWS.map(item=>createEntertainmentCard(item,"CELEBRITY")).join("") ||
+'<div class="news-loading">Loading real celebrity news...</div>';
 
-theatreRow.innerHTML=
-THEATRE_CONTENT
-.map(item=>createEntertainmentCard(item,"THEATRE"))
-.join("");
+theatreRow.innerHTML=THEATRE_CONTENT.map(item=>createEntertainmentCard(item,"THEATRE")).join("") ||
+'<div class="news-loading">Loading real theatre and film information...</div>';
 
-eventsRow.innerHTML=
-ENTERTAINMENT_EVENTS
-.map(item=>createEntertainmentCard(item,"EVENT"))
-.join("");
+eventsRow.innerHTML=ENTERTAINMENT_EVENTS.map(item=>createEntertainmentCard(item,"EVENT")).join("") ||
+'<div class="news-loading">Loading real entertainment events...</div>';
 
-awardsRow.innerHTML=
-ENTERTAINMENT_AWARDS
-.map(item=>createEntertainmentCard(item,"AWARD"))
-.join("");
+awardsRow.innerHTML=ENTERTAINMENT_AWARDS.map(item=>createEntertainmentCard(item,"AWARD")).join("") ||
+'<div class="news-loading">Loading real awards information...</div>';
 
 }
 
 function playMusic(title,url,artist){
 
-playVideo(
-title,
-url,
-"Music by "+artist
-);
+if(url){
+window.open(url,"_blank","noopener,noreferrer");
+return;
+}
+
+showToast(title+" — source unavailable right now.");
 
 }
 
@@ -4958,147 +4766,136 @@ const url=decodeURIComponent(encodedUrl||"");
 const title=decodeURIComponent(encodedTitle||"Entertainment");
 
 if(url&&/^https?:\/\//i.test(url)){
-
-window.open(
-url,
-"_blank",
-"noopener,noreferrer"
-);
-
+window.open(url,"_blank","noopener,noreferrer");
 return;
 }
 
-showToast(
-title+
-" — content source will be connected when available."
-);
+showToast(title+" — source unavailable right now.");
 
 }
 
-/*
-  Optional future live entertainment endpoint.
-  If /api/entertainment exists and returns arrays,
-  its data can be merged without breaking the manual
-  global catalogue.
-*/
-async function loadEntertainment(){
-
-renderEntertainment();
-
-try{
-
-const response=await fetch(
-ENTERTAINMENT_API_URL,
-{
-method:"GET",
-cache:"no-store",
-headers:{Accept:"application/json"}
+function entertainmentImage(item){
+return item.thumbnail ||
+(item.enclosure&&item.enclosure.link) ||
+(item.enclosure&&item.enclosure.url) ||
+"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
 }
-);
 
-if(!response.ok)return;
+function cleanEntertainmentDescription(value){
+if(!value)return "";
+const div=document.createElement("div");
+div.innerHTML=value;
+return (div.textContent||div.innerText||"").replace(/\s+/g," ").trim();
+}
+
+function normalizeEntertainmentItems(items,type){
+
+return (Array.isArray(items)?items:[])
+.filter(item=>item&&item.title)
+.slice(0,12)
+.map(item=>({
+ title:cleanEntertainmentDescription(item.title),
+ meta:(item.author||item.source||type)+
+ (item.pubDate?" • "+formatEntertainmentDate(item.pubDate):""),
+ artist:item.author||item.source||"Entertainment",
+ region:type==="MUSIC"||type==="TRENDING"?"Global Music":"Worldwide Entertainment",
+ image:entertainmentImage(item),
+ url:item.link||item.url||"",
+ description:cleanEntertainmentDescription(item.description||item.content||"")
+}));
+
+}
+
+function formatEntertainmentDate(value){
+const date=new Date(value);
+if(Number.isNaN(date.getTime()))return "";
+const diff=Math.max(0,Date.now()-date.getTime());
+const minutes=Math.floor(diff/60000);
+if(minutes<60)return minutes+"m ago";
+const hours=Math.floor(minutes/60);
+if(hours<24)return hours+"h ago";
+const days=Math.floor(hours/24);
+if(days<7)return days+"d ago";
+return date.toLocaleDateString(undefined,{month:"short",day:"numeric"});
+}
+
+async function fetchEntertainmentFeed(url){
+
+const endpoint=
+"https://api.rss2json.com/v1/api.json?rss_url="+
+encodeURIComponent(url);
+
+const response=await fetch(endpoint,{cache:"no-store"});
+if(!response.ok)throw new Error("Entertainment feed HTTP "+response.status);
 
 const data=await response.json();
+if(data.status&&data.status!=="ok"){
+throw new Error(data.message||"Entertainment feed unavailable");
+}
 
-if(!data)return;
-
-const music=
-Array.isArray(data.music)
-?data.music
-:[];
-
-const trending=
-Array.isArray(data.trending_music)
-?data.trending_music
-:Array.isArray(data.trending)
-?data.trending
-:[];
-
-const celebrity=
-Array.isArray(data.celebrity_news)
-?data.celebrity_news
-:Array.isArray(data.celebrity)
-?data.celebrity
-:[];
-
-const theatre=
-Array.isArray(data.theatre)
-?data.theatre
-:[];
-
-const events=
-Array.isArray(data.events)
-?data.events
-:[];
-
-const awards=
-Array.isArray(data.awards)
-?data.awards
-:[];
-
-if(music.length){
-
-document.getElementById("musicRow").innerHTML=
-music.map(createMusicCard).join("");
+return Array.isArray(data.items)?data.items:[];
 
 }
 
-if(trending.length){
+function renderEntertainmentFeed(rowId,items,type){
+const row=document.getElementById(rowId);
+if(!row)return;
 
-document.getElementById("trendingMusicRow").innerHTML=
-trending
-.map(item=>createEntertainmentCard(item,"TRENDING"))
-.join("");
-
+if(!items.length){
+row.innerHTML='<div class="news-loading">No fresh information available right now.</div>';
+return;
 }
 
-if(celebrity.length){
-
-document.getElementById("celebrityNewsRow").innerHTML=
-celebrity
-.map(item=>createEntertainmentCard(item,"CELEBRITY"))
-.join("");
-
+if(type==="MUSIC"){
+row.innerHTML=items.map(createMusicCard).join("");
+}else{
+row.innerHTML=items.map(item=>createEntertainmentCard(item,type)).join("");
+}
 }
 
-if(theatre.length){
+async function loadEntertainment(){
 
-document.getElementById("theatreRow").innerHTML=
-theatre
-.map(item=>createEntertainmentCard(item,"THEATRE"))
-.join("");
+const feedMap=[
+ ["musicRow","music","MUSIC"],
+ ["trendingMusicRow","trending","TRENDING"],
+ ["celebrityNewsRow","celebrity","CELEBRITY"],
+ ["theatreRow","theatre","THEATRE"],
+ ["eventsRow","events","EVENT"],
+ ["awardsRow","awards","AWARD"]
+];
 
-}
+feedMap.forEach(([rowId])=>{
+const row=document.getElementById(rowId);
+if(row)row.innerHTML='<div class="news-loading">Loading live entertainment information...</div>';
+});
 
-if(events.length){
-
-document.getElementById("eventsRow").innerHTML=
-events
-.map(item=>createEntertainmentCard(item,"EVENT"))
-.join("");
-
-}
-
-if(awards.length){
-
-document.getElementById("awardsRow").innerHTML=
-awards
-.map(item=>createEntertainmentCard(item,"AWARD"))
-.join("");
-
-}
-
-}catch(error){
-
-console.warn(
-"Entertainment API unavailable; using global manual catalogue.",
-error
+const results=await Promise.allSettled(
+feedMap.map(async ([rowId,key,type])=>{
+const items=await fetchEntertainmentFeed(ENTERTAINMENT_FEEDS[key]);
+renderEntertainmentFeed(rowId,normalizeEntertainmentItems(items,type),type);
+return key;
+})
 );
 
+results.forEach((result,index)=>{
+if(result.status==="rejected"){
+const row=document.getElementById(feedMap[index][0]);
+if(row){
+row.innerHTML=
+'<div class="news-loading">Entertainment information is temporarily unavailable. Please refresh.</div>';
+}
+console.warn("Entertainment feed failed:",feedMap[index][1],result.reason);
+}
+});
+
+const updated=document.getElementById("entertainmentLastUpdated");
+if(updated){
+updated.textContent="Updated "+new Date().toLocaleTimeString([],{
+ hour:"2-digit",minute:"2-digit"
+});
 }
 
 }
-
 
 /* =========================================================
    BUSINESS OF AFRICA • LIVE DATA
@@ -5850,9 +5647,11 @@ loadEpisodes()
 10*60*1000
 );
 
+loadEntertainment();
+
 setInterval(
 loadEntertainment,
-15*60*1000
+ENTERTAINMENT_REFRESH_MS
 );
 
 </script>
@@ -5862,3 +5661,4 @@ loadEntertainment,
 
 </body>
 </html>
+
