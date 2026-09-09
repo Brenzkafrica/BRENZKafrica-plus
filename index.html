@@ -6002,6 +6002,322 @@ window.BRENZKafricaSource = function(source, url){
   return '<span class="data-source-label">'+safe+'</span>';
 };
 </script>
+/* =========================================================
+   BRENZKafrica Plus — PROFESSIONAL ACCOUNT & SUBSCRIPTION LAYER
+   Frontend integration for the Professional Layer v1 backend.
+   This layer preserves the existing visual layout and adds
+   account/profile, subscription, entitlement, progress and
+   backend-synced watchlist capabilities.
+========================================================= */
+(function(){
+"use strict";
+
+const PROFESSIONAL_API_BASE = SUPABASE_URL + "/functions/v1";
+const PROFESSIONAL_FUNCTIONS = {
+  profile: PROFESSIONAL_API_BASE + "/profile",
+  entitlement: PROFESSIONAL_API_BASE + "/entitlement",
+  progress: PROFESSIONAL_API_BASE + "/progress",
+  watchlist: PROFESSIONAL_API_BASE + "/watchlist",
+  checkout: PROFESSIONAL_API_BASE + "/create-checkout"
+};
+
+let professionalProfile = null;
+let professionalSubscription = null;
+let professionalPlans = [];
+
+async function professionalSession(){
+  const {data} = await supabaseClient.auth.getSession();
+  return data && data.session ? data.session : null;
+}
+
+async function professionalFetch(url, options={}){
+  const session = await professionalSession();
+  const headers = Object.assign({"Content-Type":"application/json"}, options.headers||{});
+  if(session && session.access_token) headers.Authorization = "Bearer " + session.access_token;
+  const response = await fetch(url, Object.assign({}, options, {headers}));
+  let body = null;
+  try { body = await response.json(); } catch(e) {}
+  if(!response.ok){
+    const message = body && (body.error || body.message) ? (body.error || body.message) : "Professional service request failed.";
+    throw new Error(message);
+  }
+  return body;
+}
+
+function professionalStyles(){
+  if(document.getElementById("bkp-professional-styles")) return;
+  const style=document.createElement("style");
+  style.id="bkp-professional-styles";
+  style.textContent=`
+  .bkp-pro-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+  .bkp-pro-btn{border:1px solid rgba(255,255,255,.16);background:#171717;color:#fff;border-radius:6px;padding:8px 11px;font-weight:800;font-size:11px;cursor:pointer}
+  .bkp-pro-btn:hover{background:#242424;border-color:rgba(255,255,255,.28)}
+  .bkp-pro-primary{background:#e50914;border-color:#e50914}
+  .bkp-pro-primary:hover{background:#b80710}
+  .bkp-pro-modal{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:99999;display:none;align-items:center;justify-content:center;padding:18px}
+  .bkp-pro-modal.active{display:flex}
+  .bkp-pro-panel{width:min(720px,100%);max-height:88vh;overflow:auto;background:#101010;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:22px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+  .bkp-pro-panel h2{margin:0 0 6px;font-size:25px}.bkp-pro-panel p{color:#aaa}
+  .bkp-pro-close{float:right;background:none;border:0;color:#fff;font-size:26px;cursor:pointer}
+  .bkp-pro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+  .bkp-pro-card{background:#171717;border:1px solid rgba(255,255,255,.09);border-radius:9px;padding:16px}
+  .bkp-pro-card h3{margin:0 0 7px}.bkp-pro-price{font-size:24px;font-weight:900;margin:8px 0}.bkp-pro-muted{color:#999;font-size:13px}
+  .bkp-pro-status{display:inline-block;padding:5px 8px;border-radius:999px;background:#242424;font-size:11px;font-weight:800;text-transform:uppercase}
+  .bkp-pro-field{width:100%;box-sizing:border-box;background:#171717;border:1px solid #333;color:#fff;padding:10px;border-radius:6px;margin:5px 0 10px}
+  @media(max-width:600px){.bkp-pro-grid{grid-template-columns:1fr}.bkp-pro-panel{padding:17px}}
+  `;
+  document.head.appendChild(style);
+}
+
+function professionalModal(){
+  professionalStyles();
+  if(document.getElementById("bkp-professional-modal")) return;
+  const modal=document.createElement("div");
+  modal.id="bkp-professional-modal";
+  modal.className="bkp-pro-modal";
+  modal.innerHTML=`<div class="bkp-pro-panel">
+    <button class="bkp-pro-close" aria-label="Close" onclick="BKPProfessional.close()">×</button>
+    <div id="bkp-professional-content"><h2>BRENZKafrica Plus Account</h2><p>Loading your professional account...</p></div>
+  </div>`;
+  modal.addEventListener("click",e=>{if(e.target===modal) BKPProfessional.close();});
+  document.body.appendChild(modal);
+}
+
+function openProfessional(){
+  professionalModal();
+  document.getElementById("bkp-professional-modal").classList.add("active");
+  document.body.classList.add("modal-open");
+  renderProfessionalAccount();
+}
+function closeProfessional(){
+  const modal=document.getElementById("bkp-professional-modal");
+  if(modal) modal.classList.remove("active");
+  document.body.classList.remove("modal-open");
+}
+
+async function loadProfessionalProfile(){
+  if(!currentUser){ professionalProfile=null; return null; }
+  const {data,error}=await supabaseClient.from("profiles").select("*").eq("id",currentUser.id).maybeSingle();
+  if(error) throw error;
+  professionalProfile=data;
+  return data;
+}
+
+async function loadProfessionalSubscription(){
+  if(!currentUser){ professionalSubscription=null; return null; }
+  const {data,error}=await supabaseClient.from("subscriptions").select("*, subscription_plans(*)").eq("user_id",currentUser.id).in("status",["trialing","active","past_due","paused"]).order("created_at",{ascending:false}).limit(1).maybeSingle();
+  if(error) throw error;
+  professionalSubscription=data;
+  return data;
+}
+
+async function loadProfessionalPlans(){
+  const {data,error}=await supabaseClient.from("subscription_plans").select("*").eq("active",true).order("price_minor",{ascending:true});
+  if(error) throw error;
+  professionalPlans=data||[];
+  return professionalPlans;
+}
+
+async function updateProfessionalProfile(displayName,countryCode,language,currency){
+  if(!currentUser) throw new Error("Please sign in first.");
+  const {data,error}=await supabaseClient.from("profiles").update({
+    display_name:displayName||null,
+    country_code:countryCode||null,
+    preferred_language:language||"en",
+    preferred_currency:currency||"USD",
+    updated_at:new Date().toISOString()
+  }).eq("id",currentUser.id).select("*").single();
+  if(error) throw error;
+  professionalProfile=data;
+  showToast("Profile updated.");
+  renderProfessionalAccount();
+}
+
+async function professionalCheckout(planCode){
+  try{
+    const result=await professionalFetch(PROFESSIONAL_FUNCTIONS.checkout,{method:"POST",body:JSON.stringify({plan_code:planCode})});
+    if(result && result.checkout_url){ window.location.href=result.checkout_url; return; }
+    showToast("Payment provider is not configured yet. Your plan is ready for provider connection.");
+  }catch(error){
+    console.error("Checkout error:",error);
+    showToast(error.message||"Unable to start checkout.");
+  }
+}
+
+async function professionalEntitlement(contentType,contentId,externalId){
+  try{
+    return await professionalFetch(PROFESSIONAL_FUNCTIONS.entitlement,{method:"POST",body:JSON.stringify({content_type:contentType,content_id:String(contentId||""),external_id:externalId||null})});
+  }catch(error){
+    console.error("Entitlement error:",error);
+    return {allowed:false,error:error.message};
+  }
+}
+
+async function saveProfessionalProgress(contentType,contentId,positionSeconds,durationSeconds,completed,externalId){
+  if(!currentUser) return;
+  try{
+    await professionalFetch(PROFESSIONAL_FUNCTIONS.progress,{method:"POST",body:JSON.stringify({
+      content_type:contentType||"video",content_id:contentId?String(contentId):null,external_id:externalId||null,
+      position_seconds:Math.max(0,Math.floor(Number(positionSeconds)||0)),duration_seconds:Math.max(0,Math.floor(Number(durationSeconds)||0)),completed:!!completed
+    })});
+  }catch(error){ console.warn("Progress sync unavailable:",error.message); }
+}
+
+async function getProfessionalProgress(){
+  if(!currentUser) return [];
+  try{
+    const result=await professionalFetch(PROFESSIONAL_FUNCTIONS.progress,{method:"GET"});
+    return result.progress||result.data||[];
+  }catch(error){ console.warn("Progress load unavailable:",error.message); return []; }
+}
+
+async function syncProfessionalWatchlistItem(item,remove=false){
+  if(!currentUser) return;
+  try{
+    await professionalFetch(PROFESSIONAL_FUNCTIONS.watchlist,{method:"POST",body:JSON.stringify({
+      action:remove?"remove":"add",
+      content_type:item.content_type||"video",
+      content_id:item.content_id?String(item.content_id):null,
+      external_id:item.external_id||null,
+      title:item.title||null,
+      thumbnail_url:item.thumbnail_url||null
+    })});
+  }catch(error){ console.warn("Professional watchlist sync unavailable:",error.message); }
+}
+
+async function renderProfessionalAccount(){
+  const target=document.getElementById("bkp-professional-content");
+  if(!target) return;
+  if(!currentUser){
+    target.innerHTML=`<h2>BRENZKafrica Plus Account</h2><p>Sign in to manage your profile, subscription and personalized viewing experience.</p><button class="bkp-pro-btn bkp-pro-primary" onclick="BKPProfessional.close();openAccount()">Sign In</button>`;
+    return;
+  }
+  target.innerHTML=`<h2>My BRENZKafrica Plus</h2><p>Manage your profile, plan and account preferences.</p><div class="bkp-pro-card"><h3>Account</h3><p class="bkp-pro-muted">${escapeProfessional(currentUser.email||"")}</p><label>Display name</label><input id="bkp-display-name" class="bkp-pro-field" value="${escapeProfessional((professionalProfile&&professionalProfile.display_name)||"")}"><label>Country code</label><input id="bkp-country" class="bkp-pro-field" placeholder="UG" maxlength="2" value="${escapeProfessional((professionalProfile&&professionalProfile.country_code)||"")}"><button class="bkp-pro-btn bkp-pro-primary" onclick="BKPProfessional.saveProfile()">Save Profile</button></div><div id="bkp-plan-area" class="bkp-pro-grid"><div class="bkp-pro-card"><p>Loading plans...</p></div></div>`;
+  try{
+    await Promise.all([loadProfessionalProfile(),loadProfessionalSubscription(),loadProfessionalPlans()]);
+    const planArea=document.getElementById("bkp-plan-area");
+    if(!planArea)return;
+    let html="";
+    if(professionalSubscription){
+      const p=professionalSubscription.subscription_plans||{};
+      html+=`<div class="bkp-pro-card"><h3>Current Plan</h3><span class="bkp-pro-status">${escapeProfessional(professionalSubscription.status)}</span><div class="bkp-pro-price">${escapeProfessional(p.name||"BRENZKafrica Plus")}</div><p class="bkp-pro-muted">${p.interval?"Billing: "+escapeProfessional(p.interval):"Active subscription"}</p></div>`;
+    }
+    (professionalPlans||[]).forEach(plan=>{
+      const amount=(Number(plan.price_minor||0)/100).toFixed(2);
+      html+=`<div class="bkp-pro-card"><h3>${escapeProfessional(plan.name)}</h3><div class="bkp-pro-price">${escapeProfessional(plan.currency||"USD")} ${amount}<small class="bkp-pro-muted"> / ${escapeProfessional(plan.interval||"")}</small></div><p class="bkp-pro-muted">${escapeProfessional(plan.description||"Premium BRENZKafrica Plus access.")}</p><button class="bkp-pro-btn bkp-pro-primary" onclick="BKPProfessional.checkout('${escapeProfessional(plan.code)}')">Choose Plan</button></div>`;
+    });
+    planArea.innerHTML=html||`<div class="bkp-pro-card"><p>No active plans are configured.</p></div>`;
+  }catch(error){
+    console.error("Professional account load error:",error);
+    const planArea=document.getElementById("bkp-plan-area");
+    if(planArea) planArea.innerHTML=`<div class="bkp-pro-card"><p>Professional account services are not fully configured yet.</p></div>`;
+  }
+}
+
+function escapeProfessional(value){
+  return String(value==null?"":value).replace(/[&<>'"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[m]));
+}
+
+async function saveProfileFromUI(){
+  const name=document.getElementById("bkp-display-name");
+  const country=document.getElementById("bkp-country");
+  await updateProfessionalProfile(name?name.value.trim():"",country?country.value.trim().toUpperCase():"",professionalProfile&&professionalProfile.preferred_language||"en",professionalProfile&&professionalProfile.preferred_currency||"USD");
+}
+
+function installProfessionalAccountButton(){
+  professionalStyles();
+  const accountStatus=document.getElementById("accountStatus");
+  if(!accountStatus || document.getElementById("bkp-professional-account")) return;
+  const button=document.createElement("button");
+  button.id="bkp-professional-account";
+  button.className="bkp-pro-btn";
+  button.type="button";
+  button.textContent="My Plus";
+  button.onclick=openProfessional;
+  accountStatus.appendChild(button);
+}
+
+async function professionalAuthRefresh(user){
+  currentUser=user||null;
+  installProfessionalAccountButton();
+  if(user){
+    try{ await loadProfessionalProfile(); await loadProfessionalSubscription(); }catch(error){ console.warn("Professional account sync:",error.message); }
+  }else{
+    professionalProfile=null; professionalSubscription=null;
+  }
+}
+
+/* Save HTML5 video progress when the existing player uses a direct video source. */
+function installProgressTracking(){
+  if(typeof video==="undefined" || !video) return;
+  let lastSent=0;
+  video.addEventListener("timeupdate",function(){
+    if(!currentUser || !video.duration || !Number.isFinite(video.duration)) return;
+    const now=Date.now();
+    if(now-lastSent<10000) return;
+    lastSent=now;
+    const completed=video.currentTime/video.duration>=0.9;
+    saveProfessionalProgress("video",window.BKPCurrentContentId||null,video.currentTime,video.duration,completed,window.BKPCurrentExternalId||null);
+  });
+  video.addEventListener("ended",function(){
+    if(currentUser && video.duration) saveProfessionalProgress("video",window.BKPCurrentContentId||null,video.duration,video.duration,true,window.BKPCurrentExternalId||null);
+  });
+}
+
+window.BKPProfessional={
+  open:openProfessional,
+  close:closeProfessional,
+  checkout:professionalCheckout,
+  entitlement:professionalEntitlement,
+  progress:saveProfessionalProgress,
+  getProgress:getProfessionalProgress,
+  syncWatchlist:syncProfessionalWatchlistItem,
+  saveProfile:saveProfileFromUI
+};
+
+/* Keep the professional layer synchronized with Supabase Auth without replacing the baseline auth flow. */
+supabaseClient.auth.onAuthStateChange(function(event,session){
+  setTimeout(function(){ professionalAuthRefresh(session&&session.user?session.user:null); },0);
+});
+
+document.addEventListener("DOMContentLoaded",function(){
+  installProfessionalAccountButton();
+  installProgressTracking();
+  professionalAuthRefresh(currentUser||null);
+});
+
+})();
+</script>
+
+<script>
+/* =========================================================
+   PROFESSIONAL LAYER BRIDGE — BASELINE INTEGRATION
+========================================================= */
+(function(){
+  function bridgeWatchlist(){
+    if(typeof window.toggleWatchlist !== "function" || window.__bkpWatchlistBridged) return;
+    window.__bkpWatchlistBridged=true;
+    const original=window.toggleWatchlist;
+    window.toggleWatchlist=function(item){
+      const result=original.apply(this,arguments);
+      try{
+        if(window.currentUser && window.BKPProfessional && item){
+          const saved = item.saved !== false;
+          window.BKPProfessional.syncWatchlist({
+            content_type:item.content_type||item.contentType||"video",
+            content_id:item.content_id||item.contentId||item.id||null,
+            external_id:item.external_id||item.externalId||null,
+            title:item.title||"",
+            thumbnail_url:item.thumbnail_url||item.thumbnailUrl||item.thumbnail||""
+          }, !saved);
+        }
+      }catch(e){}
+      return result;
+    };
+  }
+  document.addEventListener("DOMContentLoaded",bridgeWatchlist);
+})();
+</script>
 </body>
 </html>
 
