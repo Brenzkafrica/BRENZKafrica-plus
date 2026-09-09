@@ -1831,6 +1831,36 @@ main{margin-top:-55px}
 @media(max-width:640px){.trending-series-card{flex-basis:172px;min-width:172px;height:270px}.trending-series-title{font-size:.9rem}.trending-series-info{left:11px;right:11px;bottom:11px}}
 
 </style>
+
+<style id="bkp-theme-toggle-styles">
+:root {
+  --bkp-bg: #080808;
+  --bkp-surface: #111;
+  --bkp-text: #fff;
+  --bkp-muted: #b8b8b8;
+}
+html.bkp-light, body.bkp-light {
+  --bkp-bg: #f5f5f5;
+  --bkp-surface: #ffffff;
+  --bkp-text: #111111;
+  --bkp-muted: #555555;
+}
+body { background-color: var(--bkp-bg); color: var(--bkp-text); transition: background-color .25s ease, color .25s ease; }
+.bkp-theme-toggle {
+  border: 1px solid rgba(255,255,255,.22); background: rgba(255,255,255,.08); color: inherit;
+  border-radius: 999px; min-width: 42px; height: 38px; padding: 0 11px; cursor: pointer;
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; font-size:15px;
+  transition: .2s ease;
+}
+.bkp-theme-toggle:hover { transform: translateY(-1px); background: rgba(255,255,255,.15); }
+.bkp-light .bkp-theme-toggle { border-color: rgba(0,0,0,.16); background: rgba(0,0,0,.06); }
+.bkp-light .bkp-theme-toggle:hover { background: rgba(0,0,0,.10); }
+.bkp-light header, .bkp-light .mobile-menu { background: rgba(255,255,255,.96) !important; color:#111; }
+.bkp-light .mobile-menu a, .bkp-light nav a { color:#222; }
+.bkp-light .search { background:#fff !important; color:#111 !important; border-color:rgba(0,0,0,.15) !important; }
+.bkp-light .section-title, .bkp-light h1, .bkp-light h2, .bkp-light h3, .bkp-light h4 { color:#111; }
+@media (max-width: 700px) { .bkp-theme-toggle { height:36px; min-width:40px; padding:0 9px; } }
+</style>
 </head>
 
 <body>
@@ -6242,6 +6272,36 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 </script>
 
+
+<script id="bkp-theme-toggle-script">
+(function(){
+  const KEY="brenzkafrica-plus-theme";
+  function applyTheme(theme){
+    const light=theme==="light";
+    document.documentElement.classList.toggle("bkp-light",light);
+    document.body && document.body.classList.toggle("bkp-light",light);
+    const btn=document.getElementById("bkp-theme-toggle");
+    if(btn){ btn.textContent=light?"☀️":"🌙"; btn.setAttribute("aria-label",light?"Switch to dark mode":"Switch to light mode"); btn.title=light?"Light mode — switch to dark":"Dark mode — switch to light"; }
+  }
+  function init(){
+    let saved="dark"; try{ saved=localStorage.getItem(KEY)||"dark"; }catch(e){}
+    applyTheme(saved);
+    const host=document.querySelector(".nav-right");
+    if(host && !document.getElementById("bkp-theme-toggle")){
+      const btn=document.createElement("button");
+      btn.id="bkp-theme-toggle"; btn.type="button"; btn.className="bkp-theme-toggle";
+      btn.onclick=function(){
+        const next=document.documentElement.classList.contains("bkp-light")?"dark":"light";
+        applyTheme(next); try{localStorage.setItem(KEY,next);}catch(e){}
+      };
+      host.insertBefore(btn, host.querySelector(".mobile-menu-button")||null);
+      applyTheme(saved);
+    }
+  }
+  try{ const saved=localStorage.getItem(KEY); if(saved==="light") document.documentElement.classList.add("bkp-light"); }catch(e){}
+  if(document.readyState==="loading") document.addEventListener("DOMContentLoaded",init); else init();
+})();
+</script>
 </body>
 </html>
 
