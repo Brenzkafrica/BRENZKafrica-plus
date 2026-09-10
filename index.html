@@ -1302,6 +1302,7 @@ main{margin-top:-55px}
 /* =========================================================
    BRENZKAFRICA PLUS
    BUSINESS • FINANCE • CURRENCIES • CRYPTO
+   PREMIUM BLOOMBERG / NETFLIX EDITORIAL LAYER
 ========================================================= */
 
 #businessFinanceSection{
@@ -1325,10 +1326,10 @@ main{margin-top:-55px}
 #businessFinanceSection .section-kicker,
 #businessFinanceSection .dashboard-label{
     display:block;
-    font-size:11px;
+    font-size:10px;
     letter-spacing:2px;
-    font-weight:700;
-    opacity:.65;
+    font-weight:800;
+    color:#a9a9a9;
     margin-bottom:8px;
 }
 
@@ -1337,51 +1338,98 @@ main{margin-top:-55px}
 #businessFinanceSection .finance-dashboard-header h3{
     margin:0;
     font-size:30px;
+    line-height:1.08;
 }
 
 #businessFinanceSection .section-header p,
 #businessFinanceSection .finance-block-header p{
     margin:8px 0 0;
-    opacity:.65;
+    color:#8c8c8c;
+    font-size:12px;
+    line-height:1.55;
 }
 
 #businessFinanceSection .section-link,
 #businessFinanceSection .finance-block-header button{
     border:0;
     background:transparent;
-    color:#fff;
+    color:#ddd;
     cursor:pointer;
-    font-weight:700;
+    font-size:10px;
+    font-weight:800;
+    white-space:nowrap;
 }
 
+#businessFinanceSection .section-link:hover,
+#businessFinanceSection .finance-block-header button:hover{color:#fff}
+
+/* LIVE MARKET SNAPSHOT */
 #businessFinanceSection .finance-dashboard{
+    position:relative;
     padding:28px;
-    border-radius:20px;
-    background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.025));
-    border:1px solid rgba(255,255,255,.08);
-    margin-bottom:45px;
+    border-radius:18px;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 88% 10%,rgba(229,9,20,.16),transparent 28%),
+        linear-gradient(145deg,#181818,#0c0c0c 72%);
+    border:1px solid rgba(255,255,255,.09);
+    margin-bottom:34px;
+}
+
+#businessFinanceSection .finance-dashboard:before{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    top:0;
+    height:2px;
+    background:linear-gradient(90deg,var(--red),transparent 65%);
 }
 
 #businessFinanceSection .market-status{
-    font-size:11px;
-    letter-spacing:1px;
-    opacity:.65;
+    font-size:9px;
+    letter-spacing:1.2px;
+    color:#777;
 }
 
 #businessFinanceSection .market-grid{
     display:grid;
     grid-template-columns:repeat(4,1fr);
-    gap:15px;
+    gap:10px;
 }
 
 #businessFinanceSection .market-card{
-    padding:22px;
-    border-radius:16px;
-    background:rgba(0,0,0,.25);
+    position:relative;
+    min-height:145px;
+    padding:18px;
+    border-radius:12px;
+    overflow:hidden;
+    background:rgba(255,255,255,.035);
     border:1px solid rgba(255,255,255,.07);
+    transition:.25s ease;
+}
+
+#businessFinanceSection .market-card:hover{
+    transform:translateY(-3px);
+    border-color:rgba(255,255,255,.18);
+    background:rgba(255,255,255,.055);
+}
+
+#businessFinanceSection .market-card:after{
+    content:"";
+    position:absolute;
+    right:-30px;
+    bottom:-55px;
+    width:130px;
+    height:130px;
+    border-radius:50%;
+    background:rgba(229,9,20,.07);
+    pointer-events:none;
 }
 
 #businessFinanceSection .market-top{
+    position:relative;
+    z-index:1;
     display:flex;
     align-items:center;
     justify-content:space-between;
@@ -1389,267 +1437,359 @@ main{margin-top:-55px}
 }
 
 #businessFinanceSection .market-icon{
-    width:38px;
-    height:38px;
+    width:34px;
+    height:34px;
     display:flex;
     align-items:center;
     justify-content:center;
-    border-radius:50%;
-    background:rgba(255,255,255,.08);
-    font-size:20px;
-    font-weight:800;
+    border-radius:8px;
+    background:#202020;
+    border:1px solid rgba(255,255,255,.09);
+    font-size:14px;
+    font-weight:900;
 }
 
 #businessFinanceSection .market-category{
-    font-size:9px;
+    font-size:8px;
     letter-spacing:1.5px;
-    opacity:.5;
+    color:#777;
+    font-weight:800;
 }
 
 #businessFinanceSection .market-card h4{
-    margin:0 0 10px;
-    font-size:15px;
+    position:relative;
+    z-index:1;
+    margin:0 0 8px;
+    font-size:14px;
 }
 
 #businessFinanceSection .market-price{
-    font-size:24px;
-    font-weight:800;
+    position:relative;
+    z-index:1;
+    font-size:21px;
+    font-weight:900;
+    letter-spacing:-.4px;
     margin-bottom:6px;
 }
 
 #businessFinanceSection .market-change{
-    font-size:11px;
-    opacity:.6;
+    position:relative;
+    z-index:1;
+    font-size:10px;
+    color:#777;
 }
 
+/* EDITORIAL CATEGORY NAVIGATION */
 #businessFinanceSection .finance-categories{
     display:grid;
     grid-template-columns:repeat(6,1fr);
     gap:12px;
-    margin-bottom:55px;
+    margin-bottom:48px;
 }
 
 #businessFinanceSection .finance-categories button{
-    min-height:110px;
+    position:relative;
+    min-height:155px;
+    padding:0;
+    overflow:hidden;
     text-align:left;
-    padding:18px;
-    border-radius:15px;
-    border:1px solid rgba(255,255,255,.08);
-    background:rgba(255,255,255,.035);
+    border-radius:12px;
+    border:1px solid rgba(255,255,255,.09);
+    background:#111;
     color:#fff;
     cursor:pointer;
-    transition:.25s ease;
+    isolation:isolate;
+    transition:.28s ease;
+}
+
+#businessFinanceSection .finance-categories button:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-2;
+    background-position:center;
+    background-size:cover;
+    transform:scale(1.01);
+    transition:.45s ease;
+}
+
+#businessFinanceSection .finance-categories button:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    z-index:-1;
+    background:linear-gradient(to top,rgba(0,0,0,.97),rgba(0,0,0,.56) 48%,rgba(0,0,0,.12));
 }
 
 #businessFinanceSection .finance-categories button:hover{
-    transform:translateY(-4px);
-    background:rgba(255,255,255,.08);
+    transform:translateY(-5px);
+    border-color:rgba(255,255,255,.28);
+    box-shadow:0 16px 34px rgba(0,0,0,.42);
 }
+
+#businessFinanceSection .finance-categories button:hover:before{transform:scale(1.08)}
+
+#businessFinanceSection .finance-categories button:nth-child(1):before{background-image:url("https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=900&q=82")}
+#businessFinanceSection .finance-categories button:nth-child(2):before{background-image:url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=82")}
+#businessFinanceSection .finance-categories button:nth-child(3):before{background-image:url("https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&w=900&q=82")}
+#businessFinanceSection .finance-categories button:nth-child(4):before{background-image:url("https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=900&q=82")}
+#businessFinanceSection .finance-categories button:nth-child(5):before{background-image:url("https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=82")}
+#businessFinanceSection .finance-categories button:nth-child(6):before{background-image:url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=82")}
 
 #businessFinanceSection .finance-categories strong,
 #businessFinanceSection .finance-categories span{
+    position:relative;
+    z-index:2;
     display:block;
 }
 
 #businessFinanceSection .finance-categories strong{
-    margin-top:10px;
-    font-size:13px;
+    position:absolute;
+    left:15px;
+    right:15px;
+    bottom:32px;
+    font-size:14px;
+    font-weight:900;
 }
 
 #businessFinanceSection .finance-categories span{
-    margin-top:5px;
-    font-size:10px;
-    opacity:.5;
+    position:absolute;
+    left:15px;
+    right:15px;
+    bottom:14px;
+    font-size:9px;
+    color:#bbb;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }
 
-#businessFinanceSection .finance-content-block{margin-bottom:60px}
+#businessFinanceSection .finance-categories button:focus-visible{
+    outline:2px solid #fff;
+    outline-offset:3px;
+}
 
+/* EDITORIAL STORY FEEDS */
+#businessFinanceSection .finance-content-block{margin-bottom:52px}
+
+#businessFinanceSection .business-story-row{
+    display:flex;
+    gap:15px;
+    overflow-x:auto;
+    padding:3px 2px 15px;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+}
+
+#businessFinanceSection .business-story-row::-webkit-scrollbar{display:none}
+
+#businessFinanceSection .business-story-card{
+    flex:0 0 320px;
+    min-width:320px;
+    border-radius:12px;
+    overflow:hidden;
+    background:#121212;
+    border:1px solid rgba(255,255,255,.08);
+    transition:.25s ease;
+}
+
+#businessFinanceSection .business-story-card:hover{
+    transform:translateY(-4px);
+    border-color:#3d3d3d;
+    box-shadow:0 18px 38px rgba(0,0,0,.42);
+}
+
+#businessFinanceSection .story-image{
+    position:relative;
+    height:175px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#171717;
+}
+
+#businessFinanceSection .story-image:after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(to top,rgba(0,0,0,.55),transparent 55%);
+    pointer-events:none;
+}
+
+#businessFinanceSection .story-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:.45s ease;
+}
+
+#businessFinanceSection .business-story-card:hover .story-image img{transform:scale(1.05)}
+
+#businessFinanceSection .story-placeholder{
+    font-size:10px;
+    letter-spacing:2px;
+    color:#666;
+    font-weight:900;
+}
+
+#businessFinanceSection .story-content{padding:17px}
+
+#businessFinanceSection .story-content span{
+    display:block;
+    color:#e50914;
+    font-size:8px;
+    letter-spacing:1.5px;
+    font-weight:900;
+}
+
+#businessFinanceSection .story-content h4{
+    font-size:16px;
+    line-height:1.3;
+    margin:8px 0;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+#businessFinanceSection .story-content p{
+    min-height:50px;
+    color:#858585;
+    font-size:10px;
+    line-height:1.55;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+#businessFinanceSection .story-content button{
+    margin-top:12px;
+    border:0;
+    background:transparent;
+    color:#fff;
+    padding:0;
+    font-size:10px;
+    font-weight:900;
+    cursor:pointer;
+}
+
+#businessFinanceSection .story-content small{
+    display:block;
+    margin-top:9px;
+    color:#555;
+    font-size:8px;
+}
+
+#businessFinanceSection .business-feed-loading{
+    color:#666;
+    padding:30px 3px;
+    font-size:11px;
+}
+
+/* CURRENCY ROW */
 #businessFinanceSection .currency-row{
     display:flex;
-    gap:14px;
+    gap:12px;
     overflow-x:auto;
     scrollbar-width:none;
-    padding-bottom:10px;
+    padding:2px 2px 12px;
 }
 
 #businessFinanceSection .currency-row::-webkit-scrollbar{display:none}
 
 #businessFinanceSection .currency-pair{
     min-width:190px;
-    padding:20px;
-    border-radius:15px;
-    background:rgba(255,255,255,.04);
+    padding:18px;
+    border-radius:12px;
+    background:linear-gradient(145deg,#181818,#101010);
     border:1px solid rgba(255,255,255,.07);
 }
 
-#businessFinanceSection .currency-pair span{font-weight:800}
+#businessFinanceSection .currency-pair span{font-weight:900;font-size:12px}
+#businessFinanceSection .currency-pair strong{opacity:.35;margin:0 5px}
+#businessFinanceSection .currency-pair b{display:block;margin-top:9px;font-size:18px}
+#businessFinanceSection .currency-pair small{display:block;margin-top:6px;color:#666;font-size:9px}
 
-#businessFinanceSection .currency-pair strong{
-    opacity:.4;
-    margin:0 5px;
-}
-
-#businessFinanceSection .currency-pair small{
-    display:block;
-    margin-top:10px;
-    opacity:.5;
-    font-size:10px;
-}
-
+/* CRYPTO */
 #businessFinanceSection .crypto-grid{
     display:grid;
     grid-template-columns:repeat(3,1fr);
-    gap:16px;
+    gap:12px;
 }
 
 #businessFinanceSection .crypto-feature{
-    padding:25px;
-    border-radius:18px;
-    background:linear-gradient(145deg,rgba(255,255,255,.07),rgba(255,255,255,.025));
+    position:relative;
+    padding:21px;
+    border-radius:14px;
+    background:linear-gradient(145deg,#181818,#0d0d0d);
     border:1px solid rgba(255,255,255,.08);
+    overflow:hidden;
+}
+
+#businessFinanceSection .crypto-feature:after{
+    content:"";
+    position:absolute;
+    width:120px;
+    height:120px;
+    right:-45px;
+    bottom:-55px;
+    border-radius:50%;
+    background:rgba(229,9,20,.07);
 }
 
 #businessFinanceSection .crypto-symbol{
-    width:48px;
-    height:48px;
-    border-radius:50%;
+    width:42px;
+    height:42px;
+    border-radius:10px;
     display:flex;
     align-items:center;
     justify-content:center;
-    background:rgba(255,255,255,.08);
-    font-size:24px;
-    font-weight:800;
-    margin-bottom:20px;
+    background:#222;
+    border:1px solid rgba(255,255,255,.08);
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:16px;
 }
 
-#businessFinanceSection .crypto-feature span{
-    font-size:9px;
-    letter-spacing:1.5px;
-    opacity:.5;
-}
+#businessFinanceSection .crypto-feature span{font-size:8px;letter-spacing:1.5px;color:#666;font-weight:800}
+#businessFinanceSection .crypto-feature h4{margin:7px 0;font-size:18px}
+#businessFinanceSection .crypto-feature p{font-size:10px;line-height:1.55;color:#777}
+#businessFinanceSection .crypto-feature button{margin-top:13px;border:0;background:transparent;color:#fff;font-size:10px;font-weight:800;cursor:pointer}
 
-#businessFinanceSection .crypto-feature h4{
-    margin:8px 0;
-    font-size:20px;
-}
-
-#businessFinanceSection .crypto-feature p{
-    font-size:12px;
-    line-height:1.6;
-    opacity:.6;
-}
-
-#businessFinanceSection .crypto-feature button{
-    margin-top:15px;
-    border:0;
-    background:transparent;
-    color:#fff;
-    font-weight:700;
-    cursor:pointer;
-}
-
-#businessFinanceSection .business-story-row{
-    display:flex;
-    gap:18px;
-    overflow-x:auto;
-    scrollbar-width:none;
-}
-
-#businessFinanceSection .business-story-row::-webkit-scrollbar{display:none}
-
-#businessFinanceSection .business-story-card{
-    min-width:310px;
-    border-radius:18px;
-    overflow:hidden;
-    background:rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.07);
-}
-
-#businessFinanceSection .story-image{
-    height:170px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.02));
-}
-
-#businessFinanceSection .story-placeholder{
-    font-size:12px;
-    letter-spacing:3px;
-    opacity:.3;
-}
-
-#businessFinanceSection .story-content{padding:20px}
-
-#businessFinanceSection .story-content span{
-    font-size:9px;
-    letter-spacing:1.5px;
-    opacity:.5;
-}
-
-#businessFinanceSection .story-content h4{
-    font-size:17px;
-    margin:10px 0;
-}
-
-#businessFinanceSection .story-content p{
-    font-size:11px;
-    line-height:1.6;
-    opacity:.6;
-}
-
-#businessFinanceSection .story-content button{
-    border:0;
-    background:transparent;
-    color:#fff;
-    padding:0;
-    font-weight:700;
-    cursor:pointer;
-}
-
+/* ORIGINAL FEATURE */
 #businessFinanceSection .finance-original{
+    position:relative;
     min-height:390px;
-    border-radius:22px;
+    border-radius:18px;
     overflow:hidden;
     display:flex;
     align-items:flex-end;
-    margin-top:70px;
-    background:linear-gradient(90deg,rgba(0,0,0,.95),rgba(0,0,0,.45),rgba(0,0,0,.1)),linear-gradient(135deg,#161616,#050505);
-    border:1px solid rgba(255,255,255,.08);
+    margin-top:60px;
+    background:
+        linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.58) 52%,rgba(0,0,0,.08)),
+        url("https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1800&q=86") center/cover;
+    border:1px solid rgba(255,255,255,.09);
 }
 
-#businessFinanceSection .original-overlay{
-    max-width:600px;
-    padding:50px;
-}
+#businessFinanceSection .original-overlay{max-width:650px;padding:50px}
+#businessFinanceSection .original-overlay span{font-size:9px;letter-spacing:2px;color:#aaa;font-weight:900}
+#businessFinanceSection .original-overlay h3{font-size:38px;line-height:1;margin:12px 0}
+#businessFinanceSection .original-overlay p{max-width:560px;line-height:1.7;color:#b7b7b7;font-size:12px}
+#businessFinanceSection .original-overlay button{margin-top:16px;padding:12px 20px;border:0;border-radius:7px;background:#fff;color:#000;font-size:11px;font-weight:900;cursor:pointer}
 
-#businessFinanceSection .original-overlay span{
-    font-size:10px;
-    letter-spacing:2px;
-    opacity:.6;
-}
+/* BUSINESS STATUS */
+.business-live-meta{display:flex;align-items:center;gap:8px;color:#777;font-size:10px;white-space:nowrap}
+.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
+.business-market-grid{grid-template-columns:repeat(4,1fr)!important}
+.business-market-grid .market-card{min-height:145px}
+.business-tabs{scroll-margin-top:90px}
+.business-crypto-grid{grid-template-columns:repeat(3,1fr)!important}
+.live-business-story{cursor:pointer}
+.live-business-story:hover{border-color:#444;transform:translateY(-4px)}
 
-#businessFinanceSection .original-overlay h3{
-    font-size:38px;
-    margin:12px 0;
-}
-
-#businessFinanceSection .original-overlay p{
-    line-height:1.7;
-    opacity:.65;
-}
-
-#businessFinanceSection .original-overlay button{
-    margin-top:15px;
-    padding:12px 20px;
-    border:0;
-    border-radius:8px;
-    background:#fff;
-    color:#000;
-    font-weight:800;
-    cursor:pointer;
-}
-
+/* CURRENCY CONVERTER */
 #currencyConverterModal{
     position:fixed;
     inset:0;
@@ -1661,159 +1801,47 @@ main{margin-top:-55px}
     z-index:9999;
     padding:20px;
 }
-
 #currencyConverterModal.active{display:flex}
+#currencyConverterModal .currency-modal-content{position:relative;width:100%;max-width:500px;padding:35px;border-radius:18px;background:#111;border:1px solid rgba(255,255,255,.1)}
+#currencyConverterModal .currency-close{position:absolute;right:18px;top:15px;border:0;background:transparent;color:#fff;font-size:28px;cursor:pointer}
+#currencyConverterModal h3{font-size:28px;margin:5px 0}
+#currencyConverterModal p{opacity:.6;font-size:13px}
+#currencyConverterModal .converter-field,#currencyConverterModal .converter-grid{margin-top:20px}
+#currencyConverterModal .converter-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+#currencyConverterModal label{display:block;font-size:10px;opacity:.6;margin-bottom:7px}
+#currencyConverterModal input,#currencyConverterModal select{width:100%;padding:13px;border-radius:9px;border:1px solid rgba(255,255,255,.1);background:#181818;color:#fff;outline:none}
+#currencyConverterModal .convert-button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:9px;background:#fff;color:#000;font-weight:800;cursor:pointer}
+#currencyConverterModal .currency-result{margin-top:20px;padding:18px;border-radius:10px;background:rgba(255,255,255,.05);text-align:center;font-size:18px;font-weight:800}
 
-#currencyConverterModal .currency-modal-content{
-    position:relative;
-    width:100%;
-    max-width:500px;
-    padding:35px;
-    border-radius:20px;
-    background:#111;
-    border:1px solid rgba(255,255,255,.1);
-}
-
-#currencyConverterModal .currency-close{
-    position:absolute;
-    right:18px;
-    top:15px;
-    border:0;
-    background:transparent;
-    color:#fff;
-    font-size:28px;
-    cursor:pointer;
-}
-
-#currencyConverterModal h3{
-    font-size:28px;
-    margin:5px 0;
-}
-
-#currencyConverterModal p{
-    opacity:.6;
-    font-size:13px;
-}
-
-#currencyConverterModal .converter-field,
-#currencyConverterModal .converter-grid{margin-top:20px}
-
-#currencyConverterModal .converter-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:15px;
-}
-
-#currencyConverterModal label{
-    display:block;
-    font-size:10px;
-    opacity:.6;
-    margin-bottom:7px;
-}
-
-#currencyConverterModal input,
-#currencyConverterModal select{
-    width:100%;
-    padding:13px;
-    border-radius:9px;
-    border:1px solid rgba(255,255,255,.1);
-    background:#181818;
-    color:#fff;
-    outline:none;
-}
-
-#currencyConverterModal .convert-button{
-    width:100%;
-    margin-top:20px;
-    padding:14px;
-    border:0;
-    border-radius:9px;
-    background:#fff;
-    color:#000;
-    font-weight:800;
-    cursor:pointer;
-}
-
-#currencyConverterModal .currency-result{
-    margin-top:20px;
-    padding:18px;
-    border-radius:10px;
-    background:rgba(255,255,255,.05);
-    text-align:center;
-    font-size:18px;
-    font-weight:800;
+@media(max-width:1100px){
+    #businessFinanceSection .finance-categories{grid-template-columns:repeat(3,1fr)}
+    #businessFinanceSection .market-grid{grid-template-columns:repeat(2,1fr)}
 }
 
 @media(max-width:900px){
-    #businessFinanceSection .market-grid{grid-template-columns:repeat(2,1fr)}
-    #businessFinanceSection .finance-categories{grid-template-columns:repeat(3,1fr)}
-    #businessFinanceSection .crypto-grid{grid-template-columns:1fr}
+    #businessFinanceSection .crypto-grid{grid-template-columns:1fr 1fr}
 }
 
 @media(max-width:600px){
     #businessFinanceSection{padding:45px 15px}
     #businessFinanceSection .section-header,
     #businessFinanceSection .finance-block-header,
-    #businessFinanceSection .finance-dashboard-header{
-        align-items:flex-start;
-    }
+    #businessFinanceSection .finance-dashboard-header{align-items:flex-start}
     #businessFinanceSection .section-header h2,
-    #businessFinanceSection .finance-block-header h3{
-        font-size:24px;
-    }
+    #businessFinanceSection .finance-block-header h3{font-size:24px}
     #businessFinanceSection .market-grid{grid-template-columns:1fr 1fr}
-    #businessFinanceSection .finance-categories{grid-template-columns:repeat(2,1fr)}
-    #businessFinanceSection .finance-dashboard{padding:18px}
-    #businessFinanceSection .market-card{padding:16px}
-    #businessFinanceSection .market-price{font-size:19px}
+    #businessFinanceSection .finance-categories{grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:38px}
+    #businessFinanceSection .finance-categories button{min-height:135px}
+    #businessFinanceSection .finance-dashboard{padding:17px}
+    #businessFinanceSection .market-card{padding:14px;min-height:128px}
+    #businessFinanceSection .market-price{font-size:18px}
+    #businessFinanceSection .business-story-card{flex-basis:285px;min-width:285px}
+    #businessFinanceSection .story-image{height:155px}
+    #businessFinanceSection .crypto-grid{grid-template-columns:1fr}
     #businessFinanceSection .original-overlay{padding:30px}
     #businessFinanceSection .original-overlay h3{font-size:28px}
+    #businessFinanceSection .finance-original{min-height:330px}
 }
-
-
-/* =========================================================
-   PREMIUM BUSINESS MEDIA VISUAL LAYER
-   Editorial finance / streaming presentation
-========================================================= */
-#businessFinanceSection .business-tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:55px}
-#businessFinanceSection .business-tabs button{position:relative;min-height:155px!important;padding:0!important;overflow:hidden;border-radius:18px!important;border:1px solid rgba(255,255,255,.10)!important;background:#111!important;background-image:var(--business-image);background-size:cover;background-position:center;color:#fff!important;text-align:left;box-shadow:0 12px 35px rgba(0,0,0,.20)}
-#businessFinanceSection .business-tabs button:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.28) 35%,rgba(0,0,0,.94) 100%);transition:.3s ease}
-#businessFinanceSection .business-tabs button:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.06);border-radius:18px;pointer-events:none}
-#businessFinanceSection .business-tabs button:hover{transform:translateY(-6px) scale(1.01)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 20px 45px rgba(0,0,0,.35)}
-#businessFinanceSection .business-tabs button:hover:before{background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.18) 35%,rgba(0,0,0,.90))}
-#businessFinanceSection .business-tabs button strong,#businessFinanceSection .business-tabs button span{position:absolute;left:17px;right:12px;z-index:2;display:block!important}
-#businessFinanceSection .business-tabs button strong{bottom:31px;margin:0!important;font-size:15px!important;letter-spacing:.1px}
-#businessFinanceSection .business-tabs button span{bottom:13px;margin:0!important;font-size:9px!important;opacity:.72!important;letter-spacing:.3px}
-#businessFinanceSection .business-tabs button:first-letter{font-size:0}
-#businessFinanceSection .business-tabs button.active{border-color:rgba(229,9,20,.75)!important;box-shadow:0 0 0 1px rgba(229,9,20,.20),0 18px 45px rgba(0,0,0,.35)}
-#businessFinanceSection .business-tabs button.active:before{background:linear-gradient(180deg,rgba(229,9,20,.04),rgba(0,0,0,.22) 35%,rgba(0,0,0,.92))}
-#businessFinanceSection .finance-content-block{position:relative}
-#businessFinanceSection .finance-content-block:before{content:"";display:block;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0));margin-bottom:24px}
-#businessFinanceSection .finance-block-header{align-items:flex-end}
-#businessFinanceSection .finance-block-header h3{font-size:28px!important;letter-spacing:-.5px}
-#businessFinanceSection .finance-block-header p{max-width:720px}
-#businessFinanceSection .business-story-row{gap:20px!important;padding-bottom:20px!important;scroll-snap-type:x mandatory}
-#businessFinanceSection .business-story-card{min-width:350px!important;height:380px!important;position:relative;scroll-snap-align:start;background:#0c0c0c!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 14px 40px rgba(0,0,0,.20);transition:.3s ease}
-#businessFinanceSection .business-story-card:hover{transform:translateY(-7px);border-color:rgba(255,255,255,.22)!important;box-shadow:0 22px 50px rgba(0,0,0,.35)}
-#businessFinanceSection .business-story-card .story-image{height:100%!important;position:absolute;inset:0;background:#111!important}
-#businessFinanceSection .business-story-card .story-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;filter:saturate(.9)}
-#businessFinanceSection .business-story-card:hover .story-image img{transform:scale(1.045)}
-#businessFinanceSection .business-story-card .story-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04) 5%,rgba(0,0,0,.12) 35%,rgba(0,0,0,.94) 100%)}
-#businessFinanceSection .business-story-card .story-content{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.16))}
-#businessFinanceSection .business-story-card .story-content span{color:#ddd;opacity:.75!important}
-#businessFinanceSection .business-story-card .story-content h4{font-size:20px!important;line-height:1.25;margin:9px 0!important}
-#businessFinanceSection .business-story-card .story-content p{font-size:11px;line-height:1.5;max-height:34px;overflow:hidden;margin-bottom:14px}
-#businessFinanceSection .business-story-card .story-content button{font-size:10px;letter-spacing:.7px;text-transform:uppercase}
-#businessFinanceSection .business-story-row:has(.business-feed-loading){min-height:170px}
-#businessFinanceSection .business-feed-loading{padding:50px 8px!important}
-@media(max-width:1100px){#businessFinanceSection .business-tabs{grid-template-columns:repeat(3,1fr)!important}}
-@media(max-width:650px){#businessFinanceSection .business-tabs{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory;padding-bottom:8px;margin-bottom:40px}#businessFinanceSection .business-tabs button{min-width:205px!important;scroll-snap-align:start}#businessFinanceSection .business-story-card{min-width:82vw!important;height:355px!important}#businessFinanceSection .finance-block-header h3{font-size:23px!important}}
-
-/* BUSINESS OF AFRICA LIVE ENHANCEMENTS */
-.business-live-meta{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;white-space:nowrap}.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
-.business-market-grid{grid-template-columns:repeat(4,1fr)!important}.business-market-grid .market-card{min-height:150px}.business-market-grid .market-icon{font-size:14px}.business-tabs{scroll-margin-top:90px}.business-story-row{padding-bottom:15px}.live-business-story{cursor:pointer}.live-business-story .story-image{position:relative;background:#151515}.live-business-story .story-image img{width:100%;height:100%;object-fit:cover}.live-business-story .story-content{position:relative}.live-business-story .story-content small{display:block;margin-top:8px;color:#666;font-size:9px}.business-feed-loading{color:#686868;padding:35px 3px;font-size:12px}.business-crypto-grid{grid-template-columns:repeat(3,1fr)!important}.live-crypto-feature{position:relative;overflow:hidden;cursor:pointer}.live-crypto-feature h4{font-size:22px}.crypto-market-line{margin-top:6px!important}.crypto-sparkline{height:48px;margin-top:12px;opacity:.9}.crypto-sparkline svg{width:100%;height:100%}.currency-pair b{display:block;margin-top:9px;font-size:18px}.currency-pair small{margin-top:5px!important}.live-business-story .story-content button{margin-top:12px}.live-business-story:hover{border-color:#444;transform:translateY(-4px)}
-@media(max-width:1100px){.business-market-grid{grid-template-columns:repeat(2,1fr)!important}.business-crypto-grid{grid-template-columns:repeat(2,1fr)!important}}
-@media(max-width:650px){#businessFinanceSection{padding-left:4.5%;padding-right:4.5%}.business-market-grid{grid-template-columns:1fr 1fr!important;gap:9px}.business-market-grid .market-card{padding:14px;min-height:130px}.business-market-grid .market-price{font-size:18px}.business-live-meta{font-size:9px}.business-crypto-grid{grid-template-columns:1fr!important}.business-story-card{min-width:285px}.business-live-meta .section-link{padding:0}.finance-dashboard{padding:18px!important}}
 
 
 /* =========================================================
@@ -2140,13 +2168,25 @@ The latest stories and developments from across Africa.
 </div>
 </div>
 
-<div class="finance-categories business-tabs">
-<button style="--business-image:url('https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('markets')"><strong>Markets</strong><span>Market news & indices</span></button>
-<button style="--business-image:url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('currencies')"><strong>Currencies</strong><span>African FX rates</span></button>
-<button style="--business-image:url('https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('crypto')"><strong>Crypto</strong><span>Prices & 24h moves</span></button>
-<button style="--business-image:url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('africa')"><strong>African Business</strong><span>Companies & investment</span></button>
-<button style="--business-image:url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('fintech')"><strong>Fintech</strong><span>Payments & digital finance</span></button>
-<button style="--business-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('economy')"><strong>Economy</strong><span>Growth, inflation & trade</span></button>
+<div class="finance-categories business-tabs" aria-label="Business categories">
+<button type="button" class="business-category markets" onclick="showBusinessCategory('markets')" aria-label="Markets">
+<strong>Markets</strong><span>Market news &amp; indices</span>
+</button>
+<button type="button" class="business-category currencies" onclick="showBusinessCategory('currencies')" aria-label="Currencies">
+<strong>Currencies</strong><span>African FX rates</span>
+</button>
+<button type="button" class="business-category crypto" onclick="showBusinessCategory('crypto')" aria-label="Crypto">
+<strong>Crypto</strong><span>Prices &amp; 24h moves</span>
+</button>
+<button type="button" class="business-category africa" onclick="showBusinessCategory('africa')" aria-label="African Business">
+<strong>African Business</strong><span>Companies &amp; investment</span>
+</button>
+<button type="button" class="business-category fintech" onclick="showBusinessCategory('fintech')" aria-label="Fintech">
+<strong>Fintech</strong><span>Payments &amp; digital finance</span>
+</button>
+<button type="button" class="business-category economy" onclick="showBusinessCategory('economy')" aria-label="Economy">
+<strong>Economy</strong><span>Growth, inflation &amp; trade</span>
+</button>
 </div>
 
 <div class="finance-content-block" id="businessNewsBlock">
