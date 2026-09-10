@@ -1850,6 +1850,58 @@ main{margin-top:-55px}
 @media(max-width:900px){.sources-partners-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.sources-partners-grid{grid-template-columns:1fr}.source-partner-card{min-height:135px}}
 
+
+/* =========================================================
+   UNIVERSAL VIDEO WATCHLIST
+   Applies only to actual playable video cards.
+========================================================= */
+.universal-watchlist-button{
+position:absolute;
+top:10px;
+right:10px;
+z-index:20;
+width:34px;
+height:34px;
+border:1px solid rgba(255,255,255,.22);
+border-radius:50%;
+background:rgba(0,0,0,.78);
+color:#fff;
+font-size:18px;
+font-weight:900;
+line-height:1;
+cursor:pointer;
+backdrop-filter:blur(6px);
+transition:.2s ease
+}
+.universal-watchlist-button:hover{transform:scale(1.08);background:rgba(0,0,0,.92)}
+.universal-watchlist-button.saved{background:var(--red);border-color:var(--red)}
+.episode-card .universal-watchlist-button{top:10px;right:10px}
+.live-card .universal-watchlist-button{top:10px;right:10px}
+.sports-card .universal-watchlist-button{top:10px;right:10px}
+.youtube-original-card .universal-watchlist-button{top:10px;right:10px}
+.universal-watchlist-row{
+display:flex;
+gap:12px;
+overflow-x:auto;
+padding:4px 2px 12px;
+scrollbar-width:thin
+}
+.universal-watchlist-card{
+position:relative;
+flex:0 0 235px;
+height:132px;
+overflow:hidden;
+border-radius:9px;
+background:#151515;
+border:1px solid rgba(255,255,255,.08);
+cursor:pointer
+}
+.universal-watchlist-card img{width:100%;height:100%;object-fit:cover}
+.universal-watchlist-card:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.95),rgba(0,0,0,.15) 60%,transparent);pointer-events:none}
+.universal-watchlist-card-info{position:absolute;left:11px;right:11px;bottom:10px;z-index:3}
+.universal-watchlist-card-title{font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.universal-watchlist-card-type{font-size:9px;color:#aaa;margin-top:3px}
+
 </style>
 </head>
 
@@ -2695,7 +2747,6 @@ const sportsStatus=document.getElementById("sportsStatus");
 
 let currentUser=null;
 let watchlistIds=new Set();
-loadExternalWatchlist();
 let allContent=[];
 let allEpisodes=[];
 let youtubeOriginals=[];
@@ -3011,30 +3062,6 @@ return minutes+
 ":"+
 String(secs).padStart(2,"0");
 }
-
-/* =========================================================
-   UNIVERSAL VIDEO WATCHLIST — EXTERNAL VIDEO ITEMS
-========================================================= */
-let externalWatchlistItems=[];
-function externalWatchlistStorageKey(){return "bkp_external_watchlist_"+(currentUser&&currentUser.id?currentUser.id:"guest");}
-function loadExternalWatchlist(){try{const raw=localStorage.getItem(externalWatchlistStorageKey());externalWatchlistItems=raw?JSON.parse(raw):[];if(!Array.isArray(externalWatchlistItems))externalWatchlistItems=[];}catch(e){externalWatchlistItems=[];}}
-function saveExternalWatchlist(){try{localStorage.setItem(externalWatchlistStorageKey(),JSON.stringify(externalWatchlistItems));}catch(e){}}
-function externalWatchlistKey(item){return String(item.content_type||"video")+"|"+String(item.external_id||item.content_id||"");}
-function isExternalWatchlisted(item){return externalWatchlistItems.some(x=>x.key===externalWatchlistKey(item));}
-async function toggleExternalWatchlist(item,button){
- if(!currentUser){showToast("Please sign in to use My Watchlist.");openAccount();return;}
- if(!item||!item.external_id){showToast("This video cannot be added to Watchlist yet.");return;}
- if(button)button.disabled=true;
- const key=externalWatchlistKey(item), i=externalWatchlistItems.findIndex(x=>x.key===key);
- try{
-  if(i>=0){const old=externalWatchlistItems.splice(i,1)[0];if(window.BKPProfessional&&window.BKPProfessional.syncWatchlist)await window.BKPProfessional.syncWatchlist(old,true);showToast("Removed from My Watchlist.");}
-  else{const row={key,content_type:item.content_type||"video",content_id:item.content_id??null,external_id:item.external_id,title:item.title||"Untitled",thumbnail_url:item.thumbnail_url||null,video_url:item.video_url||item.url||null};externalWatchlistItems.unshift(row);if(window.BKPProfessional&&window.BKPProfessional.syncWatchlist)await window.BKPProfessional.syncWatchlist(row,false);showToast("Added to My Watchlist.");}
-  saveExternalWatchlist();updateUniversalWatchlistButtons();renderWatchlist();
- }catch(e){console.error("External Watchlist error:",e);showToast("Unable to update Watchlist right now.");}
- finally{if(button)button.disabled=false;}
-}
-function updateUniversalWatchlistButtons(){document.querySelectorAll(".universal-watchlist-button").forEach(button=>{const item={content_type:button.dataset.contentType||"video",external_id:button.dataset.externalId||""};const saved=isExternalWatchlisted(item);button.classList.toggle("saved",saved);button.textContent=saved?"✓":"＋";button.title=saved?"Remove from Watchlist":"Add to Watchlist";button.setAttribute("aria-label",saved?"Remove from Watchlist":"Add to Watchlist");});}
-function universalWatchlistButton(item){const saved=isExternalWatchlisted(item);const payload=JSON.stringify(item).replace(/'/g,"&#39;");return `<button class="watchlist-button universal-watchlist-button ${saved?"saved":""}" data-content-type="${escapeHTML(item.content_type||"video")}" data-external-id="${escapeHTML(item.external_id||"")}" onclick='event.stopPropagation();toggleExternalWatchlist(${payload},this)' aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}" title="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"✓":"＋"}</button>`;}
 
 /* =========================================================
    WATCHLIST
@@ -3377,9 +3404,9 @@ const ordered=(data||[]).sort(
 (a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id))
 );
 
-const externalHtml=externalWatchlistItems.map(item=>`<article class="card" onclick="playVideo(${JSON.stringify(item.title)},${JSON.stringify(item.video_url||"")},${JSON.stringify(item.title)})"><img src="${escapeHTML(item.thumbnail_url||"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80")}" alt="${escapeHTML(item.title||"Saved video")}" loading="lazy"><button class="watchlist-button saved" onclick='event.stopPropagation();toggleExternalWatchlist(${JSON.stringify(item).replace(/'/g,"&#39;")},this)' aria-label="Remove from Watchlist" title="Remove from Watchlist">✓</button><div class="card-overlay"><div class="card-title">${escapeHTML(item.title||"Saved video")}</div><div class="card-type">Saved Video</div></div></article>`).join("");
-const combinedHtml=ordered.map(createContentCard).join("")+externalHtml;
-watchlistRow.innerHTML=combinedHtml||'<div class="watchlist-empty">Your Watchlist is empty.</div>';
+watchlistRow.innerHTML=ordered.length
+?ordered.map(createContentCard).join("")
+:'<div class="watchlist-empty">Your Watchlist is empty.</div>';
 
 }
 
@@ -3457,7 +3484,18 @@ loading="lazy">
 
 <span class="card-badge">BRENZKAFRICA</span>
 
-${universalWatchlistButton({content_type:"youtube",external_id:videoId,title:title,thumbnail_url:thumbnail,video_url:"https://www.youtube.com/watch?v="+videoId})}
+<button
+class="universal-watchlist-button"
+data-watchlist-type="youtube"
+data-watchlist-id="${escapeHTML(videoId)}"
+data-watchlist-title="${escapeHTML(title)}"
+data-watchlist-thumbnail="${escapeHTML(thumbnail)}"
+data-watchlist-url="https://www.youtube.com/watch?v=${escapeHTML(videoId)}"
+onclick="event.stopPropagation();toggleUniversalVideoWatchlist(this)"
+aria-label="Add to Watchlist"
+title="Add to Watchlist">
+＋
+</button>
 
 <div class="card-overlay">
 
@@ -3817,8 +3855,6 @@ function loadPolygamistEpisodes(){
                             EP ${episode.episode}
                         </div>
 
-                        ${universalWatchlistButton({content_type:"episode",external_id:"polygamist-s01e"+String(episode.episode).padStart(2,"0"),title:episode.title,thumbnail_url:polygamistThumbnail,video_url:episode.url})}
-
                         <div class="episode-play-overlay">
                             ▶
                         </div>
@@ -3836,6 +3872,19 @@ function loadPolygamistEpisodes(){
                         </div>
 
                     </div>
+
+                    <button
+                        class="universal-watchlist-button"
+                        data-watchlist-type="episode"
+                        data-watchlist-id="${escapeHTML(String(episode.episode))}"
+                        data-watchlist-title="${escapeHTML(episode.title)}"
+                        data-watchlist-thumbnail="${escapeHTML(polygamistThumbnail)}"
+                        data-watchlist-url="${escapeHTML(episode.url)}"
+                        onclick="event.stopPropagation();toggleUniversalVideoWatchlist(this)"
+                        aria-label="Add to Watchlist"
+                        title="Add to Watchlist">
+                        ＋
+                    </button>
 
                     <button
                         class="episode-play-btn"
@@ -4025,7 +4074,18 @@ loading="lazy">
 ${isLive?"🔴 LIVE NOW":"UPCOMING"}
 </div>
 
-${universalWatchlistButton({content_type:"live",external_id:"live-"+(event.id||event.title||""),title:event.title||"BRENZKafrica Live",thumbnail_url:event.thumbnail||"",video_url:event.stream_url||""})}
+${event.stream_url && /^https?:\/\//i.test(event.stream_url)
+?`<button
+class="universal-watchlist-button"
+data-watchlist-type="live"
+data-watchlist-id="${escapeHTML(String(event.id||event.title||"live"))}"
+data-watchlist-title="${escapeHTML(event.title||"BRENZKafrica Live")}"
+data-watchlist-thumbnail="${escapeHTML(event.thumbnail||"")}"
+data-watchlist-url="${escapeHTML(event.stream_url)}"
+onclick="event.stopPropagation();toggleUniversalVideoWatchlist(this)"
+aria-label="Add to Watchlist"
+title="Add to Watchlist">＋</button>`
+:""}
 
 <div class="live-card-info">
 
@@ -4489,9 +4549,20 @@ isLive
 
 </div>
 
-${event.broadcastUrl?universalWatchlistButton({content_type:"sports",external_id:"sports-"+(event.id||event.eventName||""),title:event.eventName||"Live Sports",thumbnail_url:event.homeLogo||"",video_url:event.broadcastUrl}):""}
-
 ${broadcastButton}
+
+${event.broadcastUrl && /^https?:\/\//i.test(event.broadcastUrl)
+?`<button
+class="universal-watchlist-button"
+data-watchlist-type="sports"
+data-watchlist-id="${escapeHTML(String(event.id||event.eventName||"sports"))}"
+data-watchlist-title="${escapeHTML(event.eventName||"Live Sports")}"
+data-watchlist-thumbnail="${escapeHTML(event.homeLogo||event.awayLogo||"")}"
+data-watchlist-url="${escapeHTML(event.broadcastUrl)}"
+onclick="event.stopPropagation();toggleUniversalVideoWatchlist(this)"
+aria-label="Add to Watchlist"
+title="Add to Watchlist">＋</button>`
+:""}
 
 </article>
 
@@ -6272,7 +6343,6 @@ function installProfessionalAccountButton(){
 
 async function professionalAuthRefresh(user){
   currentUser=user||null;
-  loadExternalWatchlist();
   installProfessionalAccountButton();
   if(user){
     try{ await loadProfessionalProfile(); await loadProfessionalSubscription(); }catch(error){ console.warn("Professional account sync:",error.message); }
@@ -6325,31 +6395,219 @@ document.addEventListener("DOMContentLoaded",function(){
 
 <script>
 /* =========================================================
-   PROFESSIONAL LAYER BRIDGE — BASELINE INTEGRATION
+   UNIVERSAL VIDEO WATCHLIST — BASELINE INTEGRATION
+   Standard Supabase content continues using the existing
+   database Watchlist. External playable videos use this
+   isolated layer so the baseline watchlist schema remains safe.
 ========================================================= */
 (function(){
-  function bridgeWatchlist(){
-    if(typeof window.toggleWatchlist !== "function" || window.__bkpWatchlistBridged) return;
-    window.__bkpWatchlistBridged=true;
-    const original=window.toggleWatchlist;
-    window.toggleWatchlist=function(item){
-      const result=original.apply(this,arguments);
-      try{
-        if(window.currentUser && window.BKPProfessional && item){
-          const saved = item.saved !== false;
-          window.BKPProfessional.syncWatchlist({
-            content_type:item.content_type||item.contentType||"video",
-            content_id:item.content_id||item.contentId||item.id||null,
-            external_id:item.external_id||item.externalId||null,
-            title:item.title||"",
-            thumbnail_url:item.thumbnail_url||item.thumbnailUrl||item.thumbnail||""
-          }, !saved);
-        }
-      }catch(e){}
-      return result;
+  const STORAGE_PREFIX = "bkp_universal_video_watchlist_v1";
+
+  function getStorageKey(userId){
+    return STORAGE_PREFIX + "_" + String(userId || "guest");
+  }
+
+  function getItems(userId){
+    try{
+      const raw=localStorage.getItem(getStorageKey(userId));
+      const parsed=raw?JSON.parse(raw):[];
+      return Array.isArray(parsed)?parsed:[];
+    }catch(error){
+      console.warn("Universal Watchlist read failed:",error);
+      return [];
+    }
+  }
+
+  function saveItems(userId,items){
+    try{
+      localStorage.setItem(getStorageKey(userId),JSON.stringify(items));
+      return true;
+    }catch(error){
+      console.warn("Universal Watchlist save failed:",error);
+      return false;
+    }
+  }
+
+  function itemKey(item){
+    return [item.type||"video",item.id||"",item.url||""].join("::");
+  }
+
+  function buttonItem(button){
+    return {
+      type:button.dataset.watchlistType||"video",
+      id:button.dataset.watchlistId||"",
+      title:button.dataset.watchlistTitle||"Untitled video",
+      thumbnail:button.dataset.watchlistThumbnail||"",
+      url:button.dataset.watchlistUrl||""
     };
   }
-  document.addEventListener("DOMContentLoaded",bridgeWatchlist);
+
+  function currentUserId(){
+    try{
+      const user=window.__BKP_SUPABASE__?.auth;
+      return user?.getSession ? user : null;
+    }catch(error){ return null; }
+  }
+
+  async function getUser(){
+    try{
+      const auth=currentUserId();
+      if(!auth)return null;
+      const result=await auth.getSession();
+      return result?.data?.session?.user||null;
+    }catch(error){ return null; }
+  }
+
+  function updateButtons(userId){
+    const items=getItems(userId);
+    const keys=new Set(items.map(itemKey));
+    document.querySelectorAll(".universal-watchlist-button").forEach(button=>{
+      const saved=keys.has(itemKey(buttonItem(button)));
+      button.classList.toggle("saved",saved);
+      button.textContent=saved?"✓":"＋";
+      button.setAttribute("aria-label",saved?"Remove from Watchlist":"Add to Watchlist");
+      button.title=saved?"Remove from Watchlist":"Add to Watchlist";
+    });
+  }
+
+  async function toggleUniversalVideoWatchlist(button){
+    if(!button)return;
+
+    const user=await getUser();
+    if(!user){
+      if(typeof showToast==="function")showToast("Please sign in to use My Watchlist.");
+      if(typeof openAccount==="function")openAccount();
+      return;
+    }
+
+    button.disabled=true;
+    try{
+      const item=buttonItem(button);
+      if(!item.url || !/^https?:\/\//i.test(item.url)){
+        throw new Error("This video does not have a valid playback URL.");
+      }
+
+      const items=getItems(user.id);
+      const key=itemKey(item);
+      const index=items.findIndex(existing=>itemKey(existing)===key);
+      const remove=index>=0;
+
+      if(remove){
+        items.splice(index,1);
+      }else{
+        items.unshift({...item,saved_at:new Date().toISOString()});
+      }
+
+      if(!saveItems(user.id,items))throw new Error("Unable to save Watchlist.");
+
+      updateButtons(user.id);
+      renderUniversalWatchlist(user.id);
+
+      if(window.BKPProfessional?.syncWatchlist){
+        try{
+          await window.BKPProfessional.syncWatchlist({
+            content_type:item.type,
+            content_id:null,
+            external_id:item.id||null,
+            title:item.title,
+            thumbnail_url:item.thumbnail,
+            video_url:item.url
+          },remove);
+        }catch(error){
+          console.warn("Professional Watchlist sync unavailable:",error.message);
+        }
+      }
+
+      if(typeof showToast==="function"){
+        showToast(remove?"Removed from My Watchlist.":"Added to My Watchlist.");
+      }
+    }catch(error){
+      console.error("Universal Watchlist error:",error);
+      if(typeof showToast==="function")showToast("Unable to update Watchlist right now.");
+    }finally{
+      button.disabled=false;
+    }
+  }
+
+  function playUniversalItem(item){
+    if(!item?.url)return;
+    if(item.type==="youtube" && typeof playVideo==="function"){
+      playVideo(item.title,item.url);
+      return;
+    }
+    if(typeof playVideo==="function"){
+      playVideo(item.title,item.url);
+      return;
+    }
+    window.open(item.url,"_blank","noopener,noreferrer");
+  }
+
+  function renderUniversalWatchlist(userId){
+    const row=document.getElementById("watchlistRow");
+    if(!row || !userId)return;
+
+    const items=getItems(userId);
+    if(!items.length)return;
+
+    const existing=document.getElementById("bkpUniversalWatchlistBlock");
+    if(existing)existing.remove();
+
+    const block=document.createElement("div");
+    block.id="bkpUniversalWatchlistBlock";
+    block.className="universal-watchlist-block";
+    block.innerHTML=`
+      <div class="section-title" style="margin-top:18px">Saved Videos</div>
+      <div class="universal-watchlist-row">
+        ${items.map((item,index)=>`
+          <article class="universal-watchlist-card" data-universal-index="${index}">
+            <img src="${escapeHTML(item.thumbnail||"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80")}" alt="${escapeHTML(item.title)}" loading="lazy">
+            <button class="universal-watchlist-button saved" data-watchlist-type="${escapeHTML(item.type)}" data-watchlist-id="${escapeHTML(item.id)}" data-watchlist-title="${escapeHTML(item.title)}" data-watchlist-thumbnail="${escapeHTML(item.thumbnail)}" data-watchlist-url="${escapeHTML(item.url)}" onclick="event.stopPropagation();toggleUniversalVideoWatchlist(this)" aria-label="Remove from Watchlist" title="Remove from Watchlist">✓</button>
+            <div class="universal-watchlist-card-info">
+              <div class="universal-watchlist-card-title">${escapeHTML(item.title)}</div>
+              <div class="universal-watchlist-card-type">${escapeHTML(item.type)}</div>
+            </div>
+          </article>
+        `).join("")}
+      </div>`;
+
+    block.querySelectorAll(".universal-watchlist-card").forEach(card=>{
+      card.addEventListener("click",()=>{
+        const index=Number(card.dataset.universalIndex);
+        playUniversalItem(items[index]);
+      });
+    });
+
+    row.parentNode.insertBefore(block,row.nextSibling);
+  }
+
+  window.toggleUniversalVideoWatchlist=toggleUniversalVideoWatchlist;
+  window.renderUniversalWatchlist=renderUniversalWatchlist;
+
+  document.addEventListener("DOMContentLoaded",async function(){
+    const user=await getUser();
+    if(user){
+      updateButtons(user.id);
+      renderUniversalWatchlist(user.id);
+    }
+  });
+
+  try{
+    window.__BKP_SUPABASE__?.auth?.onAuthStateChange(function(event,session){
+      setTimeout(function(){
+        const user=session?.user;
+        if(user){
+          updateButtons(user.id);
+          renderUniversalWatchlist(user.id);
+        }else{
+          const block=document.getElementById("bkpUniversalWatchlistBlock");
+          if(block)block.remove();
+          updateButtons("");
+        }
+      },0);
+    });
+  }catch(error){
+    console.warn("Universal Watchlist auth listener unavailable:",error);
+  }
 })();
 </script>
 </body>
