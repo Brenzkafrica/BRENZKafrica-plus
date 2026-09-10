@@ -1771,6 +1771,44 @@ main{margin-top:-55px}
 }
 
 
+/* =========================================================
+   PREMIUM BUSINESS MEDIA VISUAL LAYER
+   Editorial finance / streaming presentation
+========================================================= */
+#businessFinanceSection .business-tabs{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:55px}
+#businessFinanceSection .business-tabs button{position:relative;min-height:155px!important;padding:0!important;overflow:hidden;border-radius:18px!important;border:1px solid rgba(255,255,255,.10)!important;background:#111!important;background-image:var(--business-image);background-size:cover;background-position:center;color:#fff!important;text-align:left;box-shadow:0 12px 35px rgba(0,0,0,.20)}
+#businessFinanceSection .business-tabs button:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.28) 35%,rgba(0,0,0,.94) 100%);transition:.3s ease}
+#businessFinanceSection .business-tabs button:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.06);border-radius:18px;pointer-events:none}
+#businessFinanceSection .business-tabs button:hover{transform:translateY(-6px) scale(1.01)!important;border-color:rgba(255,255,255,.22)!important;box-shadow:0 20px 45px rgba(0,0,0,.35)}
+#businessFinanceSection .business-tabs button:hover:before{background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.18) 35%,rgba(0,0,0,.90))}
+#businessFinanceSection .business-tabs button strong,#businessFinanceSection .business-tabs button span{position:absolute;left:17px;right:12px;z-index:2;display:block!important}
+#businessFinanceSection .business-tabs button strong{bottom:31px;margin:0!important;font-size:15px!important;letter-spacing:.1px}
+#businessFinanceSection .business-tabs button span{bottom:13px;margin:0!important;font-size:9px!important;opacity:.72!important;letter-spacing:.3px}
+#businessFinanceSection .business-tabs button:first-letter{font-size:0}
+#businessFinanceSection .business-tabs button.active{border-color:rgba(229,9,20,.75)!important;box-shadow:0 0 0 1px rgba(229,9,20,.20),0 18px 45px rgba(0,0,0,.35)}
+#businessFinanceSection .business-tabs button.active:before{background:linear-gradient(180deg,rgba(229,9,20,.04),rgba(0,0,0,.22) 35%,rgba(0,0,0,.92))}
+#businessFinanceSection .finance-content-block{position:relative}
+#businessFinanceSection .finance-content-block:before{content:"";display:block;height:1px;background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,0));margin-bottom:24px}
+#businessFinanceSection .finance-block-header{align-items:flex-end}
+#businessFinanceSection .finance-block-header h3{font-size:28px!important;letter-spacing:-.5px}
+#businessFinanceSection .finance-block-header p{max-width:720px}
+#businessFinanceSection .business-story-row{gap:20px!important;padding-bottom:20px!important;scroll-snap-type:x mandatory}
+#businessFinanceSection .business-story-card{min-width:350px!important;height:380px!important;position:relative;scroll-snap-align:start;background:#0c0c0c!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:0 14px 40px rgba(0,0,0,.20);transition:.3s ease}
+#businessFinanceSection .business-story-card:hover{transform:translateY(-7px);border-color:rgba(255,255,255,.22)!important;box-shadow:0 22px 50px rgba(0,0,0,.35)}
+#businessFinanceSection .business-story-card .story-image{height:100%!important;position:absolute;inset:0;background:#111!important}
+#businessFinanceSection .business-story-card .story-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;filter:saturate(.9)}
+#businessFinanceSection .business-story-card:hover .story-image img{transform:scale(1.045)}
+#businessFinanceSection .business-story-card .story-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04) 5%,rgba(0,0,0,.12) 35%,rgba(0,0,0,.94) 100%)}
+#businessFinanceSection .business-story-card .story-content{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:22px!important;background:linear-gradient(180deg,transparent,rgba(0,0,0,.16))}
+#businessFinanceSection .business-story-card .story-content span{color:#ddd;opacity:.75!important}
+#businessFinanceSection .business-story-card .story-content h4{font-size:20px!important;line-height:1.25;margin:9px 0!important}
+#businessFinanceSection .business-story-card .story-content p{font-size:11px;line-height:1.5;max-height:34px;overflow:hidden;margin-bottom:14px}
+#businessFinanceSection .business-story-card .story-content button{font-size:10px;letter-spacing:.7px;text-transform:uppercase}
+#businessFinanceSection .business-story-row:has(.business-feed-loading){min-height:170px}
+#businessFinanceSection .business-feed-loading{padding:50px 8px!important}
+@media(max-width:1100px){#businessFinanceSection .business-tabs{grid-template-columns:repeat(3,1fr)!important}}
+@media(max-width:650px){#businessFinanceSection .business-tabs{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory;padding-bottom:8px;margin-bottom:40px}#businessFinanceSection .business-tabs button{min-width:205px!important;scroll-snap-align:start}#businessFinanceSection .business-story-card{min-width:82vw!important;height:355px!important}#businessFinanceSection .finance-block-header h3{font-size:23px!important}}
+
 /* BUSINESS OF AFRICA LIVE ENHANCEMENTS */
 .business-live-meta{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;white-space:nowrap}.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
 .business-market-grid{grid-template-columns:repeat(4,1fr)!important}.business-market-grid .market-card{min-height:150px}.business-market-grid .market-icon{font-size:14px}.business-tabs{scroll-margin-top:90px}.business-story-row{padding-bottom:15px}.live-business-story{cursor:pointer}.live-business-story .story-image{position:relative;background:#151515}.live-business-story .story-image img{width:100%;height:100%;object-fit:cover}.live-business-story .story-content{position:relative}.live-business-story .story-content small{display:block;margin-top:8px;color:#666;font-size:9px}.business-feed-loading{color:#686868;padding:35px 3px;font-size:12px}.business-crypto-grid{grid-template-columns:repeat(3,1fr)!important}.live-crypto-feature{position:relative;overflow:hidden;cursor:pointer}.live-crypto-feature h4{font-size:22px}.crypto-market-line{margin-top:6px!important}.crypto-sparkline{height:48px;margin-top:12px;opacity:.9}.crypto-sparkline svg{width:100%;height:100%}.currency-pair b{display:block;margin-top:9px;font-size:18px}.currency-pair small{margin-top:5px!important}.live-business-story .story-content button{margin-top:12px}.live-business-story:hover{border-color:#444;transform:translateY(-4px)}
@@ -1850,34 +1888,6 @@ main{margin-top:-55px}
 @media(max-width:900px){.sources-partners-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.sources-partners-grid{grid-template-columns:1fr}.source-partner-card{min-height:135px}}
 
-
-/* =========================================================
-   UNIVERSAL VIDEO WATCHLIST CONTROLS
-========================================================= */
-.watchlist-video-button{
-position:absolute;
-top:10px;
-right:10px;
-z-index:8;
-width:34px;
-height:34px;
-border:1px solid rgba(255,255,255,.18);
-border-radius:50%;
-background:rgba(0,0,0,.72);
-backdrop-filter:blur(8px);
-color:#fff;
-font-size:19px;
-line-height:1;
-display:flex;
-align-items:center;
-justify-content:center;
-transition:.2s;
-}
-.watchlist-video-button:hover{transform:scale(1.06);background:rgba(0,0,0,.9)}
-.watchlist-video-button.saved{background:var(--red);border-color:var(--red)}
-.episode-card,.live-card,.sports-card,.youtube-original-card{position:relative}
-.episode-card .watchlist-video-button{top:10px;right:10px}
-.live-card .watchlist-video-button,.sports-card .watchlist-video-button{top:10px;right:10px}
 </style>
 </head>
 
@@ -2131,12 +2141,12 @@ The latest stories and developments from across Africa.
 </div>
 
 <div class="finance-categories business-tabs">
-<button onclick="showBusinessCategory('markets')">📈<strong>Markets</strong><span>Market news & indices</span></button>
-<button onclick="showBusinessCategory('currencies')">💱<strong>Currencies</strong><span>African FX rates</span></button>
-<button onclick="showBusinessCategory('crypto')">₿<strong>Crypto</strong><span>Prices & 24h moves</span></button>
-<button onclick="showBusinessCategory('africa')">🌍<strong>African Business</strong><span>Companies & investment</span></button>
-<button onclick="showBusinessCategory('fintech')">💳<strong>Fintech</strong><span>Payments & digital finance</span></button>
-<button onclick="showBusinessCategory('economy')">🌐<strong>Economy</strong><span>Growth, inflation & trade</span></button>
+<button style="--business-image:url('https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('markets')"><strong>Markets</strong><span>Market news & indices</span></button>
+<button style="--business-image:url('https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('currencies')"><strong>Currencies</strong><span>African FX rates</span></button>
+<button style="--business-image:url('https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('crypto')"><strong>Crypto</strong><span>Prices & 24h moves</span></button>
+<button style="--business-image:url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('africa')"><strong>African Business</strong><span>Companies & investment</span></button>
+<button style="--business-image:url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('fintech')"><strong>Fintech</strong><span>Payments & digital finance</span></button>
+<button style="--business-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=82')" onclick="showBusinessCategory('economy')"><strong>Economy</strong><span>Growth, inflation & trade</span></button>
 </div>
 
 <div class="finance-content-block" id="businessNewsBlock">
@@ -2723,6 +2733,7 @@ const sportsStatus=document.getElementById("sportsStatus");
 
 let currentUser=null;
 let watchlistIds=new Set();
+loadExternalWatchlist();
 let allContent=[];
 let allEpisodes=[];
 let youtubeOriginals=[];
@@ -3038,6 +3049,30 @@ return minutes+
 ":"+
 String(secs).padStart(2,"0");
 }
+
+/* =========================================================
+   UNIVERSAL VIDEO WATCHLIST — EXTERNAL VIDEO ITEMS
+========================================================= */
+let externalWatchlistItems=[];
+function externalWatchlistStorageKey(){return "bkp_external_watchlist_"+(currentUser&&currentUser.id?currentUser.id:"guest");}
+function loadExternalWatchlist(){try{const raw=localStorage.getItem(externalWatchlistStorageKey());externalWatchlistItems=raw?JSON.parse(raw):[];if(!Array.isArray(externalWatchlistItems))externalWatchlistItems=[];}catch(e){externalWatchlistItems=[];}}
+function saveExternalWatchlist(){try{localStorage.setItem(externalWatchlistStorageKey(),JSON.stringify(externalWatchlistItems));}catch(e){}}
+function externalWatchlistKey(item){return String(item.content_type||"video")+"|"+String(item.external_id||item.content_id||"");}
+function isExternalWatchlisted(item){return externalWatchlistItems.some(x=>x.key===externalWatchlistKey(item));}
+async function toggleExternalWatchlist(item,button){
+ if(!currentUser){showToast("Please sign in to use My Watchlist.");openAccount();return;}
+ if(!item||!item.external_id){showToast("This video cannot be added to Watchlist yet.");return;}
+ if(button)button.disabled=true;
+ const key=externalWatchlistKey(item), i=externalWatchlistItems.findIndex(x=>x.key===key);
+ try{
+  if(i>=0){const old=externalWatchlistItems.splice(i,1)[0];if(window.BKPProfessional&&window.BKPProfessional.syncWatchlist)await window.BKPProfessional.syncWatchlist(old,true);showToast("Removed from My Watchlist.");}
+  else{const row={key,content_type:item.content_type||"video",content_id:item.content_id??null,external_id:item.external_id,title:item.title||"Untitled",thumbnail_url:item.thumbnail_url||null,video_url:item.video_url||item.url||null};externalWatchlistItems.unshift(row);if(window.BKPProfessional&&window.BKPProfessional.syncWatchlist)await window.BKPProfessional.syncWatchlist(row,false);showToast("Added to My Watchlist.");}
+  saveExternalWatchlist();updateUniversalWatchlistButtons();renderWatchlist();
+ }catch(e){console.error("External Watchlist error:",e);showToast("Unable to update Watchlist right now.");}
+ finally{if(button)button.disabled=false;}
+}
+function updateUniversalWatchlistButtons(){document.querySelectorAll(".universal-watchlist-button").forEach(button=>{const item={content_type:button.dataset.contentType||"video",external_id:button.dataset.externalId||""};const saved=isExternalWatchlisted(item);button.classList.toggle("saved",saved);button.textContent=saved?"✓":"＋";button.title=saved?"Remove from Watchlist":"Add to Watchlist";button.setAttribute("aria-label",saved?"Remove from Watchlist":"Add to Watchlist");});}
+function universalWatchlistButton(item){const saved=isExternalWatchlisted(item);const payload=JSON.stringify(item).replace(/'/g,"&#39;");return `<button class="watchlist-button universal-watchlist-button ${saved?"saved":""}" data-content-type="${escapeHTML(item.content_type||"video")}" data-external-id="${escapeHTML(item.external_id||"")}" onclick='event.stopPropagation();toggleExternalWatchlist(${payload},this)' aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}" title="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"✓":"＋"}</button>`;}
 
 /* =========================================================
    WATCHLIST
@@ -3380,9 +3415,9 @@ const ordered=(data||[]).sort(
 (a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id))
 );
 
-watchlistRow.innerHTML=ordered.length
-?ordered.map(createContentCard).join("")
-:'<div class="watchlist-empty">Your Watchlist is empty.</div>';
+const externalHtml=externalWatchlistItems.map(item=>`<article class="card" onclick="playVideo(${JSON.stringify(item.title)},${JSON.stringify(item.video_url||"")},${JSON.stringify(item.title)})"><img src="${escapeHTML(item.thumbnail_url||"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80")}" alt="${escapeHTML(item.title||"Saved video")}" loading="lazy"><button class="watchlist-button saved" onclick='event.stopPropagation();toggleExternalWatchlist(${JSON.stringify(item).replace(/'/g,"&#39;")},this)' aria-label="Remove from Watchlist" title="Remove from Watchlist">✓</button><div class="card-overlay"><div class="card-title">${escapeHTML(item.title||"Saved video")}</div><div class="card-type">Saved Video</div></div></article>`).join("");
+const combinedHtml=ordered.map(createContentCard).join("")+externalHtml;
+watchlistRow.innerHTML=combinedHtml||'<div class="watchlist-empty">Your Watchlist is empty.</div>';
 
 }
 
@@ -3427,188 +3462,6 @@ row.innerHTML=
 
 }
 
-
-/* =========================================================
-   BRENZKafrica Plus — UNIVERSAL VIDEO WATCHLIST
-   Extends the existing Supabase Watchlist to playable external
-   videos without replacing the original content Watchlist.
-========================================================= */
-(function(){
-"use strict";
-
-const BKP_EXTERNAL_WATCHLIST_KEY="brenzkafrica_plus_external_watchlist_v1";
-
-function getExternalWatchlist(){
-  try{
-    const value=JSON.parse(localStorage.getItem(BKP_EXTERNAL_WATCHLIST_KEY)||"[]");
-    return Array.isArray(value)?value:[];
-  }catch(error){
-    console.warn("External Watchlist storage error:",error);
-    return [];
-  }
-}
-
-function setExternalWatchlist(items){
-  try{
-    localStorage.setItem(BKP_EXTERNAL_WATCHLIST_KEY,JSON.stringify(items));
-  }catch(error){
-    console.warn("External Watchlist save error:",error);
-  }
-}
-
-function externalKey(item){
-  return [
-    item.content_type||"video",
-    item.external_id||"",
-    item.content_id||""
-  ].join(":");
-}
-
-function isExternalVideoSaved(item){
-  const key=externalKey(item);
-  return getExternalWatchlist().some(saved=>externalKey(saved)===key);
-}
-
-function updateUniversalWatchlistButtons(){
-  document.querySelectorAll(".watchlist-video-button").forEach(button=>{
-    const item={
-      content_type:button.dataset.contentType||"video",
-      content_id:button.dataset.contentId||null,
-      external_id:button.dataset.externalId||null
-    };
-    const saved=isExternalVideoSaved(item);
-    button.classList.toggle("saved",saved);
-    button.textContent=saved?"✓":"＋";
-    button.setAttribute("aria-label",saved?"Remove from Watchlist":"Add to Watchlist");
-    button.title=saved?"Remove from Watchlist":"Add to Watchlist";
-  });
-}
-
-async function toggleUniversalVideoWatchlist(item,button){
-  if(!item || (!item.external_id && !item.content_id)){
-    showToast("This video cannot be added to Watchlist yet.");
-    return;
-  }
-  if(!currentUser){
-    showToast("Please sign in to use My Watchlist.");
-    openAccount();
-    return;
-  }
-  button.disabled=true;
-  const existing=getExternalWatchlist();
-  const key=externalKey(item);
-  const index=existing.findIndex(saved=>externalKey(saved)===key);
-  const removing=index>=0;
-  try{
-    if(removing){
-      existing.splice(index,1);
-    }else{
-      existing.unshift({
-        content_type:item.content_type||"video",
-        content_id:item.content_id||null,
-        external_id:item.external_id||null,
-        title:item.title||"Video",
-        thumbnail_url:item.thumbnail_url||"",
-        video_url:item.video_url||"",
-        source:item.source||"video",
-        saved_at:new Date().toISOString()
-      });
-    }
-    setExternalWatchlist(existing);
-
-    if(window.BKPProfessional && typeof window.BKPProfessional.syncWatchlist==="function"){
-      await window.BKPProfessional.syncWatchlist({
-        content_type:item.content_type||"video",
-        content_id:item.content_id||null,
-        external_id:item.external_id||null,
-        title:item.title||"Video",
-        thumbnail_url:item.thumbnail_url||""
-      },removing);
-    }
-
-    button.classList.toggle("saved",!removing);
-    button.textContent=removing?"＋":"✓";
-    button.setAttribute("aria-label",removing?"Add to Watchlist":"Remove from Watchlist");
-    button.title=removing?"Add to Watchlist":"Remove from Watchlist";
-    showToast(removing?"Removed from My Watchlist.":"Added to My Watchlist.");
-    if(typeof renderWatchlist==="function") await renderWatchlist();
-    renderUniversalWatchlist();
-  }catch(error){
-    console.error("Universal Watchlist error:",error);
-    showToast("Unable to update Watchlist right now.");
-  }finally{
-    button.disabled=false;
-  }
-}
-
-function universalWatchlistButton(item){
-  const saved=isExternalVideoSaved(item);
-  const contentType=String(item.content_type||"video");
-  const contentId=item.content_id?String(item.content_id):"";
-  const externalId=item.external_id?String(item.external_id):"";
-  const title=String(item.title||"Video").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-  const thumb=String(item.thumbnail_url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-  const source=String(item.source||"video").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-  return `<button class="watchlist-video-button ${saved?"saved":""}" data-content-type="${escapeHTML(contentType)}" data-content-id="${escapeHTML(contentId)}" data-external-id="${escapeHTML(externalId)}" onclick="event.stopPropagation();toggleUniversalVideoWatchlist({content_type:'${contentType.replace(/'/g,"\\'")}',content_id:'${contentId.replace(/'/g,"\\'")}',external_id:'${externalId.replace(/'/g,"\\'")}',title:'${title}',thumbnail_url:'${thumb}',source:'${source}'},this)" aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}" title="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"✓":"＋"}</button>`;
-}
-
-function renderUniversalWatchlist(){
-  const target=document.getElementById("watchlistRow");
-  if(!target || !currentUser) return;
-  const external=getExternalWatchlist();
-  if(!external.length) return;
-
-  const existing=target.querySelectorAll(".universal-watchlist-card");
-  existing.forEach(node=>node.remove());
-
-  const html=external.map(item=>{
-    const title=escapeHTML(item.title||"Video");
-    const thumb=escapeHTML(item.thumbnail_url||"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80");
-    const source=escapeHTML(item.source||"Video");
-    let play="";
-    if(item.content_type==="youtube" && item.external_id){
-      play=`playVideo('${String(item.title||"Video").replace(/'/g,"\\'")}','https://www.youtube.com/watch?v=${encodeURIComponent(item.external_id)}')`;
-    }else if(item.content_type==="episode" && item.content_id){
-      play=`playEpisode(${Number(item.content_id)||0})`;
-    }else if(item.video_url){
-      play=`playVideo('${String(item.title||"Video").replace(/'/g,"\\'")}','${String(item.video_url).replace(/'/g,"\\'")}')`;
-    }else{
-      play=`showToast('This saved video is currently unavailable.')`;
-    }
-    return `<article class="card universal-watchlist-card" data-universal-watchlist="${escapeHTML(externalKey(item))}" onclick="${play}"><img src="${thumb}" alt="${title}" loading="lazy"><button class="watchlist-video-button saved" onclick="event.stopPropagation();toggleUniversalVideoWatchlist(${JSON.stringify(item).replace(/</g,"\\u003c")},this)" aria-label="Remove from Watchlist" title="Remove from Watchlist">✓</button><div class="card-overlay"><div class="card-title">${title}</div><div class="card-type">${source}</div></div></article>`;
-  }).join("");
-
-  const holder=document.createElement("div");
-  holder.className="universal-watchlist-holder";
-  holder.innerHTML=html;
-  target.appendChild(holder);
-}
-
-window.toggleUniversalVideoWatchlist=toggleUniversalVideoWatchlist;
-window.BKPUniversalWatchlist={
-  button:universalWatchlistButton,
-  refresh:updateUniversalWatchlistButtons,
-  render:renderUniversalWatchlist,
-  get:getExternalWatchlist
-};
-
-const originalRenderWatchlist=window.renderWatchlist;
-if(typeof originalRenderWatchlist==="function" && !window.__bkpUniversalRenderWrapped){
-  window.__bkpUniversalRenderWrapped=true;
-  window.renderWatchlist=async function(){
-    const result=await originalRenderWatchlist.apply(this,arguments);
-    renderUniversalWatchlist();
-    updateUniversalWatchlistButtons();
-    return result;
-  };
-}
-
-document.addEventListener("DOMContentLoaded",function(){
-  updateUniversalWatchlistButtons();
-  renderUniversalWatchlist();
-});
-})();
-
 /* =========================================================
    YOUTUBE
 ========================================================= */
@@ -3642,7 +3495,7 @@ loading="lazy">
 
 <span class="card-badge">BRENZKAFRICA</span>
 
-${window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"youtube",external_id:videoId,title:title,thumbnail_url:thumbnail,source:"YouTube"}):""}
+${universalWatchlistButton({content_type:"youtube",external_id:videoId,title:title,thumbnail_url:thumbnail,video_url:"https://www.youtube.com/watch?v="+videoId})}
 
 <div class="card-overlay">
 
@@ -4002,6 +3855,8 @@ function loadPolygamistEpisodes(){
                             EP ${episode.episode}
                         </div>
 
+                        ${universalWatchlistButton({content_type:"episode",external_id:"polygamist-s01e"+String(episode.episode).padStart(2,"0"),title:episode.title,thumbnail_url:polygamistThumbnail,video_url:episode.url})}
+
                         <div class="episode-play-overlay">
                             ▶
                         </div>
@@ -4019,8 +3874,6 @@ function loadPolygamistEpisodes(){
                         </div>
 
                     </div>
-
-                    ${window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"episode",content_id:String(index),external_id:"The.Polygamist.S01E"+String(episode.episode).padStart(2,"0"),title:episode.title,thumbnail_url:polygamistThumbnail,source:"The Polygamist"}):""}
 
                     <button
                         class="episode-play-btn"
@@ -4210,7 +4063,7 @@ loading="lazy">
 ${isLive?"🔴 LIVE NOW":"UPCOMING"}
 </div>
 
-${event.stream_url?`<div class="live-watchlist-control">${window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"live",content_id:String(event.id),external_id:String(event.id),title:event.title||"BRENZKafrica Live",thumbnail_url:event.thumbnail||"",video_url:event.stream_url,source:"BRENZKafrica Live"}):""}</div>`:""}
+${universalWatchlistButton({content_type:"live",external_id:"live-"+(event.id||event.title||""),title:event.title||"BRENZKafrica Live",thumbnail_url:event.thumbnail||"",video_url:event.stream_url||""})}
 
 <div class="live-card-info">
 
@@ -4674,9 +4527,9 @@ isLive
 
 </div>
 
-${broadcastButton}
+${event.broadcastUrl?universalWatchlistButton({content_type:"sports",external_id:"sports-"+(event.id||event.eventName||""),title:event.eventName||"Live Sports",thumbnail_url:event.homeLogo||"",video_url:event.broadcastUrl}):""}
 
-${event.broadcastUrl&&window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"sports",content_id:String(event.id),external_id:String(event.id),title:event.eventName,thumbnail_url:event.thumbnail||"",video_url:event.broadcastUrl,source:"Sports"}):""}
+${broadcastButton}
 
 </article>
 
@@ -6220,7 +6073,6 @@ window.BRENZKafricaSource = function(source, url){
   return '<span class="data-source-label">'+safe+'</span>';
 };
 </script>
-<script>
 /* =========================================================
    BRENZKafrica Plus — PROFESSIONAL ACCOUNT & SUBSCRIPTION LAYER
    Frontend integration for the Professional Layer v1 backend.
@@ -6458,6 +6310,7 @@ function installProfessionalAccountButton(){
 
 async function professionalAuthRefresh(user){
   currentUser=user||null;
+  loadExternalWatchlist();
   installProfessionalAccountButton();
   if(user){
     try{ await loadProfessionalProfile(); await loadProfessionalSubscription(); }catch(error){ console.warn("Professional account sync:",error.message); }
@@ -6508,7 +6361,35 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 </script>
 
-
+<script>
+/* =========================================================
+   PROFESSIONAL LAYER BRIDGE — BASELINE INTEGRATION
+========================================================= */
+(function(){
+  function bridgeWatchlist(){
+    if(typeof window.toggleWatchlist !== "function" || window.__bkpWatchlistBridged) return;
+    window.__bkpWatchlistBridged=true;
+    const original=window.toggleWatchlist;
+    window.toggleWatchlist=function(item){
+      const result=original.apply(this,arguments);
+      try{
+        if(window.currentUser && window.BKPProfessional && item){
+          const saved = item.saved !== false;
+          window.BKPProfessional.syncWatchlist({
+            content_type:item.content_type||item.contentType||"video",
+            content_id:item.content_id||item.contentId||item.id||null,
+            external_id:item.external_id||item.externalId||null,
+            title:item.title||"",
+            thumbnail_url:item.thumbnail_url||item.thumbnailUrl||item.thumbnail||""
+          }, !saved);
+        }
+      }catch(e){}
+      return result;
+    };
+  }
+  document.addEventListener("DOMContentLoaded",bridgeWatchlist);
+})();
+</script>
 </body>
 </html>
 
