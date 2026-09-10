@@ -1300,561 +1300,665 @@ main{margin-top:-55px}
 }
 
 /* =========================================================
-   BRENZKAFRICA PLUS — BUSINESS & FINANCE
-   Premium editorial / financial-media presentation layer
+   BRENZKAFRICA PLUS
+   BUSINESS • FINANCE • CURRENCIES • CRYPTO
 ========================================================= */
-#businessFinanceSection{
-    position:relative;
-    padding-top:54px;
-    padding-bottom:70px;
+
+/* =========================================================
+   BUSINESS OF AFRICA — COMPONENT STYLES
+   ========================================================= */
+#businessFinanceSection {
+    padding: 70px 4.5%;
+    margin-bottom: 30px;
+    color: var(--text);
 }
-#businessFinanceSection .section-header{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:28px;
-    margin-bottom:28px;
+
+#businessFinanceSection,
+#businessFinanceSection * {
+    box-sizing: border-box;
 }
-#businessFinanceSection .section-header > div:first-child{max-width:820px}
+
+/* Section header */
+#businessFinanceSection .section-header,
+#businessFinanceSection .finance-dashboard-header,
+#businessFinanceSection .finance-block-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 25px;
+    margin-bottom: 25px;
+}
+
 #businessFinanceSection .section-kicker,
-#businessFinanceSection .dashboard-label{
-    display:block;
-    margin-bottom:9px;
-    color:#9a9a9a;
-    font-size:10px;
-    line-height:1;
-    font-weight:900;
-    letter-spacing:2px;
-    text-transform:uppercase;
+#businessFinanceSection .dashboard-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    opacity: .65;
 }
-#businessFinanceSection .section-header h2{
-    margin:0;
-    font-size:clamp(32px,4vw,48px);
-    line-height:1;
-    letter-spacing:-1.8px;
+
+#businessFinanceSection .section-header h2,
+#businessFinanceSection .finance-dashboard-header h3,
+#businessFinanceSection .finance-block-header h3 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.15;
 }
-#businessFinanceSection .section-header p{
-    margin:12px 0 0;
-    max-width:700px;
-    color:#8b8b8b;
-    font-size:13px;
-    line-height:1.65;
+
+#businessFinanceSection .section-header p,
+#businessFinanceSection .finance-block-header p {
+    margin: 8px 0 0;
+    max-width: 760px;
+    line-height: 1.6;
+    opacity: .65;
 }
-#businessFinanceSection .business-live-meta{
-    display:flex;
-    align-items:center;
-    justify-content:flex-end;
-    gap:9px;
-    flex-shrink:0;
-    color:#777;
-    font-size:10px;
-    white-space:nowrap;
-}
-#businessFinanceSection .business-live-dot{
-    width:7px;
-    height:7px;
-    border-radius:50%;
-    background:#22c55e;
-    box-shadow:0 0 10px rgba(34,197,94,.65);
-}
+
 #businessFinanceSection .section-link,
-#businessFinanceSection .finance-block-header button{
-    border:0;
-    background:transparent;
-    color:#ddd;
-    padding:0;
-    font-size:10px;
-    font-weight:800;
-    cursor:pointer;
-}
-#businessFinanceSection .section-link:hover,
-#businessFinanceSection .finance-block-header button:hover{color:#fff}
-
-/* LIVE MARKET SNAPSHOT */
-#businessFinanceSection .finance-dashboard{
-    position:relative;
-    overflow:hidden;
-    padding:26px;
-    margin-bottom:34px;
-    border:1px solid rgba(255,255,255,.09);
-    border-radius:18px;
-    background:
-        radial-gradient(circle at 85% 0%,rgba(229,9,20,.13),transparent 28%),
-        linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));
-}
-#businessFinanceSection .finance-dashboard:before{
-    content:"";
-    position:absolute;
-    left:0;
-    top:0;
-    bottom:0;
-    width:2px;
-    background:var(--red);
-}
-#businessFinanceSection .finance-dashboard-header{
-    position:relative;
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:20px;
-    margin-bottom:20px;
-}
-#businessFinanceSection .finance-dashboard-header h3{
-    margin:0;
-    font-size:22px;
-    letter-spacing:-.5px;
-}
-#businessFinanceSection .market-status{
-    color:#777;
-    font-size:9px;
-    font-weight:800;
-    letter-spacing:1.2px;
-    white-space:nowrap;
-}
-#businessFinanceSection .market-grid{
-    display:grid;
-    grid-template-columns:repeat(4,minmax(0,1fr));
-    gap:10px;
-}
-#businessFinanceSection .market-card{
-    position:relative;
-    min-height:142px;
-    padding:17px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.075);
-    border-radius:12px;
-    background:rgba(0,0,0,.24);
-    transition:transform .22s ease,border-color .22s ease,background .22s ease;
-}
-#businessFinanceSection .market-card:after{
-    content:"";
-    position:absolute;
-    right:-35px;
-    bottom:-45px;
-    width:110px;
-    height:110px;
-    border-radius:50%;
-    background:rgba(229,9,20,.055);
-    pointer-events:none;
-}
-#businessFinanceSection .market-card:hover{
-    transform:translateY(-3px);
-    border-color:rgba(255,255,255,.18);
-    background:rgba(255,255,255,.045);
-}
-#businessFinanceSection .market-top{
-    position:relative;
-    z-index:1;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    margin-bottom:17px;
-}
-#businessFinanceSection .market-icon{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:32px;
-    height:32px;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:8px;
-    background:rgba(255,255,255,.055);
-    color:#fff;
-    font-size:12px;
-    font-weight:900;
-}
-#businessFinanceSection .market-category{
-    color:#666;
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:1.3px;
-}
-#businessFinanceSection .market-card h4{
-    position:relative;
-    z-index:1;
-    margin:0 0 8px;
-    font-size:12px;
-    font-weight:800;
-}
-#businessFinanceSection .market-price{
-    position:relative;
-    z-index:1;
-    margin-bottom:6px;
-    color:#fff;
-    font-size:20px;
-    font-weight:900;
-    letter-spacing:-.4px;
-}
-#businessFinanceSection .market-change{
-    position:relative;
-    z-index:1;
-    color:#777;
-    font-size:9px;
+#businessFinanceSection .finance-block-header button {
+    flex: 0 0 auto;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-weight: 700;
+    cursor: pointer;
 }
 
-/* EDITORIAL BUSINESS NAVIGATION */
-#businessFinanceSection .business-tabs{
-    display:grid;
-    grid-template-columns:repeat(6,minmax(0,1fr));
-    gap:10px;
-    margin-bottom:52px;
-}
-#businessFinanceSection .business-category-card{
-    position:relative;
-    min-height:148px;
-    overflow:hidden;
-    padding:0;
-    border:1px solid rgba(255,255,255,.09);
-    border-radius:13px;
-    background:#111;
-    color:#fff;
-    text-align:left;
-    cursor:pointer;
-    isolation:isolate;
-    transition:transform .24s ease,border-color .24s ease;
-}
-#businessFinanceSection .business-category-card:before{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:-2;
-    background-position:center;
-    background-size:cover;
-    transform:scale(1.02);
-    transition:transform .45s ease;
-}
-#businessFinanceSection .business-category-card:after{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:-1;
-    background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.35) 35%,rgba(0,0,0,.94));
-}
-#businessFinanceSection .business-category-card:hover{
-    transform:translateY(-4px);
-    border-color:rgba(255,255,255,.25);
-}
-#businessFinanceSection .business-category-card:hover:before{transform:scale(1.08)}
-#businessFinanceSection .business-category-card.markets:before{background-image:url("https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=900&q=82")}
-#businessFinanceSection .business-category-card.currencies:before{background-image:url("https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=900&q=82")}
-#businessFinanceSection .business-category-card.crypto:before{background-image:url("https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&w=900&q=82")}
-#businessFinanceSection .business-category-card.africa:before{background-image:url("https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=900&q=82")}
-#businessFinanceSection .business-category-card.fintech:before{background-image:url("https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=900&q=82")}
-#businessFinanceSection .business-category-card.economy:before{background-image:url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=900&q=82")}
-#businessFinanceSection .business-category-content{
-    position:absolute;
-    left:14px;
-    right:14px;
-    bottom:13px;
-}
-#businessFinanceSection .business-category-icon{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:30px;
-    height:30px;
-    margin-bottom:14px;
-    border:1px solid rgba(255,255,255,.2);
-    border-radius:7px;
-    background:rgba(0,0,0,.45);
-    backdrop-filter:blur(8px);
-    font-size:12px;
-}
-#businessFinanceSection .business-category-card strong{
-    display:block;
-    font-size:13px;
-    font-weight:900;
-}
-#businessFinanceSection .business-category-card span:last-child{
-    display:block;
-    margin-top:4px;
-    color:#c1c1c1;
-    font-size:9px;
-    line-height:1.35;
+#businessFinanceSection .business-live-meta {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--muted);
+    font-size: 10px;
+    white-space: nowrap;
 }
 
-/* EDITORIAL FEEDS */
-#businessFinanceSection .finance-content-block{margin-bottom:54px}
-#businessFinanceSection .finance-block-header{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:20px;
-    margin-bottom:15px;
-}
-#businessFinanceSection .finance-block-header > div{max-width:760px}
-#businessFinanceSection .finance-block-header h3{
-    margin:0;
-    font-size:24px;
-    letter-spacing:-.7px;
-}
-#businessFinanceSection .finance-block-header p{
-    margin:7px 0 0;
-    color:#777;
-    font-size:11px;
-    line-height:1.5;
-}
-#businessFinanceSection .business-story-row{
-    display:flex;
-    gap:13px;
-    overflow-x:auto;
-    padding:3px 2px 14px;
-    scrollbar-width:none;
-    -webkit-overflow-scrolling:touch;
-}
-#businessFinanceSection .business-story-row::-webkit-scrollbar{display:none}
-#businessFinanceSection .business-story-card{
-    flex:0 0 315px;
-    min-width:315px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:12px;
-    background:#111;
-    cursor:pointer;
-    transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease;
-}
-#businessFinanceSection .business-story-card:hover{
-    transform:translateY(-4px);
-    border-color:#444;
-    box-shadow:0 16px 36px rgba(0,0,0,.4);
-}
-#businessFinanceSection .story-image{
-    position:relative;
-    height:176px;
-    overflow:hidden;
-    background:#171717;
-}
-#businessFinanceSection .story-image:after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background:linear-gradient(to bottom,transparent 45%,rgba(0,0,0,.45));
-    pointer-events:none;
-}
-#businessFinanceSection .story-image img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    transition:transform .45s ease;
-}
-#businessFinanceSection .business-story-card:hover .story-image img{transform:scale(1.06)}
-#businessFinanceSection .story-placeholder{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    height:100%;
-    color:#666;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:2px;
-}
-#businessFinanceSection .story-content{padding:16px}
-#businessFinanceSection .story-content > span{
-    display:block;
-    color:#777;
-    font-size:8px;
-    font-weight:900;
-    letter-spacing:1.3px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-#businessFinanceSection .story-content h4{
-    margin:8px 0 7px;
-    font-size:15px;
-    line-height:1.35;
-    font-weight:900;
-}
-#businessFinanceSection .story-content p{
-    display:-webkit-box;
-    -webkit-line-clamp:3;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-    min-height:48px;
-    margin:0;
-    color:#858585;
-    font-size:10px;
-    line-height:1.6;
-}
-#businessFinanceSection .story-content button{
-    margin-top:13px;
-    padding:0;
-    border:0;
-    background:transparent;
-    color:#fff;
-    font-size:10px;
-    font-weight:900;
-    cursor:pointer;
-}
-#businessFinanceSection .story-content small{
-    display:block;
-    margin-top:10px;
-    color:#555;
-    font-size:8px;
-}
-#businessFinanceSection .business-feed-loading{
-    padding:30px 3px;
-    color:#666;
-    font-size:11px;
+#businessFinanceSection .business-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, .7);
 }
 
-/* CURRENCIES */
-#businessFinanceSection .currency-row{
-    display:flex;
-    gap:10px;
-    overflow-x:auto;
-    padding:3px 2px 12px;
-    scrollbar-width:none;
-}
-#businessFinanceSection .currency-row::-webkit-scrollbar{display:none}
-#businessFinanceSection .currency-pair{
-    flex:0 0 205px;
-    min-width:205px;
-    padding:17px;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:12px;
-    background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));
-}
-#businessFinanceSection .currency-pair span{font-size:11px;font-weight:900}
-#businessFinanceSection .currency-pair strong{margin:0 5px;color:#555}
-#businessFinanceSection .currency-pair b{display:block;margin-top:11px;font-size:19px}
-#businessFinanceSection .currency-pair small{display:block;margin-top:5px;color:#666;font-size:9px}
-
-/* CRYPTO */
-#businessFinanceSection .crypto-grid{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:12px;
-}
-#businessFinanceSection .crypto-feature{
-    position:relative;
-    min-height:205px;
-    padding:20px;
-    overflow:hidden;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:14px;
-    background:linear-gradient(145deg,rgba(255,255,255,.065),rgba(255,255,255,.018));
-    cursor:pointer;
-    transition:transform .22s ease,border-color .22s ease;
-}
-#businessFinanceSection .crypto-feature:hover{transform:translateY(-4px);border-color:#444}
-#businessFinanceSection .crypto-symbol{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    width:40px;
-    height:40px;
-    margin-bottom:16px;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:10px;
-    background:#171717;
-    font-size:11px;
-    font-weight:900;
-}
-#businessFinanceSection .crypto-feature > span{color:#777;font-size:8px;font-weight:900;letter-spacing:1.2px}
-#businessFinanceSection .crypto-feature h4{margin:7px 0;font-size:23px;letter-spacing:-.7px}
-#businessFinanceSection .crypto-feature p{margin:5px 0;color:#777;font-size:9px;line-height:1.5}
-#businessFinanceSection .crypto-market-line strong{font-weight:900}
-#businessFinanceSection .crypto-sparkline{height:45px;margin-top:12px;opacity:.9}
-#businessFinanceSection .crypto-sparkline svg{width:100%;height:100%}
-
-/* ORIGINAL FEATURE */
-#businessFinanceSection .finance-original{
-    position:relative;
-    min-height:390px;
-    margin-top:66px;
-    overflow:hidden;
-    display:flex;
-    align-items:flex-end;
-    border:1px solid rgba(255,255,255,.09);
-    border-radius:18px;
-    background:
-        linear-gradient(90deg,rgba(0,0,0,.96),rgba(0,0,0,.62) 48%,rgba(0,0,0,.18)),
-        url("https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1800&q=85") center/cover;
-}
-#businessFinanceSection .original-overlay{max-width:650px;padding:48px}
-#businessFinanceSection .original-overlay > span{color:#bbb;font-size:9px;font-weight:900;letter-spacing:2px}
-#businessFinanceSection .original-overlay h3{margin:10px 0 12px;font-size:clamp(30px,5vw,52px);line-height:.98;letter-spacing:-1.5px}
-#businessFinanceSection .original-overlay p{max-width:560px;color:#bbb;font-size:12px;line-height:1.7}
-#businessFinanceSection .original-overlay button{
-    margin-top:17px;
-    padding:11px 17px;
-    border:0;
-    border-radius:5px;
-    background:#fff;
-    color:#000;
-    font-size:10px;
-    font-weight:900;
-    cursor:pointer;
+/* Live market snapshot */
+#businessFinanceSection .finance-dashboard {
+    margin-bottom: 45px;
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 20px;
+    background: linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.025));
 }
 
-/* CURRENCY CONVERTER */
-#currencyConverterModal{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    padding:20px;
-    background:rgba(0,0,0,.82);
-    backdrop-filter:blur(15px);
+#businessFinanceSection .market-status {
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: .65;
 }
-#currencyConverterModal.active{display:flex}
-#currencyConverterModal .currency-modal-content{
-    position:relative;
-    width:100%;
-    max-width:500px;
-    padding:35px;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:18px;
-    background:#111;
+
+#businessFinanceSection .market-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 15px;
 }
-#currencyConverterModal .currency-close{
-    position:absolute;
-    top:12px;
-    right:16px;
-    border:0;
-    background:transparent;
-    color:#fff;
-    font-size:28px;
-    cursor:pointer;
+
+#businessFinanceSection .market-card {
+    min-width: 0;
+    min-height: 150px;
+    padding: 22px;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 16px;
+    background: rgba(0,0,0,.25);
 }
-#currencyConverterModal h3{margin:5px 0;font-size:28px}
-#currencyConverterModal p{color:#777;font-size:12px}
+
+#businessFinanceSection .market-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+#businessFinanceSection .market-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    font-size: 14px;
+    font-weight: 800;
+}
+
+#businessFinanceSection .market-category {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    opacity: .5;
+}
+
+#businessFinanceSection .market-card h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+}
+
+#businessFinanceSection .market-price {
+    margin-bottom: 6px;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+#businessFinanceSection .market-change {
+    font-size: 11px;
+    opacity: .6;
+}
+
+/* Business category navigation */
+#businessFinanceSection .business-tabs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 55px;
+    scroll-margin-top: 90px;
+}
+
+#businessFinanceSection .business-category {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 0;
+    min-height: 118px;
+    padding: 18px;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 15px;
+    background: rgba(255,255,255,.035);
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: transform .25s ease, background .25s ease, border-color .25s ease;
+}
+
+#businessFinanceSection .business-category:hover,
+#businessFinanceSection .business-category:focus-visible {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.16);
+    outline: none;
+}
+
+#businessFinanceSection .business-category-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    margin-bottom: 13px;
+    border-radius: 9px;
+    background: rgba(255,255,255,.08);
+    font-size: 17px;
+}
+
+#businessFinanceSection .business-category strong,
+#businessFinanceSection .business-category span {
+    display: block;
+}
+
+#businessFinanceSection .business-category strong {
+    font-size: 13px;
+}
+
+#businessFinanceSection .business-category-description {
+    margin-top: 5px;
+    font-size: 10px;
+    line-height: 1.4;
+    opacity: .5;
+}
+
+/* Content blocks */
+#businessFinanceSection .finance-content-block {
+    margin-bottom: 60px;
+}
+
+#businessFinanceSection .business-story-row {
+    display: flex;
+    gap: 18px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+    scrollbar-width: none;
+}
+
+#businessFinanceSection .business-story-row::-webkit-scrollbar,
+#businessFinanceSection .currency-row::-webkit-scrollbar {
+    display: none;
+}
+
+#businessFinanceSection .business-story-card {
+    min-width: 310px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 18px;
+    background: rgba(255,255,255,.04);
+    cursor: pointer;
+    transition: transform .25s ease, border-color .25s ease;
+}
+
+#businessFinanceSection .business-story-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,.18);
+}
+
+#businessFinanceSection .story-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 170px;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(255,255,255,.1), rgba(255,255,255,.02));
+}
+
+#businessFinanceSection .story-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#businessFinanceSection .story-placeholder {
+    font-size: 12px;
+    letter-spacing: 3px;
+    opacity: .3;
+}
+
+#businessFinanceSection .story-content {
+    position: relative;
+    padding: 20px;
+}
+
+#businessFinanceSection .story-content > span {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    opacity: .5;
+}
+
+#businessFinanceSection .story-content h4 {
+    margin: 10px 0;
+    font-size: 17px;
+    line-height: 1.35;
+}
+
+#businessFinanceSection .story-content p {
+    font-size: 11px;
+    line-height: 1.6;
+    opacity: .6;
+}
+
+#businessFinanceSection .story-content button {
+    margin-top: 12px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#businessFinanceSection .story-content small {
+    display: block;
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 9px;
+}
+
+#businessFinanceSection .business-feed-loading {
+    width: 100%;
+    padding: 35px 3px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* Foreign exchange */
+#businessFinanceSection .currency-row {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    scrollbar-width: none;
+}
+
+#businessFinanceSection .currency-pair {
+    min-width: 190px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,.07);
+    border-radius: 15px;
+    background: rgba(255,255,255,.04);
+}
+
+#businessFinanceSection .currency-pair span {
+    font-weight: 800;
+}
+
+#businessFinanceSection .currency-pair strong {
+    margin: 0 5px;
+    opacity: .4;
+}
+
+#businessFinanceSection .currency-pair b {
+    display: block;
+    margin-top: 9px;
+    font-size: 18px;
+}
+
+#businessFinanceSection .currency-pair small {
+    display: block;
+    margin-top: 5px;
+    font-size: 10px;
+    opacity: .5;
+}
+
+/* Crypto */
+#businessFinanceSection .business-crypto-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+#businessFinanceSection .crypto-feature {
+    min-width: 0;
+    padding: 25px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 18px;
+    background: linear-gradient(145deg, rgba(255,255,255,.07), rgba(255,255,255,.025));
+    cursor: pointer;
+    transition: transform .25s ease, border-color .25s ease;
+}
+
+#businessFinanceSection .crypto-feature:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,.18);
+}
+
+#businessFinanceSection .crypto-symbol {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.08);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+#businessFinanceSection .crypto-feature > span {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    opacity: .5;
+}
+
+#businessFinanceSection .crypto-feature h4 {
+    margin: 8px 0;
+    font-size: 20px;
+}
+
+#businessFinanceSection .crypto-feature p {
+    font-size: 12px;
+    line-height: 1.6;
+    opacity: .6;
+}
+
+#businessFinanceSection .crypto-market-line {
+    margin-top: 6px !important;
+}
+
+#businessFinanceSection .crypto-sparkline {
+    height: 48px;
+    margin-top: 12px;
+    opacity: .9;
+}
+
+#businessFinanceSection .crypto-sparkline svg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Business Originals */
+#businessFinanceSection .finance-original {
+    display: flex;
+    align-items: flex-end;
+    min-height: 390px;
+    margin-top: 70px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 22px;
+    background: linear-gradient(90deg, rgba(0,0,0,.95), rgba(0,0,0,.45), rgba(0,0,0,.1)), linear-gradient(135deg, #161616, #050505);
+}
+
+#businessFinanceSection .original-overlay {
+    max-width: 600px;
+    padding: 50px;
+}
+
+#businessFinanceSection .original-overlay > span {
+    font-size: 10px;
+    letter-spacing: 2px;
+    opacity: .6;
+}
+
+#businessFinanceSection .original-overlay h3 {
+    margin: 12px 0;
+    font-size: 38px;
+}
+
+#businessFinanceSection .original-overlay p {
+    line-height: 1.7;
+    opacity: .65;
+}
+
+#businessFinanceSection .original-overlay button {
+    margin-top: 15px;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: 8px;
+    background: #fff;
+    color: #000;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+/* Currency converter modal */
+#currencyConverterModal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(0,0,0,.8);
+    backdrop-filter: blur(15px);
+}
+
+#currencyConverterModal.active {
+    display: flex;
+}
+
+#currencyConverterModal .currency-modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    padding: 35px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 20px;
+    background: #111;
+}
+
+#currencyConverterModal .currency-close {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#currencyConverterModal h3 {
+    margin: 5px 0;
+    font-size: 28px;
+}
+
+#currencyConverterModal p {
+    font-size: 13px;
+    opacity: .6;
+}
+
 #currencyConverterModal .converter-field,
-#currencyConverterModal .converter-grid{margin-top:20px}
-#currencyConverterModal .converter-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-#currencyConverterModal label{display:block;margin-bottom:7px;color:#777;font-size:9px}
-#currencyConverterModal input,
-#currencyConverterModal select{width:100%;padding:13px;border:1px solid rgba(255,255,255,.1);border-radius:8px;background:#181818;color:#fff;outline:none}
-#currencyConverterModal .convert-button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:8px;background:#fff;color:#000;font-weight:900;cursor:pointer}
-#currencyConverterModal .currency-result{margin-top:20px;padding:17px;border-radius:9px;background:rgba(255,255,255,.05);text-align:center;font-size:17px;font-weight:900}
-
-@media(max-width:1100px){
-    #businessFinanceSection .business-tabs{grid-template-columns:repeat(3,minmax(0,1fr))}
-    #businessFinanceSection .market-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-    #businessFinanceSection .crypto-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+#currencyConverterModal .converter-grid {
+    margin-top: 20px;
 }
-@media(max-width:700px){
-    #businessFinanceSection{padding-top:40px;padding-bottom:50px}
-    #businessFinanceSection .section-header{align-items:flex-start;flex-direction:column;gap:15px}
-    #businessFinanceSection .business-live-meta{justify-content:flex-start;white-space:normal}
-    #businessFinanceSection .finance-dashboard{padding:18px;margin-bottom:25px}
-    #businessFinanceSection .finance-dashboard-header{align-items:flex-start;flex-direction:column;gap:8px}
-    #businessFinanceSection .business-tabs{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:38px}
-    #businessFinanceSection .business-category-card{min-height:135px}
-    #businessFinanceSection .market-grid{grid-template-columns:1fr 1fr;gap:8px}
-    #businessFinanceSection .market-card{min-height:126px;padding:14px}
-    #businessFinanceSection .market-price{font-size:17px}
-    #businessFinanceSection .finance-block-header{align-items:flex-start;flex-direction:column;gap:8px}
-    #businessFinanceSection .business-story-card{flex-basis:285px;min-width:285px}
-    #businessFinanceSection .crypto-grid{grid-template-columns:1fr}
-    #businessFinanceSection .finance-original{min-height:350px;margin-top:45px}
-    #businessFinanceSection .original-overlay{padding:28px}
-    #currencyConverterModal .converter-grid{grid-template-columns:1fr}
+
+#currencyConverterModal .converter-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+#currencyConverterModal label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 10px;
+    opacity: .6;
+}
+
+#currencyConverterModal input,
+#currencyConverterModal select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 9px;
+    outline: none;
+    background: #181818;
+    color: #fff;
+}
+
+#currencyConverterModal .convert-button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: 0;
+    border-radius: 9px;
+    background: #fff;
+    color: #000;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+#currencyConverterModal .currency-result {
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 10px;
+    background: rgba(255,255,255,.05);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+/* Responsive business layout */
+@media (max-width: 1100px) {
+    #businessFinanceSection .market-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #businessFinanceSection .business-tabs {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #businessFinanceSection .business-crypto-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 650px) {
+    #businessFinanceSection {
+        padding: 45px 4.5%;
+    }
+
+    #businessFinanceSection .section-header,
+    #businessFinanceSection .finance-block-header,
+    #businessFinanceSection .finance-dashboard-header {
+        align-items: flex-start;
+    }
+
+    #businessFinanceSection .section-header h2,
+    #businessFinanceSection .finance-block-header h3 {
+        font-size: 24px;
+    }
+
+    #businessFinanceSection .business-live-meta {
+        font-size: 9px;
+    }
+
+    #businessFinanceSection .business-live-meta .section-link {
+        padding: 0;
+    }
+
+    #businessFinanceSection .finance-dashboard {
+        padding: 18px;
+    }
+
+    #businessFinanceSection .market-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    #businessFinanceSection .market-card {
+        min-height: 130px;
+        padding: 14px;
+    }
+
+    #businessFinanceSection .market-price {
+        font-size: 18px;
+    }
+
+    #businessFinanceSection .business-tabs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+    }
+
+    #businessFinanceSection .business-category {
+        min-height: 112px;
+        padding: 15px;
+    }
+
+    #businessFinanceSection .business-story-card {
+        min-width: 285px;
+    }
+
+    #businessFinanceSection .business-crypto-grid {
+        grid-template-columns: 1fr;
+    }
+
+    #businessFinanceSection .original-overlay {
+        padding: 30px;
+    }
+
+    #businessFinanceSection .original-overlay h3 {
+        font-size: 28px;
+    }
+
+    #currencyConverterModal .currency-modal-content {
+        padding: 28px 20px;
+    }
+
+    #currencyConverterModal .converter-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* =========================================================
@@ -2154,126 +2258,113 @@ The latest stories and developments from across Africa.
 ========================================================= -->
 
 <section id="businessFinanceSection" class="content-section">
-
     <!-- BUSINESS HEADER -->
-    <div class="section-header">
+    <header class="section-header">
         <div>
-            <span class="section-kicker">BRENZKAFRICA PLUS · BUSINESS</span>
+            <span class="section-kicker">BRENZKAFRICA PLUS</span>
             <h2>Business of Africa</h2>
-            <p>Live African business news, markets, currencies, fintech, crypto and economic intelligence — presented as a premium financial-media destination.</p>
+            <p>Live African business news, markets, currencies, fintech, crypto and economic intelligence.</p>
         </div>
-        <div class="business-live-meta">
+        <div class="business-live-meta" aria-live="polite">
             <span class="business-live-dot" aria-hidden="true"></span>
             <span id="businessUpdated">Updating live feeds…</span>
-            <button class="section-link" type="button" onclick="loadBusinessOfAfrica()">Refresh ↻</button>
+            <button type="button" class="section-link" onclick="loadBusinessOfAfrica()">↻ Refresh</button>
         </div>
-    </div>
+    </header>
 
     <!-- LIVE MARKET SNAPSHOT -->
-    <div class="finance-dashboard">
+    <section class="finance-dashboard" aria-labelledby="businessMarketHeading">
         <div class="finance-dashboard-header">
             <div>
                 <span class="dashboard-label">LIVE MARKET SNAPSHOT</span>
-                <h3>Africa &amp; Global Finance</h3>
+                <h3 id="businessMarketHeading">Africa &amp; Global Finance</h3>
             </div>
             <span class="market-status" id="businessMarketStatus">● CONNECTING</span>
         </div>
 
         <div class="market-grid business-market-grid">
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">₿</span><span class="market-category">CRYPTO</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">₿</span><span class="market-category">CRYPTO</span></div>
                 <h4>Bitcoin (BTC)</h4>
                 <div class="market-price" id="btcPrice">Loading…</div>
                 <div class="market-change" id="btcChange">--</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">Ξ</span><span class="market-category">CRYPTO</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">Ξ</span><span class="market-category">CRYPTO</span></div>
                 <h4>Ethereum (ETH)</h4>
                 <div class="market-price" id="ethPrice">Loading…</div>
                 <div class="market-change" id="ethChange">--</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">BNB</span><span class="market-category">CRYPTO</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">BNB</span><span class="market-category">CRYPTO</span></div>
                 <h4>BNB</h4>
                 <div class="market-price" id="bnbPrice">Loading…</div>
                 <div class="market-change" id="bnbChange">--</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">SOL</span><span class="market-category">CRYPTO</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">SOL</span><span class="market-category">CRYPTO</span></div>
                 <h4>Solana (SOL)</h4>
                 <div class="market-price" id="solPrice">Loading…</div>
                 <div class="market-change" id="solChange">--</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">X</span><span class="market-category">CRYPTO</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">X</span><span class="market-category">CRYPTO</span></div>
                 <h4>XRP</h4>
                 <div class="market-price" id="xrpPrice">Loading…</div>
                 <div class="market-change" id="xrpChange">--</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">ADA</span><span class="market-category">CRYPTO</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">ADA</span><span class="market-category">CRYPTO</span></div>
                 <h4>Cardano (ADA)</h4>
                 <div class="market-price" id="adaPrice">Loading…</div>
                 <div class="market-change" id="adaChange">--</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">$</span><span class="market-category">AFRICAN FX</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">$</span><span class="market-category">AFRICAN FX</span></div>
                 <h4>USD / UGX</h4>
                 <div class="market-price" id="usdUgx">Loading…</div>
                 <div class="market-change" id="usdUgxDate">Reference rate</div>
             </article>
             <article class="market-card">
-                <div class="market-top"><span class="market-icon">€</span><span class="market-category">FX</span></div>
+                <div class="market-top"><span class="market-icon" aria-hidden="true">€</span><span class="market-category">FX</span></div>
                 <h4>EUR / USD</h4>
                 <div class="market-price" id="eurUsd">Loading…</div>
                 <div class="market-change" id="eurUsdDate">Reference rate</div>
             </article>
         </div>
-    </div>
+    </section>
 
     <!-- BUSINESS CATEGORY NAVIGATION -->
     <nav class="business-tabs" aria-label="Business categories">
-        <button class="business-category-card markets" type="button" onclick="showBusinessCategory('markets')">
-            <span class="business-category-content">
-                <span class="business-category-icon" aria-hidden="true">↗</span>
-                <strong>Markets</strong>
-                <span>Market news &amp; indices</span>
-            </span>
+        <button type="button" class="business-category" onclick="showBusinessCategory('markets')">
+            <span class="business-category-icon" aria-hidden="true">📈</span>
+            <strong>Markets</strong>
+            <span class="business-category-description">Market news &amp; indices</span>
         </button>
-        <button class="business-category-card currencies" type="button" onclick="showBusinessCategory('currencies')">
-            <span class="business-category-content">
-                <span class="business-category-icon" aria-hidden="true">FX</span>
-                <strong>Currencies</strong>
-                <span>African FX rates</span>
-            </span>
+        <button type="button" class="business-category" onclick="showBusinessCategory('currencies')">
+            <span class="business-category-icon" aria-hidden="true">💱</span>
+            <strong>Currencies</strong>
+            <span class="business-category-description">African FX rates</span>
         </button>
-        <button class="business-category-card crypto" type="button" onclick="showBusinessCategory('crypto')">
-            <span class="business-category-content">
-                <span class="business-category-icon" aria-hidden="true">₿</span>
-                <strong>Crypto</strong>
-                <span>Prices &amp; 24h moves</span>
-            </span>
+        <button type="button" class="business-category" onclick="showBusinessCategory('crypto')">
+            <span class="business-category-icon" aria-hidden="true">₿</span>
+            <strong>Crypto</strong>
+            <span class="business-category-description">Prices &amp; 24h moves</span>
         </button>
-        <button class="business-category-card africa" type="button" onclick="showBusinessCategory('africa')">
-            <span class="business-category-content">
-                <span class="business-category-icon" aria-hidden="true">AF</span>
-                <strong>African Business</strong>
-                <span>Companies &amp; investment</span>
-            </span>
+        <button type="button" class="business-category" onclick="showBusinessCategory('africa')">
+            <span class="business-category-icon" aria-hidden="true">🌍</span>
+            <strong>African Business</strong>
+            <span class="business-category-description">Companies &amp; investment</span>
         </button>
-        <button class="business-category-card fintech" type="button" onclick="showBusinessCategory('fintech')">
-            <span class="business-category-content">
-                <span class="business-category-icon" aria-hidden="true">$</span>
-                <strong>Fintech</strong>
-                <span>Payments &amp; digital finance</span>
-            </span>
+        <button type="button" class="business-category" onclick="showBusinessCategory('fintech')">
+            <span class="business-category-icon" aria-hidden="true">💳</span>
+            <strong>Fintech</strong>
+            <span class="business-category-description">Payments &amp; digital finance</span>
         </button>
-        <button class="business-category-card economy" type="button" onclick="showBusinessCategory('economy')">
-            <span class="business-category-content">
-                <span class="business-category-icon" aria-hidden="true">EC</span>
-                <strong>Economy</strong>
-                <span>Growth, inflation &amp; trade</span>
-            </span>
+        <button type="button" class="business-category" onclick="showBusinessCategory('economy')">
+            <span class="business-category-icon" aria-hidden="true">🌐</span>
+            <strong>Economy</strong>
+            <span class="business-category-description">Growth, inflation &amp; trade</span>
         </button>
     </nav>
 
@@ -2338,7 +2429,7 @@ The latest stories and developments from across Africa.
     </section>
 
     <!-- FOREIGN EXCHANGE -->
-    <section class="finance-content-block" id="businessCurrenciesBlock">
+    <section class="finance-content-block" id="businessForeignExchangeBlock">
         <div class="finance-block-header">
             <div>
                 <span class="section-kicker">FOREIGN EXCHANGE</span>
@@ -2362,12 +2453,12 @@ The latest stories and developments from across Africa.
             </div>
             <button type="button" onclick="loadBusinessCrypto()">Refresh Market ↻</button>
         </div>
-        <div class="crypto-grid business-crypto-grid" id="businessCryptoGrid">
+        <div class="business-crypto-grid crypto-grid" id="businessCryptoGrid">
             <div class="business-feed-loading">Loading crypto market data…</div>
         </div>
     </section>
 
-    <!-- BUSINESS ORIGINAL -->
+    <!-- BUSINESS ORIGINALS -->
     <section class="finance-original" aria-label="BRENZKafrica Business Originals">
         <div class="original-overlay">
             <span>BRENZKAFRICA ORIGINALS</span>
@@ -2377,17 +2468,19 @@ The latest stories and developments from across Africa.
         </div>
     </section>
 
-    <!-- CURRENCY CONVERTER MODAL -->
-    <div id="currencyConverterModal" aria-hidden="true">
-        <div class="currency-modal-content" role="dialog" aria-modal="true" aria-labelledby="currencyConverterTitle">
-            <button class="currency-close" type="button" aria-label="Close currency converter" onclick="closeCurrencyConverter()">×</button>
+    <!-- CURRENCY CONVERTER -->
+    <div id="currencyConverterModal" role="dialog" aria-modal="true" aria-labelledby="currencyConverterTitle">
+        <div class="currency-modal-content">
+            <button type="button" class="currency-close" onclick="closeCurrencyConverter()" aria-label="Close currency converter">×</button>
             <span class="section-kicker">BRENZKAFRICA PLUS</span>
             <h3 id="currencyConverterTitle">Currency Converter</h3>
             <p>Convert using the latest available reference rates.</p>
+
             <div class="converter-field">
                 <label for="currencyAmount">Amount</label>
-                <input type="number" id="currencyAmount" value="1" min="0">
+                <input id="currencyAmount" type="number" min="0" value="1">
             </div>
+
             <div class="converter-grid">
                 <div>
                     <label for="currencyFrom">From</label>
@@ -2414,11 +2507,11 @@ The latest stories and developments from across Africa.
                     </select>
                 </div>
             </div>
-            <button class="convert-button" type="button" onclick="convertCurrency()">Convert</button>
-            <div id="currencyResult" class="currency-result">Enter an amount to convert.</div>
+
+            <button type="button" class="convert-button" onclick="convertCurrency()">Convert</button>
+            <div class="currency-result" id="currencyResult">Enter an amount to convert.</div>
         </div>
     </div>
-
 </section>
 
 
@@ -2957,7 +3050,6 @@ const sportsStatus=document.getElementById("sportsStatus");
 
 let currentUser=null;
 let watchlistIds=new Set();
-loadExternalWatchlist();
 let allContent=[];
 let allEpisodes=[];
 let youtubeOriginals=[];
@@ -3273,30 +3365,6 @@ return minutes+
 ":"+
 String(secs).padStart(2,"0");
 }
-
-/* =========================================================
-   UNIVERSAL VIDEO WATCHLIST — EXTERNAL VIDEO ITEMS
-========================================================= */
-let externalWatchlistItems=[];
-function externalWatchlistStorageKey(){return "bkp_external_watchlist_"+(currentUser&&currentUser.id?currentUser.id:"guest");}
-function loadExternalWatchlist(){try{const raw=localStorage.getItem(externalWatchlistStorageKey());externalWatchlistItems=raw?JSON.parse(raw):[];if(!Array.isArray(externalWatchlistItems))externalWatchlistItems=[];}catch(e){externalWatchlistItems=[];}}
-function saveExternalWatchlist(){try{localStorage.setItem(externalWatchlistStorageKey(),JSON.stringify(externalWatchlistItems));}catch(e){}}
-function externalWatchlistKey(item){return String(item.content_type||"video")+"|"+String(item.external_id||item.content_id||"");}
-function isExternalWatchlisted(item){return externalWatchlistItems.some(x=>x.key===externalWatchlistKey(item));}
-async function toggleExternalWatchlist(item,button){
- if(!currentUser){showToast("Please sign in to use My Watchlist.");openAccount();return;}
- if(!item||!item.external_id){showToast("This video cannot be added to Watchlist yet.");return;}
- if(button)button.disabled=true;
- const key=externalWatchlistKey(item), i=externalWatchlistItems.findIndex(x=>x.key===key);
- try{
-  if(i>=0){const old=externalWatchlistItems.splice(i,1)[0];if(window.BKPProfessional&&window.BKPProfessional.syncWatchlist)await window.BKPProfessional.syncWatchlist(old,true);showToast("Removed from My Watchlist.");}
-  else{const row={key,content_type:item.content_type||"video",content_id:item.content_id??null,external_id:item.external_id,title:item.title||"Untitled",thumbnail_url:item.thumbnail_url||null,video_url:item.video_url||item.url||null};externalWatchlistItems.unshift(row);if(window.BKPProfessional&&window.BKPProfessional.syncWatchlist)await window.BKPProfessional.syncWatchlist(row,false);showToast("Added to My Watchlist.");}
-  saveExternalWatchlist();updateUniversalWatchlistButtons();renderWatchlist();
- }catch(e){console.error("External Watchlist error:",e);showToast("Unable to update Watchlist right now.");}
- finally{if(button)button.disabled=false;}
-}
-function updateUniversalWatchlistButtons(){document.querySelectorAll(".universal-watchlist-button").forEach(button=>{const item={content_type:button.dataset.contentType||"video",external_id:button.dataset.externalId||""};const saved=isExternalWatchlisted(item);button.classList.toggle("saved",saved);button.textContent=saved?"✓":"＋";button.title=saved?"Remove from Watchlist":"Add to Watchlist";button.setAttribute("aria-label",saved?"Remove from Watchlist":"Add to Watchlist");});}
-function universalWatchlistButton(item){const saved=isExternalWatchlisted(item);const payload=JSON.stringify(item).replace(/'/g,"&#39;");return `<button class="watchlist-button universal-watchlist-button ${saved?"saved":""}" data-content-type="${escapeHTML(item.content_type||"video")}" data-external-id="${escapeHTML(item.external_id||"")}" onclick='event.stopPropagation();toggleExternalWatchlist(${payload},this)' aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}" title="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"✓":"＋"}</button>`;}
 
 /* =========================================================
    WATCHLIST
@@ -3639,9 +3707,9 @@ const ordered=(data||[]).sort(
 (a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id))
 );
 
-const externalHtml=externalWatchlistItems.map(item=>`<article class="card" onclick="playVideo(${JSON.stringify(item.title)},${JSON.stringify(item.video_url||"")},${JSON.stringify(item.title)})"><img src="${escapeHTML(item.thumbnail_url||"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80")}" alt="${escapeHTML(item.title||"Saved video")}" loading="lazy"><button class="watchlist-button saved" onclick='event.stopPropagation();toggleExternalWatchlist(${JSON.stringify(item).replace(/'/g,"&#39;")},this)' aria-label="Remove from Watchlist" title="Remove from Watchlist">✓</button><div class="card-overlay"><div class="card-title">${escapeHTML(item.title||"Saved video")}</div><div class="card-type">Saved Video</div></div></article>`).join("");
-const combinedHtml=ordered.map(createContentCard).join("")+externalHtml;
-watchlistRow.innerHTML=combinedHtml||'<div class="watchlist-empty">Your Watchlist is empty.</div>';
+watchlistRow.innerHTML=ordered.length
+?ordered.map(createContentCard).join("")
+:'<div class="watchlist-empty">Your Watchlist is empty.</div>';
 
 }
 
@@ -3718,8 +3786,6 @@ alt="${escapeHTML(title)}"
 loading="lazy">
 
 <span class="card-badge">BRENZKAFRICA</span>
-
-${universalWatchlistButton({content_type:"youtube",external_id:videoId,title:title,thumbnail_url:thumbnail,video_url:"https://www.youtube.com/watch?v="+videoId})}
 
 <div class="card-overlay">
 
@@ -4079,8 +4145,6 @@ function loadPolygamistEpisodes(){
                             EP ${episode.episode}
                         </div>
 
-                        ${universalWatchlistButton({content_type:"episode",external_id:"polygamist-s01e"+String(episode.episode).padStart(2,"0"),title:episode.title,thumbnail_url:polygamistThumbnail,video_url:episode.url})}
-
                         <div class="episode-play-overlay">
                             ▶
                         </div>
@@ -4286,8 +4350,6 @@ loading="lazy">
 <div class="live-badge ${isLive?"":"upcoming-badge"}">
 ${isLive?"🔴 LIVE NOW":"UPCOMING"}
 </div>
-
-${universalWatchlistButton({content_type:"live",external_id:"live-"+(event.id||event.title||""),title:event.title||"BRENZKafrica Live",thumbnail_url:event.thumbnail||"",video_url:event.stream_url||""})}
 
 <div class="live-card-info">
 
@@ -4750,8 +4812,6 @@ isLive
 </div>
 
 </div>
-
-${event.broadcastUrl?universalWatchlistButton({content_type:"sports",external_id:"sports-"+(event.id||event.eventName||""),title:event.eventName||"Live Sports",thumbnail_url:event.homeLogo||"",video_url:event.broadcastUrl}):""}
 
 ${broadcastButton}
 
@@ -5336,7 +5396,7 @@ let businessNewsCache={};
 function showBusinessCategory(category){
     const map={
         markets:"marketsBusinessBlock",
-        currencies:"businessCurrenciesBlock",
+        currencies:"businessCurrencyRow",
         crypto:"businessCryptoGrid",
         africa:"businessNewsBlock",
         fintech:"fintechBusinessBlock",
@@ -6534,7 +6594,6 @@ function installProfessionalAccountButton(){
 
 async function professionalAuthRefresh(user){
   currentUser=user||null;
-  loadExternalWatchlist();
   installProfessionalAccountButton();
   if(user){
     try{ await loadProfessionalProfile(); await loadProfessionalSubscription(); }catch(error){ console.warn("Professional account sync:",error.message); }
