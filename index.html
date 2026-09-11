@@ -3639,6 +3639,25 @@ title,
 
 }
 
+const BRENZKAFRICA_ORIGINALS_FALLBACK = [
+    {
+        videoId: "6AYwuEq14M4",
+        url: "https://www.youtube.com/watch?v=6AYwuEq14M4",
+        title: "HOW TO IMPORT CAPTURE ONE STYLES in 2026",
+        description: "BRENZKafrica creative tutorial.",
+        thumbnail: "https://i.ytimg.com/vi/6AYwuEq14M4/hqdefault.jpg",
+        publishedAt: ""
+    },
+    {
+        videoId: "wXVpQNMl7sQ",
+        url: "https://www.youtube.com/watch?v=wXVpQNMl7sQ",
+        title: "EFFECTS OF CONTRAST TO YOUR IMAGES (curves and levels)",
+        description: "BRENZKafrica creative tutorial.",
+        thumbnail: "https://i.ytimg.com/vi/wXVpQNMl7sQ/hqdefault.jpg",
+        publishedAt: ""
+    }
+];
+
 async function loadYouTubeOriginals(){
 
 const originalsRow=document.getElementById("originalsRow");
@@ -3733,6 +3752,10 @@ snippet.publishedAt||
 .filter(item=>item.videoId)
 .slice(0,20);
 
+if(!youtubeOriginals.length){
+youtubeOriginals=BRENZKAFRICA_ORIGINALS_FALLBACK.slice();
+}
+
 if(youtubeOriginals.length){
 
 const html=youtubeOriginals
@@ -3766,6 +3789,16 @@ console.warn(
 "BRENZKafrica YouTube loading error:",
 error
 );
+
+/* Keep the original BRENZKafrica YouTube videos visible
+   even when /api/youtube is temporarily unavailable. */
+youtubeOriginals=BRENZKAFRICA_ORIGINALS_FALLBACK.slice();
+
+if(originalsRow && youtubeOriginals.length){
+    originalsRow.innerHTML=youtubeOriginals
+        .map(createYouTubeOriginalCard)
+        .join("");
+}
 
 }
 
