@@ -1773,6 +1773,20 @@ main{margin-top:-55px}
 
 /* BUSINESS OF AFRICA LIVE ENHANCEMENTS */
 .business-live-meta{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;white-space:nowrap}.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
+/* Premium Business of Africa editorial treatment */
+#businessFinanceSection .business-story-card{position:relative;box-shadow:0 14px 40px rgba(0,0,0,.18);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+#businessFinanceSection .business-story-card:hover{box-shadow:0 20px 50px rgba(0,0,0,.28)}
+#businessFinanceSection .story-image{height:190px;position:relative;overflow:hidden;background:#101010}
+#businessFinanceSection .story-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s ease,filter .5s ease}
+#businessFinanceSection .business-story-card:hover .story-image img{transform:scale(1.05);filter:brightness(.9)}
+#businessFinanceSection .story-image:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.68),transparent 58%);pointer-events:none}
+#businessFinanceSection .story-category-badge{position:absolute;left:14px;bottom:12px;z-index:2;padding:6px 9px;border-radius:999px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.14);font-size:8px;letter-spacing:1.4px;font-weight:800;color:#fff}
+#businessFinanceSection .story-content h4{line-height:1.35;min-height:46px}
+#businessFinanceSection .story-content p{min-height:52px}
+#businessFinanceSection .story-source-line{display:flex!important;align-items:center;justify-content:space-between;gap:10px;margin-bottom:4px}
+#businessFinanceSection .story-source-line span:last-child{opacity:.35;letter-spacing:.6px}
+#businessFinanceSection .business-section-intro{max-width:760px;color:#888;font-size:12px;line-height:1.7;margin-top:7px}
+@media(max-width:650px){#businessFinanceSection .story-image{height:165px}#businessFinanceSection .business-story-card{min-width:285px}#businessFinanceSection .story-content h4{min-height:0}#businessFinanceSection .story-content p{min-height:0}}
 .business-market-grid{grid-template-columns:repeat(4,1fr)!important}.business-market-grid .market-card{min-height:150px}.business-market-grid .market-icon{font-size:14px}.business-tabs{scroll-margin-top:90px}.business-story-row{padding-bottom:15px}.live-business-story{cursor:pointer}.live-business-story .story-image{position:relative;background:#151515}.live-business-story .story-image img{width:100%;height:100%;object-fit:cover}.live-business-story .story-content{position:relative}.live-business-story .story-content small{display:block;margin-top:8px;color:#666;font-size:9px}.business-feed-loading{color:#686868;padding:35px 3px;font-size:12px}.business-crypto-grid{grid-template-columns:repeat(3,1fr)!important}.live-crypto-feature{position:relative;overflow:hidden;cursor:pointer}.live-crypto-feature h4{font-size:22px}.crypto-market-line{margin-top:6px!important}.crypto-sparkline{height:48px;margin-top:12px;opacity:.9}.crypto-sparkline svg{width:100%;height:100%}.currency-pair b{display:block;margin-top:9px;font-size:18px}.currency-pair small{margin-top:5px!important}.live-business-story .story-content button{margin-top:12px}.live-business-story:hover{border-color:#444;transform:translateY(-4px)}
 @media(max-width:1100px){.business-market-grid{grid-template-columns:repeat(2,1fr)!important}.business-crypto-grid{grid-template-columns:repeat(2,1fr)!important}}
 @media(max-width:650px){#businessFinanceSection{padding-left:4.5%;padding-right:4.5%}.business-market-grid{grid-template-columns:1fr 1fr!important;gap:9px}.business-market-grid .market-card{padding:14px;min-height:130px}.business-market-grid .market-price{font-size:18px}.business-live-meta{font-size:9px}.business-crypto-grid{grid-template-columns:1fr!important}.business-story-card{min-width:285px}.business-live-meta .section-link{padding:0}.finance-dashboard{padding:18px!important}}
@@ -5413,8 +5427,29 @@ function businessNewsTime(date){
 function cleanBusinessText(value){
     return String(value||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
 }
-function businessImage(item){
-    return item.thumbnail||item.enclosure?.link||item.enclosure?.url||"";
+function businessImage(item,category,index=0){
+    const supplied=item.thumbnail||item.enclosure?.link||item.enclosure?.url||"";
+    if(supplied)return supplied;
+    const fallbacks={
+        africa:[
+            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=82",
+            "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=82"
+        ],
+        markets:[
+            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=82",
+            "https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1200&q=82"
+        ],
+        fintech:[
+            "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=82",
+            "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=82"
+        ],
+        economy:[
+            "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=82",
+            "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=82"
+        ]
+    };
+    const pool=fallbacks[category]||fallbacks.africa;
+    return pool[index%pool.length];
 }
 async function fetchBusinessRSS(feedUrl){
     const endpoint=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=10`;
@@ -5472,12 +5507,12 @@ async function loadBusinessFeed(category){
         target.innerHTML=items.map((item,index)=>{
             const title=escapeHTML(item.title||"African business story");
             const desc=escapeHTML(item.description||"Latest reporting and developments from across Africa.");
-            const img=businessImage(item);
+            const img=businessImage(item,category,index);
             const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
             const date=businessNewsTime(item.pubDate);
             return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
-                <div class="story-image">${img?`<img src="${escapeHTML(img)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=story-placeholder>${category.toUpperCase()}</div>'">`:`<div class="story-placeholder">${category.toUpperCase()}</div>`}</div>
-                <div class="story-content"><span>${source}</span><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>${date?`Updated ${date}`:"Latest update"}</small></div>
+                <div class="story-image">${img?`<img src="${escapeHTML(img)}" alt="${escapeHTML(title)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=82'">`:``}<span class="story-category-badge">${category.toUpperCase()}</span></div>
+                <div class="story-content"><div class="story-source-line"><span>${source}</span><span>${date?date:"LATEST"}</span></div><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>Source: ${source}</small></div>
             </article>`;
         }).join("");
     }catch(error){
