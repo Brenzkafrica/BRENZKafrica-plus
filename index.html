@@ -5464,6 +5464,26 @@ function renderBusinessFeedItems(category,items,meta={}){
     }).join("");
 }
 
+async function fetchBusinessRSSFallback(category){
+    const urls=[BUSINESS_NEWS[category],...(BUSINESS_NEWS_FALLBACKS[category]||[])].filter(Boolean);
+    const failures=[];
+    for(const feed of urls){
+        try{
+            const endpoint=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed)}`;
+            const controller=new AbortController();
+            const timeout=setTimeout(()=>controller.abort(),10000);
+            const res=await fetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"},signal:controller.signal});
+            clearTimeout(timeout);
+            if(!res.ok)throw new Error(`RSS2JSON ${res.status}`);
+            const data=await res.json();
+            const items=(data.items||[]).filter(item=>item&&item.title&&item.link).slice(0,10);
+            if(items.length)return {items,source:"RSS fallback"};
+            failures.push("empty");
+        }catch(error){failures.push(error.message||"fallback error");}
+    }
+    throw new Error("All RSS fallback sources failed: "+failures.join(", "));
+}
+
 async function loadBusinessFeed(category){
     const target=document.getElementById(category+"BusinessFeed");if(!target)return;
     const cached=readBusinessClientCache(category,false);
@@ -5476,9 +5496,7 @@ async function loadBusinessFeed(category){
         const controller=new AbortController();
         const timeout=setTimeout(()=>controller.abort(),12000);
         const res=await fetch(`/api/business-feed?category=${encodeURIComponent(category)}`,{
-            cache:"no-store",
-            headers:{Accept:"application/json"},
-            signal:controller.signal
+            cache:"no-store",headers:{Accept:"application/json"},signal:controller.signal
         });
         clearTimeout(timeout);
         if(!res.ok)throw new Error("Business API "+res.status);
@@ -5489,16 +5507,27 @@ async function loadBusinessFeed(category){
         renderBusinessFeedItems(category,items,{cache:data.cache,source:data.source});
         const status=document.getElementById("businessUpdated");
         if(status)status.textContent=(data.cache==="stale"?"Showing cached last-known feeds · ":"Live feeds refreshed · ")+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+        return;
     }catch(error){
-        console.warn("BRENZKafrica business API error",category,error);
-        const stale=readBusinessClientCache(category,true);
-        if(stale&&stale.items.length){
-            renderBusinessFeedItems(category,stale.items,{cache:"stale"});
-            const status=document.getElementById("businessUpdated");
-            if(status)status.textContent="Showing last-known business feed · "+new Date(stale.savedAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-        }else{
-            target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
-        }
+        console.warn("BRENZKafrica business API error; using RSS fallback",category,error);
+    }
+    try{
+        const fallback=await fetchBusinessRSSFallback(category);
+        writeBusinessClientCache(category,fallback.items,{source:fallback.source,cache:"fallback"});
+        renderBusinessFeedItems(category,fallback.items,{cache:"fallback",source:fallback.source});
+        const status=document.getElementById("businessUpdated");
+        if(status)status.textContent="Live RSS fallback refreshed · "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+        return;
+    }catch(fallbackError){
+        console.warn("BRENZKafrica RSS fallback error",category,fallbackError);
+    }
+    const stale=readBusinessClientCache(category,true);
+    if(stale&&stale.items.length){
+        renderBusinessFeedItems(category,stale.items,{cache:"stale"});
+        const status=document.getElementById("businessUpdated");
+        if(status)status.textContent="Showing last-known business feed · "+new Date(stale.savedAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    }else{
+        target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
     }
 }
 function openBusinessArticle(category,index){
