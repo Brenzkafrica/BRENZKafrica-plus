@@ -5415,41 +5415,90 @@ function dedupeBusinessItems(items){
     });
 }
 
+const BUSINESS_CLIENT_CACHE_PREFIX="brenz_business_feed_v2:";
+const BUSINESS_CLIENT_CACHE_TTL=30*60*1000;
+const BUSINESS_CLIENT_STALE_TTL=24*60*60*1000;
+
+function readBusinessClientCache(category,allowStale=false){
+    try{
+        const raw=localStorage.getItem(BUSINESS_CLIENT_CACHE_PREFIX+category);
+        if(!raw)return null;
+        const saved=JSON.parse(raw);
+        if(!saved||!Array.isArray(saved.items)||!saved.savedAt)return null;
+        const age=Date.now()-saved.savedAt;
+        if(age>(allowStale?BUSINESS_CLIENT_STALE_TTL:BUSINESS_CLIENT_CACHE_TTL))return null;
+        return saved;
+    }catch(error){return null;}
+}
+
+function writeBusinessClientCache(category,items,meta={}){
+    try{
+        localStorage.setItem(BUSINESS_CLIENT_CACHE_PREFIX+category,JSON.stringify({
+            items:Array.isArray(items)?items.slice(0,10):[],
+            savedAt:Date.now(),
+            source:meta.source||"BRENZKafrica API",
+            cache:meta.cache||"fresh"
+        }));
+    }catch(error){}
+}
+
+function renderBusinessFeedItems(category,items,meta={}){
+    const target=document.getElementById(category+"BusinessFeed");if(!target)return;
+    const safeItems=(Array.isArray(items)?items:[]).slice(0,10);
+    businessNewsCache[category]=safeItems;
+    if(!safeItems.length){
+        target.innerHTML="<div class='business-feed-loading'>No current stories returned.</div>";
+        return;
+    }
+    target.innerHTML=safeItems.map((item,index)=>{
+        const title=escapeHTML(item.title||"African business story");
+        const desc=escapeHTML(item.description||"Latest reporting and developments from across Africa.");
+        const img=businessImage(item);
+        const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
+        const date=businessNewsTime(item.pubDate);
+        const freshness=meta.cache==="stale"?" · Cached last-known story":"";
+        return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
+            <div class="story-image">${img?`<img src="${escapeHTML(img)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=story-placeholder>${category.toUpperCase()}</div>'">`:`<div class="story-placeholder">${category.toUpperCase()}</div>`}</div>
+            <div class="story-content"><span>${source}</span><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>${date?`Updated ${date}`:"Latest update"}${freshness}</small></div>
+        </article>`;
+    }).join("");
+}
+
 async function loadBusinessFeed(category){
     const target=document.getElementById(category+"BusinessFeed");if(!target)return;
-    target.innerHTML="<div class='business-feed-loading'>Loading the latest African stories…</div>";
-    const urls=[BUSINESS_NEWS[category],...(BUSINESS_NEWS_FALLBACKS[category]||[])].filter(Boolean);
+    const cached=readBusinessClientCache(category,false);
+    if(cached&&cached.items.length){
+        renderBusinessFeedItems(category,cached.items,{cache:"client"});
+    }else{
+        target.innerHTML="<div class='business-feed-loading'>Loading the latest African stories…</div>";
+    }
     try{
-        let items=[];
-        for(const url of urls){
-            try{
-                const rows=await fetchBusinessRSS(url);
-                items=dedupeBusinessItems([...items,...rows.map(x=>normalizeBusinessItem(x,category)).filter(Boolean)]);
-                if(items.length>=6)break;
-            }catch(feedError){
-                console.warn("BRENZKafrica RSS source failed",category,feedError);
-            }
-        }
-        items=items.slice(0,10);
-        businessNewsCache[category]=items;
-        if(!items.length){
-            target.innerHTML="<div class='business-feed-loading'>No current stories are available right now. Tap Refresh to try again.</div>";
-            return;
-        }
-        target.innerHTML=items.map((item,index)=>{
-            const title=escapeHTML(item.title||"African business story");
-            const desc=escapeHTML(item.description||"Latest reporting and developments from across Africa.");
-            const img=businessImage(item);
-            const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
-            const date=businessNewsTime(item.pubDate);
-            return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
-                <div class="story-image">${img?`<img src="${escapeHTML(img)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=story-placeholder>${category.toUpperCase()}</div>'">`:`<div class="story-placeholder">${category.toUpperCase()}</div>`}</div>
-                <div class="story-content"><span>${source}</span><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>${date?`Updated ${date}`:"Latest update"}</small></div>
-            </article>`;
-        }).join("");
+        const controller=new AbortController();
+        const timeout=setTimeout(()=>controller.abort(),12000);
+        const res=await fetch(`/api/business-feed?category=${encodeURIComponent(category)}`,{
+            cache:"no-store",
+            headers:{Accept:"application/json"},
+            signal:controller.signal
+        });
+        clearTimeout(timeout);
+        if(!res.ok)throw new Error("Business API "+res.status);
+        const data=await res.json();
+        const items=(data.items||[]).slice(0,10);
+        if(!items.length)throw new Error("No stories returned");
+        writeBusinessClientCache(category,items,{source:data.source,cache:data.cache});
+        renderBusinessFeedItems(category,items,{cache:data.cache,source:data.source});
+        const status=document.getElementById("businessUpdated");
+        if(status)status.textContent=(data.cache==="stale"?"Showing cached last-known feeds · ":"Live feeds refreshed · ")+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
     }catch(error){
-        console.warn("BRENZKafrica business news error",category,error);
-        target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
+        console.warn("BRENZKafrica business API error",category,error);
+        const stale=readBusinessClientCache(category,true);
+        if(stale&&stale.items.length){
+            renderBusinessFeedItems(category,stale.items,{cache:"stale"});
+            const status=document.getElementById("businessUpdated");
+            if(status)status.textContent="Showing last-known business feed · "+new Date(stale.savedAt).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+        }else{
+            target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
+        }
     }
 }
 function openBusinessArticle(category,index){
