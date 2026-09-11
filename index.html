@@ -5217,10 +5217,32 @@ const BUSINESS_API={
 };
 
 const BUSINESS_NEWS={
-    africa:"https://news.google.com/rss/search?q=African+business+companies+investment+economy&hl=en-US&gl=US&ceid=US:en",
-    markets:"https://news.google.com/rss/search?q=Africa+markets+stocks+companies+investment&hl=en-US&gl=US&ceid=US:en",
-    fintech:"https://news.google.com/rss/search?q=Africa+fintech+mobile+money+digital+payments+banking&hl=en-US&gl=US&ceid=US:en",
-    economy:"https://news.google.com/rss/search?q=Africa+economy+GDP+inflation+trade+central+bank&hl=en-US&gl=US&ceid=US:en"
+    africa:"https://news.google.com/rss/search?q=(Africa+business+OR+African+business)+(companies+OR+investment+OR+deals+OR+markets)&hl=en-US&gl=US&ceid=US:en",
+    markets:"https://news.google.com/rss/search?q=Africa+(stocks+OR+markets+OR+companies+OR+investment)&hl=en-US&gl=US&ceid=US:en",
+    fintech:"https://news.google.com/rss/search?q=Africa+(fintech+OR+mobile+money+OR+digital+payments+OR+banking+OR+financial+technology)&hl=en-US&gl=US&ceid=US:en",
+    economy:"https://news.google.com/rss/search?q=Africa+(economy+OR+GDP+OR+inflation+OR+trade+OR+interest+rates+OR+central+bank)&hl=en-US&gl=US&ceid=US:en"
+};
+
+/*
+  Fallback feeds keep the two headline areas useful if a single Google News
+  query temporarily returns no items. All stories remain live RSS results;
+  nothing is hard-coded into the cards.
+*/
+const BUSINESS_NEWS_FALLBACKS={
+    africa:[
+      "https://news.google.com/rss/search?q=Africa+business+latest+companies+investment&hl=en-US&gl=US&ceid=US:en",
+      "https://news.google.com/rss/search?q=African+corporate+deals+business+latest&hl=en-US&gl=US&ceid=US:en"
+    ],
+    markets:[
+      "https://news.google.com/rss/search?q=Africa+financial+markets+latest&hl=en-US&gl=US&ceid=US:en"
+    ],
+    fintech:[
+      "https://news.google.com/rss/search?q=Africa+fintech+latest+mobile+money+banking&hl=en-US&gl=US&ceid=US:en"
+    ],
+    economy:[
+      "https://news.google.com/rss/search?q=Africa+economic+outlook+GDP+inflation+trade+latest&hl=en-US&gl=US&ceid=US:en",
+      "https://news.google.com/rss/search?q=Africa+economy+central+banks+inflation+latest&hl=en-US&gl=US&ceid=US:en"
+    ]
 };
 
 const BUSINESS_FX_RATES={USD:1};
@@ -5361,24 +5383,68 @@ function cleanBusinessText(value){
 function businessImage(item){
     return item.thumbnail||item.enclosure?.link||item.enclosure?.url||"";
 }
+async function fetchBusinessRSS(feedUrl){
+    const endpoint=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=10`;
+    const res=await fetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"}});
+    if(!res.ok)throw new Error("News feed "+res.status);
+    const data=await res.json();
+    if(data.status && data.status !== "ok")throw new Error(data.message||"RSS conversion failed");
+    return Array.isArray(data.items)?data.items:[];
+}
+
+function normalizeBusinessItem(item,category){
+    const title=cleanBusinessText(item.title);
+    const link=item.link||item.guid||"";
+    if(!title||!link)return null;
+    return {
+        ...item,
+        title,
+        description:cleanBusinessText(item.description||item.content||"").slice(0,240),
+        link,
+        source:item.source||item.author||category,
+        category
+    };
+}
+
+function dedupeBusinessItems(items){
+    const seen=new Set();
+    return items.filter(item=>{
+        const key=(item.link||"")+"|"+(item.title||"");
+        if(seen.has(key))return false;
+        seen.add(key);return true;
+    });
+}
+
 async function loadBusinessFeed(category){
     const target=document.getElementById(category+"BusinessFeed");if(!target)return;
-    target.innerHTML="<div class='business-feed-loading'>Loading current stories…</div>";
+    target.innerHTML="<div class='business-feed-loading'>Loading the latest African stories…</div>";
+    const urls=[BUSINESS_NEWS[category],...(BUSINESS_NEWS_FALLBACKS[category]||[])].filter(Boolean);
     try{
-        const feedUrl=encodeURIComponent(BUSINESS_NEWS[category]);
-        const res=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${feedUrl}`,{cache:"no-store"});
-        if(!res.ok)throw new Error("News feed "+res.status);
-        const data=await res.json();
-        const items=(data.items||[]).slice(0,10);
+        let items=[];
+        for(const url of urls){
+            try{
+                const rows=await fetchBusinessRSS(url);
+                items=dedupeBusinessItems([...items,...rows.map(x=>normalizeBusinessItem(x,category)).filter(Boolean)]);
+                if(items.length>=6)break;
+            }catch(feedError){
+                console.warn("BRENZKafrica RSS source failed",category,feedError);
+            }
+        }
+        items=items.slice(0,10);
         businessNewsCache[category]=items;
-        if(!items.length){target.innerHTML="<div class='business-feed-loading'>No current stories returned.</div>";return;}
+        if(!items.length){
+            target.innerHTML="<div class='business-feed-loading'>No current stories are available right now. Tap Refresh to try again.</div>";
+            return;
+        }
         target.innerHTML=items.map((item,index)=>{
-            const title=cleanBusinessText(item.title)||"Business story";
-            const desc=cleanBusinessText(item.description||item.content).slice(0,180);
+            const title=escapeHTML(item.title||"African business story");
+            const desc=escapeHTML(item.description||"Latest reporting and developments from across Africa.");
             const img=businessImage(item);
+            const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
+            const date=businessNewsTime(item.pubDate);
             return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
-                <div class="story-image">${img?`<img src="${img.replace(/"/g,'&quot;')}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=story-placeholder>BUSINESS OF AFRICA</div>'">`:`<div class="story-placeholder">${category.toUpperCase()}</div>`}</div>
-                <div class="story-content"><span>${(item.author||item.source||category).toString().toUpperCase()}</span><h4>${title}</h4><p>${desc||"Latest reporting and developments from across Africa."}</p><button>Read Story ↗</button><small>${businessNewsTime(item.pubDate)}</small></div>
+                <div class="story-image">${img?`<img src="${escapeHTML(img)}" alt="" loading="lazy" onerror="this.parentElement.innerHTML='<div class=story-placeholder>${category.toUpperCase()}</div>'">`:`<div class="story-placeholder">${category.toUpperCase()}</div>`}</div>
+                <div class="story-content"><span>${source}</span><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>${date?`Updated ${date}`:"Latest update"}</small></div>
             </article>`;
         }).join("");
     }catch(error){
