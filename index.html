@@ -1850,6 +1850,34 @@ main{margin-top:-55px}
 @media(max-width:900px){.sources-partners-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:600px){.sources-partners-grid{grid-template-columns:1fr}.source-partner-card{min-height:135px}}
 
+
+/* =========================================================
+   UNIVERSAL VIDEO WATCHLIST CONTROLS
+========================================================= */
+.watchlist-video-button{
+position:absolute;
+top:10px;
+right:10px;
+z-index:8;
+width:34px;
+height:34px;
+border:1px solid rgba(255,255,255,.18);
+border-radius:50%;
+background:rgba(0,0,0,.72);
+backdrop-filter:blur(8px);
+color:#fff;
+font-size:19px;
+line-height:1;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:.2s;
+}
+.watchlist-video-button:hover{transform:scale(1.06);background:rgba(0,0,0,.9)}
+.watchlist-video-button.saved{background:var(--red);border-color:var(--red)}
+.episode-card,.live-card,.sports-card,.youtube-original-card{position:relative}
+.episode-card .watchlist-video-button{top:10px;right:10px}
+.live-card .watchlist-video-button,.sports-card .watchlist-video-button{top:10px;right:10px}
 </style>
 </head>
 
@@ -3399,6 +3427,188 @@ row.innerHTML=
 
 }
 
+
+/* =========================================================
+   BRENZKafrica Plus — UNIVERSAL VIDEO WATCHLIST
+   Extends the existing Supabase Watchlist to playable external
+   videos without replacing the original content Watchlist.
+========================================================= */
+(function(){
+"use strict";
+
+const BKP_EXTERNAL_WATCHLIST_KEY="brenzkafrica_plus_external_watchlist_v1";
+
+function getExternalWatchlist(){
+  try{
+    const value=JSON.parse(localStorage.getItem(BKP_EXTERNAL_WATCHLIST_KEY)||"[]");
+    return Array.isArray(value)?value:[];
+  }catch(error){
+    console.warn("External Watchlist storage error:",error);
+    return [];
+  }
+}
+
+function setExternalWatchlist(items){
+  try{
+    localStorage.setItem(BKP_EXTERNAL_WATCHLIST_KEY,JSON.stringify(items));
+  }catch(error){
+    console.warn("External Watchlist save error:",error);
+  }
+}
+
+function externalKey(item){
+  return [
+    item.content_type||"video",
+    item.external_id||"",
+    item.content_id||""
+  ].join(":");
+}
+
+function isExternalVideoSaved(item){
+  const key=externalKey(item);
+  return getExternalWatchlist().some(saved=>externalKey(saved)===key);
+}
+
+function updateUniversalWatchlistButtons(){
+  document.querySelectorAll(".watchlist-video-button").forEach(button=>{
+    const item={
+      content_type:button.dataset.contentType||"video",
+      content_id:button.dataset.contentId||null,
+      external_id:button.dataset.externalId||null
+    };
+    const saved=isExternalVideoSaved(item);
+    button.classList.toggle("saved",saved);
+    button.textContent=saved?"✓":"＋";
+    button.setAttribute("aria-label",saved?"Remove from Watchlist":"Add to Watchlist");
+    button.title=saved?"Remove from Watchlist":"Add to Watchlist";
+  });
+}
+
+async function toggleUniversalVideoWatchlist(item,button){
+  if(!item || (!item.external_id && !item.content_id)){
+    showToast("This video cannot be added to Watchlist yet.");
+    return;
+  }
+  if(!currentUser){
+    showToast("Please sign in to use My Watchlist.");
+    openAccount();
+    return;
+  }
+  button.disabled=true;
+  const existing=getExternalWatchlist();
+  const key=externalKey(item);
+  const index=existing.findIndex(saved=>externalKey(saved)===key);
+  const removing=index>=0;
+  try{
+    if(removing){
+      existing.splice(index,1);
+    }else{
+      existing.unshift({
+        content_type:item.content_type||"video",
+        content_id:item.content_id||null,
+        external_id:item.external_id||null,
+        title:item.title||"Video",
+        thumbnail_url:item.thumbnail_url||"",
+        video_url:item.video_url||"",
+        source:item.source||"video",
+        saved_at:new Date().toISOString()
+      });
+    }
+    setExternalWatchlist(existing);
+
+    if(window.BKPProfessional && typeof window.BKPProfessional.syncWatchlist==="function"){
+      await window.BKPProfessional.syncWatchlist({
+        content_type:item.content_type||"video",
+        content_id:item.content_id||null,
+        external_id:item.external_id||null,
+        title:item.title||"Video",
+        thumbnail_url:item.thumbnail_url||""
+      },removing);
+    }
+
+    button.classList.toggle("saved",!removing);
+    button.textContent=removing?"＋":"✓";
+    button.setAttribute("aria-label",removing?"Add to Watchlist":"Remove from Watchlist");
+    button.title=removing?"Add to Watchlist":"Remove from Watchlist";
+    showToast(removing?"Removed from My Watchlist.":"Added to My Watchlist.");
+    if(typeof renderWatchlist==="function") await renderWatchlist();
+    renderUniversalWatchlist();
+  }catch(error){
+    console.error("Universal Watchlist error:",error);
+    showToast("Unable to update Watchlist right now.");
+  }finally{
+    button.disabled=false;
+  }
+}
+
+function universalWatchlistButton(item){
+  const saved=isExternalVideoSaved(item);
+  const contentType=String(item.content_type||"video");
+  const contentId=item.content_id?String(item.content_id):"";
+  const externalId=item.external_id?String(item.external_id):"";
+  const title=String(item.title||"Video").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+  const thumb=String(item.thumbnail_url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+  const source=String(item.source||"video").replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+  return `<button class="watchlist-video-button ${saved?"saved":""}" data-content-type="${escapeHTML(contentType)}" data-content-id="${escapeHTML(contentId)}" data-external-id="${escapeHTML(externalId)}" onclick="event.stopPropagation();toggleUniversalVideoWatchlist({content_type:'${contentType.replace(/'/g,"\\'")}',content_id:'${contentId.replace(/'/g,"\\'")}',external_id:'${externalId.replace(/'/g,"\\'")}',title:'${title}',thumbnail_url:'${thumb}',source:'${source}'},this)" aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}" title="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"✓":"＋"}</button>`;
+}
+
+function renderUniversalWatchlist(){
+  const target=document.getElementById("watchlistRow");
+  if(!target || !currentUser) return;
+  const external=getExternalWatchlist();
+  if(!external.length) return;
+
+  const existing=target.querySelectorAll(".universal-watchlist-card");
+  existing.forEach(node=>node.remove());
+
+  const html=external.map(item=>{
+    const title=escapeHTML(item.title||"Video");
+    const thumb=escapeHTML(item.thumbnail_url||"https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=800&q=80");
+    const source=escapeHTML(item.source||"Video");
+    let play="";
+    if(item.content_type==="youtube" && item.external_id){
+      play=`playVideo('${String(item.title||"Video").replace(/'/g,"\\'")}','https://www.youtube.com/watch?v=${encodeURIComponent(item.external_id)}')`;
+    }else if(item.content_type==="episode" && item.content_id){
+      play=`playEpisode(${Number(item.content_id)||0})`;
+    }else if(item.video_url){
+      play=`playVideo('${String(item.title||"Video").replace(/'/g,"\\'")}','${String(item.video_url).replace(/'/g,"\\'")}')`;
+    }else{
+      play=`showToast('This saved video is currently unavailable.')`;
+    }
+    return `<article class="card universal-watchlist-card" data-universal-watchlist="${escapeHTML(externalKey(item))}" onclick="${play}"><img src="${thumb}" alt="${title}" loading="lazy"><button class="watchlist-video-button saved" onclick="event.stopPropagation();toggleUniversalVideoWatchlist(${JSON.stringify(item).replace(/</g,"\\u003c")},this)" aria-label="Remove from Watchlist" title="Remove from Watchlist">✓</button><div class="card-overlay"><div class="card-title">${title}</div><div class="card-type">${source}</div></div></article>`;
+  }).join("");
+
+  const holder=document.createElement("div");
+  holder.className="universal-watchlist-holder";
+  holder.innerHTML=html;
+  target.appendChild(holder);
+}
+
+window.toggleUniversalVideoWatchlist=toggleUniversalVideoWatchlist;
+window.BKPUniversalWatchlist={
+  button:universalWatchlistButton,
+  refresh:updateUniversalWatchlistButtons,
+  render:renderUniversalWatchlist,
+  get:getExternalWatchlist
+};
+
+const originalRenderWatchlist=window.renderWatchlist;
+if(typeof originalRenderWatchlist==="function" && !window.__bkpUniversalRenderWrapped){
+  window.__bkpUniversalRenderWrapped=true;
+  window.renderWatchlist=async function(){
+    const result=await originalRenderWatchlist.apply(this,arguments);
+    renderUniversalWatchlist();
+    updateUniversalWatchlistButtons();
+    return result;
+  };
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  updateUniversalWatchlistButtons();
+  renderUniversalWatchlist();
+});
+})();
+
 /* =========================================================
    YOUTUBE
 ========================================================= */
@@ -3431,6 +3641,8 @@ alt="${escapeHTML(title)}"
 loading="lazy">
 
 <span class="card-badge">BRENZKAFRICA</span>
+
+${window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"youtube",external_id:videoId,title:title,thumbnail_url:thumbnail,source:"YouTube"}):""}
 
 <div class="card-overlay">
 
@@ -3808,6 +4020,8 @@ function loadPolygamistEpisodes(){
 
                     </div>
 
+                    ${window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"episode",content_id:String(index),external_id:"The.Polygamist.S01E"+String(episode.episode).padStart(2,"0"),title:episode.title,thumbnail_url:polygamistThumbnail,source:"The Polygamist"}):""}
+
                     <button
                         class="episode-play-btn"
                         onclick="event.stopPropagation(); playEpisode(${index})">
@@ -3995,6 +4209,8 @@ loading="lazy">
 <div class="live-badge ${isLive?"":"upcoming-badge"}">
 ${isLive?"🔴 LIVE NOW":"UPCOMING"}
 </div>
+
+${event.stream_url?`<div class="live-watchlist-control">${window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"live",content_id:String(event.id),external_id:String(event.id),title:event.title||"BRENZKafrica Live",thumbnail_url:event.thumbnail||"",video_url:event.stream_url,source:"BRENZKafrica Live"}):""}</div>`:""}
 
 <div class="live-card-info">
 
@@ -4459,6 +4675,8 @@ isLive
 </div>
 
 ${broadcastButton}
+
+${event.broadcastUrl&&window.BKPUniversalWatchlist?window.BKPUniversalWatchlist.button({content_type:"sports",content_id:String(event.id),external_id:String(event.id),title:event.eventName,thumbnail_url:event.thumbnail||"",video_url:event.broadcastUrl,source:"Sports"}):""}
 
 </article>
 
@@ -6002,7 +6220,6 @@ window.BRENZKafricaSource = function(source, url){
   return '<span class="data-source-label">'+safe+'</span>';
 };
 </script>
-
 <script>
 /* =========================================================
    BRENZKafrica Plus — PROFESSIONAL ACCOUNT & SUBSCRIPTION LAYER
@@ -6291,34 +6508,6 @@ document.addEventListener("DOMContentLoaded",function(){
 })();
 </script>
 
-<script>
-/* =========================================================
-   PROFESSIONAL LAYER BRIDGE — BASELINE INTEGRATION
-========================================================= */
-(function(){
-  function bridgeWatchlist(){
-    if(typeof window.toggleWatchlist !== "function" || window.__bkpWatchlistBridged) return;
-    window.__bkpWatchlistBridged=true;
-    const original=window.toggleWatchlist;
-    window.toggleWatchlist=function(item){
-      const result=original.apply(this,arguments);
-      try{
-        if(window.currentUser && window.BKPProfessional && item){
-          const saved = item.saved !== false;
-          window.BKPProfessional.syncWatchlist({
-            content_type:item.content_type||item.contentType||"video",
-            content_id:item.content_id||item.contentId||item.id||null,
-            external_id:item.external_id||item.externalId||null,
-            title:item.title||"",
-            thumbnail_url:item.thumbnail_url||item.thumbnailUrl||item.thumbnail||""
-          }, !saved);
-        }
-      }catch(e){}
-      return result;
-    };
-  }
-  document.addEventListener("DOMContentLoaded",bridgeWatchlist);
-})();
-</script>
+
 </body>
 </html>
