@@ -1980,6 +1980,7 @@ and global creative work from BRENZKafrica.
 <div class="hero-buttons">
 <button class="play-btn" onclick="playFeatured()">▶ Play</button>
 <button class="info-btn" onclick="showInfo()">ⓘ More Info</button>
+<button class="info-btn hero-watchlist-btn" id="featuredWatchlistButton" data-content-id="featured:brenzkafrica-cinema" data-watchlist-source="local" onclick="toggleWatchlist('featured:brenzkafrica-cinema',this,{key:'featured:brenzkafrica-cinema',title:'BRENZKafrica Cinema',type:'Featured Video',thumbnail:'BRENZKafrica cinema.jpeg',url:'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov',description:'BRENZKafrica Plus featured video'})">＋ Watchlist</button>
 </div>
 
 </div>
@@ -2781,6 +2782,7 @@ const sportsStatus=document.getElementById("sportsStatus");
 
 let currentUser=null;
 let watchlistIds=new Set();
+let localWatchlistItems=new Map();
 let allContent=[];
 let allEpisodes=[];
 let youtubeOriginals=[];
@@ -3098,6 +3100,77 @@ String(secs).padStart(2,"0");
 }
 
 /* =========================================================
+   UNIVERSAL WATCHLIST HELPERS
+========================================================= */
+
+function getLocalWatchlistKey(){
+return currentUser
+?"BRENZKafricaPlusWatchlist:"+String(currentUser.id)
+:null;
+}
+
+function loadLocalWatchlist(){
+localWatchlistItems=new Map();
+const key=getLocalWatchlistKey();
+if(!key)return;
+try{
+const raw=localStorage.getItem(key);
+const parsed=raw?JSON.parse(raw):[];
+if(Array.isArray(parsed)){
+parsed.forEach(item=>{
+if(item&&item.key)localWatchlistItems.set(String(item.key),item);
+});
+}
+}catch(error){
+console.warn("Local Watchlist load error:",error);
+}
+}
+
+function saveLocalWatchlist(){
+const key=getLocalWatchlistKey();
+if(!key)return;
+try{
+localStorage.setItem(key,JSON.stringify(Array.from(localWatchlistItems.values())));
+}catch(error){
+console.warn("Local Watchlist save error:",error);
+}
+}
+
+function watchlistIsSaved(id){
+return watchlistIds.has(String(id));
+}
+
+function addLocalWatchlistItem(item){
+if(!item||!item.key)return;
+localWatchlistItems.set(String(item.key),item);
+watchlistIds.add(String(item.key));
+saveLocalWatchlist();
+}
+
+function removeLocalWatchlistItem(id){
+const key=String(id);
+localWatchlistItems.delete(key);
+watchlistIds.delete(key);
+saveLocalWatchlist();
+}
+
+function createUniversalWatchlistCard(item){
+const key=String(item.key);
+const title=item.title||"Video";
+const thumb=item.thumbnail||"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80";
+const saved=watchlistIsSaved(key);
+return `
+<article class="card universal-watchlist-video" data-content-id="${escapeHTML(key)}" onclick="playVideo('${escapeHTML(title).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.description||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">
+<img src="${escapeHTML(thumb)}" alt="${escapeHTML(title)}" loading="lazy">
+<button class="watchlist-button ${saved?"saved":""}" data-content-id="${escapeHTML(key)}" data-watchlist-source="local" onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(key)}',this,${escapeHTML(JSON.stringify(item))})" aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"✓":"＋"}</button>
+<div class="card-overlay">
+<div class="card-title">${escapeHTML(title)}</div>
+<div class="card-type">${escapeHTML(item.type||"Video")}</div>
+</div>
+</article>`;
+}
+
+/* =========================================================
    WATCHLIST
 ========================================================= */
 
@@ -3106,6 +3179,7 @@ async function loadWatchlist(){
 if(!currentUser){
 
 watchlistIds=new Set();
+localWatchlistItems=new Map();
 
 watchlistRow.innerHTML=
 '<div class="watchlist-empty">'+
@@ -3119,6 +3193,8 @@ return;
 
 try{
 
+loadLocalWatchlist();
+
 const {data,error}=await supabaseClient
 .from("watchlist")
 .select("content_id")
@@ -3130,6 +3206,8 @@ if(error)throw error;
 watchlistIds=new Set(
 (data||[]).map(item=>String(item.content_id))
 );
+
+localWatchlistItems.forEach((item,key)=>watchlistIds.add(String(key)));
 
 updateWatchlistButtons();
 await renderWatchlist();
@@ -3147,10 +3225,10 @@ watchlistRow.innerHTML=
 
 }
 
-async function toggleWatchlist(contentId,button){
+async function toggleWatchlist(contentId,button,metadata=null){
 
 if(!contentId){
-showToast("This content cannot be added to Watchlist yet.");
+showToast("This video cannot be added to Watchlist yet.");
 return;
 }
 
@@ -3160,58 +3238,59 @@ openAccount();
 return;
 }
 
+if(!button)return;
 button.disabled=true;
 
 const id=String(contentId);
+const source=String(button.dataset.watchlistSource||"content").toLowerCase();
 const isSaved=watchlistIds.has(id);
 
 try{
 
-if(isSaved){
+/* Catalogue content continues to use the Supabase Watchlist table. */
+if(source==="content"){
 
+if(isSaved){
 const {error}=await supabaseClient
 .from("watchlist")
 .delete()
 .eq("user_id",currentUser.id)
 .eq("content_id",contentId);
-
 if(error)throw error;
-
 watchlistIds.delete(id);
-
 showToast("Removed from My Watchlist.");
+}else{
+const {error}=await supabaseClient
+.from("watchlist")
+.insert({user_id:currentUser.id,content_id:contentId});
+if(error&&error.code!=="23505")throw error;
+watchlistIds.add(id);
+showToast("Added to My Watchlist.");
+}
 
 }else{
 
-const {error}=await supabaseClient
-.from("watchlist")
-.insert({
-user_id:currentUser.id,
-content_id:contentId
-});
-
-if(error&&error.code!=="23505")throw error;
-
-watchlistIds.add(id);
-
+/* Episodes, YouTube, Live and authorized sports video streams are
+   saved as account-scoped local Watchlist items so they do not
+   require changing the existing Supabase watchlist schema. */
+if(isSaved){
+removeLocalWatchlistItem(id);
+showToast("Removed from My Watchlist.");
+}else{
+addLocalWatchlistItem(Object.assign({},metadata||{}, {key:id}));
 showToast("Added to My Watchlist.");
-
+}
 }
 
 updateWatchlistButtons();
 await renderWatchlist();
 
 }catch(error){
-
 console.error("Watchlist error:",error);
 showToast("Unable to update Watchlist right now.");
-
 }finally{
-
 button.disabled=false;
-
 }
-
 }
 
 function updateWatchlistButtons(){
@@ -3219,10 +3298,12 @@ function updateWatchlistButtons(){
 document.querySelectorAll(".watchlist-button").forEach(button=>{
 
 const id=String(button.dataset.contentId||"");
-const saved=watchlistIds.has(id);
+const saved=watchlistIsSaved(id);
 
 button.classList.toggle("saved",saved);
-button.textContent=saved?"✓":"＋";
+button.textContent=button.id==="featuredWatchlistButton"
+?(saved?"✓ Saved":"＋ Watchlist")
+:(saved?"✓":"＋");
 
 button.setAttribute(
 "aria-label",
@@ -3278,6 +3359,7 @@ ${featured?'<span class="card-badge">FEATURED</span>':""}
 <button
 class="watchlist-button ${saved?"saved":""}"
 data-content-id="${escapeHTML(id)}"
+data-watchlist-source="content"
 onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(id)}',this)"
 aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">
 ${saved?"✓":"＋"}
@@ -3394,54 +3476,45 @@ updateWatchlistButtons();
 async function renderWatchlist(){
 
 if(!currentUser){
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Sign in to create your Watchlist.'+
-'</div>';
-
-return;
-}
-
-if(!watchlistIds.size){
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Your Watchlist is empty. Tap ＋ on a title to save it here.'+
-'</div>';
-
+watchlistRow.innerHTML='<div class="watchlist-empty">Sign in to create your Watchlist.</div>';
 return;
 }
 
 const ids=Array.from(watchlistIds);
 
-const {data,error}=await supabaseClient
-.from("content")
-.select(
-"id,title,description,content_type,category,country,thumbnail_url,video_url,is_featured,release_date"
-)
-.in("id",ids);
-
-if(error){
-
-console.error(error);
-
-watchlistRow.innerHTML=
-'<div class="watchlist-empty">'+
-'Unable to load Watchlist content.'+
-'</div>';
-
+if(!ids.length){
+watchlistRow.innerHTML='<div class="watchlist-empty">Your Watchlist is empty. Tap ＋ on any video to save it here.</div>';
 return;
 }
 
-const ordered=(data||[]).sort(
-(a,b)=>ids.indexOf(String(a.id))-ids.indexOf(String(b.id))
-);
+/* Fetch only real catalogue IDs from Supabase. */
+const contentIds=ids.filter(id=>!id.includes(":"));
+let orderedContent=[];
 
-watchlistRow.innerHTML=ordered.length
-?ordered.map(createContentCard).join("")
-:'<div class="watchlist-empty">Your Watchlist is empty.</div>';
+if(contentIds.length){
+const {data,error}=await supabaseClient
+.from("content")
+.select("id,title,description,content_type,category,country,thumbnail_url,video_url,is_featured,release_date")
+.in("id",contentIds);
+if(error){
+console.error("Watchlist catalogue error:",error);
+}else{
+orderedContent=(data||[]).sort((a,b)=>contentIds.indexOf(String(a.id))-contentIds.indexOf(String(b.id)));
+}
+}
 
+const localItems=ids
+.filter(id=>id.includes(":"))
+.map(id=>localWatchlistItems.get(id))
+.filter(Boolean);
+
+const html=[
+...orderedContent.map(createContentCard),
+...localItems.map(createUniversalWatchlistCard)
+].join("");
+
+watchlistRow.innerHTML=html||'<div class="watchlist-empty">Your Watchlist is empty.</div>';
+updateWatchlistButtons();
 }
 
 /* =========================================================
@@ -3499,6 +3572,8 @@ extractYouTubeId(item.video_url);
 if(!videoId)return "";
 
 const title=item.title||"BRENZKafrica Tutorial";
+const watchKey="youtube:"+videoId;
+const saved=watchlistIsSaved(watchKey);
 
 const thumbnail=
 item.thumbnail||
@@ -3517,6 +3592,15 @@ alt="${escapeHTML(title)}"
 loading="lazy">
 
 <span class="card-badge">BRENZKAFRICA</span>
+
+<button
+class="watchlist-button ${saved?"saved":""}"
+data-content-id="${escapeHTML(watchKey)}"
+data-watchlist-source="local"
+onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(watchKey)}',this,${escapeHTML(JSON.stringify({key:watchKey,title:title,type:'YouTube Tutorial',thumbnail:thumbnail,url:'https://www.youtube.com/watch?v='+videoId}))})"
+aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">
+${saved?"✓":"＋"}
+</button>
 
 <div class="card-overlay">
 
@@ -3881,6 +3965,15 @@ function loadPolygamistEpisodes(){
                         </div>
 
                     </div>
+
+                    <button
+                        class="watchlist-button ${watchlistIsSaved("episode:"+episode.episode)?"saved":""}"
+                        data-content-id="episode:${episode.episode}"
+                        data-watchlist-source="local"
+                        onclick="event.stopPropagation();toggleWatchlist('episode:${episode.episode}',this,${escapeHTML(JSON.stringify({key:"episode:"+episode.episode,title:episode.title,type:"The Polygamist",thumbnail:polygamistThumbnail,url:episode.url,description:"The Polygamist • Season 1 • Episode "+episode.episode}))})"
+                        aria-label="${watchlistIsSaved("episode:"+episode.episode)?"Remove from Watchlist":"Add to Watchlist"}">
+                        ${watchlistIsSaved("episode:"+episode.episode)?"✓":"＋"}
+                    </button>
 
                     <div class="episode-info">
 
@@ -4438,6 +4531,9 @@ badgeHTML=
 
 }
 
+const sportsWatchKey="sports:"+String(event.id||event.eventName||"");
+const sportsSaved=watchlistIsSaved(sportsWatchKey);
+
 const broadcastButton=event.broadcastUrl
 ?`
 <button
@@ -4445,6 +4541,12 @@ class="sports-watch-button"
 onclick="event.stopPropagation();playSportsBroadcast('${escapeHTML(event.eventName)}','${escapeHTML(event.broadcastUrl)}')">
 ▶ Watch Live
 </button>
+<button
+class="watchlist-button ${sportsSaved?"saved":""}"
+data-content-id="${escapeHTML(sportsWatchKey)}"
+data-watchlist-source="local"
+onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(sportsWatchKey)}',this,${escapeHTML(JSON.stringify({key:sportsWatchKey,title:event.eventName||"Live Sports",type:"Sports",thumbnail:event.thumbnail||event.homeLogo||"",url:event.broadcastUrl||"",description:event.detail||event.league||"Authorized live sports broadcast"}))})"
+aria-label="${sportsSaved?"Remove from Watchlist":"Add to Watchlist"}">${sportsSaved?"✓":"＋"}</button>
 `
 :isLive
 ?'<span class="sports-no-broadcast">Live data</span>'
