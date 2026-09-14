@@ -8,6 +8,13 @@
 <meta name="theme-color" content="#080808">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* Supabase CDN fallback for desktop browsers/networks that block jsDelivr.
+   The main application requires window.supabase before it can initialize. */
+if(!window.supabase){
+  document.write('<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"><\/script>');
+}
+</script>
 <!-- BRENZKafrica Plus Desktop Reliability Layer -->
 <script>
 (function(){
