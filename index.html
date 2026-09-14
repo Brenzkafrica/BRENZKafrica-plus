@@ -6178,11 +6178,22 @@ function openGlobalSearch(initialValue=""){
     const backdrop=document.getElementById("searchBackdrop");
     const input=document.getElementById("globalSearchInput");
     if(!panel||!backdrop||!input)return;
+
     panel.classList.add("active");
     backdrop.classList.add("active");
-    if(initialValue)input.value=initialValue;
     document.body.classList.add("modal-open");
-    setTimeout(()=>{input.focus();input.select();performGlobalSearch(input.value);},20);
+
+    if(initialValue!==undefined && initialValue!==null){
+        input.value=String(initialValue);
+    }
+
+    setTimeout(function(){
+        try{
+            input.focus();
+            input.setSelectionRange(input.value.length,input.value.length);
+        }catch(e){}
+        performGlobalSearch(input.value||"");
+    },20);
 }
 function closeGlobalSearch(){
     const panel=document.getElementById("globalSearchPanel");
@@ -6246,14 +6257,116 @@ function performGlobalSearch(query){
     results.querySelectorAll(".search-result").forEach((el,i)=>el.addEventListener("click",()=>{const item=matches[i];closeGlobalSearch();if(typeof item.action==="function")item.action();}));
 }
 
-const topSearch=document.getElementById("search");
-if(topSearch){
-    topSearch.addEventListener("input",()=>performGlobalSearch(topSearch.value));
+/* =========================================================
+   SEARCH + QUICK LINKS RELIABILITY LAYER
+   - Binds after the DOM exists so desktop browsers cannot miss handlers.
+   - Uses delegated events for dynamically rendered content.
+   - Quick links scroll reliably with the fixed header offset.
+   - Header search opens the full search panel and searches as the user types.
+========================================================= */
+function initBrenzNavigationTools(){
+    const topSearch=document.getElementById("search");
+    const globalSearchInput=document.getElementById("globalSearchInput");
+
+    if(topSearch && !topSearch.dataset.brenzBound){
+        topSearch.dataset.brenzBound="1";
+
+        topSearch.addEventListener("click",function(){
+            openGlobalSearch(this.value||"");
+        });
+
+        topSearch.addEventListener("focus",function(){
+            openGlobalSearch(this.value||"");
+        });
+
+        topSearch.addEventListener("input",function(){
+            openGlobalSearch(this.value||"");
+        });
+
+        topSearch.addEventListener("keydown",function(event){
+            if(event.key==="Enter"){
+                event.preventDefault();
+                openGlobalSearch(this.value||"");
+                performGlobalSearch(this.value||"");
+            }
+            if(event.key==="Escape"){
+                event.preventDefault();
+                closeGlobalSearch();
+                this.blur();
+            }
+        });
+    }
+
+    if(globalSearchInput && !globalSearchInput.dataset.brenzBound){
+        globalSearchInput.dataset.brenzBound="1";
+
+        globalSearchInput.addEventListener("input",function(){
+            performGlobalSearch(this.value||"");
+        });
+
+        globalSearchInput.addEventListener("keydown",function(event){
+            if(event.key==="Escape"){
+                event.preventDefault();
+                closeGlobalSearch();
+            }
+            if(event.key==="Enter"){
+                event.preventDefault();
+                performGlobalSearch(this.value||"");
+            }
+        });
+    }
+
+    /* Make every Quick Link reliable on desktop and mobile. */
+    document.querySelectorAll("#quickLinks a.quick-link").forEach(function(link){
+        if(link.dataset.brenzBound) return;
+        link.dataset.brenzBound="1";
+
+        link.addEventListener("click",function(event){
+            const href=this.getAttribute("href")||"";
+            if(href==="#" || !href.startsWith("#")) return;
+
+            const target=document.getElementById(href.slice(1));
+            if(!target) return;
+
+            event.preventDefault();
+
+            if(typeof closeMobileMenu==="function"){
+                try{ closeMobileMenu(); }catch(e){}
+            }
+
+            const header=document.querySelector("header");
+            const offset=(header ? header.offsetHeight : 72)+14;
+            const top=target.getBoundingClientRect().top + window.pageYOffset - offset;
+
+            window.scrollTo({
+                top:Math.max(0,top),
+                behavior:"smooth"
+            });
+
+            history.replaceState(null,"",href);
+        });
+    });
+
+    /* The Home Quick Link should return to the top, not "#" the page state. */
+    const homeLink=document.querySelector('#quickLinks a.quick-link[href="#"]');
+    if(homeLink && !homeLink.dataset.brenzHomeBound){
+        homeLink.dataset.brenzHomeBound="1";
+        homeLink.addEventListener("click",function(event){
+            event.preventDefault();
+            if(typeof closeMobileMenu==="function"){
+                try{ closeMobileMenu(); }catch(e){}
+            }
+            window.scrollTo({top:0,behavior:"smooth"});
+            history.replaceState(null,"",window.location.pathname+window.location.search);
+        });
+    }
 }
-const globalSearchInput=document.getElementById("globalSearchInput");
-if(globalSearchInput){
-    globalSearchInput.addEventListener("input",()=>performGlobalSearch(globalSearchInput.value));
-    globalSearchInput.addEventListener("keydown",event=>{if(event.key==="Escape")closeGlobalSearch();});
+
+/* Bind immediately when possible and again after DOMContentLoaded. */
+if(document.readyState==="loading"){
+    document.addEventListener("DOMContentLoaded",initBrenzNavigationTools,{once:true});
+}else{
+    initBrenzNavigationTools();
 }
 
 
