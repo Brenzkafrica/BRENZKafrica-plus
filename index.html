@@ -7148,31 +7148,45 @@ setInterval(async function(){
 /* =========================================================
    BRENZKAFRICA PLUS — ADVERTISING MEDIA ENGINE
    Campaign formats: image | slideshow | video | mixed
-   Admin-ready configuration; replace campaign data with
-   Supabase/Admin API records when the advertising console is enabled.
+   Connected to Supabase advertising_campaigns when available;
+   local demo is retained only as a safe fallback.
 ========================================================= */
 (function(){
   "use strict";
-  const campaigns = window.BKP_AD_CAMPAIGNS || [
-    {
-      id:"demo-partner-campaign",
-      advertiser:"BRENZKafrica Plus",
-      title:"Your brand belongs here.",
-      description:"Premium campaign placement designed for brands, sponsors and commercial partners reaching audiences across Africa and the world.",
-      ctaText:"Partner With Us",
-      ctaUrl:"#advertisingPartners",
-      type:"slideshow",
-      duration:6000,
-      media:[
-        {type:"image",src:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82",alt:"Premium business environment"},
-        {type:"image",src:"https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=82",alt:"Business partnership"},
-        {type:"image",src:"https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=82",alt:"Corporate collaboration"}
-      ]
-    }
-  ];
+  const DEMO_CAMPAIGNS = [{
+    id:"demo-partner-campaign", advertiser:"BRENZKafrica Plus", title:"Your brand belongs here.",
+    description:"Premium campaign placement designed for brands, sponsors and commercial partners reaching audiences across Africa and the world.",
+    ctaText:"Partner With Us", ctaUrl:"#advertisingPartners", type:"slideshow", duration_ms:6000, label:"Featured Partner",
+    media:[
+      {type:"image",src:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82",alt:"Premium business environment"},
+      {type:"image",src:"https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=82",alt:"Business partnership"},
+      {type:"image",src:"https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=82",alt:"Corporate collaboration"}
+    ]
+  }];
+
+  let campaigns = DEMO_CAMPAIGNS;
 
   const state={campaigns,index:0,mediaIndex:0,timer:null,progressTimer:null,started:Date.now()};
   const $=id=>document.getElementById(id);
+
+  async function loadAdminCampaigns(){
+    try{
+      if(typeof supabaseClient === "undefined" || !supabaseClient || typeof supabaseClient.from!=="function") return;
+      const {data,error}=await supabaseClient
+        .from("advertising_campaigns")
+        .select("id,advertiser,title,description,label,cta_text,cta_url,type,duration_ms,media,is_active,start_at,end_at,priority,created_at,updated_at")
+        .order("priority",{ascending:false})
+        .order("created_at",{ascending:false});
+      if(error) throw error;
+      if(Array.isArray(data) && data.length){
+        campaigns=data.map(c=>({
+          id:c.id,advertiser:c.advertiser,title:c.title,description:c.description,label:c.label,
+          ctaText:c.cta_text,ctaUrl:c.cta_url,type:c.type,duration_ms:c.duration_ms,media:Array.isArray(c.media)?c.media:[]
+        })).filter(c=>c.media.length);
+        if(campaigns.length){ state.campaigns=campaigns; state.index=0; state.mediaIndex=0; renderCampaign(); }
+      }
+    }catch(e){ console.warn("Advertising campaign feed unavailable; using local fallback.",e); }
+  }
 
   function safeUrl(url){
     if(!url) return "#";
@@ -7261,7 +7275,7 @@ setInterval(async function(){
     const c=currentCampaign(), items=mediaItems(c);
     const isVideo=item.type==="video" || /\.(mp4|webm|ogg)(\?|$)/i.test(item.src);
     if(isVideo) return;
-    const duration=Math.max(2500,Number(c.duration)||6000);
+    const duration=Math.max(2500,Number(c.duration_ms||c.duration)||6000);
     const bar=$("advertisingProgressBar");
     const started=Date.now();
     if(bar) bar.style.width="0%";
@@ -7317,7 +7331,7 @@ setInterval(async function(){
   }
 
   window.BKPAdvertising={next,previous,setCampaigns,getState:()=>({...state})};
-  document.addEventListener("DOMContentLoaded",()=>{ if($("advertisingStage")) renderCampaign(); });
+  document.addEventListener("DOMContentLoaded",()=>{ if($("advertisingStage")){ renderCampaign(); setTimeout(loadAdminCampaigns,150); } });
 })();
 </script>
 
