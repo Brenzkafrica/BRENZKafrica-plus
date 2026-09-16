@@ -885,6 +885,13 @@ padding:35px 3px;
 font-size:12px
 }
 
+
+.real-story-media{width:100%;aspect-ratio:16/9;overflow:hidden;background:#0d0d0d;position:relative}
+.real-story-media img{width:100%;height:100%;object-fit:cover;display:block}
+.real-image-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#0b0b0b,#191919);color:#777;padding:18px}
+.real-image-placeholder span{font-size:10px;letter-spacing:1.5px;font-weight:800}
+.real-image-placeholder small{margin-top:7px;color:#555;font-size:11px;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
 /* ENTERTAINMENT */
 .entertainment-section{
 position:relative
@@ -2367,25 +2374,25 @@ The latest stories and developments from across Africa.
 </div>
 
 <div class="finance-content-block" id="businessNewsBlock">
-<div class="finance-block-cover" id="cover-latest"><img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1600&q=84" alt="BUSINESS OF AFRICA editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">BUSINESS OF AFRICA</div><div class="cover-title">Business Of Africa</div></div><div class="cover-note">African companies, entrepreneurs and investment stories</div></div></div>
+<div class="finance-block-cover" id="cover-latest"><img src="" alt="BUSINESS OF AFRICA editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">BUSINESS OF AFRICA</div><div class="cover-title">Business Of Africa</div></div><div class="cover-note">African companies, entrepreneurs and investment stories</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">BUSINESS OF AFRICA</span><h3>Latest African Business</h3><p>Fresh business stories aggregated from current news feeds.</p></div><button onclick="loadBusinessFeed('africa')">Refresh Stories ↻</button></div>
 <div class="business-story-row" id="africaBusinessFeed"><div class="business-feed-loading">Loading African business stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="marketsBusinessBlock">
-<div class="finance-block-cover" id="cover-markets"><img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1600&q=84" alt="AFRICA MARKETS & COMPANIES editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA MARKETS & COMPANIES</div><div class="cover-title">Africa Markets & Companies</div></div><div class="cover-note">Markets, capital, companies and investment</div></div></div>
+<div class="finance-block-cover" id="cover-markets"><img src="" alt="AFRICA MARKETS & COMPANIES editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA MARKETS & COMPANIES</div><div class="cover-title">Africa Markets & Companies</div></div><div class="cover-note">Markets, capital, companies and investment</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">MARKETS</span><h3>Africa Markets & Companies</h3><p>Current market, corporate and investment headlines.</p></div><button onclick="loadBusinessFeed('markets')">Refresh ↻</button></div>
 <div class="business-story-row" id="marketsBusinessFeed"><div class="business-feed-loading">Loading market stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="fintechBusinessBlock">
-<div class="finance-block-cover" id="cover-fintech"><img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=84" alt="AFRICA’S DIGITAL FINANCE editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA’S DIGITAL FINANCE</div><div class="cover-title">Africa’S Digital Finance</div></div><div class="cover-note">Mobile money, payments and financial technology</div></div></div>
+<div class="finance-block-cover" id="cover-fintech"><img src="" alt="AFRICA’S DIGITAL FINANCE editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA’S DIGITAL FINANCE</div><div class="cover-title">Africa’S Digital Finance</div></div><div class="cover-note">Mobile money, payments and financial technology</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">FINTECH</span><h3>Africa's Digital Finance</h3><p>Mobile money, digital banking, payments, startups and financial technology.</p></div><button onclick="loadBusinessFeed('fintech')">Refresh ↻</button></div>
 <div class="business-story-row" id="fintechBusinessFeed"><div class="business-feed-loading">Loading fintech stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="economyBusinessBlock">
-<div class="finance-block-cover" id="cover-economy"><img src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1600&q=84" alt="AFRICAN ECONOMY editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICAN ECONOMY</div><div class="cover-title">African Economy</div></div><div class="cover-note">Growth, infrastructure, trade and economic outlook</div></div></div>
+<div class="finance-block-cover" id="cover-economy"><img src="" alt="AFRICAN ECONOMY editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICAN ECONOMY</div><div class="cover-title">African Economy</div></div><div class="cover-note">Growth, infrastructure, trade and economic outlook</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">ECONOMY</span><h3>African Economy</h3><p>Growth, inflation, trade, investment, policy and economic outlook.</p></div><button onclick="loadBusinessFeed('economy')">Refresh ↻</button></div>
 <div class="business-story-row" id="economyBusinessFeed"><div class="business-feed-loading">Loading economy stories…</div></div>
 </div>
@@ -3402,7 +3409,7 @@ saveLocalWatchlist();
 function createUniversalWatchlistCard(item){
 const key=String(item.key);
 const title=item.title||"Video";
-const thumb=item.thumbnail||"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80";
+const thumb=item.thumbnail||"";
 const saved=watchlistIsSaved(key);
 return `
 <article class="card universal-watchlist-video" data-content-id="${escapeHTML(key)}" onclick="playVideo('${escapeHTML(title).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.description||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">
@@ -3573,7 +3580,7 @@ const title=item.title||"Untitled";
 
 const thumbnail=
 item.thumbnail_url||
-"https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80";
+"";
 
 const type=
 item.category||
@@ -3597,7 +3604,7 @@ onclick="playContentCard(this)">
 src="${escapeHTML(thumbnail)}"
 alt="${escapeHTML(title)}"
 loading="lazy"
-onerror="this.src='https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=800&q=80'">
+onerror="this.src=''">
 
 ${featured?'<span class="card-badge">FEATURED</span>':""}
 
@@ -4444,7 +4451,7 @@ onclick="handleLiveCard(
 <img
 src="${escapeHTML(
 event.thumbnail||
-"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80"
+""
 )}"
 alt="${escapeHTML(event.title||"Live")}"
 loading="lazy">
@@ -4566,15 +4573,16 @@ async function loadBreakingNews(){
             newsStatus.textContent="No updates";
             return;
         }
-        newsRow.innerHTML=data.news.map(item=>{
+        newsRow.innerHTML=data.news.map((item,index)=>{
             const link=
                 encodeURIComponent(
                     item.link || ""
                 );
             return `
                 <article
-                    class="news-card"
+                    class="news-card" data-real-image-index="${index}"
                     onclick="openNewsArticle('${link}')">
+                    ${realStoryMedia(item,item.title||"Breaking News")}
                     <div>
                         <div class="news-source">
                             ${escapeHTML(
@@ -4600,6 +4608,7 @@ async function loadBreakingNews(){
                 </article>
             `;
         }).join("");
+        hydrateRealStoryImages(newsRow,data.news,4);
         newsStatus.textContent=
             (data.count || data.news.length)+
             " fresh stories";
@@ -5117,12 +5126,12 @@ function sportsBreakingNormalize(item,category){
 function renderSportsBreakingItems(rowId,items,category){
     const row=document.getElementById(rowId);if(!row)return;
     if(!items.length){row.innerHTML='<div class="sports-breaking-empty">No fresh stories are available right now. Tap Refresh to try again.</div>';return;}
-    const pool=SPORTS_BREAKING_IMAGES[category]||SPORTS_BREAKING_IMAGES.major;
     row.innerHTML=items.slice(0,6).map((item,index)=>{
         const title=escapeHTML(item.title),desc=escapeHTML(item.description||"Latest sports developments and reporting."),source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
-        const image=pool[index%pool.length];const date=sportsBreakingDate(item.pubDate);
-        return `<article class="sports-breaking-card" onclick="openSportsBreakingArticle('${category}',${index})"><div class="sports-breaking-image"><img src="${escapeHTML(image)}" alt="${escapeHTML(category)} sports news" loading="lazy"></div><span class="sports-breaking-badge">${escapeHTML(category.replace("africa","African Sports"))}</span>${index===0?'<span class="sports-breaking-live">LATEST</span>':''}<div class="sports-breaking-info"><div class="sports-breaking-source">${source}</div><h4>${title}</h4><p>${desc}</p><div class="sports-breaking-date">${date||"LATEST"}</div></div></article>`;
+        const date=sportsBreakingDate(item.pubDate);
+        return `<article class="sports-breaking-card" data-real-image-index="${index}" onclick="openSportsBreakingArticle('${category}',${index})"><div class="sports-breaking-image">${realStoryMedia(item,title)}</div><span class="sports-breaking-badge">${escapeHTML(category.replace("africa","African Sports"))}</span>${index===0?'<span class="sports-breaking-live">LATEST</span>':''}<div class="sports-breaking-info"><div class="sports-breaking-source">${source}</div><h4>${title}</h4><p>${desc}</p><div class="sports-breaking-date">${date||"LATEST"}</div></div></article>`;
     }).join("");
+    hydrateRealStoryImages(row,items.slice(0,6),2);
 }
 async function loadSportsBreakingCategory(category){
     const row=document.getElementById("sportsBreaking"+category.charAt(0).toUpperCase()+category.slice(1)+"Row");if(!row)return;
@@ -5240,6 +5249,103 @@ row.innerHTML=
 }
 
 /* =========================================================
+   REAL STORY IMAGE SYSTEM
+   Uses publisher/feed images first, then resolves the article's
+   actual Open Graph image. No generic stock photography fallback.
+========================================================= */
+const REAL_IMAGE_CACHE_KEY="brenzkafrica_real_story_images_v1";
+const REAL_IMAGE_CACHE_TTL=1000*60*60*24;
+let realStoryImageCache={};
+try{realStoryImageCache=JSON.parse(localStorage.getItem(REAL_IMAGE_CACHE_KEY)||"{}")}catch(e){realStoryImageCache={};}
+
+function isStockImageUrl(url){
+    return /(^|\.)((images\.)?unsplash\.com|images\.pexels\.com|pixabay\.com)/i.test(String(url||""));
+}
+function cleanImageUrl(url){
+    if(!url||typeof url!=="string")return "";
+    const value=url.replace(/&amp;/g,"&").trim();
+    if(!/^https?:\/\//i.test(value)||isStockImageUrl(value))return "";
+    return value;
+}
+function extractImageFromHtml(html){
+    if(!html||typeof html!=="string")return "";
+    const doc=document.createElement("div");
+    doc.innerHTML=html;
+    const imgs=[...doc.querySelectorAll("img")];
+    for(const img of imgs){
+        const candidate=cleanImageUrl(img.getAttribute("src")||img.getAttribute("data-src")||img.getAttribute("data-lazy-src")||"");
+        if(candidate)return candidate;
+    }
+    return "";
+}
+function extractFeedImage(item){
+    if(!item)return "";
+    const candidates=[
+        item.image,
+        item.thumbnail,
+        item.enclosure?.link,
+        item.enclosure?.url,
+        item.enclosure?.thumbnail,
+        item.media?.content?.url,
+        item.media?.thumbnail?.url,
+        item["media:content"]?.url,
+        item["media:thumbnail"]?.url,
+        extractImageFromHtml(item.description),
+        extractImageFromHtml(item.content)
+    ];
+    for(const candidate of candidates){
+        const good=cleanImageUrl(candidate);
+        if(good)return good;
+    }
+    return "";
+}
+function saveRealImageCache(){
+    try{localStorage.setItem(REAL_IMAGE_CACHE_KEY,JSON.stringify(realStoryImageCache));}catch(e){}
+}
+async function resolveActualArticleImage(item){
+    const feedImage=extractFeedImage(item);
+    if(feedImage)return feedImage;
+    const url=item?.link||item?.url||"";
+    if(!/^https?:\/\//i.test(url))return "";
+    const cached=realStoryImageCache[url];
+    if(cached&&cached.time&&Date.now()-cached.time<REAL_IMAGE_CACHE_TTL)return cached.image||"";
+    try{
+        const endpoint="https://api.microlink.io/?url="+encodeURIComponent(url)+"&filter=data.image";
+        const response=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"}});
+        if(!response.ok)throw new Error("image resolver "+response.status);
+        const data=await response.json();
+        const image=cleanImageUrl(data?.data?.image?.url||"");
+        realStoryImageCache[url]={image,time:Date.now()};
+        saveRealImageCache();
+        return image;
+    }catch(error){
+        realStoryImageCache[url]={image:"",time:Date.now()};
+        saveRealImageCache();
+        return "";
+    }
+}
+function realImagePlaceholder(title){
+    return `<div class="real-image-placeholder" aria-label="Image unavailable"><span>IMAGE UNAVAILABLE</span><small>${escapeHTML(title||"Story")}</small></div>`;
+}
+async function hydrateRealStoryImages(container,items,limit=2){
+    if(!container||!Array.isArray(items)||!items.length)return;
+    const cards=[...container.querySelectorAll("[data-real-image-index]")].slice(0,limit);
+    await Promise.allSettled(cards.map(async card=>{
+        const index=Number(card.dataset.realImageIndex);
+        const item=items[index];if(!item)return;
+        const image=await resolveActualArticleImage(item);if(!image)return;
+        const media=card.querySelector(".real-story-media");if(!media)return;
+        media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy">`;
+    }));
+}
+function realStoryMedia(item,title){
+    const image=extractFeedImage(item);
+    return image
+        ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy"></div>`
+        : `<div class="real-story-media">${realImagePlaceholder(title)}</div>`;
+}
+
+/* =========================================================
    ENTERTAINMENT
 ========================================================= */
 
@@ -5276,13 +5382,12 @@ panel.classList.add("active");
 
 }
 
-function createMusicCard(item){
+function createMusicCard(item,index=0){
 
 const title=item.title||"Music News";
 const artist=item.artist||item.source||"Music";
 const region=item.region||"Worldwide";
-const image=item.image||
-"https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=800&q=80";
+const image=extractFeedImage(item);
 
 const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)
 ?item.url
@@ -5290,13 +5395,11 @@ const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)
 
 return `
 <article
+data-real-image-index="${index}"
 class="music-card"
 onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
 
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
+${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy">`:realImagePlaceholder(title)}
 
 <div class="music-play">
 ↗
@@ -5323,22 +5426,19 @@ ${escapeHTML(region)}
 
 }
 
-function createEntertainmentCard(item,type){
+function createEntertainmentCard(item,type,index=0){
 
 const title=item.title||"Entertainment";
 const meta=item.meta||type;
-const image=item.image||
-"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
+const image=extractFeedImage(item);
 
 return `
 <article
+data-real-image-index="${index}"
 class="entertainment-card"
 onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
 
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
+${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy">`:realImagePlaceholder(title)}
 
 <div class="entertainment-badge">
 ${escapeHTML(type)}
@@ -5420,10 +5520,7 @@ showToast(title+" — source unavailable right now.");
 }
 
 function entertainmentImage(item){
-return item.thumbnail ||
-(item.enclosure&&item.enclosure.link) ||
-(item.enclosure&&item.enclosure.url) ||
-"https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=900&q=80";
+return extractFeedImage(item);
 }
 
 function cleanEntertainmentDescription(value){
@@ -5492,9 +5589,11 @@ return;
 }
 
 if(type==="MUSIC"){
-row.innerHTML=items.map(createMusicCard).join("");
+row.innerHTML=items.map((item,index)=>createMusicCard(item,index)).join("");
+hydrateRealStoryImages(row,items,2);
 }else{
-row.innerHTML=items.map(item=>createEntertainmentCard(item,type)).join("");
+row.innerHTML=items.map((item,index)=>createEntertainmentCard(item,type,index)).join("");
+hydrateRealStoryImages(row,items,2);
 }
 }
 
@@ -5558,12 +5657,7 @@ const INTERNATIONAL_NEWS_FALLBACKS={
     space:["https://news.google.com/rss/search?q=space+science+latest&hl=en-US&gl=US&ceid=US:en"],
     education:["https://news.google.com/rss/search?q=global+education+latest&hl=en-US&gl=US&ceid=US:en"]
 };
-const INTERNATIONAL_IMAGES={
-    politics:["https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1200&q=82"],
-    wars:["https://images.unsplash.com/photo-1580130732478-4e339fb6836f?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1534996858221-380b92700493?auto=format&fit=crop&w=1200&q=82"],
-    space:["https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1517976547714-720226b864c1?auto=format&fit=crop&w=1200&q=82"],
-    education:["https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=82"]
-};
+const INTERNATIONAL_IMAGES={};
 const SPORTS_BREAKING_NEWS={
     football:"https://news.google.com/rss/search?q=(football+OR+soccer)+(transfer+OR+injury+OR+manager+OR+club+OR+match)&hl=en-US&gl=US&ceid=US:en",
     basketball:"https://news.google.com/rss/search?q=(NBA+OR+WNBA+OR+basketball)+(trade+OR+injury+OR+game+OR+player)&hl=en-US&gl=US&ceid=US:en",
@@ -5582,15 +5676,7 @@ const SPORTS_BREAKING_FALLBACKS={
     africa:["https://news.google.com/rss/search?q=Africa+sports+latest&hl=en-US&gl=US&ceid=US:en"],
     major:["https://news.google.com/rss/search?q=sports+latest&hl=en-US&gl=US&ceid=US:en"]
 };
-const SPORTS_BREAKING_IMAGES={
-    football:["https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=82"],
-    basketball:["https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1504450758481-7338eba7524a?auto=format&fit=crop&w=1200&q=82"],
-    motorsport:["https://images.unsplash.com/photo-1503736334956-4c8f8e92946d?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1504215680853-026ed2a45def?auto=format&fit=crop&w=1200&q=82"],
-    tennis:["https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=1200&q=82"],
-    fight:["https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1517438476312-10d79c077509?auto=format&fit=crop&w=1200&q=82"],
-    africa:["https://images.unsplash.com/photo-1518604666860-9ed391f76460?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=82"],
-    major:["https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=1200&q=82"]
-};
+const SPORTS_BREAKING_IMAGES={};
 let sportsBreakingNewsCache={};
 
 let internationalNewsCache={politics:[],wars:[],space:[],education:[]};
@@ -5765,29 +5851,9 @@ function cleanBusinessText(value){
     return String(value||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
 }
 function businessImage(item,category,index=0){
-    const supplied=item.thumbnail||item.enclosure?.link||item.enclosure?.url||"";
-    if(supplied)return supplied;
-    const fallbacks={
-        africa:[
-            "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=82",
-            "https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=82"
-        ],
-        markets:[
-            "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=82",
-            "https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&w=1200&q=82"
-        ],
-        fintech:[
-            "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1200&q=82",
-            "https://images.unsplash.com/photo-1563013544-824ae1b704d3?auto=format&fit=crop&w=1200&q=82"
-        ],
-        economy:[
-            "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=82",
-            "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=82"
-        ]
-    };
-    const pool=fallbacks[category]||fallbacks.africa;
-    return pool[index%pool.length];
+    return extractFeedImage(item);
 }
+
 async function fetchBusinessRSS(feedUrl){
     const endpoint=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=10`;
     const res=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"}});
@@ -5838,15 +5904,14 @@ async function loadInternationalCategory(category){
         items=items.slice(0,4);
         internationalNewsCache[category]=items;
         if(!items.length){target.innerHTML="<div class='international-empty'>No current stories are available right now. Tap Refresh to try again.</div>";if(count)count.textContent="NO UPDATES";return;}
-        const pool=INTERNATIONAL_IMAGES[category]||[];
         target.innerHTML=items.map((item,index)=>{
             const title=escapeHTML(item.title||"International news story");
             const desc=escapeHTML(item.description||"Latest international reporting and developments.");
             const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
             const date=businessNewsTime(item.pubDate);
-            const img=pool[index%pool.length];
-            return `<article class="international-story-card" onclick="openInternationalArticle('${category}',${index})"><div class="international-story-image"><img src="${escapeHTML(img)}" alt="${escapeHTML(category)} news" loading="lazy"></div><div class="international-story-source">${source}</div><h4 class="international-story-title">${title}</h4><p class="international-story-desc">${desc}</p><div class="international-story-date">${date||"LATEST"}</div></article>`;
+            return `<article class="international-story-card" data-real-image-index="${index}" onclick="openInternationalArticle('${category}',${index})">${realStoryMedia(item,title)}<div class="international-story-source">${source}</div><h4 class="international-story-title">${title}</h4><p class="international-story-desc">${desc}</p><div class="international-story-date">${date||"LATEST"}</div></article>`;
         }).join("");
+        hydrateRealStoryImages(target,items,2);
         if(count)count.textContent=items.length+" STORIES";
     }catch(error){
         console.warn("International news error",category,error);
@@ -5889,14 +5954,14 @@ async function loadBusinessFeed(category){
         target.innerHTML=items.map((item,index)=>{
             const title=escapeHTML(item.title||"African business story");
             const desc=escapeHTML(item.description||"Latest reporting and developments from across Africa.");
-            const img=businessImage(item,category,index);
             const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
             const date=businessNewsTime(item.pubDate);
-            return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
-                <div class="story-image">${img?`<img src="${escapeHTML(img)}" alt="${escapeHTML(title)}" loading="lazy" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=82'">`:``}<span class="story-category-badge">${category.toUpperCase()}</span></div>
+            return `<article class="business-story-card live-business-story" data-real-image-index="${index}" onclick="openBusinessArticle('${category}',${index})">
+                <div class="story-image">${realStoryMedia(item,title)}<span class="story-category-badge">${category.toUpperCase()}</span></div>
                 <div class="story-content"><div class="story-source-line"><span>${source}</span><span>${date?date:"LATEST"}</span></div><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>Source: ${source}</small></div>
             </article>`;
         }).join("");
+        hydrateRealStoryImages(target,items,2);
     }catch(error){
         console.warn("BRENZKafrica business news error",category,error);
         target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
