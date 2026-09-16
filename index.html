@@ -1804,6 +1804,39 @@ main{margin-top:-55px}
 }
 
 
+
+/* =========================================================
+   BREAKING INTERNATIONAL NEWS
+========================================================= */
+.international-news-section{padding:28px 20px 34px;margin:0 0 8px;background:linear-gradient(180deg,#0b0b0b,#080808);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.international-news-header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:8px}
+.international-news-title-wrap{display:flex;align-items:center;gap:12px}
+.international-news-title{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.4px}
+.international-news-dot{width:10px;height:10px;border-radius:50%;background:#e50914;box-shadow:0 0 0 5px rgba(229,9,20,.12),0 0 18px rgba(229,9,20,.55);flex:0 0 auto}
+.international-news-status{color:var(--muted);font-size:12px;margin-top:4px}
+.international-news-refresh{border:1px solid var(--border);background:#151515;color:#fff;border-radius:999px;padding:9px 14px;cursor:pointer;font-weight:700}
+.international-news-refresh:hover{background:#222}
+.international-news-subtitle{color:#aaa;margin:0 0 18px;max-width:850px;line-height:1.55}
+.international-news-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.international-category{background:#111;border:1px solid var(--border);border-radius:16px;overflow:hidden;min-width:0;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+.international-category-head{padding:14px 15px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.international-category-name{font-size:15px;font-weight:800;letter-spacing:.2px}
+.international-category-count{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.7px}
+.international-story-list{display:flex;flex-direction:column}
+.international-story-card{display:block;color:#fff;text-decoration:none;padding:0 15px 15px;cursor:pointer}
+.international-story-card+.international-story-card{padding-top:14px;border-top:1px solid var(--border)}
+.international-story-image{height:125px;border-radius:11px;overflow:hidden;background:#1a1a1a;margin-bottom:10px;position:relative}
+.international-story-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.international-story-card:hover .international-story-image img{transform:scale(1.04)}
+.international-story-image:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.5))}
+.international-story-source{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
+.international-story-title{font-size:14px;line-height:1.35;font-weight:750;margin:0 0 6px}
+.international-story-desc{font-size:11px;line-height:1.45;color:#aaa;margin:0}
+.international-story-date{font-size:10px;color:#777;margin-top:7px}
+.international-empty,.international-error{padding:20px 15px;color:#888;font-size:12px;line-height:1.5}
+@media(max-width:1050px){.international-news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.international-news-section{padding-left:15px;padding-right:15px}.international-news-header{align-items:flex-start}.international-news-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}.international-category{flex:0 0 84%;scroll-snap-align:start}.international-story-image{height:150px}.international-news-refresh{padding:8px 11px;font-size:11px}}
+
 /* BUSINESS OF AFRICA LIVE ENHANCEMENTS */
 .business-live-meta{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;white-space:nowrap}.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
 /* Premium Business of Africa editorial treatment */
@@ -2123,6 +2156,7 @@ and global creative work from BRENZKafrica.
 <a class="quick-link" href="#episodes">▶ Episodes</a>
 <a class="quick-link" href="#live">🔴 Live</a>
 <a class="quick-link" href="#news">📰 News</a>
+<a class="quick-link" href="#internationalNews">🌐 International</a>
 <a class="quick-link" href="#sports">🏆 Sports</a>
 <a class="quick-link" href="#wwe">🥊 WWE</a>
 <a class="quick-link" href="#entertainment">🎭 Entertainment</a>
@@ -2236,6 +2270,22 @@ The latest stories and developments from across Africa.
 
 </section>
 
+<section class="international-news-section" id="internationalNews">
+<div class="international-news-header">
+<div>
+<div class="international-news-title-wrap"><span class="international-news-dot"></span><div class="international-news-title">Breaking International News</div></div>
+<div class="international-news-status" id="internationalNewsStatus">Loading global headlines...</div>
+</div>
+<button class="international-news-refresh" type="button" onclick="loadInternationalNews()">↻ Refresh</button>
+</div>
+<p class="international-news-subtitle">Major developments from around the world, organized across politics, wars & conflicts, space and education.</p>
+<div class="international-news-grid">
+<article class="international-category"><div class="international-category-head"><span class="international-category-name">Politics</span><span class="international-category-count" id="internationalPoliticsCount">LIVE</span></div><div class="international-story-list" id="internationalPoliticsFeed"><div class="international-empty">Loading politics...</div></div></article>
+<article class="international-category"><div class="international-category-head"><span class="international-category-name">Wars & Conflicts</span><span class="international-category-count" id="internationalWarsCount">LIVE</span></div><div class="international-story-list" id="internationalWarsFeed"><div class="international-empty">Loading wars & conflicts...</div></div></article>
+<article class="international-category"><div class="international-category-head"><span class="international-category-name">Space</span><span class="international-category-count" id="internationalSpaceCount">LIVE</span></div><div class="international-story-list" id="internationalSpaceFeed"><div class="international-empty">Loading space...</div></div></article>
+<article class="international-category"><div class="international-category-head"><span class="international-category-name">Education</span><span class="international-category-count" id="internationalEducationCount">LIVE</span></div><div class="international-story-list" id="internationalEducationFeed"><div class="international-empty">Loading education...</div></div></article>
+</div>
+</section>
 
 <!-- =========================================================
      BRENZKAFRICA PLUS
@@ -5373,6 +5423,26 @@ updated.textContent="Updated "+new Date().toLocaleTimeString([],{
    BUSINESS OF AFRICA • LIVE DATA
 ========================================================= */
 
+const INTERNATIONAL_NEWS={
+    politics:"https://news.google.com/rss/search?q=international+(politics+OR+government+OR+elections+OR+diplomacy+OR+geopolitics)&hl=en-US&gl=US&ceid=US:en",
+    wars:"https://news.google.com/rss/search?q=world+(war+OR+conflict+OR+ceasefire+OR+military+OR+missile+OR+airstrike)&hl=en-US&gl=US&ceid=US:en",
+    space:"https://news.google.com/rss/search?q=space+(NASA+OR+ESA+OR+SpaceX+OR+rocket+OR+satellite+OR+moon+OR+Mars)&hl=en-US&gl=US&ceid=US:en",
+    education:"https://news.google.com/rss/search?q=world+(education+OR+schools+OR+universities+OR+students+OR+teachers)&hl=en-US&gl=US&ceid=US:en"
+};
+const INTERNATIONAL_NEWS_FALLBACKS={
+    politics:["https://news.google.com/rss/search?q=world+politics+latest&hl=en-US&gl=US&ceid=US:en"],
+    wars:["https://news.google.com/rss/search?q=global+conflicts+latest&hl=en-US&gl=US&ceid=US:en"],
+    space:["https://news.google.com/rss/search?q=space+science+latest&hl=en-US&gl=US&ceid=US:en"],
+    education:["https://news.google.com/rss/search?q=global+education+latest&hl=en-US&gl=US&ceid=US:en"]
+};
+const INTERNATIONAL_IMAGES={
+    politics:["https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1521295121783-8a321d551ad2?auto=format&fit=crop&w=1200&q=82"],
+    wars:["https://images.unsplash.com/photo-1580130732478-4e339fb6836f?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1534996858221-380b92700493?auto=format&fit=crop&w=1200&q=82"],
+    space:["https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1517976547714-720226b864c1?auto=format&fit=crop&w=1200&q=82"],
+    education:["https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=82","https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=82"]
+};
+let internationalNewsCache={politics:[],wars:[],space:[],education:[]};
+
 const BUSINESS_API={
     crypto:"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bnb,solana,xrp,cardano&order=market_cap_desc&per_page=6&page=1&sparkline=true&price_change_percentage=24h",
     fx:"https://api.frankfurter.dev/v2/rates?base=USD&quotes=UGX,KES,NGN,ZAR,EUR,GBP"
@@ -5596,6 +5666,51 @@ function dedupeBusinessItems(items){
         if(seen.has(key))return false;
         seen.add(key);return true;
     });
+}
+
+async function loadInternationalCategory(category){
+    const target=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Feed");
+    const count=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Count");
+    if(!target)return;
+    target.innerHTML="<div class='international-empty'>Loading latest stories...</div>";
+    const urls=[INTERNATIONAL_NEWS[category],...(INTERNATIONAL_NEWS_FALLBACKS[category]||[])].filter(Boolean);
+    try{
+        let items=[];
+        for(const url of urls){
+            try{
+                const rows=await fetchBusinessRSS(url);
+                items=dedupeBusinessItems([...items,...rows.map(x=>normalizeBusinessItem(x,category)).filter(Boolean)]);
+                if(items.length>=4)break;
+            }catch(e){console.warn("International news source failed",category,e);}
+        }
+        items=items.slice(0,4);
+        internationalNewsCache[category]=items;
+        if(!items.length){target.innerHTML="<div class='international-empty'>No current stories are available right now. Tap Refresh to try again.</div>";if(count)count.textContent="NO UPDATES";return;}
+        const pool=INTERNATIONAL_IMAGES[category]||[];
+        target.innerHTML=items.map((item,index)=>{
+            const title=escapeHTML(item.title||"International news story");
+            const desc=escapeHTML(item.description||"Latest international reporting and developments.");
+            const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
+            const date=businessNewsTime(item.pubDate);
+            const img=pool[index%pool.length];
+            return `<article class="international-story-card" onclick="openInternationalArticle('${category}',${index})"><div class="international-story-image"><img src="${escapeHTML(img)}" alt="${escapeHTML(category)} news" loading="lazy"></div><div class="international-story-source">${source}</div><h4 class="international-story-title">${title}</h4><p class="international-story-desc">${desc}</p><div class="international-story-date">${date||"LATEST"}</div></article>`;
+        }).join("");
+        if(count)count.textContent=items.length+" STORIES";
+    }catch(error){
+        console.warn("International news error",category,error);
+        target.innerHTML="<div class='international-error'>International news is temporarily unavailable. Tap Refresh to try again.</div>";
+        if(count)count.textContent="UNAVAILABLE";
+    }
+}
+async function loadInternationalNews(){
+    const status=document.getElementById("internationalNewsStatus");
+    if(status)status.textContent="Updating global headlines…";
+    await Promise.allSettled(["politics","wars","space","education"].map(loadInternationalCategory));
+    if(status)status.textContent="Global feeds refreshed · "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+}
+function openInternationalArticle(category,index){
+    const item=internationalNewsCache[category]?.[index];
+    if(item?.link)window.open(item.link,"_blank","noopener,noreferrer");
 }
 
 async function loadBusinessFeed(category){
@@ -6258,6 +6373,9 @@ function getSearchItems(){
     Object.keys(businessNewsCache||{}).forEach(category=>{
         (businessNewsCache[category]||[]).forEach(x=>push(cleanBusinessText(x.title),String(x.author||x.source||category),cleanBusinessText(x.description||x.content),businessImage(x),()=>{if(x.link)window.open(x.link,"_blank","noopener,noreferrer")},"Business"));
     });
+    Object.keys(internationalNewsCache||{}).forEach(category=>{
+        (internationalNewsCache[category]||[]).forEach(x=>push(cleanBusinessText(x.title),"International • "+category,cleanBusinessText(x.description||x.content),INTERNATIONAL_IMAGES[category]?.[0]||"",()=>{if(x.link)window.open(x.link,"_blank","noopener,noreferrer")},"International News"));
+    });
     WWE_NEWS_SNAPSHOT.forEach(x=>push(x.title,x.meta,x.description,"",()=>wweSafeOpen(x.url),"WWE News"));
     WWE_MATCH_COVERAGE.forEach(x=>push(x.a+" vs "+x.b,x.brand,x.detail,"",()=>wweSafeOpen(x.url),"WWE Match"));
     WWE_EVENTS_SNAPSHOT.forEach(x=>push(x.name,x.type,x.location,"",()=>wweSafeOpen(x.url),"WWE Event"));
@@ -6433,6 +6551,7 @@ async function refreshBRENZKafricaLiveData(force = false){
         await Promise.allSettled([
             loadLiveEvents(),
             loadBreakingNews(),
+            loadInternationalNews(),
             loadSports(),
             loadEntertainment(),
             loadBusinessOfAfrica(),
