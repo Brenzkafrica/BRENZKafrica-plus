@@ -8,39 +8,6 @@
 <meta name="theme-color" content="#080808">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-/* Supabase CDN fallback for desktop browsers/networks that block jsDelivr.
-   The main application requires window.supabase before it can initialize. */
-if(!window.supabase){
-  document.write('<script src="https://unpkg.com/@supabase/supabase-js@2/dist/umd/supabase.js"><\/script>');
-}
-</script>
-<!-- BRENZKafrica Plus Desktop Reliability Layer -->
-<script>
-(function(){
-  const nativeFetch = window.fetch.bind(window);
-  const DEFAULT_TIMEOUT = 12000;
-  window.BRENZKAFRICA_NATIVE_FETCH = nativeFetch;
-  window.BRENZKAFRICA_FETCH_TIMEOUT = DEFAULT_TIMEOUT;
-  window.brenzSafeFetch = async function(input, options){
-    const opts = Object.assign({}, options || {});
-    const timeout = Number(opts.timeout || DEFAULT_TIMEOUT);
-    delete opts.timeout;
-    const controller = new AbortController();
-    const externalSignal = opts.signal;
-    let timer;
-    if(externalSignal){
-      if(externalSignal.aborted) controller.abort();
-      else externalSignal.addEventListener('abort', ()=>controller.abort(), {once:true});
-    }
-    timer = setTimeout(()=>controller.abort(), timeout);
-    opts.signal = controller.signal;
-    try { return await nativeFetch(input, opts); }
-    finally { clearTimeout(timer); }
-  };
-})();
-</script>
-
 
 <style>
 :root{
@@ -634,6 +601,21 @@ text-overflow:ellipsis
 .live-card-time{color:#888;font-size:10px;margin-top:6px}
 .live-empty{color:#686868;padding:30px 2px;font-size:12px}
 
+/* REAL STORY IMAGES */
+.news-card{padding:0;overflow:hidden;min-height:285px}
+.news-story-media{position:relative;height:125px;overflow:hidden;background-size:cover;background-position:center}
+.news-story-media .real-story-image,.news-story-media .real-story-image-placeholder{width:100%;height:100%;display:block;object-fit:cover}
+.news-card-body{padding:15px 18px 16px;position:relative;z-index:2}
+.news-image-source{position:absolute;left:10px;bottom:9px;background:rgba(0,0,0,.72);border:1px solid rgba(255,255,255,.12);padding:4px 7px;border-radius:4px;font-size:8px;font-weight:800;letter-spacing:.5px;text-transform:uppercase}
+.real-story-image-placeholder{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;background:linear-gradient(135deg,#161616,#090909);color:#777;letter-spacing:2px;font-size:10px;text-align:center}
+.real-story-image-placeholder span{font-weight:900;color:#aaa}
+.real-story-image-placeholder small{font-size:8px;letter-spacing:.4px;color:#666}
+.story-image-missing .real-story-image-placeholder{display:flex}
+.entertainment-card .real-story-image,.entertainment-card .real-story-image-placeholder{width:100%;height:100%;object-fit:cover;display:flex}
+.entertainment-card .real-story-image-placeholder{position:absolute;inset:0;z-index:0}
+.business-story-card .real-story-image,.business-story-card .real-story-image-placeholder{width:100%;height:100%;object-fit:cover;display:flex}
+.business-story-card .real-story-image-placeholder{align-items:center;justify-content:center;flex-direction:column}
+
 /* NEWS */
 .breaking-news{padding-top:25px;margin-bottom:25px}
 .news-card{
@@ -884,13 +866,6 @@ color:#686868;
 padding:35px 3px;
 font-size:12px
 }
-
-
-.real-story-media{width:100%;aspect-ratio:16/9;overflow:hidden;background:#0d0d0d;position:relative}
-.real-story-media img{width:100%;height:100%;object-fit:cover;display:block}
-.real-image-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:linear-gradient(135deg,#0b0b0b,#191919);color:#777;padding:18px}
-.real-image-placeholder span{font-size:10px;letter-spacing:1.5px;font-weight:800}
-.real-image-placeholder small{margin-top:7px;color:#555;font-size:11px;max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* ENTERTAINMENT */
 .entertainment-section{
@@ -1811,75 +1786,6 @@ main{margin-top:-55px}
 }
 
 
-
-/* =========================================================
-   SPORTS BREAKING NEWS
-========================================================= */
-.sports-breaking-section{padding:30px 20px 38px;margin:0 0 8px;background:linear-gradient(180deg,#0b0b0b,#080808);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.sports-breaking-header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:8px}
-.sports-breaking-title-wrap{display:flex;align-items:center;gap:12px}
-.sports-breaking-title{font-size:clamp(22px,3vw,32px);font-weight:900;letter-spacing:-.5px}
-.sports-breaking-dot{width:10px;height:10px;border-radius:50%;background:#e50914;box-shadow:0 0 0 5px rgba(229,9,20,.12),0 0 18px rgba(229,9,20,.55);flex:0 0 auto}
-.sports-breaking-status{color:var(--muted);font-size:12px;margin-top:4px}
-.sports-breaking-refresh{border:1px solid var(--border);background:#151515;color:#fff;border-radius:999px;padding:9px 14px;cursor:pointer;font-weight:800}
-.sports-breaking-refresh:hover{background:#222}
-.sports-breaking-subtitle{color:#aaa;margin:0 0 18px;max-width:900px;line-height:1.55}
-.sports-breaking-tabs{display:flex;gap:8px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:none}
-.sports-breaking-tabs::-webkit-scrollbar{display:none}
-.sports-breaking-tab{flex:0 0 auto;border:1px solid rgba(255,255,255,.1);background:#151515;color:#aaa;border-radius:999px;padding:8px 12px;font-size:11px;font-weight:800;cursor:pointer}
-.sports-breaking-tab.active{background:#e50914;color:#fff;border-color:#e50914}
-.sports-breaking-panel{display:none}
-.sports-breaking-panel.active{display:block}
-.sports-breaking-row{display:flex;gap:15px;overflow-x:auto;padding:3px 2px 16px;scrollbar-width:none}
-.sports-breaking-row::-webkit-scrollbar{display:none}
-.sports-breaking-card{position:relative;flex:0 0 300px;min-height:245px;border:1px solid rgba(255,255,255,.08);border-radius:15px;overflow:hidden;background:#111;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.2);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
-.sports-breaking-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.2);box-shadow:0 18px 45px rgba(0,0,0,.35)}
-.sports-breaking-image{height:155px;background:#191919;overflow:hidden;position:relative}
-.sports-breaking-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
-.sports-breaking-card:hover .sports-breaking-image img{transform:scale(1.05)}
-.sports-breaking-image:after{content:"";position:absolute;inset:45% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.7))}
-.sports-breaking-badge{position:absolute;top:10px;left:10px;z-index:2;background:rgba(0,0,0,.78);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:5px 8px;color:#fff;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
-.sports-breaking-live{position:absolute;top:10px;right:10px;z-index:2;background:#e50914;color:#fff;border-radius:999px;padding:5px 8px;font-size:9px;font-weight:900}
-.sports-breaking-info{padding:12px 13px 14px}
-.sports-breaking-source{font-size:9px;color:#888;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
-.sports-breaking-card h4{font-size:14px;line-height:1.35;margin:0 0 7px;font-weight:850}
-.sports-breaking-card p{font-size:10px;line-height:1.45;color:#999;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.sports-breaking-date{font-size:9px;color:#666;margin-top:8px}
-.sports-breaking-empty,.sports-breaking-error{padding:30px 3px;color:#777;font-size:12px}
-@media(max-width:650px){.sports-breaking-section{padding-left:15px;padding-right:15px}.sports-breaking-header{align-items:flex-start}.sports-breaking-refresh{padding:8px 11px;font-size:11px}.sports-breaking-card{flex-basis:84%;min-height:260px}.sports-breaking-image{height:165px}}
-
-/* =========================================================
-   BREAKING INTERNATIONAL NEWS
-========================================================= */
-.international-news-section{padding:28px 20px 34px;margin:0 0 8px;background:linear-gradient(180deg,#0b0b0b,#080808);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
-.international-news-header{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin-bottom:8px}
-.international-news-title-wrap{display:flex;align-items:center;gap:12px}
-.international-news-title{font-size:clamp(22px,3vw,32px);font-weight:800;letter-spacing:-.4px}
-.international-news-dot{width:10px;height:10px;border-radius:50%;background:#e50914;box-shadow:0 0 0 5px rgba(229,9,20,.12),0 0 18px rgba(229,9,20,.55);flex:0 0 auto}
-.international-news-status{color:var(--muted);font-size:12px;margin-top:4px}
-.international-news-refresh{border:1px solid var(--border);background:#151515;color:#fff;border-radius:999px;padding:9px 14px;cursor:pointer;font-weight:700}
-.international-news-refresh:hover{background:#222}
-.international-news-subtitle{color:#aaa;margin:0 0 18px;max-width:850px;line-height:1.55}
-.international-news-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-.international-category{background:#111;border:1px solid var(--border);border-radius:16px;overflow:hidden;min-width:0;box-shadow:0 8px 28px rgba(0,0,0,.2)}
-.international-category-head{padding:14px 15px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.international-category-name{font-size:15px;font-weight:800;letter-spacing:.2px}
-.international-category-count{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:.7px}
-.international-story-list{display:flex;flex-direction:column}
-.international-story-card{display:block;color:#fff;text-decoration:none;padding:0 15px 15px;cursor:pointer}
-.international-story-card+.international-story-card{padding-top:14px;border-top:1px solid var(--border)}
-.international-story-image{height:125px;border-radius:11px;overflow:hidden;background:#1a1a1a;margin-bottom:10px;position:relative}
-.international-story-image img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
-.international-story-card:hover .international-story-image img{transform:scale(1.04)}
-.international-story-image:after{content:"";position:absolute;inset:35% 0 0;background:linear-gradient(transparent,rgba(0,0,0,.5))}
-.international-story-source{font-size:10px;color:#999;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px}
-.international-story-title{font-size:14px;line-height:1.35;font-weight:750;margin:0 0 6px}
-.international-story-desc{font-size:11px;line-height:1.45;color:#aaa;margin:0}
-.international-story-date{font-size:10px;color:#777;margin-top:7px}
-.international-empty,.international-error{padding:20px 15px;color:#888;font-size:12px;line-height:1.5}
-@media(max-width:1050px){.international-news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:650px){.international-news-section{padding-left:15px;padding-right:15px}.international-news-header{align-items:flex-start}.international-news-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px}.international-category{flex:0 0 84%;scroll-snap-align:start}.international-story-image{height:150px}.international-news-refresh{padding:8px 11px;font-size:11px}}
-
 /* BUSINESS OF AFRICA LIVE ENHANCEMENTS */
 .business-live-meta{display:flex;align-items:center;gap:9px;color:#777;font-size:10px;white-space:nowrap}.business-live-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 10px rgba(34,197,94,.7)}
 /* Premium Business of Africa editorial treatment */
@@ -2053,114 +1959,6 @@ line-height:1;
 .whatsapp-float-label{font-size:11px}
 }
 
-
-/* =========================================================
-   BRENZKAFRICA PLUS — PREMIUM EDITORIAL BLOCK COVERS
-   Curated stock/editorial imagery with dark cinematic overlays.
-========================================================= */
-.finance-content-block{position:relative;overflow:hidden}
-.finance-block-cover{position:relative;height:170px;margin:-1px -1px 18px;border-radius:14px;overflow:hidden;background:#151515}
-.finance-block-cover img{width:100%;height:100%;display:block;object-fit:cover;object-position:center 45%;filter:saturate(.92) contrast(1.05)}
-.finance-block-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 0%,rgba(0,0,0,.18) 35%,rgba(0,0,0,.88) 100%)}
-.finance-block-cover-content{position:absolute;z-index:2;left:20px;right:20px;bottom:18px;display:flex;align-items:flex-end;justify-content:space-between;gap:18px}
-.finance-block-cover-content .cover-kicker{font-size:11px;letter-spacing:.16em;font-weight:800;color:#fff;opacity:.82;text-transform:uppercase}
-.finance-block-cover-content .cover-title{font-size:25px;font-weight:800;color:#fff;line-height:1.1;margin-top:5px;text-shadow:0 2px 18px rgba(0,0,0,.65)}
-.finance-block-cover-content .cover-note{font-size:12px;color:rgba(255,255,255,.78);max-width:420px;text-align:right}
-.entertainment-editorial-cover{position:relative;height:250px;margin:18px 0 26px;border-radius:16px;overflow:hidden;background:#151515}
-.entertainment-editorial-cover img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(.95) contrast(1.06)}
-.entertainment-editorial-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.86) 0%,rgba(0,0,0,.42) 48%,rgba(0,0,0,.18) 100%),linear-gradient(0deg,rgba(0,0,0,.7),transparent 55%)}
-.entertainment-editorial-copy{position:absolute;z-index:2;left:28px;bottom:28px;max-width:620px}
-.entertainment-editorial-copy .cover-kicker{font-size:11px;letter-spacing:.18em;font-weight:800;color:#fff;opacity:.82;text-transform:uppercase}
-.entertainment-editorial-copy h3{font-size:32px;line-height:1.05;margin:7px 0 8px;color:#fff}
-.entertainment-editorial-copy p{margin:0;color:rgba(255,255,255,.82);font-size:14px;line-height:1.5}
-@media(max-width:700px){
- .finance-block-cover{height:145px}
- .finance-block-cover-content{left:16px;right:16px;bottom:15px}
- .finance-block-cover-content .cover-title{font-size:20px}
- .finance-block-cover-content .cover-note{display:none}
- .entertainment-editorial-cover{height:205px}
- .entertainment-editorial-copy{left:20px;bottom:20px}
- .entertainment-editorial-copy h3{font-size:25px}
- .entertainment-editorial-copy p{font-size:12px}
-}
-
-/* REAL STORY IMAGE STATES */
-.real-image-placeholder,.real-image-empty{width:100%;height:100%;min-height:150px;background:linear-gradient(135deg,#111,#1a1a1a);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.real-image-placeholder span{display:block;width:28px;height:28px;border:2px solid rgba(255,255,255,.18);border-top-color:rgba(255,255,255,.72);border-radius:50%;animation:brenzImageSpin .8s linear infinite}
-.real-image-empty{background:linear-gradient(135deg,#0d0d0d,#171717)}
-@keyframes brenzImageSpin{to{transform:rotate(360deg)}}
-
-
-/* =========================================================
-   HERO MORE INFO MODAL
-========================================================= */
-body.modal-open{overflow:hidden}
-.brenz-info-modal{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:24px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility .2s ease}
-.brenz-info-modal.open{opacity:1;visibility:visible;pointer-events:auto}
-.brenz-info-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.brenz-info-dialog{position:relative;width:min(760px,100%);max-height:min(82vh,760px);overflow:auto;background:linear-gradient(180deg,#181818,#0d0d0d);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-shadow:0 28px 80px rgba(0,0,0,.65);padding:34px 34px 30px;color:#fff;transform:translateY(12px) scale(.98);transition:transform .2s ease}
-.brenz-info-modal.open .brenz-info-dialog{transform:translateY(0) scale(1)}
-.brenz-info-close{position:absolute;top:14px;right:16px;width:38px;height:38px;border:0;border-radius:50%;background:rgba(255,255,255,.09);color:#fff;font-size:28px;line-height:1;cursor:pointer}
-.brenz-info-close:hover{background:rgba(255,255,255,.16)}
-.brenz-info-eyebrow{color:#e50914;font-size:12px;font-weight:800;letter-spacing:1.8px;margin-bottom:9px}
-.brenz-info-dialog h2{font-size:32px;line-height:1.15;margin:0 48px 22px 0}
-.brenz-info-content p{color:#d2d2d2;font-size:15px;line-height:1.75;margin:0 0 17px}
-.brenz-info-content .brenz-info-tagline{color:#fff;font-weight:800;font-size:18px;margin-top:24px;margin-bottom:0}
-@media(max-width:600px){
-  .brenz-info-modal{padding:12px}
-  .brenz-info-dialog{max-height:88vh;padding:27px 20px 24px;border-radius:15px}
-  .brenz-info-dialog h2{font-size:25px;margin-right:42px}
-  .brenz-info-content p{font-size:14px;line-height:1.65}
-}
-
-/* =========================================================
-   BRENZKAFRICA PLUS — ADVERTISING & PARTNERS MEDIA BLOCK
-   Supports image, slideshow, video and mixed-media campaigns.
-========================================================= */
-.advertising-section{margin:30px 0 34px}
-.advertising-shell{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:linear-gradient(145deg,#151515,#090909);box-shadow:0 18px 55px rgba(0,0,0,.35)}
-.advertising-top{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px 14px}
-.advertising-kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#e50914;font-weight:800}
-.advertising-title{font-size:25px;font-weight:800;margin:4px 0 0;color:#fff}
-.advertising-subtitle{font-size:12px;color:#8e8e8e;margin-top:4px}
-.advertising-sponsored{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#777;border:1px solid rgba(255,255,255,.1);padding:6px 9px;border-radius:999px;white-space:nowrap}
-.advertising-stage{position:relative;margin:0 16px 16px;min-height:250px;aspect-ratio:16/6.5;background:#050505;border-radius:14px;overflow:hidden}
-.advertising-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#050505}
-.advertising-media.ad-fade{animation:adFadeIn .45s ease}
-@keyframes adFadeIn{from{opacity:.25;transform:scale(1.015)}to{opacity:1;transform:scale(1)}}
-.advertising-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.7),transparent 55%,rgba(0,0,0,.12)),linear-gradient(0deg,rgba(0,0,0,.65),transparent 55%)}
-.advertising-copy{position:absolute;z-index:3;left:28px;bottom:26px;max-width:600px}
-.advertising-copy .ad-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:800}
-.advertising-copy h3{font-size:30px;line-height:1.08;margin:6px 0 7px;color:#fff}
-.advertising-copy p{font-size:13px;line-height:1.45;color:rgba(255,255,255,.82);margin:0 0 13px;max-width:560px}
-.advertising-cta{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:#fff;color:#090909;padding:9px 15px;font-size:12px;font-weight:800;text-decoration:none;cursor:pointer}
-.advertising-cta:hover{opacity:.9}
-.advertising-controls{position:absolute;z-index:4;right:18px;bottom:20px;display:flex;align-items:center;gap:7px}
-.ad-control{width:34px;height:34px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);backdrop-filter:blur(8px);color:#fff;border-radius:50%;cursor:pointer;font-size:15px}
-.ad-control:hover{background:rgba(255,255,255,.16)}
-.advertising-dots{position:absolute;z-index:4;left:50%;bottom:15px;transform:translateX(-50%);display:flex;gap:6px}
-.ad-dot{width:6px;height:6px;border:0;border-radius:50%;background:rgba(255,255,255,.42);padding:0;cursor:pointer}
-.ad-dot.active{width:20px;border-radius:999px;background:#fff}
-.advertising-video{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
-.advertising-video::-webkit-media-controls-panel{background:linear-gradient(transparent,rgba(0,0,0,.65))}
-.advertising-empty{display:flex;align-items:center;justify-content:center;height:100%;min-height:250px;color:#777;font-size:13px}
-.advertising-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:0 22px 19px;color:#777;font-size:11px}
-.advertising-footer strong{color:#bdbdbd}
-.advertising-progress{height:2px;background:rgba(255,255,255,.08);position:absolute;left:0;right:0;bottom:0;z-index:5}
-.advertising-progress span{display:block;height:100%;width:0;background:#e50914;transition:width .1s linear}
-@media(max-width:700px){
- .advertising-section{margin:22px 0 28px}
- .advertising-top{padding:17px 16px 12px}
- .advertising-title{font-size:20px}
- .advertising-stage{margin:0 10px 10px;min-height:260px;aspect-ratio:4/5;border-radius:13px}
- .advertising-copy{left:18px;right:18px;bottom:24px}
- .advertising-copy h3{font-size:24px}
- .advertising-copy p{font-size:12px}
- .advertising-controls{right:12px;top:12px;bottom:auto}
- .advertising-dots{bottom:10px}
- .advertising-footer{padding:0 16px 15px}
-}
-
 </style>
 </head>
 
@@ -2276,55 +2074,14 @@ and global creative work from BRENZKafrica.
 <a class="quick-link" href="#episodes">▶ Episodes</a>
 <a class="quick-link" href="#live">🔴 Live</a>
 <a class="quick-link" href="#news">📰 News</a>
-<a class="quick-link" href="#internationalNews">🌐 International</a>
-<a class="quick-link" href="#sportsBreakingNews">🔴 Sports Breaking</a>
 <a class="quick-link" href="#sports">🏆 Sports</a>
 <a class="quick-link" href="#wwe">🥊 WWE</a>
 <a class="quick-link" href="#entertainment">🎭 Entertainment</a>
 <a class="quick-link" href="#businessFinanceSection">💼 Business</a>
 <a class="quick-link" href="#documentaries">🎥 Documentaries</a>
-<a class="quick-link" href="#advertisingPartners">📣 Advertising</a>
 <a class="quick-link" href="#watchlist">❤️ Watchlist</a>
 <button class="quick-link search-link" type="button" onclick="openGlobalSearch()">🔎 Search</button>
 </div>
-</section>
-
-
-
-<!-- =========================================================
-     ADVERTISING & PARTNERS
-     Ready for image, slideshow, video and mixed campaigns.
-========================================================= -->
-<section class="section advertising-section" id="advertisingPartners">
-  <div class="advertising-shell">
-    <div class="advertising-top">
-      <div>
-        <div class="advertising-kicker">Advertising &amp; Partners</div>
-        <div class="advertising-title">Featured Campaigns</div>
-        <div class="advertising-subtitle">Premium advertising space for brands, sponsors and commercial partners.</div>
-      </div>
-      <div class="advertising-sponsored">Sponsored</div>
-    </div>
-    <div class="advertising-stage" id="advertisingStage" aria-live="polite">
-      <div class="advertising-empty">Loading campaign…</div>
-      <div class="advertising-copy" id="advertisingCopy" hidden>
-        <div class="ad-label" id="advertisingLabel">Featured Partner</div>
-        <h3 id="advertisingTitle"></h3>
-        <p id="advertisingDescription"></p>
-        <a id="advertisingCta" class="advertising-cta" href="#" target="_blank" rel="noopener noreferrer">Learn More</a>
-      </div>
-      <div class="advertising-controls" id="advertisingControls" hidden>
-        <button class="ad-control" type="button" onclick="BKPAdvertising.previous()" aria-label="Previous advertisement">‹</button>
-        <button class="ad-control" type="button" onclick="BKPAdvertising.next()" aria-label="Next advertisement">›</button>
-      </div>
-      <div class="advertising-dots" id="advertisingDots" hidden></div>
-      <div class="advertising-progress"><span id="advertisingProgressBar"></span></div>
-    </div>
-    <div class="advertising-footer">
-      <span id="advertisingAdvertiser"><strong>BRENZKafrica Plus</strong> commercial media space</span>
-      <span id="advertisingFormat">Campaign</span>
-    </div>
-  </div>
 </section>
 
 <main>
@@ -2430,22 +2187,6 @@ The latest stories and developments from across Africa.
 
 </section>
 
-<section class="international-news-section" id="internationalNews">
-<div class="international-news-header">
-<div>
-<div class="international-news-title-wrap"><span class="international-news-dot"></span><div class="international-news-title">Breaking International News</div></div>
-<div class="international-news-status" id="internationalNewsStatus">Loading global headlines...</div>
-</div>
-<button class="international-news-refresh" type="button" onclick="loadInternationalNews()">↻ Refresh</button>
-</div>
-<p class="international-news-subtitle">Major developments from around the world, organized across politics, wars & conflicts, space and education.</p>
-<div class="international-news-grid">
-<article class="international-category"><div class="international-category-head"><span class="international-category-name">Politics</span><span class="international-category-count" id="internationalPoliticsCount">LIVE</span></div><div class="international-story-list" id="internationalPoliticsFeed"><div class="international-empty">Loading politics...</div></div></article>
-<article class="international-category"><div class="international-category-head"><span class="international-category-name">Wars & Conflicts</span><span class="international-category-count" id="internationalWarsCount">LIVE</span></div><div class="international-story-list" id="internationalWarsFeed"><div class="international-empty">Loading wars & conflicts...</div></div></article>
-<article class="international-category"><div class="international-category-head"><span class="international-category-name">Space</span><span class="international-category-count" id="internationalSpaceCount">LIVE</span></div><div class="international-story-list" id="internationalSpaceFeed"><div class="international-empty">Loading space...</div></div></article>
-<article class="international-category"><div class="international-category-head"><span class="international-category-name">Education</span><span class="international-category-count" id="internationalEducationCount">LIVE</span></div><div class="international-story-list" id="internationalEducationFeed"><div class="international-empty">Loading education...</div></div></article>
-</div>
-</section>
 
 <!-- =========================================================
      BRENZKAFRICA PLUS
@@ -2490,25 +2231,21 @@ The latest stories and developments from across Africa.
 </div>
 
 <div class="finance-content-block" id="businessNewsBlock">
-<div class="finance-block-cover" id="cover-latest"><img src="" alt="BUSINESS OF AFRICA editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">BUSINESS OF AFRICA</div><div class="cover-title">Business Of Africa</div></div><div class="cover-note">African companies, entrepreneurs and investment stories</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">BUSINESS OF AFRICA</span><h3>Latest African Business</h3><p>Fresh business stories aggregated from current news feeds.</p></div><button onclick="loadBusinessFeed('africa')">Refresh Stories ↻</button></div>
 <div class="business-story-row" id="africaBusinessFeed"><div class="business-feed-loading">Loading African business stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="marketsBusinessBlock">
-<div class="finance-block-cover" id="cover-markets"><img src="" alt="AFRICA MARKETS & COMPANIES editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA MARKETS & COMPANIES</div><div class="cover-title">Africa Markets & Companies</div></div><div class="cover-note">Markets, capital, companies and investment</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">MARKETS</span><h3>Africa Markets & Companies</h3><p>Current market, corporate and investment headlines.</p></div><button onclick="loadBusinessFeed('markets')">Refresh ↻</button></div>
 <div class="business-story-row" id="marketsBusinessFeed"><div class="business-feed-loading">Loading market stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="fintechBusinessBlock">
-<div class="finance-block-cover" id="cover-fintech"><img src="" alt="AFRICA’S DIGITAL FINANCE editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA’S DIGITAL FINANCE</div><div class="cover-title">Africa’S Digital Finance</div></div><div class="cover-note">Mobile money, payments and financial technology</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">FINTECH</span><h3>Africa's Digital Finance</h3><p>Mobile money, digital banking, payments, startups and financial technology.</p></div><button onclick="loadBusinessFeed('fintech')">Refresh ↻</button></div>
 <div class="business-story-row" id="fintechBusinessFeed"><div class="business-feed-loading">Loading fintech stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="economyBusinessBlock">
-<div class="finance-block-cover" id="cover-economy"><img src="" alt="AFRICAN ECONOMY editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICAN ECONOMY</div><div class="cover-title">African Economy</div></div><div class="cover-note">Growth, infrastructure, trade and economic outlook</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">ECONOMY</span><h3>African Economy</h3><p>Growth, inflation, trade, investment, policy and economic outlook.</p></div><button onclick="loadBusinessFeed('economy')">Refresh ↻</button></div>
 <div class="business-story-row" id="economyBusinessFeed"><div class="business-feed-loading">Loading economy stories…</div></div>
 </div>
@@ -2541,35 +2278,6 @@ The latest stories and developments from across Africa.
 
 </section>
 
-
-<section class="sports-breaking-section" id="sportsBreakingNews">
-<div class="sports-breaking-header">
-<div>
-<div class="sports-breaking-title-wrap"><span class="sports-breaking-dot"></span><div class="sports-breaking-title">Sports Breaking News</div></div>
-<div class="sports-breaking-status" id="sportsBreakingNewsStatus">Loading latest sports headlines...</div>
-</div>
-<button class="sports-breaking-refresh" type="button" onclick="loadSportsBreakingNews()">↻ Refresh</button>
-</div>
-<p class="sports-breaking-subtitle">Major breaking developments across football, basketball, motorsport, tennis, fight sports and other major sporting events — with dedicated African sports coverage.</p>
-<div class="sports-breaking-tabs">
-<button class="sports-breaking-tab active" data-sports-breaking-tab="all" onclick="showSportsBreakingTab('all',this)">🏆 All Sports</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="football" onclick="showSportsBreakingTab('football',this)">⚽ Football</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="basketball" onclick="showSportsBreakingTab('basketball',this)">🏀 Basketball</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="motorsport" onclick="showSportsBreakingTab('motorsport',this)">🏎️ Motorsport</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="tennis" onclick="showSportsBreakingTab('tennis',this)">🎾 Tennis</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="fight" onclick="showSportsBreakingTab('fight',this)">🥊 Fight Sports</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="africa" onclick="showSportsBreakingTab('africa',this)">🌍 African Sports</button>
-<button class="sports-breaking-tab" data-sports-breaking-tab="major" onclick="showSportsBreakingTab('major',this)">🏅 Major Sports</button>
-</div>
-<div class="sports-breaking-panel active" id="sportsBreakingAllPanel"><div class="sports-breaking-row" id="sportsBreakingAllRow"><div class="sports-breaking-empty">Loading breaking sports news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingFootballPanel"><div class="sports-breaking-row" id="sportsBreakingFootballRow"><div class="sports-breaking-empty">Loading football news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingBasketballPanel"><div class="sports-breaking-row" id="sportsBreakingBasketballRow"><div class="sports-breaking-empty">Loading basketball news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingMotorsportPanel"><div class="sports-breaking-row" id="sportsBreakingMotorsportRow"><div class="sports-breaking-empty">Loading motorsport news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingTennisPanel"><div class="sports-breaking-row" id="sportsBreakingTennisRow"><div class="sports-breaking-empty">Loading tennis news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingFightPanel"><div class="sports-breaking-row" id="sportsBreakingFightRow"><div class="sports-breaking-empty">Loading fight sports news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingAfricaPanel"><div class="sports-breaking-row" id="sportsBreakingAfricaRow"><div class="sports-breaking-empty">Loading African sports news...</div></div></div>
-<div class="sports-breaking-panel" id="sportsBreakingMajorPanel"><div class="sports-breaking-row" id="sportsBreakingMajorRow"><div class="sports-breaking-empty">Loading major sports news...</div></div></div>
-</section>
 
 <section class="section sports-section" id="sports">
 
@@ -3024,8 +2732,7 @@ auth:{
 persistSession:true,
 autoRefreshToken:true,
 detectSessionInUrl:true
-},
-global:{fetch:brenzSafeFetch}
+}
 }
 );
 
@@ -3042,6 +2749,136 @@ const YOUTUBE_API_URL="/api/youtube";
   global catalogue below if no API is configured.
 */
 const ENTERTAINMENT_API_URL="/api/entertainment";
+
+
+/* =========================================================
+   UNIVERSAL REAL STORY IMAGE SYSTEM
+   Priority:
+   1. image supplied directly by the feed/API
+   2. media/enclosure/HTML content image
+   3. publisher Open Graph image via /api/article-image
+   4. branded BRENZKafrica fallback (never unrelated stock)
+========================================================= */
+const BRENZKAFRICA_IMAGE_FALLBACK="https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg";
+const STORY_IMAGE_CACHE=new Map();
+const STORY_IMAGE_INFLIGHT=new Map();
+
+function firstValidImage(...values){
+    for(const value of values.flat(Infinity)){
+        if(typeof value!="string")continue;
+        const v=value.trim();
+        if(/^https?:\/\//i.test(v) && /\.(jpe?g|png|webp|gif|avif)(\?|#|$)/i.test(v))return v;
+        if(/^https?:\/\//i.test(v) && !/^(data:|javascript:)/i.test(v))return v;
+    }
+    return "";
+}
+
+function imageFromMarkup(markup){
+    if(!markup)return "";
+    const html=String(markup);
+    const metaPatterns=[
+        /<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image|twitter:image:src)["'][^>]+content=["']([^"']+)["'][^>]*>/i,
+        /<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](?:og:image|twitter:image|twitter:image:src)["'][^>]*>/i,
+        /<link[^>]+(?:rel=["']image_src["'][^>]+href|href=["']([^"']+)["'][^>]+rel=["']image_src["'])/i,
+        /<img[^>]+(?:src|data-src)=["']([^"']+)["']/i
+    ];
+    for(const pattern of metaPatterns){
+        const match=html.match(pattern);
+        if(match){
+            const candidate=match[1]||match[2];
+            const valid=firstValidImage(candidate);
+            if(valid)return valid;
+        }
+    }
+    return "";
+}
+
+function extractFeedImage(item){
+    if(!item)return "";
+    const direct=firstValidImage(
+        item.image,
+        item.thumbnail,
+        item.thumbnail_url,
+        item.image_url,
+        item.enclosure?.link,
+        item.enclosure?.url,
+        item.media?.content?.url,
+        item.media?.content,
+        item.media?.thumbnail?.url,
+        item.media?.thumbnail,
+        item.media_content?.url,
+        item.media_thumbnail?.url
+    );
+    if(direct)return direct;
+    return imageFromMarkup(item.content||item.description||item.summary||"");
+}
+
+function storyImageMarkup(item,index=0,extraClass=""){
+    const direct=extractFeedImage(item);
+    const title=escapeHTML(item?.title||"BRENZKafrica story");
+    const url=String(item?.link||item?.url||item?.guid||"");
+    if(direct){
+        return `<img class="real-story-image ${extraClass}" src="${escapeHTML(direct)}" alt="${title}" loading="lazy" data-story-image="${index}" data-story-image-url="${escapeHTML(url)}" onerror="this.dataset.failed='1';this.style.display='none';this.parentElement.classList.add('story-image-missing')">`;
+    }
+    return `<div class="real-story-image-placeholder ${extraClass}" data-story-image="${index}" data-story-image-url="${escapeHTML(url)}"><span>BRENZKAFRICA</span><small>Loading story image…</small></div>`;
+}
+
+async function resolveStoryImage(item){
+    const direct=extractFeedImage(item);
+    if(direct)return direct;
+    const url=String(item?.link||item?.url||item?.guid||"").trim();
+    if(!/^https?:\/\//i.test(url))return "";
+    if(STORY_IMAGE_CACHE.has(url))return STORY_IMAGE_CACHE.get(url)||"";
+    if(STORY_IMAGE_INFLIGHT.has(url))return STORY_IMAGE_INFLIGHT.get(url);
+    const promise=(async()=>{
+        try{
+            const response=await fetch(`/api/article-image?url=${encodeURIComponent(url)}`,{cache:"no-store",headers:{Accept:"application/json"}});
+            if(!response.ok)throw new Error("image resolver "+response.status);
+            const data=await response.json();
+            const image=firstValidImage(data?.image);
+            STORY_IMAGE_CACHE.set(url,image||"");
+            return image||"";
+        }catch(error){
+            console.warn("Story image resolver failed:",url,error);
+            STORY_IMAGE_CACHE.set(url,"");
+            return "";
+        }finally{
+            STORY_IMAGE_INFLIGHT.delete(url);
+        }
+    })();
+    STORY_IMAGE_INFLIGHT.set(url,promise);
+    return promise;
+}
+
+async function hydrateStoryImages(container,items){
+    if(!container||!Array.isArray(items)||!items.length)return;
+    await Promise.all(items.map(async(item,index)=>{
+        const image=await resolveStoryImage(item);
+        if(!image)return;
+        const target=container.querySelector(`[data-story-image="${index}"]`);
+        if(!target)return;
+        if(target.tagName==="IMG"){
+            target.src=image;
+            target.style.display="block";
+            target.dataset.failed="0";
+            target.parentElement?.classList.remove("story-image-missing");
+        }else{
+            const img=document.createElement("img");
+            img.className=target.className.replace("real-story-image-placeholder","real-story-image");
+            img.src=image;
+            img.alt=item.title||"BRENZKafrica story";
+            img.loading="lazy";
+            img.dataset.storyImage=String(index);
+            img.dataset.storyImageUrl=String(item.link||item.url||item.guid||"");
+            img.onerror=function(){this.style.display="none";this.parentElement.classList.add("story-image-missing");};
+            target.replaceWith(img);
+        }
+    }));
+}
+
+function storyImageFallbackStyle(){
+    return `background-image:url("${BRENZKAFRICA_IMAGE_FALLBACK}")`;
+}
 
 /* =========================================================
    SERIES
@@ -3402,40 +3239,9 @@ function playFeatured(){
    PLAYER INFO
 ========================================================= */
 function showInfo(){
-    const existing=document.getElementById("brenzInfoModal");
-    if(existing){
-        existing.classList.add("open");
-        document.body.classList.add("modal-open");
-        return;
-    }
-
-    const modal=document.createElement("div");
-    modal.id="brenzInfoModal";
-    modal.className="brenz-info-modal open";
-    modal.innerHTML=`
-        <div class="brenz-info-backdrop" onclick="closeInfo()"></div>
-        <div class="brenz-info-dialog" role="dialog" aria-modal="true" aria-labelledby="brenzInfoTitle">
-            <button class="brenz-info-close" type="button" onclick="closeInfo()" aria-label="Close information">×</button>
-            <div class="brenz-info-eyebrow">ABOUT BRENZKAFRICA PLUS</div>
-            <h2 id="brenzInfoTitle">BRENZKafrica Plus</h2>
-            <div class="brenz-info-content">
-                <p>BRENZKafrica Plus is a next-generation digital media and streaming platform built to connect compelling content, brands, creators and audiences across Africa and the world.</p>
-                <p>The platform brings together original productions, series, documentaries, entertainment, sports, news, business and financial content within one scalable digital ecosystem. Its diversified business model creates opportunities across subscriptions, advertising, sponsorships, content partnerships, licensing and creator-led commercial opportunities.</p>
-                <p>For investors, BRENZKafrica Plus represents a platform designed for scalable audience and revenue growth. For brands and sponsors, it provides a digital environment to connect with engaged audiences through targeted visibility and strategic partnerships. For creators, producers and guests, it provides a platform to showcase ideas, stories, expertise and talent to a broader audience.</p>
-                <p>BRENZKafrica Plus is more than a streaming platform—it is a growing media ecosystem where content creates audiences, audiences create commercial value, and partnerships create opportunities.</p>
-                <p class="brenz-info-tagline">Born from Africa. Built for the world.</p>
-            </div>
-        </div>`;
-    document.body.appendChild(modal);
-    document.body.classList.add("modal-open");
-}
-
-function closeInfo(){
-    const modal=document.getElementById("brenzInfoModal");
-    if(modal){
-        modal.classList.remove("open");
-        document.body.classList.remove("modal-open");
-    }
+    showToast(
+        "BRENZKafrica Originals — Stories, Creativity and Unlimited Vision."
+    );
 }
 /* =========================================================
    DATE
@@ -3556,7 +3362,7 @@ saveLocalWatchlist();
 function createUniversalWatchlistCard(item){
 const key=String(item.key);
 const title=item.title||"Video";
-const thumb=item.thumbnail||"";
+const thumb=item.thumbnail||"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg";
 const saved=watchlistIsSaved(key);
 return `
 <article class="card universal-watchlist-video" data-content-id="${escapeHTML(key)}" onclick="playVideo('${escapeHTML(title).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.description||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">
@@ -3727,7 +3533,7 @@ const title=item.title||"Untitled";
 
 const thumbnail=
 item.thumbnail_url||
-"";
+"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg";
 
 const type=
 item.category||
@@ -3751,7 +3557,7 @@ onclick="playContentCard(this)">
 src="${escapeHTML(thumbnail)}"
 alt="${escapeHTML(title)}"
 loading="lazy"
-onerror="this.src=''">
+onerror="this.src='https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg'">
 
 ${featured?'<span class="card-badge">FEATURED</span>':""}
 
@@ -4063,7 +3869,7 @@ const originalsRow=document.getElementById("originalsRow");
 
 try{
 
-const response=await brenzSafeFetch(
+const response=await fetch(
 YOUTUBE_API_URL,
 {
 method:"GET",
@@ -4598,7 +4404,7 @@ onclick="handleLiveCard(
 <img
 src="${escapeHTML(
 event.thumbnail||
-""
+"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg"
 )}"
 alt="${escapeHTML(event.title||"Live")}"
 loading="lazy">
@@ -4690,7 +4496,7 @@ async function loadBreakingNews(){
     newsRow.innerHTML=
         '<div class="news-loading">Loading latest African news...</div>';
     try{
-        const response=await brenzSafeFetch(
+        const response=await fetch(
             NEWS_API_URL,
             {
                 method:"GET",
@@ -4721,41 +4527,25 @@ async function loadBreakingNews(){
             return;
         }
         newsRow.innerHTML=data.news.map((item,index)=>{
-            const link=
-                encodeURIComponent(
-                    item.link || ""
-                );
+            const link=encodeURIComponent(item.link || "");
             return `
                 <article
-                    class="news-card" data-real-image-index="${index}"
+                    class="news-card"
                     onclick="openNewsArticle('${link}')">
-                    ${realStoryMedia(item,item.title||"Breaking News")}
-                    <div>
-                        <div class="news-source">
-                            ${escapeHTML(
-                                item.source || "News"
-                            )}
-                        </div>
-                        <div class="news-title">
-                            ${escapeHTML(
-                                item.title || ""
-                            )}
-                        </div>
-                        <div class="news-description">
-                            ${escapeHTML(
-                                item.description || ""
-                            )}
-                        </div>
+                    <div class="news-story-media" style="${storyImageFallbackStyle()}">
+                        ${storyImageMarkup(item,index)}
+                        <span class="news-image-source">${escapeHTML(item.source || "News")}</span>
                     </div>
-                    <div class="news-date">
-                        ${escapeHTML(
-                            formatDate(item.date)
-                        )}
+                    <div class="news-card-body">
+                        <div class="news-source">${escapeHTML(item.source || "News")}</div>
+                        <div class="news-title">${escapeHTML(item.title || "")}</div>
+                        <div class="news-description">${escapeHTML(item.description || "")}</div>
+                        <div class="news-date">${escapeHTML(formatDate(item.date))}</div>
                     </div>
                 </article>
             `;
         }).join("");
-        hydrateRealStoryImages(newsRow,data.news);
+        hydrateStoryImages(newsRow,data.news);
         newsStatus.textContent=
             (data.count || data.news.length)+
             " fresh stories";
@@ -4817,7 +4607,7 @@ encodeURIComponent(config.league)+
 
 try{
 
-const response=await brenzSafeFetch(
+const response=await fetch(
 url,
 {
 method:"GET",
@@ -4994,7 +4784,7 @@ data-sports-event="${escapeHTML(event.id)}"
 data-sports-category="${escapeHTML(event.category)}"
 onclick="openSportsEvent(this)">
 
-<div class="sports-card-bg"></div>
+<div class="sports-card-bg" data-sports-story-image="${escapeHTML(event.id)}"${event.thumbnail||event.image?` style="background-image:linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.82)),url('${escapeHTML(event.thumbnail||event.image)}');opacity:.58;background-size:cover;background-position:center"`:``}></div>
 
 <div class="sports-top">
 
@@ -5104,8 +4894,21 @@ escapeHTML(emptyMessage)+
 return;
 }
 
-row.innerHTML=
-events.map(createSportsCard).join("");
+row.innerHTML=events.map(createSportsCard).join("");
+
+/* Resolve publisher/event photography when the sports feed supplies an article URL. */
+events.forEach(async event=>{
+    if(event.thumbnail||event.image||!event.eventUrl)return;
+    const image=await resolveStoryImage({link:event.eventUrl,title:event.eventName});
+    if(!image)return;
+    const bg=row.querySelector(`[data-sports-story-image="${CSS.escape(String(event.id))}"]`);
+    if(bg){
+        bg.style.backgroundImage=`linear-gradient(180deg,rgba(0,0,0,.1),rgba(0,0,0,.82)),url("${image.replace(/"/g,'\\"')}")`;
+        bg.style.opacity=".58";
+        bg.style.backgroundSize="cover";
+        bg.style.backgroundPosition="center";
+    }
+});
 
 }
 
@@ -5247,63 +5050,6 @@ allSportsEvents,
 
 }
 
-function showSportsBreakingTab(tab,button){
-    document.querySelectorAll(".sports-breaking-tab").forEach(item=>item.classList.remove("active"));
-    if(button)button.classList.add("active");
-    document.querySelectorAll(".sports-breaking-panel").forEach(panel=>panel.classList.remove("active"));
-    const panel=document.getElementById("sportsBreaking"+tab.charAt(0).toUpperCase()+tab.slice(1)+"Panel");
-    if(panel)panel.classList.add("active");
-}
-function sportsBreakingDescription(value){
-    const div=document.createElement("div");div.innerHTML=String(value||"");
-    return (div.textContent||div.innerText||"").replace(/\s+/g," ").trim().slice(0,180);
-}
-function sportsBreakingDate(value){
-    const d=new Date(value);if(Number.isNaN(d.getTime()))return "";
-    const diff=Math.max(0,Date.now()-d.getTime());const mins=Math.floor(diff/60000);
-    if(mins<60)return mins+"m ago";const hrs=Math.floor(mins/60);
-    if(hrs<24)return hrs+"h ago";const days=Math.floor(hrs/24);
-    if(days<7)return days+"d ago";return d.toLocaleDateString(undefined,{month:"short",day:"numeric"});
-}
-function sportsBreakingNormalize(item,category){
-    const title=sportsBreakingDescription(item.title);const link=item.link||item.guid||"";
-    if(!title||!link)return null;
-    return {title,link,description:sportsBreakingDescription(item.description||item.content),source:item.source||item.author||category,pubDate:item.pubDate||"",category};
-}
-function renderSportsBreakingItems(rowId,items,category){
-    const row=document.getElementById(rowId);if(!row)return;
-    if(!items.length){row.innerHTML='<div class="sports-breaking-empty">No fresh stories are available right now. Tap Refresh to try again.</div>';return;}
-    row.innerHTML=items.slice(0,6).map((item,index)=>{
-        const title=escapeHTML(item.title),desc=escapeHTML(item.description||"Latest sports developments and reporting."),source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
-        const date=sportsBreakingDate(item.pubDate);
-        return `<article class="sports-breaking-card" data-real-image-index="${index}" onclick="openSportsBreakingArticle('${category}',${index})"><div class="sports-breaking-image">${realStoryMedia(item,title)}</div><span class="sports-breaking-badge">${escapeHTML(category.replace("africa","African Sports"))}</span>${index===0?'<span class="sports-breaking-live">LATEST</span>':''}<div class="sports-breaking-info"><div class="sports-breaking-source">${source}</div><h4>${title}</h4><p>${desc}</p><div class="sports-breaking-date">${date||"LATEST"}</div></div></article>`;
-    }).join("");
-    hydrateRealStoryImages(row,items.slice(0,6),6);
-}
-async function loadSportsBreakingCategory(category){
-    const row=document.getElementById("sportsBreaking"+category.charAt(0).toUpperCase()+category.slice(1)+"Row");if(!row)return;
-    row.innerHTML='<div class="sports-breaking-empty">Loading latest stories...</div>';
-    const urls=[SPORTS_BREAKING_NEWS[category],...(SPORTS_BREAKING_FALLBACKS[category]||[])].filter(Boolean);let items=[];
-    for(const url of urls){
-        try{
-            const rows=await fetchBusinessRSS(url);
-            const seen=new Set(items.map(x=>x.link+"|"+x.title));
-            rows.map(x=>sportsBreakingNormalize(x,category)).filter(Boolean).forEach(x=>{const key=x.link+"|"+x.title;if(!seen.has(key)){seen.add(key);items.push(x);}});
-            if(items.length>=6)break;
-        }catch(error){console.warn("Sports breaking source failed",category,error);}
-    }
-    items=items.slice(0,6);sportsBreakingNewsCache[category]=items;renderSportsBreakingItems("sportsBreaking"+category.charAt(0).toUpperCase()+category.slice(1)+"Row",items,category);
-}
-async function loadSportsBreakingNews(){
-    const status=document.getElementById("sportsBreakingNewsStatus");if(status)status.textContent="Updating latest sports headlines…";
-    const categories=["football","basketball","motorsport","tennis","fight","africa","major"];
-    await Promise.allSettled(categories.map(loadSportsBreakingCategory));
-    const all=categories.flatMap(category=>sportsBreakingNewsCache[category]||[]).sort((a,b)=>new Date(b.pubDate||0)-new Date(a.pubDate||0)).slice(0,8);
-    sportsBreakingNewsCache.all=all;renderSportsBreakingItems("sportsBreakingAllRow",all,"major");
-    if(status)status.textContent="Sports feeds refreshed · "+new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
-}
-function openSportsBreakingArticle(category,index){const item=sportsBreakingNewsCache[category]?.[index];if(item?.link)window.open(item.link,"_blank","noopener,noreferrer");}
-
 async function loadSports(){
 
 sportsStatus.textContent="Updating...";
@@ -5395,150 +5141,6 @@ row.innerHTML=
 
 }
 
-
-/* =========================================================
-   REAL STORY IMAGE SYSTEM
-   Uses publisher/feed images first, then resolves the article's
-   actual Open Graph image. No generic stock photography fallback.
-========================================================= */
-const REAL_IMAGE_CACHE_KEY="brenzkafrica_real_story_images_v2";
-const REAL_IMAGE_CACHE_TTL=1000*60*60*24*7;
-const REAL_IMAGE_EMPTY_TTL=1000*60*10;
-let realStoryImageCache={};
-try{realStoryImageCache=JSON.parse(localStorage.getItem(REAL_IMAGE_CACHE_KEY)||"{}")}catch(e){realStoryImageCache={};}
-
-function isStockImageUrl(url){
-    return /(^|\.)((images\.)?unsplash\.com|images\.pexels\.com|pixabay\.com)/i.test(String(url||""));
-}
-function cleanImageUrl(url){
-    if(!url||typeof url!=="string")return "";
-    const value=url.replace(/&amp;/g,"&").trim();
-    if(!/^https?:\/\//i.test(value)||isStockImageUrl(value))return "";
-    return value;
-}
-function extractImageFromHtml(html){
-    if(!html||typeof html!=="string")return "";
-    const doc=document.createElement("div");
-    doc.innerHTML=html;
-    const imgs=[...doc.querySelectorAll("img")];
-    for(const img of imgs){
-        const candidate=cleanImageUrl(img.getAttribute("src")||img.getAttribute("data-src")||img.getAttribute("data-lazy-src")||"");
-        if(candidate)return candidate;
-    }
-    return "";
-}
-function extractFeedImage(item){
-    if(!item)return "";
-    const candidates=[
-        item.image,
-        item.thumbnail,
-        item.enclosure?.link,
-        item.enclosure?.url,
-        item.enclosure?.thumbnail,
-        item.media?.content?.url,
-        item.media?.thumbnail?.url,
-        item["media:content"]?.url,
-        item["media:thumbnail"]?.url,
-        extractImageFromHtml(item.description),
-        extractImageFromHtml(item.content)
-    ];
-    for(const candidate of candidates){
-        const good=cleanImageUrl(candidate);
-        if(good)return good;
-    }
-    return "";
-}
-function saveRealImageCache(){
-    try{localStorage.setItem(REAL_IMAGE_CACHE_KEY,JSON.stringify(realStoryImageCache));}catch(e){}
-}
-async function fetchArticleHtml(url){
-    const encoded=encodeURIComponent(url);
-    const endpoints=[
-        "https://api.microlink.io/?url="+encoded,
-        "https://api.allorigins.win/raw?url="+encoded,
-        "https://api.codetabs.com/v1/proxy?quest="+encoded
-    ];
-    for(const endpoint of endpoints){
-        try{
-            const response=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"application/json,text/html,application/xhtml+xml"}});
-            if(!response.ok)continue;
-            const text=await response.text();
-            if(!text)continue;
-            if(endpoint.includes("microlink.io")){
-                try{
-                    const data=JSON.parse(text);
-                    const image=cleanImageUrl(data?.data?.image?.url||data?.data?.image||"");
-                    if(image)return "<!--MICROLINK_IMAGE-->"+image;
-                }catch(error){}
-            }
-            if(text.length>200)return text;
-        }catch(error){}
-    }
-    return "";
-}
-function extractMetaImage(html){
-    if(!html)return "";
-    try{
-        const doc=new DOMParser().parseFromString(html,"text/html");
-        const selectors=[
-            'meta[property="og:image"]','meta[property="og:image:url"]',
-            'meta[name="twitter:image"]','meta[name="twitter:image:src"]',
-            'link[rel="image_src"]'
-        ];
-        for(const selector of selectors){
-            const node=doc.querySelector(selector);
-            const candidate=cleanImageUrl(node?.content||node?.href||"");
-            if(candidate)return candidate;
-        }
-        const img=doc.querySelector("article img,main img,[role=main] img");
-        return cleanImageUrl(img?.currentSrc||img?.src||img?.getAttribute("data-src")||"");
-    }catch(error){return "";}
-}
-async function resolveActualArticleImage(item){
-    const feedImage=extractFeedImage(item);
-    if(feedImage)return feedImage;
-    const url=item?.link||item?.url||"";
-    if(!/^https?:\/\//i.test(url))return "";
-    const cached=realStoryImageCache[url];
-    const cacheAge=cached?.time?Date.now()-cached.time:Infinity;
-    const cacheTTL=cached?.image?REAL_IMAGE_CACHE_TTL:REAL_IMAGE_EMPTY_TTL;
-    if(cached&&cacheAge<cacheTTL)return cached.image||"";
-    let image="";
-    try{
-        const html=await fetchArticleHtml(url);
-        if(String(html).startsWith("<!--MICROLINK_IMAGE-->")) image=cleanImageUrl(String(html).replace("<!--MICROLINK_IMAGE-->",""));
-        else image=extractMetaImage(html);
-    }catch(error){}
-    realStoryImageCache[url]={image,time:Date.now()};
-    saveRealImageCache();
-    return image;
-}
-function realImagePlaceholder(title){
-    return `<div class="real-image-placeholder" aria-label="Publisher image loading"><span></span></div>`;
-}
-async function hydrateRealStoryImages(container,items,limit){
-    if(!container||!Array.isArray(items)||!items.length)return;
-    const cards=[...container.querySelectorAll("[data-real-image-index]")];
-    const selected=Number.isFinite(limit)?cards.slice(0,limit):cards;
-    await Promise.allSettled(selected.map(async card=>{
-        const index=Number(card.dataset.realImageIndex);
-        const item=items[index];if(!item)return;
-        const image=await resolveActualArticleImage(item);
-        const media=card.querySelector(".real-story-media");if(!media)return;
-        if(image){
-            media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\"></div>'}">`;
-        }else{
-            media.innerHTML=`<div class="real-image-empty" aria-label="No publisher image available"></div>`;
-        }
-    }));
-}
-function realStoryMedia(item,title){
-    const image=extractFeedImage(item);
-    return image
-        ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\"></div>'}"></div>`
-        : `<div class="real-story-media">${realImagePlaceholder(title)}</div>`;
-}
-
 /* =========================================================
    ENTERTAINMENT
 ========================================================= */
@@ -5576,12 +5178,13 @@ panel.classList.add("active");
 
 }
 
-function createMusicCard(item,index=0){
+function createMusicCard(item){
 
 const title=item.title||"Music News";
 const artist=item.artist||item.source||"Music";
 const region=item.region||"Worldwide";
-const image=extractFeedImage(item);
+const image=item.image||
+"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg";
 
 const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)
 ?item.url
@@ -5589,11 +5192,10 @@ const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)
 
 return `
 <article
-data-real-image-index="${index}"
 class="music-card"
 onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
 
-${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy">`:realImagePlaceholder(title)}
+${extractFeedImage(item)?`<img class="real-story-image" src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" data-story-image="${item.__storyIndex??0}" onerror="this.style.display='none';this.parentElement.classList.add('story-image-missing')">`:`<div class="real-story-image-placeholder" data-story-image="${item.__storyIndex??0}"><span>BRENZKAFRICA</span><small>Loading story image…</small></div>`}
 
 <div class="music-play">
 ↗
@@ -5620,19 +5222,21 @@ ${escapeHTML(region)}
 
 }
 
-function createEntertainmentCard(item,type,index=0){
+function createEntertainmentCard(item,type){
 
 const title=item.title||"Entertainment";
 const meta=item.meta||type;
-const image=extractFeedImage(item);
+const image=extractFeedImage(item)||item.image||BRENZKAFRICA_IMAGE_FALLBACK;
 
 return `
 <article
-data-real-image-index="${index}"
 class="entertainment-card"
 onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
 
-${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy">`:realImagePlaceholder(title)}
+<img
+src="${escapeHTML(image)}"
+alt="${escapeHTML(title)}"
+loading="lazy">
 
 <div class="entertainment-badge">
 ${escapeHTML(type)}
@@ -5714,7 +5318,7 @@ showToast(title+" — source unavailable right now.");
 }
 
 function entertainmentImage(item){
-return extractFeedImage(item);
+return extractFeedImage(item)||item.image||"";
 }
 
 function cleanEntertainmentDescription(value){
@@ -5761,7 +5365,7 @@ const endpoint=
 "https://api.rss2json.com/v1/api.json?rss_url="+
 encodeURIComponent(url);
 
-const response=await brenzSafeFetch(endpoint,{cache:"no-store"});
+const response=await fetch(endpoint,{cache:"no-store"});
 if(!response.ok)throw new Error("Entertainment feed HTTP "+response.status);
 
 const data=await response.json();
@@ -5783,12 +5387,11 @@ return;
 }
 
 if(type==="MUSIC"){
-row.innerHTML=items.map((item,index)=>createMusicCard(item,index)).join("");
-hydrateRealStoryImages(row,items);
+row.innerHTML=items.map(createMusicCard).join("");
 }else{
-row.innerHTML=items.map((item,index)=>createEntertainmentCard(item,type,index)).join("");
-hydrateRealStoryImages(row,items);
+row.innerHTML=items.map((item,index)=>createEntertainmentCard({...item,__storyIndex:index},type)).join("");
 }
+hydrateStoryImages(row,items);
 }
 
 async function loadEntertainment(){
@@ -5838,42 +5441,6 @@ updated.textContent="Updated "+new Date().toLocaleTimeString([],{
 /* =========================================================
    BUSINESS OF AFRICA • LIVE DATA
 ========================================================= */
-
-const INTERNATIONAL_NEWS={
-    politics:"https://news.google.com/rss/search?q=international+(politics+OR+government+OR+elections+OR+diplomacy+OR+geopolitics)&hl=en-US&gl=US&ceid=US:en",
-    wars:"https://news.google.com/rss/search?q=world+(war+OR+conflict+OR+ceasefire+OR+military+OR+missile+OR+airstrike)&hl=en-US&gl=US&ceid=US:en",
-    space:"https://news.google.com/rss/search?q=space+(NASA+OR+ESA+OR+SpaceX+OR+rocket+OR+satellite+OR+moon+OR+Mars)&hl=en-US&gl=US&ceid=US:en",
-    education:"https://news.google.com/rss/search?q=world+(education+OR+schools+OR+universities+OR+students+OR+teachers)&hl=en-US&gl=US&ceid=US:en"
-};
-const INTERNATIONAL_NEWS_FALLBACKS={
-    politics:["https://news.google.com/rss/search?q=world+politics+latest&hl=en-US&gl=US&ceid=US:en"],
-    wars:["https://news.google.com/rss/search?q=global+conflicts+latest&hl=en-US&gl=US&ceid=US:en"],
-    space:["https://news.google.com/rss/search?q=space+science+latest&hl=en-US&gl=US&ceid=US:en"],
-    education:["https://news.google.com/rss/search?q=global+education+latest&hl=en-US&gl=US&ceid=US:en"]
-};
-const INTERNATIONAL_IMAGES={};
-const SPORTS_BREAKING_NEWS={
-    football:"https://news.google.com/rss/search?q=(football+OR+soccer)+(transfer+OR+injury+OR+manager+OR+club+OR+match)&hl=en-US&gl=US&ceid=US:en",
-    basketball:"https://news.google.com/rss/search?q=(NBA+OR+WNBA+OR+basketball)+(trade+OR+injury+OR+game+OR+player)&hl=en-US&gl=US&ceid=US:en",
-    motorsport:"https://news.google.com/rss/search?q=(Formula+1+OR+F1+OR+MotoGP+OR+motorsport)+(race+OR+driver+OR+team)&hl=en-US&gl=US&ceid=US:en",
-    tennis:"https://news.google.com/rss/search?q=(tennis+OR+ATP+OR+WTA)+(Grand+Slam+OR+player+OR+tournament)&hl=en-US&gl=US&ceid=US:en",
-    fight:"https://news.google.com/rss/search?q=(UFC+OR+boxing+OR+MMA)+(fight+OR+championship+OR+fighter)&hl=en-US&gl=US&ceid=US:en",
-    africa:"https://news.google.com/rss/search?q=(African+football+OR+CAF+OR+AFCON+OR+African+athletes+OR+African+sports)&hl=en-US&gl=US&ceid=US:en",
-    major:"https://news.google.com/rss/search?q=(Olympics+OR+athletics+OR+golf+OR+rugby+OR+cricket+OR+volleyball+OR+cycling)+(breaking+OR+latest)&hl=en-US&gl=US&ceid=US:en"
-};
-const SPORTS_BREAKING_FALLBACKS={
-    football:["https://news.google.com/rss/search?q=football+latest&hl=en-US&gl=US&ceid=US:en"],
-    basketball:["https://news.google.com/rss/search?q=basketball+latest&hl=en-US&gl=US&ceid=US:en"],
-    motorsport:["https://news.google.com/rss/search?q=motorsport+latest&hl=en-US&gl=US&ceid=US:en"],
-    tennis:["https://news.google.com/rss/search?q=tennis+latest&hl=en-US&gl=US&ceid=US:en"],
-    fight:["https://news.google.com/rss/search?q=UFC+boxing+latest&hl=en-US&gl=US&ceid=US:en"],
-    africa:["https://news.google.com/rss/search?q=Africa+sports+latest&hl=en-US&gl=US&ceid=US:en"],
-    major:["https://news.google.com/rss/search?q=sports+latest&hl=en-US&gl=US&ceid=US:en"]
-};
-const SPORTS_BREAKING_IMAGES={};
-let sportsBreakingNewsCache={};
-
-let internationalNewsCache={politics:[],wars:[],space:[],education:[]};
 
 const BUSINESS_API={
     crypto:"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,bnb,solana,xrp,cardano&order=market_cap_desc&per_page=6&page=1&sparkline=true&price_change_percentage=24h",
@@ -5962,7 +5529,7 @@ async function loadBusinessCrypto(){
     const ids=["bitcoin","ethereum","bnb","solana","xrp","cardano"];
     const meta={bitcoin:["btcPrice","btcChange"],ethereum:["ethPrice","ethChange"],bnb:["bnbPrice","bnbChange"],solana:["solPrice","solChange"],xrp:["xrpPrice","xrpChange"],cardano:["adaPrice","adaChange"]};
     try{
-        const res=await brenzSafeFetch(BUSINESS_API.crypto,{cache:"no-store",headers:{Accept:"application/json"}});
+        const res=await fetch(BUSINESS_API.crypto,{cache:"no-store",headers:{Accept:"application/json"}});
         if(!res.ok)throw new Error("Crypto API "+res.status);
         const data=await res.json();
         data.forEach(c=>{
@@ -6006,7 +5573,7 @@ function openCryptoAsset(asset){showBusinessCategory("crypto");}
 
 async function loadBusinessFX(){
     try{
-        const res=await brenzSafeFetch(BUSINESS_API.fx,{cache:"no-store",headers:{Accept:"application/json"}});
+        const res=await fetch(BUSINESS_API.fx,{cache:"no-store",headers:{Accept:"application/json"}});
         if(!res.ok)throw new Error("FX API "+res.status);
         const rows=await res.json();
         rows.forEach(r=>BUSINESS_FX_RATES[r.quote]=Number(r.rate));
@@ -6045,12 +5612,11 @@ function cleanBusinessText(value){
     return String(value||"").replace(/<[^>]*>/g," ").replace(/\s+/g," ").trim();
 }
 function businessImage(item,category,index=0){
-    return extractFeedImage(item);
+    return extractFeedImage(item)||BRENZKAFRICA_IMAGE_FALLBACK;
 }
-
 async function fetchBusinessRSS(feedUrl){
     const endpoint=`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedUrl)}&count=10`;
-    const res=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"}});
+    const res=await fetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"}});
     if(!res.ok)throw new Error("News feed "+res.status);
     const data=await res.json();
     if(data.status && data.status !== "ok")throw new Error(data.message||"RSS conversion failed");
@@ -6080,50 +5646,6 @@ function dedupeBusinessItems(items){
     });
 }
 
-async function loadInternationalCategory(category){
-    const target=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Feed");
-    const count=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Count");
-    if(!target)return;
-    target.innerHTML="<div class='international-empty'>Loading latest stories...</div>";
-    const urls=[INTERNATIONAL_NEWS[category],...(INTERNATIONAL_NEWS_FALLBACKS[category]||[])].filter(Boolean);
-    try{
-        let items=[];
-        for(const url of urls){
-            try{
-                const rows=await fetchBusinessRSS(url);
-                items=dedupeBusinessItems([...items,...rows.map(x=>normalizeBusinessItem(x,category)).filter(Boolean)]);
-                if(items.length>=4)break;
-            }catch(e){console.warn("International news source failed",category,e);}
-        }
-        items=items.slice(0,4);
-        internationalNewsCache[category]=items;
-        if(!items.length){target.innerHTML="<div class='international-empty'>No current stories are available right now. Tap Refresh to try again.</div>";if(count)count.textContent="NO UPDATES";return;}
-        target.innerHTML=items.map((item,index)=>{
-            const title=escapeHTML(item.title||"International news story");
-            const desc=escapeHTML(item.description||"Latest international reporting and developments.");
-            const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
-            const date=businessNewsTime(item.pubDate);
-            return `<article class="international-story-card" data-real-image-index="${index}" onclick="openInternationalArticle('${category}',${index})">${realStoryMedia(item,title)}<div class="international-story-source">${source}</div><h4 class="international-story-title">${title}</h4><p class="international-story-desc">${desc}</p><div class="international-story-date">${date||"LATEST"}</div></article>`;
-        }).join("");
-        hydrateRealStoryImages(target,items);
-        if(count)count.textContent=items.length+" STORIES";
-    }catch(error){
-        console.warn("International news error",category,error);
-        target.innerHTML="<div class='international-error'>International news is temporarily unavailable. Tap Refresh to try again.</div>";
-        if(count)count.textContent="UNAVAILABLE";
-    }
-}
-async function loadInternationalNews(){
-    const status=document.getElementById("internationalNewsStatus");
-    if(status)status.textContent="Updating global headlines…";
-    await Promise.allSettled(["politics","wars","space","education"].map(loadInternationalCategory));
-    if(status)status.textContent="Global feeds refreshed · "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
-}
-function openInternationalArticle(category,index){
-    const item=internationalNewsCache[category]?.[index];
-    if(item?.link)window.open(item.link,"_blank","noopener,noreferrer");
-}
-
 async function loadBusinessFeed(category){
     const target=document.getElementById(category+"BusinessFeed");if(!target)return;
     target.innerHTML="<div class='business-feed-loading'>Loading the latest African stories…</div>";
@@ -6150,12 +5672,12 @@ async function loadBusinessFeed(category){
             const desc=escapeHTML(item.description||"Latest reporting and developments from across Africa.");
             const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
             const date=businessNewsTime(item.pubDate);
-            return `<article class="business-story-card live-business-story" data-real-image-index="${index}" onclick="openBusinessArticle('${category}',${index})">
-                <div class="story-image">${realStoryMedia(item,title)}<span class="story-category-badge">${category.toUpperCase()}</span></div>
+            return `<article class="business-story-card live-business-story" onclick="openBusinessArticle('${category}',${index})">
+                <div class="story-image" style="${storyImageFallbackStyle()}">${storyImageMarkup(item,index)}<span class="story-category-badge">${category.toUpperCase()}</span></div>
                 <div class="story-content"><div class="story-source-line"><span>${source}</span><span>${date?date:"LATEST"}</span></div><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>Source: ${source}</small></div>
             </article>`;
         }).join("");
-        hydrateRealStoryImages(target,items);
+        hydrateStoryImages(target,items);
     }catch(error){
         console.warn("BRENZKafrica business news error",category,error);
         target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
@@ -6739,22 +6261,11 @@ function openGlobalSearch(initialValue=""){
     const backdrop=document.getElementById("searchBackdrop");
     const input=document.getElementById("globalSearchInput");
     if(!panel||!backdrop||!input)return;
-
     panel.classList.add("active");
     backdrop.classList.add("active");
+    if(initialValue)input.value=initialValue;
     document.body.classList.add("modal-open");
-
-    if(initialValue!==undefined && initialValue!==null){
-        input.value=String(initialValue);
-    }
-
-    setTimeout(function(){
-        try{
-            input.focus();
-            input.setSelectionRange(input.value.length,input.value.length);
-        }catch(e){}
-        performGlobalSearch(input.value||"");
-    },20);
+    setTimeout(()=>{input.focus();input.select();performGlobalSearch(input.value);},20);
 }
 function closeGlobalSearch(){
     const panel=document.getElementById("globalSearchPanel");
@@ -6781,14 +6292,8 @@ function getSearchItems(){
     (allSportsEvents||[]).forEach(x=>push(x.eventName||((x.home||"")+" vs "+(x.away||"")),x.leagueName||x.league||"Sports",x.detail||"",x.thumbnail||x.image||"",()=>{const card=document.querySelector('[data-sports-event="'+CSS.escape(String(x.id))+'"]');if(card)openSportsEvent(card);},"Sports"));
     const ent=[...GLOBAL_MUSIC,...TRENDING_MUSIC,...CELEBRITY_NEWS,...THEATRE_CONTENT,...ENTERTAINMENT_EVENTS,...ENTERTAINMENT_AWARDS];
     ent.forEach(x=>push(x.title,x.meta||x.artist||"Entertainment",x.description,x.image,()=>openEntertainmentItem(encodeURIComponent(x.url||""),encodeURIComponent(x.title||"Entertainment")),"Entertainment"));
-    Object.keys(sportsBreakingNewsCache||{}).forEach(category=>{
-        (sportsBreakingNewsCache[category]||[]).forEach(x=>push(cleanBusinessText(x.title),"Sports • "+category,cleanBusinessText(x.description||x.content),SPORTS_BREAKING_IMAGES[category]?.[0]||SPORTS_BREAKING_IMAGES.major[0],()=>{if(x.link)window.open(x.link,"_blank","noopener,noreferrer")},"Sports Breaking"));
-    });
     Object.keys(businessNewsCache||{}).forEach(category=>{
         (businessNewsCache[category]||[]).forEach(x=>push(cleanBusinessText(x.title),String(x.author||x.source||category),cleanBusinessText(x.description||x.content),businessImage(x),()=>{if(x.link)window.open(x.link,"_blank","noopener,noreferrer")},"Business"));
-    });
-    Object.keys(internationalNewsCache||{}).forEach(category=>{
-        (internationalNewsCache[category]||[]).forEach(x=>push(cleanBusinessText(x.title),"International • "+category,cleanBusinessText(x.description||x.content),INTERNATIONAL_IMAGES[category]?.[0]||"",()=>{if(x.link)window.open(x.link,"_blank","noopener,noreferrer")},"International News"));
     });
     WWE_NEWS_SNAPSHOT.forEach(x=>push(x.title,x.meta,x.description,"",()=>wweSafeOpen(x.url),"WWE News"));
     WWE_MATCH_COVERAGE.forEach(x=>push(x.a+" vs "+x.b,x.brand,x.detail,"",()=>wweSafeOpen(x.url),"WWE Match"));
@@ -6824,116 +6329,14 @@ function performGlobalSearch(query){
     results.querySelectorAll(".search-result").forEach((el,i)=>el.addEventListener("click",()=>{const item=matches[i];closeGlobalSearch();if(typeof item.action==="function")item.action();}));
 }
 
-/* =========================================================
-   SEARCH + QUICK LINKS RELIABILITY LAYER
-   - Binds after the DOM exists so desktop browsers cannot miss handlers.
-   - Uses delegated events for dynamically rendered content.
-   - Quick links scroll reliably with the fixed header offset.
-   - Header search opens the full search panel and searches as the user types.
-========================================================= */
-function initBrenzNavigationTools(){
-    const topSearch=document.getElementById("search");
-    const globalSearchInput=document.getElementById("globalSearchInput");
-
-    if(topSearch && !topSearch.dataset.brenzBound){
-        topSearch.dataset.brenzBound="1";
-
-        topSearch.addEventListener("click",function(){
-            openGlobalSearch(this.value||"");
-        });
-
-        topSearch.addEventListener("focus",function(){
-            openGlobalSearch(this.value||"");
-        });
-
-        topSearch.addEventListener("input",function(){
-            openGlobalSearch(this.value||"");
-        });
-
-        topSearch.addEventListener("keydown",function(event){
-            if(event.key==="Enter"){
-                event.preventDefault();
-                openGlobalSearch(this.value||"");
-                performGlobalSearch(this.value||"");
-            }
-            if(event.key==="Escape"){
-                event.preventDefault();
-                closeGlobalSearch();
-                this.blur();
-            }
-        });
-    }
-
-    if(globalSearchInput && !globalSearchInput.dataset.brenzBound){
-        globalSearchInput.dataset.brenzBound="1";
-
-        globalSearchInput.addEventListener("input",function(){
-            performGlobalSearch(this.value||"");
-        });
-
-        globalSearchInput.addEventListener("keydown",function(event){
-            if(event.key==="Escape"){
-                event.preventDefault();
-                closeGlobalSearch();
-            }
-            if(event.key==="Enter"){
-                event.preventDefault();
-                performGlobalSearch(this.value||"");
-            }
-        });
-    }
-
-    /* Make every Quick Link reliable on desktop and mobile. */
-    document.querySelectorAll("#quickLinks a.quick-link").forEach(function(link){
-        if(link.dataset.brenzBound) return;
-        link.dataset.brenzBound="1";
-
-        link.addEventListener("click",function(event){
-            const href=this.getAttribute("href")||"";
-            if(href==="#" || !href.startsWith("#")) return;
-
-            const target=document.getElementById(href.slice(1));
-            if(!target) return;
-
-            event.preventDefault();
-
-            if(typeof closeMobileMenu==="function"){
-                try{ closeMobileMenu(); }catch(e){}
-            }
-
-            const header=document.querySelector("header");
-            const offset=(header ? header.offsetHeight : 72)+14;
-            const top=target.getBoundingClientRect().top + window.pageYOffset - offset;
-
-            window.scrollTo({
-                top:Math.max(0,top),
-                behavior:"smooth"
-            });
-
-            history.replaceState(null,"",href);
-        });
-    });
-
-    /* The Home Quick Link should return to the top, not "#" the page state. */
-    const homeLink=document.querySelector('#quickLinks a.quick-link[href="#"]');
-    if(homeLink && !homeLink.dataset.brenzHomeBound){
-        homeLink.dataset.brenzHomeBound="1";
-        homeLink.addEventListener("click",function(event){
-            event.preventDefault();
-            if(typeof closeMobileMenu==="function"){
-                try{ closeMobileMenu(); }catch(e){}
-            }
-            window.scrollTo({top:0,behavior:"smooth"});
-            history.replaceState(null,"",window.location.pathname+window.location.search);
-        });
-    }
+const topSearch=document.getElementById("search");
+if(topSearch){
+    topSearch.addEventListener("input",()=>performGlobalSearch(topSearch.value));
 }
-
-/* Bind immediately when possible and again after DOMContentLoaded. */
-if(document.readyState==="loading"){
-    document.addEventListener("DOMContentLoaded",initBrenzNavigationTools,{once:true});
-}else{
-    initBrenzNavigationTools();
+const globalSearchInput=document.getElementById("globalSearchInput");
+if(globalSearchInput){
+    globalSearchInput.addEventListener("input",()=>performGlobalSearch(globalSearchInput.value));
+    globalSearchInput.addEventListener("keydown",event=>{if(event.key==="Escape")closeGlobalSearch();});
 }
 
 
@@ -6965,9 +6368,7 @@ async function refreshBRENZKafricaLiveData(force = false){
         await Promise.allSettled([
             loadLiveEvents(),
             loadBreakingNews(),
-            loadInternationalNews(),
             loadSports(),
-            loadSportsBreakingNews(),
             loadEntertainment(),
             loadBusinessOfAfrica(),
             loadTrendingSeries(),
@@ -7142,200 +6543,6 @@ setInterval(async function(){
   <div class="source-disclaimer">Source names and logos are used for identification and attribution. Unless expressly stated as an official BRENZKafrica partnership, listing a third-party source does not imply endorsement, sponsorship or a formal business relationship.</div>
 </section>
 
-
-
-<script>
-/* =========================================================
-   BRENZKAFRICA PLUS — ADVERTISING MEDIA ENGINE
-   Campaign formats: image | slideshow | video | mixed
-   Connected to Supabase advertising_campaigns when available;
-   local demo is retained only as a safe fallback.
-========================================================= */
-(function(){
-  "use strict";
-  const DEMO_CAMPAIGNS = [{
-    id:"demo-partner-campaign", advertiser:"BRENZKafrica Plus", title:"Your brand belongs here.",
-    description:"Premium campaign placement designed for brands, sponsors and commercial partners reaching audiences across Africa and the world.",
-    ctaText:"Partner With Us", ctaUrl:"#advertisingPartners", type:"slideshow", duration_ms:6000, label:"Featured Partner",
-    media:[
-      {type:"image",src:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82",alt:"Premium business environment"},
-      {type:"image",src:"https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=82",alt:"Business partnership"},
-      {type:"image",src:"https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=82",alt:"Corporate collaboration"}
-    ]
-  }];
-
-  let campaigns = DEMO_CAMPAIGNS;
-
-  const state={campaigns,index:0,mediaIndex:0,timer:null,progressTimer:null,started:Date.now()};
-  const $=id=>document.getElementById(id);
-
-  async function loadAdminCampaigns(){
-    try{
-      if(typeof supabaseClient === "undefined" || !supabaseClient || typeof supabaseClient.from!=="function") return;
-      const {data,error}=await supabaseClient
-        .from("advertising_campaigns")
-        .select("id,advertiser_name,campaign_title,description,cta_text,cta_url,campaign_type,slideshow_duration,media,is_active,starts_at,ends_at,priority,created_at,updated_at")
-        .eq("is_active",true)
-        .order("priority",{ascending:false})
-        .order("created_at",{ascending:false});
-      if(error) throw error;
-      if(Array.isArray(data) && data.length){
-        campaigns=data.map(c=>({
-          id:c.id,advertiser:c.advertiser_name,title:c.campaign_title,description:c.description,label:"Sponsored",
-          ctaText:c.cta_text,ctaUrl:c.cta_url,type:c.campaign_type,duration_ms:c.slideshow_duration,media:Array.isArray(c.media)?c.media:[]
-        })).filter(c=>c.media.length);
-        if(campaigns.length){ state.campaigns=campaigns; state.index=0; state.mediaIndex=0; renderCampaign(); }
-      }
-    }catch(e){ console.warn("Advertising campaign feed unavailable; using local fallback.",e); }
-  }
-
-  function safeUrl(url){
-    if(!url) return "#";
-    try{
-      if(url.startsWith("#")) return url;
-      const u=new URL(url,location.href);
-      return /^(https?:|mailto:|tel:)$/.test(u.protocol)?u.href:"#";
-    }catch(e){return "#";}
-  }
-
-  function mediaItems(c){ return Array.isArray(c.media)?c.media.filter(x=>x&&x.src):[]; }
-  function currentCampaign(){ return state.campaigns[state.index]||null; }
-
-  function clearTimers(){
-    clearTimeout(state.timer); clearInterval(state.progressTimer);
-    state.timer=null; state.progressTimer=null;
-  }
-
-  function renderDots(c){
-    const dots=$("advertisingDots");
-    const items=mediaItems(c);
-    if(!dots) return;
-    dots.innerHTML="";
-    if(items.length<2){dots.hidden=true;return;}
-    dots.hidden=false;
-    items.forEach((_,i)=>{
-      const b=document.createElement("button");
-      b.type="button"; b.className="ad-dot"+(i===state.mediaIndex?" active":"");
-      b.setAttribute("aria-label","Show advertisement slide "+(i+1));
-      b.onclick=()=>{state.mediaIndex=i;renderMedia(false);};
-      dots.appendChild(b);
-    });
-  }
-
-  function renderMedia(animate=true){
-    const stage=$("advertisingStage"), c=currentCampaign();
-    if(!stage||!c) return;
-    const items=mediaItems(c);
-    if(!items.length){
-      stage.querySelectorAll(".advertising-media,.advertising-video").forEach(x=>x.remove());
-      return;
-    }
-    const item=items[state.mediaIndex%items.length];
-    stage.querySelectorAll(".advertising-media,.advertising-video,.advertising-empty").forEach(x=>x.remove());
-    let el;
-    if(item.type==="video" || /\.(mp4|webm|ogg)(\?|$)/i.test(item.src)){
-      el=document.createElement("video");
-      el.className="advertising-video";
-      el.src=item.src;
-      el.poster=item.poster||"";
-      el.controls=true;
-      el.playsInline=true;
-      el.preload="metadata";
-      if(item.muted!==false){el.muted=true;}
-      el.setAttribute("aria-label",item.alt||c.title||"Advertisement video");
-      el.addEventListener("ended",()=>advanceMedia());
-      el.addEventListener("error",()=>showMediaFallback());
-    }else{
-      el=document.createElement("img");
-      el.className="advertising-media";
-      el.src=item.src;
-      el.alt=item.alt||c.title||"Advertisement";
-      el.loading="eager";
-      el.referrerPolicy="no-referrer-when-downgrade";
-      el.onerror=()=>showMediaFallback();
-    }
-    if(animate) el.classList.add("ad-fade");
-    stage.insertBefore(el,stage.firstChild);
-    renderDots(c);
-    startRotation(item);
-  }
-
-  function showMediaFallback(){
-    const stage=$("advertisingStage");
-    if(!stage) return;
-    const old=stage.querySelector(".advertising-media,.advertising-video");
-    if(old) old.remove();
-    const empty=document.createElement("div");
-    empty.className="advertising-empty";
-    empty.textContent="Campaign media is temporarily unavailable.";
-    stage.insertBefore(empty,stage.firstChild);
-  }
-
-  function startRotation(item){
-    clearTimers();
-    const c=currentCampaign(), items=mediaItems(c);
-    const isVideo=item.type==="video" || /\.(mp4|webm|ogg)(\?|$)/i.test(item.src);
-    if(isVideo) return;
-    const duration=Math.max(2500,Number(c.duration_ms||c.duration)||6000);
-    const bar=$("advertisingProgressBar");
-    const started=Date.now();
-    if(bar) bar.style.width="0%";
-    state.progressTimer=setInterval(()=>{
-      const pct=Math.min(100,((Date.now()-started)/duration)*100);
-      if(bar) bar.style.width=pct+"%";
-    },100);
-    state.timer=setTimeout(()=>advanceMedia(),duration);
-  }
-
-  function advanceMedia(){
-    const c=currentCampaign(), items=mediaItems(c);
-    if(!items.length) return;
-    state.mediaIndex=(state.mediaIndex+1)%items.length;
-    renderMedia(true);
-  }
-
-  function renderCampaign(){
-    const c=currentCampaign();
-    if(!c) return;
-    const items=mediaItems(c);
-    state.mediaIndex=Math.min(state.mediaIndex,Math.max(0,items.length-1));
-    $("advertisingLabel").textContent=c.label||"Featured Partner";
-    $("advertisingTitle").textContent=c.title||"Featured Campaign";
-    $("advertisingDescription").textContent=c.description||"";
-    const cta=$("advertisingCta");
-    cta.textContent=c.ctaText||"Learn More";
-    cta.href=safeUrl(c.ctaUrl||"#");
-    $("advertisingAdvertiser").innerHTML="<strong>"+(c.advertiser||"Featured Partner")+"</strong>";
-    $("advertisingFormat").textContent=(c.type||"campaign").replace(/^./,x=>x.toUpperCase());
-    $("advertisingCopy").hidden=false;
-    $("advertisingControls").hidden=items.length<2;
-    renderMedia(false);
-  }
-
-  function setCampaigns(next){
-    if(!Array.isArray(next)||!next.length) return;
-    clearTimers(); state.campaigns=next; state.index=0; state.mediaIndex=0; renderCampaign();
-  }
-  function next(){
-    const c=currentCampaign();
-    if(!c) return;
-    clearTimers();
-    if(mediaItems(c).length>1){state.mediaIndex=(state.mediaIndex+1)%mediaItems(c).length;renderMedia(true);return;}
-    state.index=(state.index+1)%state.campaigns.length;state.mediaIndex=0;renderCampaign();
-  }
-  function previous(){
-    const c=currentCampaign();
-    if(!c) return;
-    clearTimers();
-    if(mediaItems(c).length>1){state.mediaIndex=(state.mediaIndex-1+mediaItems(c).length)%mediaItems(c).length;renderMedia(true);return;}
-    state.index=(state.index-1+state.campaigns.length)%state.campaigns.length;state.mediaIndex=0;renderCampaign();
-  }
-
-  window.BKPAdvertising={next,previous,setCampaigns,getState:()=>({...state})};
-  document.addEventListener("DOMContentLoaded",()=>{ if($("advertisingStage")){ renderCampaign(); setTimeout(loadAdminCampaigns,150); } });
-})();
-</script>
-
 <script src="./share.js"></script>
 <script src="/notifications.js"></script>
 
@@ -7381,7 +6588,7 @@ async function professionalFetch(url, options={}){
   const session = await professionalSession();
   const headers = Object.assign({"Content-Type":"application/json"}, options.headers||{});
   if(session && session.access_token) headers.Authorization = "Bearer " + session.access_token;
-  const response = await brenzSafeFetch(url, Object.assign({}, options, {headers}));
+  const response = await fetch(url, Object.assign({}, options, {headers}));
   let body = null;
   try { body = await response.json(); } catch(e) {}
   if(!response.ok){
