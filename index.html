@@ -2112,6 +2112,55 @@ body.modal-open{overflow:hidden}
   .brenz-info-dialog h2{font-size:25px;margin-right:42px}
   .brenz-info-content p{font-size:14px;line-height:1.65}
 }
+
+/* =========================================================
+   BRENZKAFRICA PLUS — ADVERTISING & PARTNERS MEDIA BLOCK
+   Supports image, slideshow, video and mixed-media campaigns.
+========================================================= */
+.advertising-section{margin:30px 0 34px}
+.advertising-shell{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:linear-gradient(145deg,#151515,#090909);box-shadow:0 18px 55px rgba(0,0,0,.35)}
+.advertising-top{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:20px 22px 14px}
+.advertising-kicker{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#e50914;font-weight:800}
+.advertising-title{font-size:25px;font-weight:800;margin:4px 0 0;color:#fff}
+.advertising-subtitle{font-size:12px;color:#8e8e8e;margin-top:4px}
+.advertising-sponsored{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#777;border:1px solid rgba(255,255,255,.1);padding:6px 9px;border-radius:999px;white-space:nowrap}
+.advertising-stage{position:relative;margin:0 16px 16px;min-height:250px;aspect-ratio:16/6.5;background:#050505;border-radius:14px;overflow:hidden}
+.advertising-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#050505}
+.advertising-media.ad-fade{animation:adFadeIn .45s ease}
+@keyframes adFadeIn{from{opacity:.25;transform:scale(1.015)}to{opacity:1;transform:scale(1)}}
+.advertising-stage::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(0,0,0,.7),transparent 55%,rgba(0,0,0,.12)),linear-gradient(0deg,rgba(0,0,0,.65),transparent 55%)}
+.advertising-copy{position:absolute;z-index:3;left:28px;bottom:26px;max-width:600px}
+.advertising-copy .ad-label{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.75);font-weight:800}
+.advertising-copy h3{font-size:30px;line-height:1.08;margin:6px 0 7px;color:#fff}
+.advertising-copy p{font-size:13px;line-height:1.45;color:rgba(255,255,255,.82);margin:0 0 13px;max-width:560px}
+.advertising-cta{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:#fff;color:#090909;padding:9px 15px;font-size:12px;font-weight:800;text-decoration:none;cursor:pointer}
+.advertising-cta:hover{opacity:.9}
+.advertising-controls{position:absolute;z-index:4;right:18px;bottom:20px;display:flex;align-items:center;gap:7px}
+.ad-control{width:34px;height:34px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.5);backdrop-filter:blur(8px);color:#fff;border-radius:50%;cursor:pointer;font-size:15px}
+.ad-control:hover{background:rgba(255,255,255,.16)}
+.advertising-dots{position:absolute;z-index:4;left:50%;bottom:15px;transform:translateX(-50%);display:flex;gap:6px}
+.ad-dot{width:6px;height:6px;border:0;border-radius:50%;background:rgba(255,255,255,.42);padding:0;cursor:pointer}
+.ad-dot.active{width:20px;border-radius:999px;background:#fff}
+.advertising-video{position:absolute;z-index:2;inset:0;width:100%;height:100%;object-fit:cover;background:#000}
+.advertising-video::-webkit-media-controls-panel{background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.advertising-empty{display:flex;align-items:center;justify-content:center;height:100%;min-height:250px;color:#777;font-size:13px}
+.advertising-footer{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:0 22px 19px;color:#777;font-size:11px}
+.advertising-footer strong{color:#bdbdbd}
+.advertising-progress{height:2px;background:rgba(255,255,255,.08);position:absolute;left:0;right:0;bottom:0;z-index:5}
+.advertising-progress span{display:block;height:100%;width:0;background:#e50914;transition:width .1s linear}
+@media(max-width:700px){
+ .advertising-section{margin:22px 0 28px}
+ .advertising-top{padding:17px 16px 12px}
+ .advertising-title{font-size:20px}
+ .advertising-stage{margin:0 10px 10px;min-height:260px;aspect-ratio:4/5;border-radius:13px}
+ .advertising-copy{left:18px;right:18px;bottom:24px}
+ .advertising-copy h3{font-size:24px}
+ .advertising-copy p{font-size:12px}
+ .advertising-controls{right:12px;top:12px;bottom:auto}
+ .advertising-dots{bottom:10px}
+ .advertising-footer{padding:0 16px 15px}
+}
+
 </style>
 </head>
 
@@ -2234,9 +2283,48 @@ and global creative work from BRENZKafrica.
 <a class="quick-link" href="#entertainment">🎭 Entertainment</a>
 <a class="quick-link" href="#businessFinanceSection">💼 Business</a>
 <a class="quick-link" href="#documentaries">🎥 Documentaries</a>
+<a class="quick-link" href="#advertisingPartners">📣 Advertising</a>
 <a class="quick-link" href="#watchlist">❤️ Watchlist</a>
 <button class="quick-link search-link" type="button" onclick="openGlobalSearch()">🔎 Search</button>
 </div>
+</section>
+
+
+
+<!-- =========================================================
+     ADVERTISING & PARTNERS
+     Ready for image, slideshow, video and mixed campaigns.
+========================================================= -->
+<section class="section advertising-section" id="advertisingPartners">
+  <div class="advertising-shell">
+    <div class="advertising-top">
+      <div>
+        <div class="advertising-kicker">Advertising &amp; Partners</div>
+        <div class="advertising-title">Featured Campaigns</div>
+        <div class="advertising-subtitle">Premium advertising space for brands, sponsors and commercial partners.</div>
+      </div>
+      <div class="advertising-sponsored">Sponsored</div>
+    </div>
+    <div class="advertising-stage" id="advertisingStage" aria-live="polite">
+      <div class="advertising-empty">Loading campaign…</div>
+      <div class="advertising-copy" id="advertisingCopy" hidden>
+        <div class="ad-label" id="advertisingLabel">Featured Partner</div>
+        <h3 id="advertisingTitle"></h3>
+        <p id="advertisingDescription"></p>
+        <a id="advertisingCta" class="advertising-cta" href="#" target="_blank" rel="noopener noreferrer">Learn More</a>
+      </div>
+      <div class="advertising-controls" id="advertisingControls" hidden>
+        <button class="ad-control" type="button" onclick="BKPAdvertising.previous()" aria-label="Previous advertisement">‹</button>
+        <button class="ad-control" type="button" onclick="BKPAdvertising.next()" aria-label="Next advertisement">›</button>
+      </div>
+      <div class="advertising-dots" id="advertisingDots" hidden></div>
+      <div class="advertising-progress"><span id="advertisingProgressBar"></span></div>
+    </div>
+    <div class="advertising-footer">
+      <span id="advertisingAdvertiser"><strong>BRENZKafrica Plus</strong> commercial media space</span>
+      <span id="advertisingFormat">Campaign</span>
+    </div>
+  </div>
 </section>
 
 <main>
@@ -7053,6 +7141,185 @@ setInterval(async function(){
   </div>
   <div class="source-disclaimer">Source names and logos are used for identification and attribution. Unless expressly stated as an official BRENZKafrica partnership, listing a third-party source does not imply endorsement, sponsorship or a formal business relationship.</div>
 </section>
+
+
+
+<script>
+/* =========================================================
+   BRENZKAFRICA PLUS — ADVERTISING MEDIA ENGINE
+   Campaign formats: image | slideshow | video | mixed
+   Admin-ready configuration; replace campaign data with
+   Supabase/Admin API records when the advertising console is enabled.
+========================================================= */
+(function(){
+  "use strict";
+  const campaigns = window.BKP_AD_CAMPAIGNS || [
+    {
+      id:"demo-partner-campaign",
+      advertiser:"BRENZKafrica Plus",
+      title:"Your brand belongs here.",
+      description:"Premium campaign placement designed for brands, sponsors and commercial partners reaching audiences across Africa and the world.",
+      ctaText:"Partner With Us",
+      ctaUrl:"#advertisingPartners",
+      type:"slideshow",
+      duration:6000,
+      media:[
+        {type:"image",src:"https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1800&q=82",alt:"Premium business environment"},
+        {type:"image",src:"https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1800&q=82",alt:"Business partnership"},
+        {type:"image",src:"https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=82",alt:"Corporate collaboration"}
+      ]
+    }
+  ];
+
+  const state={campaigns,index:0,mediaIndex:0,timer:null,progressTimer:null,started:Date.now()};
+  const $=id=>document.getElementById(id);
+
+  function safeUrl(url){
+    if(!url) return "#";
+    try{
+      if(url.startsWith("#")) return url;
+      const u=new URL(url,location.href);
+      return /^(https?:|mailto:|tel:)$/.test(u.protocol)?u.href:"#";
+    }catch(e){return "#";}
+  }
+
+  function mediaItems(c){ return Array.isArray(c.media)?c.media.filter(x=>x&&x.src):[]; }
+  function currentCampaign(){ return state.campaigns[state.index]||null; }
+
+  function clearTimers(){
+    clearTimeout(state.timer); clearInterval(state.progressTimer);
+    state.timer=null; state.progressTimer=null;
+  }
+
+  function renderDots(c){
+    const dots=$("advertisingDots");
+    const items=mediaItems(c);
+    if(!dots) return;
+    dots.innerHTML="";
+    if(items.length<2){dots.hidden=true;return;}
+    dots.hidden=false;
+    items.forEach((_,i)=>{
+      const b=document.createElement("button");
+      b.type="button"; b.className="ad-dot"+(i===state.mediaIndex?" active":"");
+      b.setAttribute("aria-label","Show advertisement slide "+(i+1));
+      b.onclick=()=>{state.mediaIndex=i;renderMedia(false);};
+      dots.appendChild(b);
+    });
+  }
+
+  function renderMedia(animate=true){
+    const stage=$("advertisingStage"), c=currentCampaign();
+    if(!stage||!c) return;
+    const items=mediaItems(c);
+    if(!items.length){
+      stage.querySelectorAll(".advertising-media,.advertising-video").forEach(x=>x.remove());
+      return;
+    }
+    const item=items[state.mediaIndex%items.length];
+    stage.querySelectorAll(".advertising-media,.advertising-video,.advertising-empty").forEach(x=>x.remove());
+    let el;
+    if(item.type==="video" || /\.(mp4|webm|ogg)(\?|$)/i.test(item.src)){
+      el=document.createElement("video");
+      el.className="advertising-video";
+      el.src=item.src;
+      el.poster=item.poster||"";
+      el.controls=true;
+      el.playsInline=true;
+      el.preload="metadata";
+      if(item.muted!==false){el.muted=true;}
+      el.setAttribute("aria-label",item.alt||c.title||"Advertisement video");
+      el.addEventListener("ended",()=>advanceMedia());
+      el.addEventListener("error",()=>showMediaFallback());
+    }else{
+      el=document.createElement("img");
+      el.className="advertising-media";
+      el.src=item.src;
+      el.alt=item.alt||c.title||"Advertisement";
+      el.loading="eager";
+      el.referrerPolicy="no-referrer-when-downgrade";
+      el.onerror=()=>showMediaFallback();
+    }
+    if(animate) el.classList.add("ad-fade");
+    stage.insertBefore(el,stage.firstChild);
+    renderDots(c);
+    startRotation(item);
+  }
+
+  function showMediaFallback(){
+    const stage=$("advertisingStage");
+    if(!stage) return;
+    const old=stage.querySelector(".advertising-media,.advertising-video");
+    if(old) old.remove();
+    const empty=document.createElement("div");
+    empty.className="advertising-empty";
+    empty.textContent="Campaign media is temporarily unavailable.";
+    stage.insertBefore(empty,stage.firstChild);
+  }
+
+  function startRotation(item){
+    clearTimers();
+    const c=currentCampaign(), items=mediaItems(c);
+    const isVideo=item.type==="video" || /\.(mp4|webm|ogg)(\?|$)/i.test(item.src);
+    if(isVideo) return;
+    const duration=Math.max(2500,Number(c.duration)||6000);
+    const bar=$("advertisingProgressBar");
+    const started=Date.now();
+    if(bar) bar.style.width="0%";
+    state.progressTimer=setInterval(()=>{
+      const pct=Math.min(100,((Date.now()-started)/duration)*100);
+      if(bar) bar.style.width=pct+"%";
+    },100);
+    state.timer=setTimeout(()=>advanceMedia(),duration);
+  }
+
+  function advanceMedia(){
+    const c=currentCampaign(), items=mediaItems(c);
+    if(!items.length) return;
+    state.mediaIndex=(state.mediaIndex+1)%items.length;
+    renderMedia(true);
+  }
+
+  function renderCampaign(){
+    const c=currentCampaign();
+    if(!c) return;
+    const items=mediaItems(c);
+    state.mediaIndex=Math.min(state.mediaIndex,Math.max(0,items.length-1));
+    $("advertisingLabel").textContent=c.label||"Featured Partner";
+    $("advertisingTitle").textContent=c.title||"Featured Campaign";
+    $("advertisingDescription").textContent=c.description||"";
+    const cta=$("advertisingCta");
+    cta.textContent=c.ctaText||"Learn More";
+    cta.href=safeUrl(c.ctaUrl||"#");
+    $("advertisingAdvertiser").innerHTML="<strong>"+(c.advertiser||"Featured Partner")+"</strong>";
+    $("advertisingFormat").textContent=(c.type||"campaign").replace(/^./,x=>x.toUpperCase());
+    $("advertisingCopy").hidden=false;
+    $("advertisingControls").hidden=items.length<2;
+    renderMedia(false);
+  }
+
+  function setCampaigns(next){
+    if(!Array.isArray(next)||!next.length) return;
+    clearTimers(); state.campaigns=next; state.index=0; state.mediaIndex=0; renderCampaign();
+  }
+  function next(){
+    const c=currentCampaign();
+    if(!c) return;
+    clearTimers();
+    if(mediaItems(c).length>1){state.mediaIndex=(state.mediaIndex+1)%mediaItems(c).length;renderMedia(true);return;}
+    state.index=(state.index+1)%state.campaigns.length;state.mediaIndex=0;renderCampaign();
+  }
+  function previous(){
+    const c=currentCampaign();
+    if(!c) return;
+    clearTimers();
+    if(mediaItems(c).length>1){state.mediaIndex=(state.mediaIndex-1+mediaItems(c).length)%mediaItems(c).length;renderMedia(true);return;}
+    state.index=(state.index-1+state.campaigns.length)%state.campaigns.length;state.mediaIndex=0;renderCampaign();
+  }
+
+  window.BKPAdvertising={next,previous,setCampaigns,getState:()=>({...state})};
+  document.addEventListener("DOMContentLoaded",()=>{ if($("advertisingStage")) renderCampaign(); });
+})();
+</script>
 
 <script src="./share.js"></script>
 <script src="/notifications.js"></script>
