@@ -2084,6 +2084,12 @@ line-height:1;
  .entertainment-editorial-copy p{font-size:12px}
 }
 
+/* REAL STORY IMAGE STATES */
+.real-image-placeholder,.real-image-empty{width:100%;height:100%;min-height:150px;background:linear-gradient(135deg,#111,#1a1a1a);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.real-image-placeholder span{display:block;width:28px;height:28px;border:2px solid rgba(255,255,255,.18);border-top-color:rgba(255,255,255,.72);border-radius:50%;animation:brenzImageSpin .8s linear infinite}
+.real-image-empty{background:linear-gradient(135deg,#0d0d0d,#171717)}
+@keyframes brenzImageSpin{to{transform:rotate(360deg)}}
+
 </style>
 </head>
 
@@ -5131,7 +5137,7 @@ function renderSportsBreakingItems(rowId,items,category){
         const date=sportsBreakingDate(item.pubDate);
         return `<article class="sports-breaking-card" data-real-image-index="${index}" onclick="openSportsBreakingArticle('${category}',${index})"><div class="sports-breaking-image">${realStoryMedia(item,title)}</div><span class="sports-breaking-badge">${escapeHTML(category.replace("africa","African Sports"))}</span>${index===0?'<span class="sports-breaking-live">LATEST</span>':''}<div class="sports-breaking-info"><div class="sports-breaking-source">${source}</div><h4>${title}</h4><p>${desc}</p><div class="sports-breaking-date">${date||"LATEST"}</div></div></article>`;
     }).join("");
-    hydrateRealStoryImages(row,items.slice(0,6),2);
+    hydrateRealStoryImages(row,items.slice(0,6));
 }
 async function loadSportsBreakingCategory(category){
     const row=document.getElementById("sportsBreaking"+category.charAt(0).toUpperCase()+category.slice(1)+"Row");if(!row)return;
@@ -5248,6 +5254,7 @@ row.innerHTML=
 
 }
 
+
 /* =========================================================
    REAL STORY IMAGE SYSTEM
    Uses publisher/feed images first, then resolves the article's
@@ -5302,6 +5309,41 @@ function extractFeedImage(item){
 function saveRealImageCache(){
     try{localStorage.setItem(REAL_IMAGE_CACHE_KEY,JSON.stringify(realStoryImageCache));}catch(e){}
 }
+async function fetchArticleHtml(url){
+    const encoded=encodeURIComponent(url);
+    const proxies=[
+        "https://api.allorigins.win/raw?url="+encoded,
+        "https://api.codetabs.com/v1/proxy?quest="+encoded
+    ];
+    for(const endpoint of proxies){
+        try{
+            const response=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"text/html,application/xhtml+xml"}});
+            if(response.ok){
+                const html=await response.text();
+                if(html&&html.length>200)return html;
+            }
+        }catch(error){}
+    }
+    return "";
+}
+function extractMetaImage(html){
+    if(!html)return "";
+    try{
+        const doc=new DOMParser().parseFromString(html,"text/html");
+        const selectors=[
+            'meta[property="og:image"]','meta[property="og:image:url"]',
+            'meta[name="twitter:image"]','meta[name="twitter:image:src"]',
+            'link[rel="image_src"]'
+        ];
+        for(const selector of selectors){
+            const node=doc.querySelector(selector);
+            const candidate=cleanImageUrl(node?.content||node?.href||"");
+            if(candidate)return candidate;
+        }
+        const img=doc.querySelector("article img,main img,[role=main] img");
+        return cleanImageUrl(img?.currentSrc||img?.src||img?.getAttribute("data-src")||"");
+    }catch(error){return "";}
+}
 async function resolveActualArticleImage(item){
     const feedImage=extractFeedImage(item);
     if(feedImage)return feedImage;
@@ -5309,39 +5351,38 @@ async function resolveActualArticleImage(item){
     if(!/^https?:\/\//i.test(url))return "";
     const cached=realStoryImageCache[url];
     if(cached&&cached.time&&Date.now()-cached.time<REAL_IMAGE_CACHE_TTL)return cached.image||"";
+    let image="";
     try{
-        const endpoint="https://api.microlink.io/?url="+encodeURIComponent(url)+"&filter=data.image";
-        const response=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"application/json"}});
-        if(!response.ok)throw new Error("image resolver "+response.status);
-        const data=await response.json();
-        const image=cleanImageUrl(data?.data?.image?.url||"");
-        realStoryImageCache[url]={image,time:Date.now()};
-        saveRealImageCache();
-        return image;
-    }catch(error){
-        realStoryImageCache[url]={image:"",time:Date.now()};
-        saveRealImageCache();
-        return "";
-    }
+        const html=await fetchArticleHtml(url);
+        image=extractMetaImage(html);
+    }catch(error){}
+    realStoryImageCache[url]={image,time:Date.now()};
+    saveRealImageCache();
+    return image;
 }
 function realImagePlaceholder(title){
-    return `<div class="real-image-placeholder" aria-label="Image unavailable"><span>IMAGE UNAVAILABLE</span><small>${escapeHTML(title||"Story")}</small></div>`;
+    return `<div class="real-image-placeholder" aria-label="Publisher image loading"><span></span></div>`;
 }
-async function hydrateRealStoryImages(container,items,limit=2){
+async function hydrateRealStoryImages(container,items,limit){
     if(!container||!Array.isArray(items)||!items.length)return;
-    const cards=[...container.querySelectorAll("[data-real-image-index]")].slice(0,limit);
-    await Promise.allSettled(cards.map(async card=>{
+    const cards=[...container.querySelectorAll("[data-real-image-index]")];
+    const selected=Number.isFinite(limit)?cards.slice(0,limit):cards;
+    await Promise.allSettled(selected.map(async card=>{
         const index=Number(card.dataset.realImageIndex);
         const item=items[index];if(!item)return;
-        const image=await resolveActualArticleImage(item);if(!image)return;
+        const image=await resolveActualArticleImage(item);
         const media=card.querySelector(".real-story-media");if(!media)return;
-        media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy">`;
+        if(image){
+            media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy" referrerpolicy="no-referrer">`;
+        }else{
+            media.innerHTML=`<div class="real-image-empty" aria-label="No publisher image available"></div>`;
+        }
     }));
 }
 function realStoryMedia(item,title){
     const image=extractFeedImage(item);
     return image
-        ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy"></div>`
+        ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy" referrerpolicy="no-referrer"></div>`
         : `<div class="real-story-media">${realImagePlaceholder(title)}</div>`;
 }
 
@@ -5911,7 +5952,7 @@ async function loadInternationalCategory(category){
             const date=businessNewsTime(item.pubDate);
             return `<article class="international-story-card" data-real-image-index="${index}" onclick="openInternationalArticle('${category}',${index})">${realStoryMedia(item,title)}<div class="international-story-source">${source}</div><h4 class="international-story-title">${title}</h4><p class="international-story-desc">${desc}</p><div class="international-story-date">${date||"LATEST"}</div></article>`;
         }).join("");
-        hydrateRealStoryImages(target,items,2);
+        hydrateRealStoryImages(target,items);
         if(count)count.textContent=items.length+" STORIES";
     }catch(error){
         console.warn("International news error",category,error);
@@ -5961,7 +6002,7 @@ async function loadBusinessFeed(category){
                 <div class="story-content"><div class="story-source-line"><span>${source}</span><span>${date?date:"LATEST"}</span></div><h4>${title}</h4><p>${desc}</p><button type="button" onclick="event.stopPropagation();openBusinessArticle('${category}',${index})">Read Story ↗</button><small>Source: ${source}</small></div>
             </article>`;
         }).join("");
-        hydrateRealStoryImages(target,items,2);
+        hydrateRealStoryImages(target,items);
     }catch(error){
         console.warn("BRENZKafrica business news error",category,error);
         target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
