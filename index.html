@@ -4614,7 +4614,7 @@ async function loadBreakingNews(){
                 </article>
             `;
         }).join("");
-        hydrateRealStoryImages(newsRow,data.news,4);
+        hydrateRealStoryImages(newsRow,data.news);
         newsStatus.textContent=
             (data.count || data.news.length)+
             " fresh stories";
@@ -5137,7 +5137,7 @@ function renderSportsBreakingItems(rowId,items,category){
         const date=sportsBreakingDate(item.pubDate);
         return `<article class="sports-breaking-card" data-real-image-index="${index}" onclick="openSportsBreakingArticle('${category}',${index})"><div class="sports-breaking-image">${realStoryMedia(item,title)}</div><span class="sports-breaking-badge">${escapeHTML(category.replace("africa","African Sports"))}</span>${index===0?'<span class="sports-breaking-live">LATEST</span>':''}<div class="sports-breaking-info"><div class="sports-breaking-source">${source}</div><h4>${title}</h4><p>${desc}</p><div class="sports-breaking-date">${date||"LATEST"}</div></div></article>`;
     }).join("");
-    hydrateRealStoryImages(row,items.slice(0,6));
+    hydrateRealStoryImages(row,items.slice(0,6),6);
 }
 async function loadSportsBreakingCategory(category){
     const row=document.getElementById("sportsBreaking"+category.charAt(0).toUpperCase()+category.slice(1)+"Row");if(!row)return;
@@ -5260,8 +5260,9 @@ row.innerHTML=
    Uses publisher/feed images first, then resolves the article's
    actual Open Graph image. No generic stock photography fallback.
 ========================================================= */
-const REAL_IMAGE_CACHE_KEY="brenzkafrica_real_story_images_v1";
-const REAL_IMAGE_CACHE_TTL=1000*60*60*24;
+const REAL_IMAGE_CACHE_KEY="brenzkafrica_real_story_images_v2";
+const REAL_IMAGE_CACHE_TTL=1000*60*60*24*7;
+const REAL_IMAGE_EMPTY_TTL=1000*60*10;
 let realStoryImageCache={};
 try{realStoryImageCache=JSON.parse(localStorage.getItem(REAL_IMAGE_CACHE_KEY)||"{}")}catch(e){realStoryImageCache={};}
 
@@ -5311,17 +5312,25 @@ function saveRealImageCache(){
 }
 async function fetchArticleHtml(url){
     const encoded=encodeURIComponent(url);
-    const proxies=[
+    const endpoints=[
+        "https://api.microlink.io/?url="+encoded,
         "https://api.allorigins.win/raw?url="+encoded,
         "https://api.codetabs.com/v1/proxy?quest="+encoded
     ];
-    for(const endpoint of proxies){
+    for(const endpoint of endpoints){
         try{
-            const response=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"text/html,application/xhtml+xml"}});
-            if(response.ok){
-                const html=await response.text();
-                if(html&&html.length>200)return html;
+            const response=await brenzSafeFetch(endpoint,{cache:"no-store",headers:{Accept:"application/json,text/html,application/xhtml+xml"}});
+            if(!response.ok)continue;
+            const text=await response.text();
+            if(!text)continue;
+            if(endpoint.includes("microlink.io")){
+                try{
+                    const data=JSON.parse(text);
+                    const image=cleanImageUrl(data?.data?.image?.url||data?.data?.image||"");
+                    if(image)return "<!--MICROLINK_IMAGE-->"+image;
+                }catch(error){}
             }
+            if(text.length>200)return text;
         }catch(error){}
     }
     return "";
@@ -5350,11 +5359,14 @@ async function resolveActualArticleImage(item){
     const url=item?.link||item?.url||"";
     if(!/^https?:\/\//i.test(url))return "";
     const cached=realStoryImageCache[url];
-    if(cached&&cached.time&&Date.now()-cached.time<REAL_IMAGE_CACHE_TTL)return cached.image||"";
+    const cacheAge=cached?.time?Date.now()-cached.time:Infinity;
+    const cacheTTL=cached?.image?REAL_IMAGE_CACHE_TTL:REAL_IMAGE_EMPTY_TTL;
+    if(cached&&cacheAge<cacheTTL)return cached.image||"";
     let image="";
     try{
         const html=await fetchArticleHtml(url);
-        image=extractMetaImage(html);
+        if(String(html).startsWith("<!--MICROLINK_IMAGE-->")) image=cleanImageUrl(String(html).replace("<!--MICROLINK_IMAGE-->",""));
+        else image=extractMetaImage(html);
     }catch(error){}
     realStoryImageCache[url]={image,time:Date.now()};
     saveRealImageCache();
@@ -5373,7 +5385,7 @@ async function hydrateRealStoryImages(container,items,limit){
         const image=await resolveActualArticleImage(item);
         const media=card.querySelector(".real-story-media");if(!media)return;
         if(image){
-            media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy" referrerpolicy="no-referrer">`;
+            media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\"></div>'}">`;
         }else{
             media.innerHTML=`<div class="real-image-empty" aria-label="No publisher image available"></div>`;
         }
@@ -5382,7 +5394,7 @@ async function hydrateRealStoryImages(container,items,limit){
 function realStoryMedia(item,title){
     const image=extractFeedImage(item);
     return image
-        ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy" referrerpolicy="no-referrer"></div>`
+        ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\"></div>'}"></div>`
         : `<div class="real-story-media">${realImagePlaceholder(title)}</div>`;
 }
 
@@ -5631,10 +5643,10 @@ return;
 
 if(type==="MUSIC"){
 row.innerHTML=items.map((item,index)=>createMusicCard(item,index)).join("");
-hydrateRealStoryImages(row,items,2);
+hydrateRealStoryImages(row,items);
 }else{
 row.innerHTML=items.map((item,index)=>createEntertainmentCard(item,type,index)).join("");
-hydrateRealStoryImages(row,items,2);
+hydrateRealStoryImages(row,items);
 }
 }
 
