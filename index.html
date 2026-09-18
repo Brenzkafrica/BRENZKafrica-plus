@@ -951,6 +951,45 @@ object-fit:cover;
 transition:.4s
 }
 .entertainment-card:hover img{transform:scale(1.06)}
+
+/* REAL EDITORIAL ENTERTAINMENT IMAGES */
+.entertainment-card .real-story-media,
+.music-card .real-story-media{
+position:absolute;
+inset:0;
+width:100%;
+height:100%;
+aspect-ratio:auto;
+overflow:hidden;
+background:linear-gradient(145deg,#191919,#090909);
+}
+.entertainment-card .real-story-media img,
+.music-card .real-story-media img{
+width:100%;
+height:100%;
+object-fit:cover;
+transition:transform .45s ease,filter .35s ease;
+}
+.entertainment-card:hover .real-story-media img,
+.music-card:hover .real-story-media img{transform:scale(1.06)}
+.entertainment-card .real-story-media:after,
+.music-card .real-story-media:after{
+content:"";
+position:absolute;
+inset:0;
+pointer-events:none;
+background:linear-gradient(to top,rgba(0,0,0,.96),rgba(0,0,0,.18) 58%,rgba(0,0,0,.04));
+}
+.entertainment-card .real-image-placeholder,
+.music-card .real-image-placeholder,
+.entertainment-card .real-image-empty,
+.music-card .real-image-empty{
+width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,#101010,#202020);
+color:#666;
+}
+.entertainment-card .real-image-placeholder span:before,
+.music-card .real-image-placeholder span:before{content:"BRENZKAFRICA";font-size:10px;letter-spacing:2px;font-weight:900;}
 .entertainment-card:after{
 content:"";
 position:absolute;
@@ -5593,7 +5632,7 @@ data-real-image-index="${index}"
 class="music-card"
 onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
 
-${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy">`:realImagePlaceholder(title)}
+${realStoryMedia(item,title)}
 
 <div class="music-play">
 ↗
@@ -5632,7 +5671,7 @@ data-real-image-index="${index}"
 class="entertainment-card"
 onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
 
-${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy">`:realImagePlaceholder(title)}
+${realStoryMedia(item,title)}
 
 <div class="entertainment-badge">
 ${escapeHTML(type)}
