@@ -3864,9 +3864,18 @@ Object.keys(groups).forEach(group=>{
 
 const row=groups[group];
 
-const items=allContent.filter(
-item=>matchesCategory(item,group)
-);
+const items=allContent.filter(item=>{
+if(!matchesCategory(item,group))return false;
+
+/* Explicitly remove the requested documentaries from the catalogue. */
+if(group==="documentary"){
+const title=String(item.title||"").toLowerCase().trim();
+if(title.includes("the spirit of kanju"))return false;
+if(title.includes("foot and mouth disease"))return false;
+}
+
+return true;
+});
 
 if(!items.length){
 
