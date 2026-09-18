@@ -6085,32 +6085,41 @@ async function loadInternationalCategory(category){
     const count=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Count");
     if(!target)return;
     target.innerHTML="<div class='international-empty'>Loading latest stories...</div>";
-    const urls=[INTERNATIONAL_NEWS[category],...(INTERNATIONAL_NEWS_FALLBACKS[category]||[])].filter(Boolean);
     try{
-        let items=[];
-        for(const url of urls){
-            try{
-                const rows=await fetchBusinessRSS(url);
-                items=dedupeBusinessItems([...items,...rows.map(x=>normalizeBusinessItem(x,category)).filter(Boolean)]);
-                if(items.length>=4)break;
-            }catch(e){console.warn("International news source failed",category,e);}
+        const response=await brenzSafeFetch(`/api/international-news?category=${encodeURIComponent(category)}`,{cache:"no-store"});
+        if(!response.ok)throw new Error("International API "+response.status);
+        const data=await response.json();
+        let items=Array.isArray(data.news)?data.news:[];
+        if(!items.length){
+            const fallbackUrls=(INTERNATIONAL_NEWS_FALLBACKS[category]||[]);
+            for(const url of fallbackUrls){
+                try{
+                    const rows=await fetchBusinessRSS(url);
+                    items=dedupeBusinessItems([...items,...rows.map(x=>normalizeBusinessItem(x,category)).filter(Boolean)]);
+                    if(items.length>=4)break;
+                }catch(e){console.warn("International fallback failed",category,e);}
+            }
         }
-        items=items.slice(0,4);
+        items=items.slice(0,6);
         internationalNewsCache[category]=items;
-        if(!items.length){target.innerHTML="<div class='international-empty'>No current stories are available right now. Tap Refresh to try again.</div>";if(count)count.textContent="NO UPDATES";return;}
+        if(!items.length){
+            target.innerHTML="<div class='international-empty'>Global headlines are updating. Tap Refresh to retry.</div>";
+            if(count)count.textContent="UPDATING";
+            return;
+        }
         target.innerHTML=items.map((item,index)=>{
             const title=escapeHTML(item.title||"International news story");
             const desc=escapeHTML(item.description||"Latest international reporting and developments.");
             const source=escapeHTML(String(item.source||category).replace(/<[^>]*>/g,""));
-            const date=businessNewsTime(item.pubDate);
+            const date=businessNewsTime(item.date||item.pubDate);
             return `<article class="international-story-card" data-real-image-index="${index}" onclick="openInternationalArticle('${category}',${index})">${realStoryMedia(item,title)}<div class="international-story-source">${source}</div><h4 class="international-story-title">${title}</h4><p class="international-story-desc">${desc}</p><div class="international-story-date">${date||"LATEST"}</div></article>`;
         }).join("");
         hydrateRealStoryImages(target,items);
         if(count)count.textContent=items.length+" STORIES";
     }catch(error){
         console.warn("International news error",category,error);
-        target.innerHTML="<div class='international-error'>International news is temporarily unavailable. Tap Refresh to try again.</div>";
-        if(count)count.textContent="UNAVAILABLE";
+        target.innerHTML="<div class='international-error'>Global headlines are temporarily unavailable. Tap Refresh to retry.</div>";
+        if(count)count.textContent="RETRY";
     }
 }
 async function loadInternationalNews(){
