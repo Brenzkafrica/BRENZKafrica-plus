@@ -2799,9 +2799,22 @@ function imageFromMarkup(markup){
     const patterns=[
         /<meta[^>]+(?:property|name)=["'](?:og:image|twitter:image|twitter:image:src)["'][^>]+content=["']([^"']+)["']/i,
         /<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](?:og:image|twitter:image|twitter:image:src)["']/i,
-        /<img[^>]+(?:src|data-src)=["']([^"']+)["']/i
+        /<img[^>]+(?:src|data-src|data-original)=["']([^"']+)["']/i,
+        /<img[^>]+srcset=["']([^"']+)["']/i
     ];
-    for(const pattern of patterns){const m=html.match(pattern);if(m){const v=firstValidImage(m[1]);if(v)return v;}}
+    for(const pattern of patterns){
+        const m=html.match(pattern);
+        if(!m)continue;
+        if(pattern.source.includes('srcset')){
+            const candidates=m[1].split(',').map(v=>v.trim().split(/\s+/)[0]);
+            const v=firstValidImage(candidates.map(v=>/^\/\//.test(v)?`https:${v}`:v));
+            if(v)return v;
+        }else{
+            const raw=/^\/\//.test(m[1].trim())?`https:${m[1].trim()}`:m[1];
+            const v=firstValidImage(raw);
+            if(v)return v;
+        }
+    }
     return "";
 }
 function extractFeedImage(item){
@@ -2811,7 +2824,7 @@ function extractFeedImage(item){
         item.enclosure?.link,item.enclosure?.url,
         item.media?.content?.url,item.media?.content,
         item.media?.thumbnail?.url,item.media?.thumbnail,
-        item.media_content?.url,item.media_thumbnail?.url
+        item.media_content?.url,item.media_thumbnail?.url, item.enclosure?.href, item.image?.url, item.thumbnail?.url, item.images?.[0]?.url, item.images?.[0]?.href
     );
     return direct||imageFromMarkup(item.content||item.description||item.summary||"");
 }
@@ -2858,16 +2871,28 @@ function resolveStoryImage(item){
 }
 async function hydrateStoryImages(container,items){
     if(!container||!Array.isArray(items)||!items.length)return;
-    // Render feed images immediately; publisher lookups happen in a small background queue.
     items.forEach((item,index)=>{
+        const target=container.querySelector(`[data-story-image="${index}"]`);
+        if(!target)return;
         const direct=extractFeedImage(item);
-        if(!direct)resolveStoryImage(item).then(image=>{
-            if(!image)return;
-            const target=container.querySelector(`[data-story-image="${index}"]`);
-            if(!target)return;
-            if(target.tagName==="IMG"){target.src=image;target.style.display="block";target.dataset.failed="0";target.parentElement?.classList.remove("story-image-missing");}
-            else{const img=document.createElement("img");img.className=target.className.replace("real-story-image-placeholder","real-story-image");img.src=image;img.alt=item.title||"BRENZKafrica story";img.loading="lazy";img.dataset.storyImage=String(index);img.dataset.storyImageUrl=String(item.link||item.url||item.guid||"");img.onerror=function(){this.style.display="none";this.parentElement.classList.add("story-image-missing");};target.replaceWith(img);}
-        });
+        const applyImage=(image)=>{
+            if(!image)return false;
+            const current=container.querySelector(`[data-story-image="${index}"]`);
+            if(!current)return false;
+            if(current.tagName==="IMG"){
+                current.src=image; current.style.display="block"; current.dataset.failed="0";
+                current.parentElement?.classList.remove("story-image-missing"); return true;
+            }
+            const img=document.createElement("img");
+            img.className=current.className.replace("real-story-image-placeholder","real-story-image");
+            img.src=image; img.alt=item.title||"Brenzkafrica story"; img.loading="lazy";
+            img.dataset.storyImage=String(index); img.dataset.storyImageUrl=String(item.link||item.url||item.guid||"");
+            img.onerror=function(){this.dataset.failed="1";this.style.display="none";this.parentElement?.classList.add("story-image-missing");};
+            current.replaceWith(img); return true;
+        };
+        if(direct){
+            target.addEventListener("error",()=>resolveStoryImage(item).then(applyImage),{once:true});
+        }else resolveStoryImage(item).then(applyImage);
     });
 }
 
@@ -4634,6 +4659,12 @@ return data.events.map(event=>{
 const competition=
 event.competitions?.[0]||null;
 
+const eventImage=firstValidImage(
+event.images?.map(image=>image?.url),
+event.image,
+event.thumbnail
+);
+
 const competitors=
 competition?.competitors||[];
 
@@ -5176,88 +5207,27 @@ panel.classList.add("active");
 }
 
 function createMusicCard(item){
-
 const title=item.title||"Music News";
 const artist=item.artist||item.source||"Music";
 const region=item.region||"Worldwide";
-const image=item.image||
-"https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema.jpeg";
-
-const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)
-?item.url
-:"";
-
-return `
-<article
-class="music-card"
-onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
-
-${image?`<img class="real-story-image" src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" data-story-image="${item.__storyIndex??0}" onerror="this.style.display='none';this.parentElement.classList.add('story-image-missing')">`:`<div class="real-story-image-placeholder" data-story-image="${item.__storyIndex??0}" data-story-image-url="${escapeHTML(item.url||item.link||"")}"><span>BRENZKAFRICA</span><small>Loading story image…</small></div>`}
-
-<div class="music-play">
-↗
-</div>
-
-<div class="music-info">
-
-<div class="music-title">
-${escapeHTML(title)}
-</div>
-
-<div class="music-artist">
-${escapeHTML(artist)}
-</div>
-
-<div class="music-region">
-${escapeHTML(region)}
-</div>
-
-</div>
-
-</article>
-`;
-
+const index=item.__storyIndex??0;
+const url=item.url&&/^(https?:\/\/|\/)/i.test(item.url)?item.url:"";
+return `<article class="music-card" onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
+${storyImageMarkup({...item,__storyIndex:index},index,"music-story-image")}
+<div class="music-play">↗</div>
+<div class="music-info"><div class="music-title">${escapeHTML(title)}</div><div class="music-artist">${escapeHTML(artist)}</div><div class="music-region">${escapeHTML(region)}</div></div>
+</article>`;
 }
 
 function createEntertainmentCard(item,type){
-
 const title=item.title||"Entertainment";
 const meta=item.meta||type;
-const image=extractFeedImage(item)||item.image||BRENZKAFRICA_IMAGE_FALLBACK;
-
-return `
-<article
-class="entertainment-card"
-onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
-
-<img
-src="${escapeHTML(image)}"
-alt="${escapeHTML(title)}"
-loading="lazy">
-
-<div class="entertainment-badge">
-${escapeHTML(type)}
-</div>
-
-<div class="entertainment-info">
-
-<div class="entertainment-label">
-BRENZKafrica Entertainment
-</div>
-
-<div class="entertainment-title">
-${escapeHTML(title)}
-</div>
-
-<div class="entertainment-meta">
-${escapeHTML(meta)}
-</div>
-
-</div>
-
-</article>
-`;
-
+const index=item.__storyIndex??0;
+return `<article class="entertainment-card" onclick="openEntertainmentItem('${encodeURIComponent(item.url||"")}','${encodeURIComponent(title)}')">
+${storyImageMarkup({...item,__storyIndex:index},index,"entertainment-story-image")}
+<div class="entertainment-badge">${escapeHTML(type)}</div>
+<div class="entertainment-info"><div class="entertainment-label">BRENZKafrica Entertainment</div><div class="entertainment-title">${escapeHTML(title)}</div><div class="entertainment-meta">${escapeHTML(meta)}</div></div>
+</article>`;
 }
 
 function renderEntertainment(){
@@ -5269,24 +5239,13 @@ const theatreRow=document.getElementById("theatreRow");
 const eventsRow=document.getElementById("eventsRow");
 const awardsRow=document.getElementById("awardsRow");
 
-musicRow.innerHTML=GLOBAL_MUSIC.map(createMusicCard).join("") ||
-'<div class="news-loading">Loading real music information...</div>';
-
-trendingRow.innerHTML=TRENDING_MUSIC.map(item=>createEntertainmentCard(item,"TRENDING")).join("") ||
-'<div class="news-loading">Loading real trending music...</div>';
-
-celebrityRow.innerHTML=CELEBRITY_NEWS.map(item=>createEntertainmentCard(item,"CELEBRITY")).join("") ||
-'<div class="news-loading">Loading real celebrity news...</div>';
-
-theatreRow.innerHTML=THEATRE_CONTENT.map(item=>createEntertainmentCard(item,"THEATRE")).join("") ||
-'<div class="news-loading">Loading real theatre and film information...</div>';
-
-eventsRow.innerHTML=ENTERTAINMENT_EVENTS.map(item=>createEntertainmentCard(item,"EVENT")).join("") ||
-'<div class="news-loading">Loading real entertainment events...</div>';
-
-awardsRow.innerHTML=ENTERTAINMENT_AWARDS.map(item=>createEntertainmentCard(item,"AWARD")).join("") ||
-'<div class="news-loading">Loading real awards information...</div>';
-
+const staticEntertainmentRows=[[musicRow,GLOBAL_MUSIC,"MUSIC"],[trendingRow,TRENDING_MUSIC,"TRENDING"],[celebrityRow,CELEBRITY_NEWS,"CELEBRITY"],[theatreRow,THEATRE_CONTENT,"THEATRE"],[eventsRow,ENTERTAINMENT_EVENTS,"EVENT"],[awardsRow,ENTERTAINMENT_AWARDS,"AWARD"]];
+staticEntertainmentRows.forEach(([row,items,type])=>{
+ if(!row)return;
+ const indexed=(Array.isArray(items)?items:[]).map((item,index)=>({...item,__storyIndex:index}));
+ row.innerHTML=indexed.map(item=>type==="MUSIC"?createMusicCard(item):createEntertainmentCard(item,type)).join("")||'<div class="news-loading">Loading real entertainment information...</div>';
+ hydrateStoryImages(row,indexed);
+});
 }
 
 function playMusic(title,url,artist){
@@ -5384,7 +5343,7 @@ return;
 }
 
 if(type==="MUSIC"){
-row.innerHTML=items.map(createMusicCard).join("");
+row.innerHTML=items.map((item,index)=>createMusicCard({...item,__storyIndex:index})).join("");
 }else{
 row.innerHTML=items.map((item,index)=>createEntertainmentCard({...item,__storyIndex:index},type)).join("");
 }
