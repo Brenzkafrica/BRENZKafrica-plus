@@ -2764,8 +2764,8 @@ const STORY_IMAGE_CACHE=new Map();
 const STORY_IMAGE_INFLIGHT=new Map();
 const STORY_IMAGE_QUEUE=[];
 let STORY_IMAGE_ACTIVE=0;
-const STORY_IMAGE_CONCURRENCY=8;
-const STORY_IMAGE_TIMEOUT=3000;
+const STORY_IMAGE_CONCURRENCY=3;
+const STORY_IMAGE_TIMEOUT=4500;
 const STORY_IMAGE_STORAGE_KEY="brenzkafrica_story_image_cache_v2";
 
 (function loadStoryImageCache(){
@@ -2819,35 +2819,9 @@ function storyImageMarkup(item,index=0,extraClass=""){
     const direct=extractFeedImage(item);
     const title=escapeHTML(item?.title||"BRENZKafrica story");
     const url=String(item?.link||item?.url||item?.guid||"");
-    if(direct)return `<img class="real-story-image ${extraClass}" src="${escapeHTML(direct)}" alt="${title}" loading="lazy" data-story-image="${index}" data-story-image-url="${escapeHTML(url)}" onerror="storyImageLoadFailed(this)">`;
+    if(direct)return `<img class="real-story-image ${extraClass}" src="${escapeHTML(direct)}" alt="${title}" loading="lazy" data-story-image="${index}" data-story-image-url="${escapeHTML(url)}" onerror="this.dataset.failed='1';this.style.display='none';this.parentElement.classList.add('story-image-missing')">`;
     return `<div class="real-story-image-placeholder ${extraClass}" data-story-image="${index}" data-story-image-url="${escapeHTML(url)}"><span>BRENZKAFRICA</span><small>Loading story image…</small></div>`;
 }
-
-function storyImageLoadFailed(img){
-    if(!img)return;
-    if(img.dataset.resolving==="1")return;
-    img.dataset.resolving="1";
-    const articleUrl=img.dataset.storyImageUrl||"";
-    if(/^https?:\/\//i.test(articleUrl)){
-        resolveStoryImage({link:articleUrl}).then(image=>{
-            if(image && image!==img.src){
-                img.src=image;
-                img.dataset.failed="0";
-                img.dataset.resolving="0";
-                img.style.display="block";
-                img.parentElement?.classList.remove("story-image-missing");
-                return;
-            }
-            img.dataset.resolving="0";
-            img.style.display="none";
-            img.parentElement?.classList.add("story-image-missing");
-        });
-    }else{
-        img.style.display="none";
-        img.parentElement?.classList.add("story-image-missing");
-    }
-}
-
 function runStoryImageQueue(){
     while(STORY_IMAGE_ACTIVE<STORY_IMAGE_CONCURRENCY&&STORY_IMAGE_QUEUE.length){
         const job=STORY_IMAGE_QUEUE.shift();
@@ -2892,7 +2866,7 @@ async function hydrateStoryImages(container,items){
             const target=container.querySelector(`[data-story-image="${index}"]`);
             if(!target)return;
             if(target.tagName==="IMG"){target.src=image;target.style.display="block";target.dataset.failed="0";target.parentElement?.classList.remove("story-image-missing");}
-            else{const img=document.createElement("img");img.className=target.className.replace("real-story-image-placeholder","real-story-image");img.src=image;img.alt=item.title||"BRENZKafrica story";img.loading="lazy";img.dataset.storyImage=String(index);img.dataset.storyImageUrl=String(item.link||item.url||item.guid||"");img.onerror=function(){storyImageLoadFailed(this);};target.replaceWith(img);}
+            else{const img=document.createElement("img");img.className=target.className.replace("real-story-image-placeholder","real-story-image");img.src=image;img.alt=item.title||"BRENZKafrica story";img.loading="lazy";img.dataset.storyImage=String(index);img.dataset.storyImageUrl=String(item.link||item.url||item.guid||"");img.onerror=function(){this.style.display="none";this.parentElement.classList.add("story-image-missing");};target.replaceWith(img);}
         });
     });
 }
@@ -4732,7 +4706,9 @@ link.rel.includes("desktop")
 event.links?.[0]?.href||
 "",
 
-broadcastUrl:""
+broadcastUrl:"",
+thumbnail:eventImage,
+image:eventImage
 
 };
 
@@ -4919,7 +4895,7 @@ row.innerHTML=events.map(createSportsCard).join("");
 
 /* Resolve publisher/event photography when the sports feed supplies an article URL. */
 events.forEach(async event=>{
-    if(event.thumbnail||event.image||!event.eventUrl)return;
+    if(!event.eventUrl)return;
     const image=await resolveStoryImage({link:event.eventUrl,title:event.eventName});
     if(!image)return;
     const bg=row.querySelector(`[data-sports-story-image="${CSS.escape(String(event.id))}"]`);
@@ -5216,7 +5192,7 @@ return `
 class="music-card"
 onclick="openEntertainmentItem('${encodeURIComponent(url)}','${encodeURIComponent(title)}')">
 
-${extractFeedImage(item)?`<img class="real-story-image" src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" data-story-image="${item.__storyIndex??0}" onerror="this.style.display='none';this.parentElement.classList.add('story-image-missing')">`:`<div class="real-story-image-placeholder" data-story-image="${item.__storyIndex??0}"><span>BRENZKAFRICA</span><small>Loading story image…</small></div>`}
+${image?`<img class="real-story-image" src="${escapeHTML(image)}" alt="${escapeHTML(title)}" loading="lazy" data-story-image="${item.__storyIndex??0}" onerror="this.style.display='none';this.parentElement.classList.add('story-image-missing')">`:`<div class="real-story-image-placeholder" data-story-image="${item.__storyIndex??0}" data-story-image-url="${escapeHTML(item.url||item.link||"")}"><span>BRENZKAFRICA</span><small>Loading story image…</small></div>`}
 
 <div class="music-play">
 ↗
