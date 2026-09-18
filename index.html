@@ -6080,6 +6080,66 @@ function dedupeBusinessItems(items){
     });
 }
 
+/* TEMPORARY EMBEDDED INTERNATIONAL NEWS FALLBACK
+   This mirrors the server API logic inside the HTML so the International block
+   can still recover if /api/international-news is unavailable. */
+const EMBEDDED_INTERNATIONAL_FEEDS=[
+  {name:"BBC World",url:"https://feeds.bbci.co.uk/news/world/rss.xml"},
+  {name:"Al Jazeera",url:"https://www.aljazeera.com/xml/rss/all.xml"},
+  {name:"DW World",url:"https://rss.dw.com/rdf/rss-en-world"},
+  {name:"The Guardian World",url:"https://www.theguardian.com/world/rss"}
+];
+const EMBEDDED_INTERNATIONAL_KEYWORDS={
+  politics:/politic|election|government|president|minister|diplom|parliament|vote|policy/i,
+  wars:/war|conflict|ceasefire|military|missile|airstrike|attack|troops|army|gaza|ukraine|iran|russia/i,
+  space:/space|nasa|esa|spacex|rocket|satellite|moon|mars|astronaut|orbit/i,
+  education:/education|school|university|student|teacher|college|exam|campus/i
+};
+function embeddedInternationalClean(value){
+  return String(value||"").replace(/<!\[CDATA\[/g,"").replace(/\]\]>/g,"").replace(/<[^>]*>/g," ").replace(/&amp;/g,"&").replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&apos;/g,"'").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/\s+/g," ").trim();
+}
+function embeddedInternationalTag(xml,name){
+  const m=String(xml||"").match(new RegExp(`<${name}(?:\s[^>]*)?>([\s\S]*?)<\/${name}>`,"i"));
+  return m?embeddedInternationalClean(m[1]):"";
+}
+function embeddedInternationalAttr(xml,tagName,attrName){
+  const m=String(xml||"").match(new RegExp(`<${tagName}[^>]*\b${attrName}=["']([^"']+)["'][^>]*>`,"i"));
+  return m?m[1]:"";
+}
+function parseEmbeddedInternationalRSS(xml,source){
+  const blocks=String(xml||"").match(/<item[\s\S]*?<\/item>|<entry[\s\S]*?<\/entry>/gi)||[];
+  return blocks.slice(0,20).map(block=>({
+    title:embeddedInternationalTag(block,"title"),
+    link:embeddedInternationalTag(block,"link")||embeddedInternationalAttr(block,"link","href"),
+    description:embeddedInternationalTag(block,"description")||embeddedInternationalTag(block,"summary")||embeddedInternationalTag(block,"content:encoded"),
+    date:embeddedInternationalTag(block,"pubDate")||embeddedInternationalTag(block,"published")||embeddedInternationalTag(block,"updated")||embeddedInternationalTag(block,"dc:date"),
+    source,
+    image:embeddedInternationalAttr(block,"media:content","url")||embeddedInternationalAttr(block,"media:thumbnail","url")||embeddedInternationalAttr(block,"enclosure","url")||embeddedInternationalAttr(block,"image","href")
+  })).filter(x=>x.title&&x.link);
+}
+async function fetchEmbeddedInternationalCategory(category){
+  const matcher=EMBEDDED_INTERNATIONAL_KEYWORDS[category];
+  const all=[];
+  for(const feed of EMBEDDED_INTERNATIONAL_FEEDS){
+    try{
+      const response=await brenzSafeFetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}&count=20`,{cache:"no-store",headers:{Accept:"application/json"},timeout:10000});
+      if(!response.ok)continue;
+      const data=await response.json();
+      const rows=Array.isArray(data.items)?data.items:[];
+      all.push(...rows.map(item=>({
+        title:embeddedInternationalClean(item.title),
+        link:item.link||item.guid||"",
+        description:embeddedInternationalClean(item.description||item.content||""),
+        date:item.pubDate||item.published||item.updated||"",
+        source:feed.name,
+        image:item.thumbnail||item.enclosure?.link||item.enclosure?.url||item.media?.content?.url||item.media?.thumbnail?.url||""
+      })).filter(x=>x.title&&x.link));
+    }catch(e){console.warn("Embedded international feed failed",feed.name,e);}
+  }
+  const filtered=(matcher?all.filter(x=>matcher.test(`${x.title} ${x.description}`)):all).sort((a,b)=>new Date(b.date||0)-new Date(a.date||0));
+  return dedupeBusinessItems(filtered).slice(0,12);
+}
+
 async function loadInternationalCategory(category){
     const target=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Feed");
     const count=document.getElementById("international"+category.charAt(0).toUpperCase()+category.slice(1)+"Count");
@@ -6090,6 +6150,10 @@ async function loadInternationalCategory(category){
         if(!response.ok)throw new Error("International API "+response.status);
         const data=await response.json();
         let items=Array.isArray(data.news)?data.news:[];
+        if(!items.length){
+            try{ items=await fetchEmbeddedInternationalCategory(category); }
+            catch(e){ console.warn("Embedded international fallback failed",category,e); }
+        }
         if(!items.length){
             const fallbackUrls=(INTERNATIONAL_NEWS_FALLBACKS[category]||[]);
             for(const url of fallbackUrls){
