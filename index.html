@@ -7746,6 +7746,24 @@ document.addEventListener("DOMContentLoaded",function(){
   document.addEventListener("DOMContentLoaded",bridgeWatchlist);
 })();
 </script>
+<script>
+/* BRENZKafrica Plus production safety layer: surface uncaught runtime failures without replacing UI. */
+window.BRENZKAFRICA_RUNTIME_ERRORS = window.BRENZKAFRICA_RUNTIME_ERRORS || [];
+window.addEventListener("error", function(e){
+  window.BRENZKAFRICA_RUNTIME_ERRORS.push({type:"error",message:String(e.message||"Runtime error"),time:new Date().toISOString()});
+});
+window.addEventListener("unhandledrejection", function(e){
+  window.BRENZKAFRICA_RUNTIME_ERRORS.push({type:"promise",message:String(e.reason?.message||e.reason||"Unhandled promise rejection"),time:new Date().toISOString()});
+});
+window.BRENZKAFRICA_HEALTH = function(){
+  return {
+    supabase: !!window.supabase,
+    authenticated: !!window.currentUser,
+    runtimeErrors: window.BRENZKAFRICA_RUNTIME_ERRORS.length,
+    timestamp: new Date().toISOString()
+  };
+};
+</script>
 </body>
 </html>
 
