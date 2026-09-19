@@ -2201,6 +2201,23 @@ body.modal-open{overflow:hidden}
 }
 
 </style>
+<style id="brenzk-advanced-3d">
+.bk3d-stage{position:relative;overflow:hidden;isolation:isolate}
+.bk3d-stage:before{content:"";position:absolute;inset:-35%;z-index:-2;background:radial-gradient(circle at 50% 50%,rgba(229,9,20,.13),transparent 32%),radial-gradient(circle at 18% 25%,rgba(66,217,255,.08),transparent 25%),radial-gradient(circle at 82% 70%,rgba(255,255,255,.05),transparent 22%);animation:bk3dAmbient 12s ease-in-out infinite alternate;pointer-events:none}
+.bk3d-grid{position:absolute;left:-15%;right:-15%;bottom:-42%;height:78%;z-index:-1;opacity:.22;transform:perspective(700px) rotateX(63deg);transform-origin:center top;background-image:linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(to bottom,transparent,#000 18%,#000 78%,transparent);animation:bk3dGrid 18s linear infinite;pointer-events:none}
+.bk3d-orb{position:absolute;width:150px;height:150px;border-radius:50%;right:8%;top:14%;z-index:-1;background:radial-gradient(circle at 30% 28%,#fff 0 2%,rgba(255,255,255,.45) 3%,transparent 10%),radial-gradient(circle at 35% 35%,#e50914,#5e050b 58%,#050505 78%);box-shadow:0 0 30px rgba(229,9,20,.34),inset -22px -18px 35px rgba(0,0,0,.65);opacity:.68;animation:bk3dFloat 7s ease-in-out infinite;pointer-events:none}
+.bk3d-orbit{position:absolute;width:210px;height:210px;right:5%;top:10%;z-index:-1;border:1px solid rgba(255,255,255,.18);border-radius:50%;transform:rotateX(67deg) rotateZ(-18deg);animation:bk3dOrbit 14s linear infinite;pointer-events:none}
+.bk3d-orbit:after{content:"";position:absolute;width:8px;height:8px;border-radius:50%;background:#42d9ff;box-shadow:0 0 16px #42d9ff;left:8%;top:12%}
+.bk3d-card{transform-style:preserve-3d;transition:transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s ease;will-change:transform}
+.bk3d-card:hover{transform:perspective(900px) rotateX(3deg) rotateY(-4deg) translateY(-7px) scale(1.012);box-shadow:0 22px 55px rgba(0,0,0,.42),0 0 24px rgba(229,9,20,.11)}
+.bk3d-depth{transform:translateZ(18px);transform-style:preserve-3d}
+@keyframes bk3dAmbient{from{transform:scale(.98) rotate(-2deg)}to{transform:scale(1.04) rotate(2deg)}}
+@keyframes bk3dGrid{from{background-position:0 0,0 0}to{background-position:0 52px,52px 0}}
+@keyframes bk3dFloat{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(-12px,-18px,0)}}
+@keyframes bk3dOrbit{to{transform:rotateX(67deg) rotateZ(342deg)}}
+@media(max-width:700px){.bk3d-orb{width:90px;height:90px;right:4%;top:9%;opacity:.42}.bk3d-orbit{width:130px;height:130px;right:0;top:6%;opacity:.5}.bk3d-grid{background-size:34px 34px;opacity:.12}}
+@media(prefers-reduced-motion:reduce){.bk3d-stage:before,.bk3d-grid,.bk3d-orb,.bk3d-orbit{animation:none!important}.bk3d-card{transition:none}}
+</style>
 </head>
 
 <body>
@@ -7763,6 +7780,36 @@ window.BRENZKAFRICA_HEALTH = function(){
     timestamp: new Date().toISOString()
   };
 };
+</script>
+<script id="brenzk-advanced-3d">
+(function(){
+"use strict";
+function initBrenzK3D(){
+ var hero=document.querySelector(".hero,#hero,.hero-section");
+ if(hero&&!hero.classList.contains("bk3d-stage")){
+  hero.classList.add("bk3d-stage");
+  var grid=document.createElement("div");grid.className="bk3d-grid";hero.appendChild(grid);
+  var orb=document.createElement("div");orb.className="bk3d-orb";hero.appendChild(orb);
+  var orbit=document.createElement("div");orbit.className="bk3d-orbit";hero.appendChild(orbit);
+ }
+ var cards=document.querySelectorAll(".content-card,.movie-card,.video-card,.news-card,.card,.article-card");
+ cards.forEach(function(card){
+  card.classList.add("bk3d-card");
+  var media=card.querySelector("img,video,.card-image,.thumb,.thumbnail");
+  if(media)media.classList.add("bk3d-depth");
+ });
+ if(window.matchMedia&&window.matchMedia("(pointer:fine)").matches){
+  document.querySelectorAll(".bk3d-card").forEach(function(card){
+   card.addEventListener("pointermove",function(e){
+    var r=card.getBoundingClientRect(),x=e.clientX/r.width-(r.left/r.width)-.5,y=e.clientY/r.height-(r.top/r.height)-.5;
+    card.style.transform="perspective(900px) rotateX("+(-y*5).toFixed(2)+"deg) rotateY("+(x*7).toFixed(2)+"deg) translateY(-7px) scale(1.012)";
+   });
+   card.addEventListener("pointerleave",function(){card.style.transform=""});
+  });
+ }
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initBrenzK3D);else initBrenzK3D();
+})();
 </script>
 </body>
 </html>
