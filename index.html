@@ -419,7 +419,7 @@ font-weight:900
 }
 
 /* TRENDING SERIES : THE POLYGAMIST */
-.episodes-section{display:none}
+.episodes-section{display:block}
 .episodes-section.visible{display:block}
 .episode-card{
 position:relative;
@@ -2225,7 +2225,6 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <a href="#live">🔴 Live</a>
 <a href="#news">News</a>
 <a href="#businessFinanceSection">Business</a>
-<a href="#series">Series</a>
 <a href="#sports">Sports</a>
 <a href="#wwe">WWE</a>
 <a href="#entertainment">Entertainment</a>
@@ -2260,7 +2259,6 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <a href="#live" onclick="closeMobileMenu()">🔴 Live</a>
 <a href="#news" onclick="closeMobileMenu()">News</a>
 <a href="#businessFinanceSection" onclick="closeMobileMenu()">Business</a>
-<a href="#series" onclick="closeMobileMenu()">Series</a>
 <a href="#sports" onclick="closeMobileMenu()">Sports</a>
 <a href="#wwe" onclick="closeMobileMenu()">🥊 WWE</a>
 <a href="#entertainment" onclick="closeMobileMenu()">Entertainment</a>
@@ -2311,7 +2309,6 @@ and global creative work from BRENZKafrica.
 <div class="quick-links-row">
 <a class="quick-link" href="#">🏠 Home</a>
 <a class="quick-link" href="#originals">🎬 Originals</a>
-<a class="quick-link" href="#series">📺 Series</a>
 <a class="quick-link" href="#episodes">▶ Episodes</a>
 <a class="quick-link" href="#live">🔴 Live</a>
 <a class="quick-link" href="#news">📰 News</a>
@@ -2390,18 +2387,6 @@ and global creative work from BRENZKafrica.
 </div>
 </section>
 
-<section class="section" id="series">
-<div class="section-heading">
-<h2 class="section-title">Series</h2>
-<a href="#series" class="section-link">View all →</a>
-</div>
-<p class="section-subtitle">African stories, journeys and creative voices.</p>
-<div class="row" id="seriesRow">
-<div class="news-loading">Loading series...</div>
-</div>
-</section>
-
-
 <section class="section trending-series-section" id="trendingSeries">
 <div class="section-heading">
 <h2 class="section-title">🔥 Trending Series</h2>
@@ -2419,7 +2404,7 @@ and global creative work from BRENZKafrica.
 <h2 class="section-title">Episodes</h2>
 <span class="section-link">Season episodes</span>
 </div>
-<p class="section-subtitle" id="episodesSubtitle">Watch episodes from this series.</p>
+<p class="section-subtitle" id="episodesSubtitle">Watch available episodes independently from the series catalogue.</p>
 <div class="episode-row" id="episodesRow">
 <div class="episode-loading">Loading episodes...</div>
 </div>
@@ -3006,7 +2991,6 @@ Subscribe
 <a href="#originals">Originals</a>
 <a href="#news">News</a>
 <a href="#live">Live</a>
-<a href="#series">Series</a>
 <a href="#trendingSeries">🔥 Trending Series</a>
 <a href="#sports">Sports</a>
 <a href="#entertainment">Entertainment</a>
@@ -3856,7 +3840,6 @@ function renderContentSections(){
 
 const groups={
 originals:document.getElementById("originalsRow"),
-series:document.getElementById("seriesRow"),
 documentary:document.getElementById("documentaryRow")
 };
 
@@ -3949,7 +3932,6 @@ updateWatchlistButtons();
 async function loadContent(){
 
 const originalsRow=document.getElementById("originalsRow");
-const seriesRow=document.getElementById("seriesRow");
 const documentaryRow=document.getElementById("documentaryRow");
 
 try{
@@ -3974,7 +3956,7 @@ await loadYouTubeOriginals();
 
 console.error("Content loading error:",error);
 
-[originalsRow,seriesRow,documentaryRow].forEach(row=>{
+[originalsRow,documentaryRow].forEach(row=>{
 row.innerHTML=
 '<div class="news-error">Unable to load content right now.</div>';
 });
