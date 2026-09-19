@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>BRENZKafrica Plus — Admin</title>
+<meta name="theme-color" content="#070707">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#070707;--surface:#111;--surface2:#171717;--text:#fff;--muted:#8c8c8c;--red:#e50914;--gold:#e7bd69;--green:#31d17c;--border:rgba(255,255,255,.09);--max:1700px}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:inherit}.hidden{display:none!important}
+.topbar{height:70px;position:sticky;top:0;z-index:50;background:rgba(7,7,7,.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px}.brand{font-size:22px;font-weight:900}.brand span{color:var(--red)}.admin-badge{font-size:9px;letter-spacing:1.2px;margin-left:9px;padding:5px 7px;border-radius:6px;background:var(--red);font-weight:900}.top-right{margin-left:auto;display:flex;gap:10px;align-items:center}.user-pill{font-size:12px;color:#ccc}.btn{border:1px solid var(--border);background:#171717;color:#fff;border-radius:8px;padding:9px 13px;font-weight:800;font-size:12px}.btn:hover{border-color:#444}.btn-primary{background:var(--red);border-color:var(--red)}.btn-danger{background:#2a090b;border-color:#641117;color:#ffb5b8}.btn-small{padding:6px 9px;font-size:11px}
+.layout{max-width:var(--max);margin:auto;display:grid;grid-template-columns:240px minmax(0,1fr);min-height:calc(100vh - 70px)}.sidebar{border-right:1px solid var(--border);padding:20px 14px}.nav-title{font-size:9px;text-transform:uppercase;letter-spacing:1.4px;color:#555;margin:13px 10px 8px}.nav button{display:block;width:100%;text-align:left;background:transparent;color:#999;border:0;padding:11px 12px;border-radius:8px;font-weight:800;font-size:12px}.nav button:hover,.nav button.active{background:#181818;color:#fff}.nav button.active{box-shadow:inset 3px 0 var(--red)}
+main{padding:28px;min-width:0}.page-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{font-size:9px;letter-spacing:1.6px;text-transform:uppercase;color:var(--red);font-weight:900}.page-head h1{font-size:30px;margin:5px 0}.page-head p{color:var(--muted);font-size:12px;margin:0}.actions{display:flex;gap:8px}.stats{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-bottom:22px}.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:17px}.stat .label{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:#777}.stat .value{font-size:25px;font-weight:900;margin-top:7px}.stat .hint{font-size:10px;color:#666;margin-top:5px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}.panel-head{padding:15px 17px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}.panel-head h2{font-size:14px;margin:0}.panel-head span{margin-left:auto;color:#666;font-size:10px}.panel-body{padding:15px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:720px}.table th,.table td{padding:10px 11px;border-bottom:1px solid rgba(255,255,255,.06);font-size:11px;text-align:left;vertical-align:middle}.table th{color:#777;text-transform:uppercase;letter-spacing:.7px;font-size:8px}.muted{color:#777}.badge{display:inline-flex;padding:4px 7px;border-radius:999px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.5px}.badge-green{background:rgba(49,209,124,.12);color:var(--green)}.badge-red{background:rgba(229,9,20,.12);color:#ff6a72}.badge-gold{background:rgba(231,189,105,.12);color:var(--gold)}
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}.search{background:#0b0b0b;border:1px solid var(--border);color:#fff;border-radius:8px;padding:9px 11px;min-width:220px}.select{background:#0b0b0b;border:1px solid var(--border);color:#fff;border-radius:8px;padding:9px 11px}.notice{padding:10px 12px;border-radius:8px;background:#151515;color:#aaa;font-size:11px;margin-bottom:12px}.notice.error{background:#24090b;color:#ff9da2}.notice.success{background:#0b2016;color:#8ee8b5}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:100;display:flex;align-items:center;justify-content:center;padding:18px}.modal-card{width:min(720px,100%);max-height:92vh;overflow:auto;background:#111;border:1px solid #292929;border-radius:14px}.modal-head{padding:17px;border-bottom:1px solid var(--border);display:flex;align-items:center}.modal-head h3{margin:0;font-size:16px}.close{margin-left:auto;background:transparent;border:0;color:#aaa;font-size:24px}.form{padding:17px;display:grid;gap:12px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:9px;color:#777;text-transform:uppercase;letter-spacing:.8px;font-weight:900}.field input,.field textarea,.field select{width:100%;background:#090909;border:1px solid #292929;color:#fff;border-radius:8px;padding:10px}.field textarea{min-height:100px;resize:vertical}.check{display:flex;align-items:center;gap:8px;color:#aaa;font-size:11px}.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(430px,100%);background:#111;border:1px solid var(--border);border-radius:14px;padding:26px}.login-card h1{margin:0 0 6px}.login-card p{color:#777;font-size:12px}.login-form{display:grid;gap:11px;margin-top:20px}.login-form input{background:#080808;border:1px solid #292929;color:#fff;border-radius:8px;padding:12px}.empty{padding:28px;text-align:center;color:#666;font-size:12px}.danger-zone{margin-top:20px;padding:14px;border:1px solid #4a1115;background:#18090a;border-radius:10px}.footer-note{color:#555;font-size:9px;margin-top:25px}
+@media(max-width:1050px){.stats{grid-template-columns:repeat(3,1fr)}.layout{grid-template-columns:190px 1fr}.grid{grid-template-columns:1fr}}
+@media(max-width:700px){.topbar{padding:0 14px}.sidebar{display:none}.layout{display:block}.stats{grid-template-columns:1fr 1fr}main{padding:18px}.page-head{align-items:start;flex-direction:column}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.user-pill{display:none}}
+</style>
+
+<style>
+/* V3 media-upload enhancements */
+.upload-box{border:1px dashed #3a3a3a;background:#0b0b0b;border-radius:10px;padding:12px}
+.upload-box input[type=file]{width:100%;padding:9px;background:#090909;color:#fff;border:1px solid #292929;border-radius:8px}
+.upload-status{font-size:10px;color:#777;margin-top:6px}
+.media-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.media-preview img,.media-preview video{width:180px;height:100px;object-fit:cover;border-radius:8px;border:1px solid #292929}
+@media(max-width:700px){.upload-box{padding:10px}.media-preview img,.media-preview video{width:100%;height:170px}}
+</style>
+<script>
+/* BRENZKafrica Plus Admin Console V3 enhancement API */
+async function v3Upload(file,folder,maxBytes,status,preview){
+  if(!file) return null;
+  if(!window.sb) throw new Error("Supabase is not initialized.");
+  if(file.size>maxBytes) throw new Error("File is too large.");
+  if(status) status.textContent="Uploading "+file.name+"…";
+  const clean=file.name.replace(/[^a-zA-Z0-9._-]/g,"_");
+  const uid=(window.adminUser&&adminUser.id)||"admin";
+  const path=folder+"/"+uid+"/"+Date.now()+"_"+Math.random().toString(36).slice(2,8)+"_"+clean;
+  const r=await sb.storage.from("advertising-media").upload(path,file,{contentType:file.type||undefined,upsert:false});
+  if(r.error) throw r.error;
+  const url=sb.storage.from("advertising-media").getPublicUrl(path).data.publicUrl;
+  if(status) status.textContent="Upload complete.";
+  if(preview){
+    preview.innerHTML=file.type.startsWith("video/")?
+      '<video controls src="'+url+'"></video>':
+      '<img src="'+url+'" alt="Uploaded media">';
+  }
+  return url;
+}
+</script>
+
+</head>
+<body>
+<div id="loginView" class="login">
+  <div class="login-card">
+    <div class="eyebrow">BRENZKAFRICA PLUS</div>
+    <h1>Admin Console</h1>
+    <p>Private administration area. Only accounts with the <b>admin</b> role may enter.</p>
+    <form id="loginForm" class="login-form">
+      <input id="loginEmail" type="email" placeholder="Admin email" autocomplete="email" required>
+      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+      <button class="btn btn-primary" type="submit">Sign in to Admin</button>
+      <div id="loginMessage" class="notice hidden"></div>
+    </form>
+  </div>
+</div>
+
+<div id="appView" class="hidden">
+<header class="topbar"><div class="brand">BRENZK<span>africa</span> <span style="color:#fff">+</span><span class="admin-badge">ADMIN</span></div><div class="top-right"><span id="adminEmail" class="user-pill"></span><button class="btn btn-small" id="refreshBtn">Refresh</button><button class="btn btn-small" id="signOutBtn">Sign Out</button></div></header>
+<div class="layout">
+<aside class="sidebar"><div class="nav">
+<div class="nav-title">Manage</div>
+<button class="active" data-page="overview">Overview</button>
+<button data-page="content">Content</button>
+<button data-page="series">Series & Episodes</button>
+<button data-page="live">Live Events</button>
+<button data-page="plans">Subscription Plans</button>
+<button data-page="users">Users</button>
+<button data-page="subscriptions">Subscriptions</button>
+<button data-page="payments">Payments</button>
+<button data-page="newsletter">Newsletter</button>
+<button data-page="advertising">Advertising &amp; Partners</button>
+<div class="nav-title">System</div>
+<button data-page="audit">Audit Log</button>
+<button data-page="sources">Sources & Partners</button>
+</div></aside>
+<main id="main"></main>
+</div>
+</div>
+
+<div id="modal" class="modal hidden"><div class="modal-card"><div class="modal-head"><h3 id="modalTitle"></h3><button class="close" id="modalClose">×</button></div><div id="modalBody"></div></div></div>
+
+<script>
+const SUPABASE_URL='https://fcddfmfpzbilagphpsxs.supabase.co';
+const SUPABASE_ANON_KEY=window.BRENZKAFRICA_SUPABASE_ANON_KEY||'sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u';
+/* Set the anon key above or inject window.BRENZKAFRICA_SUPABASE_ANON_KEY before this script. Never put a service-role key here. */
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+let adminUser=null,currentPage='overview',cache={};
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+const money=(minor,currency='USD')=>{try{return new Intl.NumberFormat(undefined,{style:'currency',currency}).format(Number(minor||0)/100)}catch{return `${currency} ${(Number(minor||0)/100).toFixed(2)}`}};
+const date=v=>v?new Date(v).toLocaleString():'';
+function notice(msg,type=''){return `<div class="notice ${type}">${esc(msg)}</div>`}
+function showLoginMessage(msg,type='error'){const e=$('loginMessage');e.className='notice '+type;e.textContent=msg}
+function openModal(title,html){$('modalTitle').textContent=title;$('modalBody').innerHTML=html;$('modal').classList.remove('hidden')}
+function closeModal(){$('modal').classList.add('hidden')}
+$('modalClose').onclick=closeModal;$('modal').onclick=e=>{if(e.target===$('modal'))closeModal()};
+
+async function getSession(){const {data}=await sb.auth.getSession();return data.session}
+async function ensureAdmin(){const session=await getSession();if(!session)return false;const {data,error}=await sb.from('profiles').select('id,display_name,role').eq('id',session.user.id).single();if(error||!data||data.role!=='admin'){await sb.auth.signOut();showLoginMessage('This account does not have administrator access.');return false}adminUser={...session.user,profile:data};return true}
+async function init(){if(!SUPABASE_ANON_KEY){showLoginMessage('Supabase anon key is not configured in this admin file.');return}if(await ensureAdmin())showApp();}
+function showApp(){ $('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('adminEmail').textContent=adminUser.email||'';renderPage('overview') }
+$('loginForm').onsubmit=async e=>{e.preventDefault();showLoginMessage('Signing in…','');const {error}=await sb.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error){showLoginMessage(error.message);return}if(await ensureAdmin()){showApp()}else if($('loginMessage').textContent===''){showLoginMessage('Administrator access required.')}};
+$('signOutBtn').onclick=async()=>{await sb.auth.signOut();location.reload()};
+$('refreshBtn').onclick=()=>renderPage(currentPage,true);
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderPage(b.dataset.page)});
+
+async function q(table,select='*',order='created_at',ascending=false){let query=sb.from(table).select(select);if(order)query=query.order(order,{ascending});const r=await query; if(r.error)throw r.error;return r.data||[]}
+async function count(table){const r=await sb.from(table).select('*',{count:'exact',head:true});if(r.error)throw r.error;return r.count||0}
+async function writeAudit(action,targetType,targetId,metadata={}){try{await sb.from('admin_audit_log').insert({actor_id:adminUser.id,action,target_type:targetType,target_id:String(targetId||''),metadata})}catch(e){console.warn('Audit unavailable',e)}}
+
+async function renderPage(page,force=false){currentPage=page;const m=$('main');m.innerHTML='<div class="empty">Loading admin console…</div>';try{if(page==='overview')await overview(force);else if(page==='content')await contentPage(force);else if(page==='series')await seriesPage(force);else if(page==='live')await livePage(force);else if(page==='plans')await plansPage(force);else if(page==='users')await usersPage(force);else if(page==='subscriptions')await subscriptionsPage(force);else if(page==='payments')await paymentsPage(force);else if(page==='newsletter')await newsletterPage(force);else if(page==='advertising')await advertisingPage(force);else if(page==='audit')await auditPage(force);else if(page==='sources')await sourcesPage(force)}catch(e){m.innerHTML=notice(e.message||String(e),'error')}}
+
+async function overview(){const [content,profiles,subs,payments,live,ads]=await Promise.all([count('content'),count('profiles'),count('subscriptions'),count('payment_transactions'),count('live_events'),count('advertising_campaigns')]);$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">CONTROL CENTER</div><h1>Admin Overview</h1><p>Manage the BRENZKafrica Plus platform from one private console.</p></div></div><div class="stats"><div class="stat"><div class="label">Content</div><div class="value">${content}</div><div class="hint">Catalogue records</div></div><div class="stat"><div class="label">Users</div><div class="value">${profiles}</div><div class="hint">Registered profiles</div></div><div class="stat"><div class="label">Subscriptions</div><div class="value">${subs}</div><div class="hint">All subscription records</div></div><div class="stat"><div class="label">Payments</div><div class="value">${payments}</div><div class="hint">Transaction ledger</div></div><div class="stat"><div class="label">Live</div><div class="value">${live}</div><div class="hint">Live event records</div></div><div class="stat"><div class="label">Advertising</div><div class="value">${ads}</div><div class="hint">Campaign records</div></div></div><div class="grid"><section class="panel"><div class="panel-head"><h2>Platform Operations</h2></div><div class="panel-body">${notice('This console is intentionally separate from the public BRENZKafrica Plus frontend. Changes made here are stored in Supabase and can be reflected by the public site on its next data refresh.','success')}<p style="font-size:11px;color:#888;line-height:1.7">Use <b>Content</b> to publish catalogue titles, <b>Series & Episodes</b> for episodic content, <b>Live Events</b> for broadcasts, <b>Subscription Plans</b> for pricing, and the financial/user areas for operational monitoring.</p></div></section><section class="panel"><div class="panel-head"><h2>Security</h2></div><div class="panel-body">${notice('Admin access is role-gated through public.profiles.role. The browser must only contain the Supabase anon key; never put the service-role key or payment secrets in this page.','success')}<p style="font-size:11px;color:#888;line-height:1.7">The existing professional layer defines the admin role and audit foundation.</p></div></section></div>`}
+
+async function contentPage(){const data=await q('content','id,title,description,content_type,category,country,thumbnail_url,video_url,creator,license,attribution,is_original,is_featured,is_published,release_date','release_date',false);cache.content=data;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">CATALOGUE</div><h1>Content</h1><p>Create, edit, feature, publish and unpublish catalogue titles.</p></div><div class="actions"><button class="btn btn-primary" onclick="contentForm()">+ Add Content</button></div></div><div class="toolbar"><input class="search" id="tableSearch" placeholder="Search titles…"><select class="select" id="publishFilter"><option value="all">All</option><option value="published">Published</option><option value="draft">Drafts</option></select></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Title</th><th>Type</th><th>Status</th><th>Featured</th><th>Release</th><th>Actions</th></tr></thead><tbody id="contentRows"></tbody></table></div></div></section>`;renderContentRows();$('tableSearch').oninput=renderContentRows;$('publishFilter').onchange=renderContentRows}
+function renderContentRows(){const s=($('tableSearch')?.value||'').toLowerCase();const f=$('publishFilter')?.value||'all';const rows=(cache.content||[]).filter(x=>(x.title||'').toLowerCase().includes(s)&&(f==='all'||(f==='published'?x.is_published:!x.is_published)));$('contentRows').innerHTML=rows.map(x=>`<tr><td><b>${esc(x.title)}</b><div class="muted">#${esc(x.id)}</div></td><td>${esc(x.category||x.content_type||'—')}</td><td>${x.is_published?'<span class="badge badge-green">Published</span>':'<span class="badge badge-red">Draft</span>'}</td><td>${x.is_featured?'<span class="badge badge-gold">Featured</span>':'—'}</td><td>${esc(x.release_date||'—')}</td><td><button class="btn btn-small" onclick="contentForm('${esc(x.id)}')">Edit</button> <button class="btn btn-small ${x.is_published?'btn-danger':''}" onclick="toggleContentPublish('${esc(x.id)}',${!x.is_published})">${x.is_published?'Unpublish':'Publish'}</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No content found.</td></tr>'}
+function contentForm(id){const x=(cache.content||[]).find(a=>String(a.id)===String(id))||{};openModal(id?'Edit Content':'Add Content',`<form class="form" id="contentForm"><div class="form-grid"><div class="field full"><label>Title</label><input name="title" value="${esc(x.title)}" required></div><div class="field"><label>Content Type</label><input name="content_type" value="${esc(x.content_type)}" placeholder="movie / series / documentary / original"></div><div class="field"><label>Category</label><input name="category" value="${esc(x.category)}"></div><div class="field"><label>Country</label><input name="country" value="${esc(x.country)}"></div><div class="field"><label>Creator</label><input name="creator" value="${esc(x.creator)}"></div><div class="field full"><label>Description</label><textarea name="description">${esc(x.description)}</textarea></div><div class="field full"><label>Thumbnail URL</label><input name="thumbnail_url" value="${esc(x.thumbnail_url)}"></div><div class="field full"><label>Video URL</label><input name="video_url" value="${esc(x.video_url)}"></div><div class="field"><label>License</label><input name="license" value="${esc(x.license)}"></div><div class="field"><label>Attribution</label><input name="attribution" value="${esc(x.attribution)}"></div><div class="field"><label>Release Date</label><input type="date" name="release_date" value="${esc(x.release_date?.slice?.(0,10)||'')}"></div><div class="field"><label>Flags</label><label class="check"><input type="checkbox" name="is_original" ${x.is_original?'checked':''}> Original</label><label class="check"><input type="checkbox" name="is_featured" ${x.is_featured?'checked':''}> Featured</label><label class="check"><input type="checkbox" name="is_published" ${x.is_published?'checked':''}> Published</label></div></div><button class="btn btn-primary" type="submit">${id?'Save Changes':'Create Content'}</button>${id?` <button type="button" class="btn btn-danger" onclick="deleteContent('${esc(id)}')">Delete</button>`:''}</form>`);$('contentForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const row={title:f.get('title'),description:f.get('description'),content_type:f.get('content_type'),category:f.get('category'),country:f.get('country'),creator:f.get('creator'),license:f.get('license'),attribution:f.get('attribution'),thumbnail_url:f.get('thumbnail_url'),video_url:f.get('video_url'),release_date:f.get('release_date')||null,is_original:f.has('is_original'),is_featured:f.has('is_featured'),is_published:f.has('is_published')};const r=id?await sb.from('content').update(row).eq('id',id):await sb.from('content').insert(row);if(r.error){alert(r.error.message);return}await writeAudit(id?'update_content':'create_content','content',id||'new',{title:row.title});closeModal();renderPage('content',true)}}
+async function toggleContentPublish(id,value){const r=await sb.from('content').update({is_published:value}).eq('id',id);if(r.error){alert(r.error.message);return}await writeAudit(value?'publish_content':'unpublish_content','content',id);renderPage('content',true)}
+async function deleteContent(id){if(!confirm('Delete this content record? This cannot be undone.'))return;const r=await sb.from('content').delete().eq('id',id);if(r.error){alert(r.error.message);return}await writeAudit('delete_content','content',id);closeModal();renderPage('content',true)}
+
+async function seriesPage(){let series=[],episodes=[];try{series=await q('series','*','created_at',false)}catch(e){}try{episodes=await q('episodes','*','created_at',false)}catch(e){}cache.series=series;cache.episodes=episodes;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">EPISODIC CONTENT</div><h1>Series & Episodes</h1><p>Manage series, seasons and episode records where the corresponding Supabase tables exist.</p></div></div><div class="grid"><section class="panel"><div class="panel-head"><h2>Series</h2><span>${series.length} records</span></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Title</th><th>Description</th></tr></thead><tbody>${series.map(x=>`<tr><td>${esc(x.id)}</td><td><b>${esc(x.title||x.name||'Untitled')}</b></td><td class="muted">${esc((x.description||'').slice(0,100))}</td></tr>`).join('')||'<tr><td colspan="3" class="empty">No series records or table unavailable.</td></tr>'}</tbody></table></div></div></section><section class="panel"><div class="panel-head"><h2>Episodes</h2><span>${episodes.length} records</span></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Episode</th><th>Title</th><th>Premium</th><th>Published</th></tr></thead><tbody>${episodes.map(x=>`<tr><td>${esc(x.id)}</td><td>S${esc(x.season_id||'—')} · E${esc(x.episode_number||'—')}</td><td><b>${esc(x.title||'Untitled')}</b></td><td>${x.is_premium?'<span class="badge badge-gold">Premium</span>':'Free'}</td><td>${esc(x.published_at||'—')}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No episode records or table unavailable.</td></tr>'}</tbody></table></div></div></section></div>`}
+
+async function livePage(){const data=await q('live_events','id,title,description,thumbnail,status,start_time,end_time,is_featured,stream_url','start_time',false);cache.live=data;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">BROADCASTING</div><h1>Live Events</h1><p>Schedule and manage live broadcasts.</p></div><button class="btn btn-primary" onclick="liveForm()">+ Add Event</button></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Title</th><th>Status</th><th>Start</th><th>Featured</th><th>Actions</th></tr></thead><tbody>${data.map(x=>`<tr><td><b>${esc(x.title)}</b></td><td>${esc(x.status)}</td><td>${esc(date(x.start_time))}</td><td>${x.is_featured?'Yes':'No'}</td><td><button class="btn btn-small" onclick="liveForm('${esc(x.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">No live events.</td></tr>'}</tbody></table></div></div></section>`}
+function liveForm(id){const x=(cache.live||[]).find(a=>String(a.id)===String(id))||{};openModal(id?'Edit Live Event':'Add Live Event',`<form class="form" id="liveForm"><div class="form-grid"><div class="field full"><label>Title</label><input name="title" value="${esc(x.title)}" required></div><div class="field full"><label>Description</label><textarea name="description">${esc(x.description)}</textarea></div><div class="field"><label>Status</label><select name="status"><option ${x.status==='upcoming'?'selected':''}>upcoming</option><option ${x.status==='live'?'selected':''}>live</option><option ${x.status==='ended'?'selected':''}>ended</option></select></div><div class="field"><label>Start Time</label><input type="datetime-local" name="start_time" value="${esc(x.start_time?.slice?.(0,16)||'')}"></div><div class="field"><label>End Time</label><input type="datetime-local" name="end_time" value="${esc(x.end_time?.slice?.(0,16)||'')}"></div><div class="field"><label>Thumbnail</label><input name="thumbnail" value="${esc(x.thumbnail)}"></div><div class="field full"><label>Stream URL</label><input name="stream_url" value="${esc(x.stream_url)}"></div><div class="field"><label class="check"><input type="checkbox" name="is_featured" ${x.is_featured?'checked':''}> Featured</label></div></div><button class="btn btn-primary">${id?'Save Changes':'Create Event'}</button></form>`);$('liveForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const row={title:f.get('title'),description:f.get('description'),status:f.get('status'),start_time:f.get('start_time')?new Date(f.get('start_time')).toISOString():null,end_time:f.get('end_time')?new Date(f.get('end_time')).toISOString():null,thumbnail:f.get('thumbnail'),stream_url:f.get('stream_url'),is_featured:f.has('is_featured')};const r=id?await sb.from('live_events').update(row).eq('id',id):await sb.from('live_events').insert(row);if(r.error){alert(r.error.message);return}await writeAudit(id?'update_live_event':'create_live_event','live_events',id||'new',{title:row.title});closeModal();renderPage('live',true)}}
+
+async function plansPage(){const data=await q('subscription_plans','*','price_minor',true);cache.plans=data;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">MONETIZATION</div><h1>Subscription Plans</h1><p>Manage the plans exposed to BRENZKafrica Plus customers.</p></div><button class="btn btn-primary" onclick="planForm()">+ Add Plan</button></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Plan</th><th>Interval</th><th>Price</th><th>Trial</th><th>Status</th><th>Actions</th></tr></thead><tbody>${data.map(x=>`<tr><td><b>${esc(x.name)}</b><div class="muted">${esc(x.code)}</div></td><td>${esc(x.interval)}</td><td>${money(x.price_minor,x.currency)}</td><td>${esc(x.trial_days)} days</td><td>${x.active?'<span class="badge badge-green">Active</span>':'<span class="badge badge-red">Inactive</span>'}</td><td><button class="btn btn-small" onclick="planForm('${esc(x.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No plans.</td></tr>'}</tbody></table></div></div></section>`}
+function planForm(id){const x=(cache.plans||[]).find(a=>String(a.id)===String(id))||{};openModal(id?'Edit Plan':'Add Plan',`<form class="form" id="planForm"><div class="form-grid"><div class="field"><label>Code</label><input name="code" value="${esc(x.code)}" required></div><div class="field"><label>Name</label><input name="name" value="${esc(x.name)}" required></div><div class="field full"><label>Description</label><textarea name="description">${esc(x.description)}</textarea></div><div class="field"><label>Interval</label><select name="interval"><option value="month" ${x.interval==='month'?'selected':''}>Monthly</option><option value="year" ${x.interval==='year'?'selected':''}>Yearly</option></select></div><div class="field"><label>Price in minor units</label><input type="number" min="0" name="price_minor" value="${esc(x.price_minor??0)}" required></div><div class="field"><label>Currency</label><input name="currency" value="${esc(x.currency||'USD')}" required></div><div class="field"><label>Trial days</label><input type="number" min="0" name="trial_days" value="${esc(x.trial_days??0)}"></div><div class="field"><label class="check"><input type="checkbox" name="active" ${x.active!==false?'checked':''}> Active</label></div></div><button class="btn btn-primary">${id?'Save Changes':'Create Plan'}</button></form>`);$('planForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const row={code:f.get('code'),name:f.get('name'),description:f.get('description'),interval:f.get('interval'),price_minor:Number(f.get('price_minor')),currency:String(f.get('currency')).toUpperCase(),trial_days:Number(f.get('trial_days')||0),active:f.has('active'),updated_at:new Date().toISOString()};const r=id?await sb.from('subscription_plans').update(row).eq('id',id):await sb.from('subscription_plans').insert(row);if(r.error){alert(r.error.message);return}await writeAudit(id?'update_plan':'create_plan','subscription_plans',id||'new',{code:row.code});closeModal();renderPage('plans',true)}}
+
+async function usersPage(){const data=await q('profiles','id,display_name,avatar_url,country_code,preferred_language,preferred_currency,role,created_at,updated_at','created_at',false);cache.users=data;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">CUSTOMERS</div><h1>Users</h1><p>Review account profiles and administrator roles. Authentication credentials remain in Supabase Auth.</p></div></div><div class="toolbar"><input class="search" id="userSearch" placeholder="Search name or ID…"></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Profile</th><th>Country</th><th>Language</th><th>Currency</th><th>Role</th><th>Created</th><th>Actions</th></tr></thead><tbody id="userRows"></tbody></table></div></div></section>`;renderUsers();$('userSearch').oninput=renderUsers}
+function renderUsers(){const s=($('userSearch')?.value||'').toLowerCase();const rows=(cache.users||[]).filter(x=>(x.display_name||'').toLowerCase().includes(s)||String(x.id).toLowerCase().includes(s));$('userRows').innerHTML=rows.map(x=>`<tr><td><b>${esc(x.display_name||'Unnamed')}</b><div class="muted">${esc(x.id)}</div></td><td>${esc(x.country_code||'—')}</td><td>${esc(x.preferred_language||'—')}</td><td>${esc(x.preferred_currency||'—')}</td><td>${x.role==='admin'?'<span class="badge badge-red">Admin</span>':x.role==='editor'?'<span class="badge badge-gold">Editor</span>':'Viewer'}</td><td>${esc(date(x.created_at))}</td><td><button class="btn btn-small" onclick="userForm('${esc(x.id)}')">Edit Profile</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">No users.</td></tr>'}
+function userForm(id){const x=(cache.users||[]).find(a=>String(a.id)===String(id))||{};openModal('Edit User Profile',`<form class="form" id="userForm"><div class="form-grid"><div class="field full"><label>User ID</label><input value="${esc(x.id)}" disabled></div><div class="field full"><label>Display Name</label><input name="display_name" value="${esc(x.display_name)}"></div><div class="field"><label>Country</label><input name="country_code" value="${esc(x.country_code)}"></div><div class="field"><label>Language</label><input name="preferred_language" value="${esc(x.preferred_language||'en')}"></div><div class="field"><label>Currency</label><input name="preferred_currency" value="${esc(x.preferred_currency||'USD')}"></div></div><button class="btn btn-primary">Save Profile</button></form>`);$('userForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const r=await sb.from('profiles').update({display_name:f.get('display_name')||null,country_code:f.get('country_code')||null,preferred_language:f.get('preferred_language')||'en',preferred_currency:f.get('preferred_currency')||'USD',updated_at:new Date().toISOString()}).eq('id',id);if(r.error){alert(r.error.message);return}await writeAudit('update_profile','profiles',id);closeModal();renderPage('users',true)}}
+
+async function subscriptionsPage(){const r=await sb.from('subscriptions').select('id,user_id,plan_id,provider,provider_customer_id,provider_subscription_id,status,current_period_start,current_period_end,cancel_at_period_end,cancelled_at,created_at,subscription_plans(name,code)').order('created_at',{ascending:false});if(r.error)throw r.error;const data=r.data||[];$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">BILLING</div><h1>Subscriptions</h1><p>Operational view of subscription status and billing periods.</p></div></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>User</th><th>Plan</th><th>Provider</th><th>Status</th><th>Period End</th><th>Cancel</th></tr></thead><tbody>${(data||[]).map(x=>`<tr><td>${esc(x.user_id)}</td><td>${esc(x.subscription_plans?.name||x.plan_id)}</td><td>${esc(x.provider)}</td><td><span class="badge ${['active','trialing'].includes(x.status)?'badge-green':x.status==='cancelled'||x.status==='expired'?'badge-red':'badge-gold'}">${esc(x.status)}</span></td><td>${esc(date(x.current_period_end)||'—')}</td><td>${x.cancel_at_period_end?'Yes':'No'}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No subscriptions.</td></tr>'}</tbody></table></div></div></section>`}
+
+async function paymentsPage(){const r=await sb.from('payment_transactions').select('*').order('created_at',{ascending:false});if(r.error)throw r.error;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">FINANCE</div><h1>Payments</h1><p>Payment transaction ledger. Provider secrets and webhook signing remain server-side.</p></div></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Created</th><th>User</th><th>Provider</th><th>Amount</th><th>Status</th><th>Reference</th></tr></thead><tbody>${(r.data||[]).map(x=>`<tr><td>${esc(date(x.created_at))}</td><td>${esc(x.user_id)}</td><td>${esc(x.provider)}</td><td>${money(x.amount_minor,x.currency)}</td><td>${esc(x.status)}</td><td>${esc(x.checkout_reference||x.provider_transaction_id||'—')}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">No payment transactions.</td></tr>'}</tbody></table></div></div></section>`}
+
+async function newsletterPage(){const r=await q('newsletter_subscribers','*','created_at',false);$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">AUDIENCE</div><h1>Newsletter</h1><p>Review collected newsletter subscribers.</p></div></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Email</th><th>Status</th><th>Created</th></tr></thead><tbody>${(r.data||[]).map(x=>`<tr><td><b>${esc(x.email||'')}</b></td><td>${esc(x.status||'subscribed')}</td><td>${esc(date(x.created_at))}</td></tr>`).join('')||'<tr><td colspan="3" class="empty">No subscribers.</td></tr>'}</tbody></table></div></div></section>`}
+
+async function auditPage(){const r=await sb.from('admin_audit_log').select('*').order('created_at',{ascending:false}).limit(200);if(r.error)throw r.error;$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">SECURITY</div><h1>Audit Log</h1><p>Recent administrative actions recorded by the console.</p></div></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Time</th><th>Actor</th><th>Action</th><th>Target</th><th>Metadata</th></tr></thead><tbody>${(r.data||[]).map(x=>`<tr><td>${esc(date(x.created_at))}</td><td>${esc(x.actor_id||'—')}</td><td><b>${esc(x.action)}</b></td><td>${esc(x.target_type||'')} ${esc(x.target_id||'')}</td><td class="muted">${esc(JSON.stringify(x.metadata||{}))}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">No audit entries.</td></tr>'}</tbody></table></div></div></section>`}
+
+
+async function advertisingPage(){
+  const data=await q('advertising_campaigns','*','priority',false);
+  cache.advertising=data;
+  $('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">COMMERCIAL</div><h1>Advertising &amp; Partners</h1><p>Manage image, slideshow, video and mixed-media campaigns displayed on BRENZKafrica Plus.</p></div><div class="actions"><button class="btn btn-primary" onclick="advertisingForm()">+ New Campaign</button></div></div><section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Campaign</th><th>Format</th><th>Advertiser</th><th>Status</th><th>Schedule</th><th>Priority</th><th>Actions</th></tr></thead><tbody>${data.map(x=>`<tr><td><b>${esc(x.title)}</b><div class="muted">#${esc(x.id)}</div></td><td>${esc(x.campaign_type||'mixed')}</td><td>${esc(x.advertiser_name||'—')}</td><td>${x.is_active?'<span class="badge badge-green">Active</span>':'<span class="badge badge-red">Inactive</span>'}</td><td>${esc(date(x.starts_at)||'Now')} → ${esc(date(x.ends_at)||'No expiry')}</td><td>${esc(x.priority??0)}</td><td><button class="btn btn-small" onclick="advertisingForm('${esc(x.id)}')">Edit</button> <button class="btn btn-small ${x.is_active?'btn-danger':''}" onclick="toggleAdvertising('${esc(x.id)}',${!x.is_active})">${x.is_active?'Disable':'Activate'}</button> <button class="btn btn-small btn-danger" onclick="deleteAdvertising('${esc(x.id)}')">Delete</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">No campaigns yet.</td></tr>'}</tbody></table></div></div></section>`;
+}
+function mediaLines(items){return (Array.isArray(items)?items:[]).map(m=>[m.type||'image',m.src||'',m.alt||'',m.poster||''].join('|')).join('\n')}
+function parseMediaLines(raw){
+  return String(raw||'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean).map(line=>{const p=line.split('|').map(x=>x.trim());const type=(p[0]||'image').toLowerCase();return {type:type==='video'?'video':'image',src:p[1]||'',alt:p[2]||'',poster:p[3]||''}}).filter(x=>x.src);
+}
+function advertisingForm(id){
+  const x=(cache.advertising||[]).find(a=>String(a.id)===String(id))||{};
+  const inferred=String(x.campaign_type||'').toLowerCase()||'image';
+  openModal(id?'Edit Advertising Campaign':'Create Advertising Campaign',`<form class="form" id="advertisingForm"><div class="form-grid"><div class="field"><label>Advertiser / Brand</label><input name="advertiser" value="${esc(x.advertiser_name)}" required></div><div class="field"><label>Campaign Title</label><input name="title" value="${esc(x.title)}" required></div><div class="field"><label>Format</label><select name="type"><option value="image" ${inferred==='image'?'selected':''}>Image</option><option value="slideshow" ${inferred==='slideshow'?'selected':''}>Slideshow</option><option value="video" ${inferred==='video'?'selected':''}>Video</option><option value="mixed" ${inferred==='mixed'?'selected':''}>Mixed</option></select></div><div class="field full"><label>Description</label><textarea name="description">${esc(x.description)}</textarea></div><div class="field full"><label>Upload Image / Video from this device</label><input id="advertisingMediaFiles" type="file" accept="image/*,video/*" multiple style="width:100%;background:#090909;border:1px solid #292929;color:#fff;border-radius:8px;padding:10px"><div id="advertisingUploadStatus" class="muted" style="margin-top:6px">Select one or more images/videos. Files will be uploaded to the Supabase <b>advertising-media</b> bucket and their public URLs added below.</div></div><div class="field full"><label>Media items</label><textarea name="media" rows="7" placeholder="image|https://example.com/banner.jpg|Campaign image
+image|https://example.com/slide2.jpg|Second slide
+video|https://example.com/ad.mp4|Video ad|https://example.com/poster.jpg">${esc(mediaLines(x.media))}</textarea><div class="muted">One item per line: type|media URL|alt text|poster URL (poster is optional and mainly for video). Uploaded files are added automatically.</div></div><div class="field"><label>CTA text</label><input name="cta_text" value="${esc(x.cta_text||'Learn More')}"></div><div class="field"><label>CTA URL</label><input name="cta_url" value="${esc(x.cta_url)}" placeholder="https://advertiser.example"></div><div class="field"><label>Slideshow seconds</label><input type="number" min="2.5" step="0.5" name="duration_ms" value="${esc((Number(x.slideshow_duration||6000)/1000).toString())}"></div><div class="field"><label>Priority</label><input type="number" name="priority" value="${esc(x.priority??0)}"></div><div class="field"><label>Start</label><input type="datetime-local" name="start_at" value="${esc(x.starts_at?.slice?.(0,16)||'')}"></div><div class="field"><label>End</label><input type="datetime-local" name="end_at" value="${esc(x.ends_at?.slice?.(0,16)||'')}"></div><div class="field full"><label class="check"><input type="checkbox" name="is_active" ${x.is_active!==false?'checked':''}> Active campaign</label></div></div><button class="btn btn-primary" type="submit">${id?'Save Changes':'Create Campaign'}</button></form>`);
+  const mediaInput=$('advertisingMediaFiles');
+  if(mediaInput){ mediaInput.onchange=()=>uploadAdvertisingMedia(mediaInput); }
+  $('advertisingForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const media=parseMediaLines(f.get('media'));if(!media.length){alert('Add at least one valid image or video URL.');return}const types=new Set(media.map(m=>m.type));let type=f.get('type');if(type==='slideshow'&&media.length<2){alert('A slideshow needs at least two media items.');return}if(type==='image'&&media.some(m=>m.type!=='image')){alert('Image format can only contain image items.');return}if(type==='video'&&media.some(m=>m.type!=='video')){alert('Video format can only contain video items.');return}if(type==='mixed'&&types.size<2){type=media[0].type==='video'?'video':'image'}const row={advertiser_name:f.get('advertiser'),campaign_title:f.get('title'),description:f.get('description')||null,campaign_type:type,media,cta_text:f.get('cta_text')||'Learn More',cta_url:f.get('cta_url')||null,slideshow_duration:Math.max(2500,Math.round(Number(f.get('duration_ms')||6)*1000)),priority:Number(f.get('priority')||0),starts_at:f.get('start_at')?new Date(f.get('start_at')).toISOString():null,ends_at:f.get('end_at')?new Date(f.get('end_at')).toISOString():null,is_active:f.has('is_active')};const r=id?await sb.from('advertising_campaigns').update(row).eq('id',id):await sb.from('advertising_campaigns').insert(row);if(r.error){alert(r.error.message);return}await writeAudit(id?'update_advertising_campaign':'create_advertising_campaign','advertising_campaigns',id||'new',{title:row.campaign_title,advertiser:row.advertiser_name,type:row.campaign_type});closeModal();renderPage('advertising',true)}}
+
+async function uploadAdvertisingMedia(input){
+  const status=$('advertisingUploadStatus');
+  const textarea=document.querySelector('#advertisingForm textarea[name="media"]');
+  const files=Array.from(input?.files||[]);
+  if(!files.length)return;
+  if(!adminUser?.id){if(status)status.textContent='Admin session required.';return;}
+  if(status)status.textContent=`Uploading ${files.length} file${files.length===1?'':'s'}…`;
+  let added=0;
+  for(const file of files){
+    try{
+      const isVideo=file.type.startsWith('video/');
+      const folder=isVideo?'video':'image';
+      const clean=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+      const path=`${folder}/${adminUser.id}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${clean}`;
+      const upload=await sb.storage.from('advertising-media').upload(path,file,{contentType:file.type||undefined,upsert:false});
+      if(upload.error)throw upload.error;
+      const pub=sb.storage.from('advertising-media').getPublicUrl(path);
+      const type=isVideo?'video':'image';
+      const line=`${type}|${pub.data.publicUrl}|${file.name.replace(/\|/g,' ')}`;
+      textarea.value=(textarea.value.trim()?textarea.value.trim()+'\n':'')+line;
+      added++;
+      if(status)status.textContent=`Uploaded ${added} of ${files.length}: ${file.name}`;
+    }catch(err){
+      console.error('Advertising media upload failed',err);
+      if(status)status.textContent=`Upload failed for ${file.name}: ${err.message||err}`;
+      alert(`Could not upload ${file.name}.\n\n${err.message||err}`);
+    }
+  }
+  input.value='';
+  if(status&&added)status.textContent=`${added} file${added===1?'':'s'} uploaded successfully. Review the Media items below, then save the campaign.`;
+}
+
+async function toggleAdvertising(id,value){const r=await sb.from('advertising_campaigns').update({is_active:value,updated_at:new Date().toISOString()}).eq('id',id);if(r.error){alert(r.error.message);return}await writeAudit(value?'activate_advertising_campaign':'disable_advertising_campaign','advertising_campaigns',id);renderPage('advertising',true)}
+async function deleteAdvertising(id){if(!confirm('Delete this advertising campaign?'))return;const r=await sb.from('advertising_campaigns').delete().eq('id',id);if(r.error){alert(r.error.message);return}await writeAudit('delete_advertising_campaign','advertising_campaigns',id);renderPage('advertising',true)}
+
+async function sourcesPage(){$('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">TRANSPARENCY</div><h1>Sources & Partners</h1><p>Reference registry for data attribution. This page intentionally distinguishes data sources from formal partners.</p></div></div><section class="panel"><div class="panel-body"><div class="grid"><div class="stat"><div class="label">Content Source</div><div class="value" style="font-size:18px">BRENZKafrica</div><div class="hint">Original media and editorial content</div></div><div class="stat"><div class="label">Entertainment</div><div class="value" style="font-size:18px">Netflix Top 10</div><div class="hint">Trending-series source</div></div><div class="stat"><div class="label">Video Platform</div><div class="value" style="font-size:18px">YouTube</div><div class="hint">Originals/video platform</div></div><div class="stat"><div class="label">Market Data</div><div class="value" style="font-size:18px">Configured providers</div><div class="hint">Provider attribution should follow each live feed</div></div></div>${notice('Do not label a third-party source as an official BRENZKafrica partner unless a formal relationship exists.','success')}</div></section>`}
+
+init();
+</script>
+
+<script>
+function v3NewsletterComposer(){
+  openModal("Write Newsletter Email",`<form class="form" id="v3NewsletterForm">
+    <div class="form-grid">
+      <div class="field full"><label>Subject</label><input name="subject" required placeholder="Newsletter subject"></div>
+      <div class="field"><label>Audience</label><select name="audience"><option value="subscribed">Active Subscribers</option><option value="all">All Subscriber Records</option></select></div>
+      <div class="field"><label>Reply-To</label><input name="reply_to" type="email" placeholder="Optional"></div>
+      <div class="field full"><label>Message</label><textarea name="body" rows="12" required placeholder="Write your newsletter message…"></textarea></div>
+      <div class="field full"><label>HTML Version (optional)</label><textarea name="html" rows="8" placeholder="Optional HTML email version"></textarea></div>
+    </div>
+    <div id="v3NewsletterStatus" class="notice hidden"></div>
+    <button class="btn btn-primary">Send Newsletter</button>
+  </form>`);
+  $("v3NewsletterForm").onsubmit=async e=>{
+    e.preventDefault();
+    const f=new FormData(e.target),s=$("v3NewsletterStatus");
+    s.className="notice";s.textContent="Sending…";
+    try{
+      const r=await fetch("/api/newsletter-send",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({
+        subject:String(f.get("subject")||""),body:String(f.get("body")||""),html:String(f.get("html")||""),
+        audience:String(f.get("audience")||"subscribed"),reply_to:String(f.get("reply_to")||"")||null
+      })});
+      const d=await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(d.error||("Send failed ("+r.status+")"));
+      s.className="notice success";s.textContent="Newsletter sent successfully."+((d.sent_count)?" "+d.sent_count+" recipients notified.":"");
+      if(typeof writeAudit==="function") await writeAudit("send_newsletter","newsletter_subscribers","broadcast",{subject:f.get("subject"),audience:f.get("audience")});
+    }catch(err){s.className="notice error";s.textContent=err.message||String(err)}
+  };
+}
+</script>
+
+
+<script>
+(function(){
+  const oldRenderPage=window.renderPage;
+  if(typeof oldRenderPage!=="function") return;
+  window.renderPage=async function(page,force){
+    const result=await oldRenderPage(page,force);
+    if(page==="newsletter"){
+      const head=document.querySelector(".page-head .actions");
+      if(head && !document.getElementById("v3NewsletterButton")){
+        const b=document.createElement("button");
+        b.id="v3NewsletterButton";b.className="btn btn-primary";b.textContent="+ Write Newsletter";
+        b.onclick=v3NewsletterComposer;head.appendChild(b);
+      }
+    }
+    return result;
+  };
+})();
+</script>
+
+
+<script>
+/* =========================================================
+   BRENZKafrica Plus Admin Console — Complete Media + Newsletter Fix
+   Preserves the existing dashboard and adds functional upload workflows.
+   ========================================================= */
+(function(){
+  const BUCKET='advertising-media';
+  const MAX_IMAGE=8*1024*1024;
+  const MAX_VIDEO=100*1024*1024;
+  const MAX_NEWSLETTER_ROWS=5000;
+
+  function uploadUI(label,accept,idPrefix){
+    return `<div class="field full"><label>${label}</label>
+      <div class="upload-box">
+        <input id="${idPrefix}File" type="file" accept="${accept}">
+        <div id="${idPrefix}Status" class="upload-status">Choose a file from this phone or computer. A public Supabase Storage URL will be inserted automatically.</div>
+        <div id="${idPrefix}Preview" class="media-preview"></div>
+      </div>
+    </div>`;
+  }
+  async function uploadAdminMedia(file,folder,maxBytes,statusEl,previewEl){
+    if(!file) return null;
+    if(file.size>maxBytes) throw new Error(`File is too large. Maximum allowed is ${Math.round(maxBytes/1024/1024)} MB.`);
+    if(!window.sb) throw new Error('Supabase is not initialized.');
+    if(!window.adminUser?.id) throw new Error('Admin session required.');
+    if(statusEl) statusEl.textContent=`Uploading ${file.name}…`;
+    const clean=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+    const path=`${folder}/${adminUser.id}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${clean}`;
+    const up=await sb.storage.from(BUCKET).upload(path,file,{contentType:file.type||undefined,upsert:false});
+    if(up.error) throw up.error;
+    const pub=sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+    if(previewEl){
+      previewEl.innerHTML=file.type.startsWith('video/')
+        ? `<video controls playsinline src="${esc(pub)}"></video>`
+        : `<img src="${esc(pub)}" alt="Uploaded media preview">`;
+    }
+    if(statusEl) statusEl.textContent='Upload complete.';
+    return pub;
+  }
+  function bindFileUpload(inputId,statusId,previewId,folder,maxBytes,targetInputId){
+    const input=$(inputId), status=$(statusId), preview=$(previewId), target=$(targetInputId);
+    if(!input) return;
+    input.onchange=async()=>{
+      const file=input.files?.[0]; if(!file)return;
+      try{
+        const url=await uploadAdminMedia(file,folder,maxBytes,status,preview);
+        if(target) target.value=url;
+        input.value='';
+      }catch(e){status.className='upload-status';status.textContent=`Upload failed: ${e.message||e}`;alert(e.message||e)}
+    };
+  }
+
+  window.livePage=async function(){
+    const data=await q('live_events','id,title,description,thumbnail,status,start_time,end_time,is_featured,stream_url','start_time',false);
+    cache.live=data;
+    $('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">BROADCASTING</div><h1>Live Events</h1><p>Schedule and manage live broadcasts with image or video media uploaded directly from your device.</p></div><button class="btn btn-primary" onclick="liveForm()">+ Add Event</button></div>
+    <section class="panel"><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Title</th><th>Status</th><th>Start</th><th>Featured</th><th>Thumbnail</th><th>Actions</th></tr></thead><tbody>${data.map(x=>`<tr><td><b>${esc(x.title)}</b></td><td>${esc(x.status)}</td><td>${esc(date(x.start_time))}</td><td>${x.is_featured?'Yes':'No'}</td><td>${x.thumbnail?'<span class="badge badge-green">Media</span>':'—'}</td><td><button class="btn btn-small" onclick="liveForm('${esc(x.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">No live events.</td></tr>'}</tbody></table></div></div></section>`;
+  };
+
+  window.liveForm=function(id){
+    const x=(cache.live||[]).find(a=>String(a.id)===String(id))||{};
+    openModal(id?'Edit Live Event':'Add Live Event',`<form class="form" id="liveForm"><div class="form-grid">
+      <div class="field full"><label>Title</label><input name="title" value="${esc(x.title)}" required></div>
+      <div class="field full"><label>Description</label><textarea name="description">${esc(x.description)}</textarea></div>
+      <div class="field"><label>Status</label><select name="status"><option value="upcoming" ${x.status==='upcoming'?'selected':''}>Upcoming</option><option value="live" ${x.status==='live'?'selected':''}>Live</option><option value="ended" ${x.status==='ended'?'selected':''}>Ended</option></select></div>
+      <div class="field"><label>Start Time</label><input type="datetime-local" name="start_time" value="${esc(x.start_time?.slice?.(0,16)||'')}"></div>
+      <div class="field"><label>End Time</label><input type="datetime-local" name="end_time" value="${esc(x.end_time?.slice?.(0,16)||'')}"></div>
+      <div class="field full"><label>Thumbnail URL (manual fallback)</label><input id="liveThumbnailUrl" name="thumbnail" value="${esc(x.thumbnail)}" placeholder="https://..."></div>
+      ${uploadUI('Upload Thumbnail Image','image/*','liveThumb')}
+      <div class="field full"><label>Stream URL (manual fallback)</label><input id="liveStreamUrl" name="stream_url" value="${esc(x.stream_url)}" placeholder="https://..."></div>
+      ${uploadUI('Upload Live Video','video/*','liveVideo')}
+      <div class="field"><label class="check"><input type="checkbox" name="is_featured" ${x.is_featured?'checked':''}> Featured</label></div>
+      </div><button class="btn btn-primary">${id?'Save Changes':'Create Event'}</button></form>`);
+    bindFileUpload('liveThumbFile','liveThumbStatus','liveThumbPreview','live/images',MAX_IMAGE,'liveThumbnailUrl');
+    bindFileUpload('liveVideoFile','liveVideoStatus','liveVideoPreview','live/videos',MAX_VIDEO,'liveStreamUrl');
+    $('liveForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const row={title:f.get('title'),description:f.get('description'),status:f.get('status'),start_time:f.get('start_time')?new Date(f.get('start_time')).toISOString():null,end_time:f.get('end_time')?new Date(f.get('end_time')).toISOString():null,thumbnail:f.get('thumbnail')||null,stream_url:f.get('stream_url')||null,is_featured:f.has('is_featured')};const r=id?await sb.from('live_events').update(row).eq('id',id):await sb.from('live_events').insert(row);if(r.error){alert(r.error.message);return}await writeAudit(id?'update_live_event':'create_live_event','live_events',id||'new',{title:row.title,thumbnail:!!row.thumbnail,video:!!row.stream_url});closeModal();renderPage('live',true)};
+  };
+
+  window.seriesPage=async function(){
+    let series=[],episodes=[];try{series=await q('series','*','created_at',false)}catch(e){console.warn(e)}try{episodes=await q('episodes','*','created_at',false)}catch(e){console.warn(e)}
+    cache.series=series;cache.episodes=episodes;
+    $('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">EPISODIC CONTENT</div><h1>Series & Episodes</h1><p>Manage series and upload episode videos and thumbnails directly from your phone or computer.</p></div><div class="actions"><button class="btn btn-primary" onclick="episodeForm()">+ Add Episode</button></div></div>
+    <div class="grid"><section class="panel"><div class="panel-head"><h2>Series</h2><span>${series.length} records</span></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Title</th><th>Description</th></tr></thead><tbody>${series.map(x=>`<tr><td>${esc(x.id)}</td><td><b>${esc(x.title||x.name||'Untitled')}</b></td><td class="muted">${esc((x.description||'').slice(0,100))}</td></tr>`).join('')||'<tr><td colspan="3" class="empty">No series records.</td></tr>'}</tbody></table></div></div></section>
+    <section class="panel"><div class="panel-head"><h2>Episodes</h2><span>${episodes.length} records</span></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>ID</th><th>Episode</th><th>Title</th><th>Media</th><th>Premium</th><th>Published</th><th>Actions</th></tr></thead><tbody>${episodes.map(x=>`<tr><td>${esc(x.id)}</td><td>S${esc(x.season_id||'—')} · E${esc(x.episode_number||'—')}</td><td><b>${esc(x.title||'Untitled')}</b></td><td>${x.video_url?'<span class="badge badge-green">Video</span>':''} ${x.thumbnail_url?'<span class="badge badge-gold">Image</span>':''}</td><td>${x.is_premium?'<span class="badge badge-gold">Premium</span>':'Free'}</td><td>${esc(x.published_at||'—')}</td><td><button class="btn btn-small" onclick="episodeForm('${esc(x.id)}')">Edit</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">No episode records.</td></tr>'}</tbody></table></div></div></section></div>`;
+  };
+
+  window.episodeForm=function(id){
+    const x=(cache.episodes||[]).find(a=>String(a.id)===String(id))||{};
+    const seriesOptions=(cache.series||[]).map(s=>`<option value="${esc(s.id)}" ${String(x.series_id||'1')===String(s.id)?'selected':''}>${esc(s.title||s.name||('Series '+s.id))}</option>`).join('');
+    openModal(id?'Edit Episode':'Add Episode',`<form class="form" id="episodeForm"><div class="form-grid">
+      <div class="field"><label>Series</label><select name="series_id">${seriesOptions||'<option value="1">Series 1</option>'}</select></div>
+      <div class="field"><label>Season ID</label><input name="season_id" value="${esc(x.season_id||'1')}" required></div>
+      <div class="field"><label>Episode Number</label><input type="number" min="1" name="episode_number" value="${esc(x.episode_number)}" required></div>
+      <div class="field"><label>Duration (seconds)</label><input type="number" min="0" name="duration_seconds" value="${esc(x.duration_seconds)}"></div>
+      <div class="field full"><label>Episode Title</label><input name="title" value="${esc(x.title)}" required></div>
+      <div class="field full"><label>Description</label><textarea name="description">${esc(x.description)}</textarea></div>
+      <div class="field full"><label>Thumbnail URL (manual fallback)</label><input id="episodeThumbnailUrl" name="thumbnail_url" value="${esc(x.thumbnail_url)}" placeholder="https://..."></div>
+      ${uploadUI('Upload Episode Thumbnail / Image','image/*','episodeThumb')}
+      <div class="field full"><label>Video URL (manual fallback)</label><input id="episodeVideoUrl" name="video_url" value="${esc(x.video_url)}" placeholder="https://..."></div>
+      ${uploadUI('Upload Episode Video','video/*','episodeVideo')}
+      <div class="field"><label>Published At</label><input type="datetime-local" name="published_at" value="${esc(x.published_at?.slice?.(0,16)||'')}"></div>
+      <div class="field"><label class="check"><input type="checkbox" name="is_premium" ${x.is_premium?'checked':''}> Premium episode</label></div>
+      </div><button class="btn btn-primary">${id?'Save Changes':'Create Episode'}</button></form>`);
+    bindFileUpload('episodeThumbFile','episodeThumbStatus','episodeThumbPreview','episodes/images',MAX_IMAGE,'episodeThumbnailUrl');
+    bindFileUpload('episodeVideoFile','episodeVideoStatus','episodeVideoPreview','episodes/video',MAX_VIDEO,'episodeVideoUrl');
+    $('episodeForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target);const row={series_id:f.get('series_id')||null,season_id:f.get('season_id')||null,episode_number:Number(f.get('episode_number')||0),title:f.get('title'),description:f.get('description')||null,thumbnail_url:f.get('thumbnail_url')||null,video_url:f.get('video_url')||null,duration_seconds:f.get('duration_seconds')?Number(f.get('duration_seconds')):null,is_premium:f.has('is_premium'),published_at:f.get('published_at')?new Date(f.get('published_at')).toISOString():null};const r=id?await sb.from('episodes').update(row).eq('id',id):await sb.from('episodes').insert(row);if(r.error){alert(r.error.message);return}await writeAudit(id?'update_episode':'create_episode','episodes',id||'new',{title:row.title,video:!!row.video_url,thumbnail:!!row.thumbnail_url});closeModal();renderPage('series',true)};
+  };
+
+  window.newsletterPage=async function(){
+    const r=await q('newsletter_subscribers','*','created_at',false);const data=r||[];cache.newsletter=data;
+    $('main').innerHTML=`<div class="page-head"><div><div class="eyebrow">AUDIENCE</div><h1>Newsletter</h1><p>Review, search and manage newsletter subscribers, then compose a broadcast email.</p></div><div class="actions"><button class="btn btn-primary" onclick="v3NewsletterComposer()">+ Write Newsletter</button></div></div>
+    <div class="toolbar"><input class="search" id="newsletterSearch" placeholder="Search email or status…"><select class="select" id="newsletterStatusFilter"><option value="all">All statuses</option><option value="subscribed">Subscribed</option><option value="unsubscribed">Unsubscribed</option><option value="inactive">Inactive</option></select></div>
+    <section class="panel"><div class="panel-head"><h2>Subscribers</h2><span id="newsletterCount">${data.length} records</span></div><div class="panel-body"><div class="table-wrap"><table class="table"><thead><tr><th>Email</th><th>Status</th><th>Created</th><th>Updated</th></tr></thead><tbody id="newsletterRows"></tbody></table></div></div></section>`;
+    function render(){const qv=($('newsletterSearch')?.value||'').toLowerCase();const st=$('newsletterStatusFilter')?.value||'all';const rows=data.filter(x=>(String(x.email||'').toLowerCase().includes(qv)||String(x.status||'').toLowerCase().includes(qv))&&(st==='all'||String(x.status||'subscribed').toLowerCase()===st));$('newsletterCount').textContent=`${rows.length} of ${data.length} records`;$('newsletterRows').innerHTML=rows.map(x=>`<tr><td><b>${esc(x.email||'')}</b></td><td><span class="badge ${String(x.status||'subscribed')==='subscribed'?'badge-green':'badge-red'}">${esc(x.status||'subscribed')}</span></td><td>${esc(date(x.created_at))}</td><td>${esc(date(x.updated_at)||'—')}</td></tr>`).join('')||'<tr><td colspan="4" class="empty">No subscribers match the filter.</td></tr>'};
+    $('newsletterSearch').oninput=render;$('newsletterStatusFilter').onchange=render;render();
+  };
+
+  window.v3NewsletterComposer=function(){
+    openModal('Write Newsletter Email',`<form class="form" id="v3NewsletterForm"><div class="form-grid">
+      <div class="field full"><label>Subject</label><input name="subject" required placeholder="Newsletter subject"></div>
+      <div class="field"><label>Audience</label><select name="audience"><option value="subscribed">Active Subscribers</option><option value="all">All Subscriber Records</option></select></div>
+      <div class="field"><label>Reply-To</label><input name="reply_to" type="email" placeholder="Optional reply address"></div>
+      <div class="field full"><label>Message</label><textarea name="body" rows="12" required placeholder="Write your newsletter message…"></textarea></div>
+      <div class="field full"><label>HTML Version (optional)</label><textarea name="html" rows="8" placeholder="Optional HTML email version"></textarea></div>
+      </div><div id="v3NewsletterStatus" class="notice hidden"></div><button class="btn btn-primary">Send Newsletter</button></form>`);
+    $('v3NewsletterForm').onsubmit=async e=>{e.preventDefault();const f=new FormData(e.target),s=$('v3NewsletterStatus');s.className='notice';s.textContent='Sending…';try{const r=await fetch('/api/newsletter-send',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({subject:String(f.get('subject')||''),body:String(f.get('body')||''),html:String(f.get('html')||''),audience:String(f.get('audience')||'subscribed'),reply_to:String(f.get('reply_to')||'')||null})});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||`Send failed (${r.status})`);s.className='notice success';s.textContent=`Newsletter sent successfully${d.sent_count?` to ${d.sent_count} recipients`:''}.`;if(typeof writeAudit==='function')await writeAudit('send_newsletter','newsletter_subscribers','broadcast',{subject:f.get('subject'),audience:f.get('audience')});}catch(err){s.className='notice error';s.textContent=err.message||String(err)}};
+  };
+
+  // Make the dashboard router call the enhanced page implementations.
+  const baseRender=window.renderPage;
+  if(typeof baseRender==='function'){
+    window.renderPage=async function(page,force=false){
+      currentPage=page;const m=$('main');m.innerHTML='<div class="empty">Loading admin console…</div>';
+      try{
+        if(page==='live')return await window.livePage(force);
+        if(page==='series')return await window.seriesPage(force);
+        if(page==='newsletter')return await window.newsletterPage(force);
+        return await baseRender(page,force);
+      }catch(e){m.innerHTML=notice(e.message||String(e),'error')}
+    };
+  }
+})();
+</script>
+</body>
+</html>
