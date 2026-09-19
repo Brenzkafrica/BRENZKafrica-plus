@@ -95,8 +95,10 @@ async function v3Upload(file,folder,maxBytes,status,preview){
 const SUPABASE_URL='https://fcddfmfpzbilagphpsxs.supabase.co';
 const SUPABASE_ANON_KEY=window.BRENZKAFRICA_SUPABASE_ANON_KEY||'sb_publishable_DvCK1wkFnYc1-yu7mlp9zA_wHtQ8Q5u';
 /* Set the anon key above or inject window.BRENZKAFRICA_SUPABASE_ANON_KEY before this script. Never put a service-role key here. */
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+window.sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+const sb=window.sb;
 let adminUser=null,currentPage='overview',cache={};
+window.adminUser=null;
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
 const money=(minor,currency='USD')=>{try{return new Intl.NumberFormat(undefined,{style:'currency',currency}).format(Number(minor||0)/100)}catch{return `${currency} ${(Number(minor||0)/100).toFixed(2)}`}};
@@ -108,7 +110,7 @@ function closeModal(){$('modal').classList.add('hidden')}
 $('modalClose').onclick=closeModal;$('modal').onclick=e=>{if(e.target===$('modal'))closeModal()};
 
 async function getSession(){const {data}=await sb.auth.getSession();return data.session}
-async function ensureAdmin(){const session=await getSession();if(!session)return false;const {data,error}=await sb.from('profiles').select('id,display_name,role').eq('id',session.user.id).single();if(error||!data||data.role!=='admin'){await sb.auth.signOut();showLoginMessage('This account does not have administrator access.');return false}adminUser={...session.user,profile:data};return true}
+async function ensureAdmin(){const session=await getSession();if(!session)return false;const {data,error}=await sb.from('profiles').select('id,display_name,role').eq('id',session.user.id).single();if(error||!data||data.role!=='admin'){await sb.auth.signOut();showLoginMessage('This account does not have administrator access.');return false}adminUser={...session.user,profile:data};window.adminUser=adminUser;return true}
 async function init(){if(!SUPABASE_ANON_KEY){showLoginMessage('Supabase anon key is not configured in this admin file.');return}if(await ensureAdmin())showApp();}
 function showApp(){ $('loginView').classList.add('hidden');$('appView').classList.remove('hidden');$('adminEmail').textContent=adminUser.email||'';renderPage('overview') }
 $('loginForm').onsubmit=async e=>{e.preventDefault();showLoginMessage('Signing in…','');const {error}=await sb.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error){showLoginMessage(error.message);return}if(await ensureAdmin()){showApp()}else if($('loginMessage').textContent===''){showLoginMessage('Administrator access required.')}};
