@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://brenz-kafrica-plus.vercel.app/sitemap.xml
