@@ -3,9 +3,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>BRENZKafrica Plus</title>
-<meta name="description" content="BRENZKafrica Plus — African stories, series, documentaries, sports, entertainment, music, news and creative vision.">
+<title>BRENZKafrica Plus | African Streaming, News, Business, Sports & Originals</title>
+<meta name="description" content="BRENZKafrica Plus is a digital media and streaming platform for African originals, films, episodes, documentaries, sports, entertainment, breaking news, business and global stories.">
+<meta name="keywords" content="BRENZKafrica Plus, African streaming, African entertainment, African news, African business, African sports, African originals, documentaries, films, episodes, digital media Africa">
+<meta name="author" content="BRENZKafrica">
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+<meta name="googlebot" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
 <meta name="theme-color" content="#080808">
+<link rel="canonical" href="https://brenz-kafrica-plus.vercel.app/">
+<link rel="alternate" hreflang="en" href="https://brenz-kafrica-plus.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BRENZKafrica Plus">
+<meta property="og:title" content="BRENZKafrica Plus | African Stories. Global Reach.">
+<meta property="og:description" content="Stream African originals, episodes, documentaries, sports and entertainment, while following breaking news, business and global stories.">
+<meta property="og:url" content="https://brenz-kafrica-plus.vercel.app/">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BRENZKafrica Plus | African Streaming & Media">
+<meta name="twitter:description" content="African originals, streaming, news, business, sports, entertainment and documentaries on one digital platform.">
+<link rel="preconnect" href="https://fcddfmfpzbilagphpsxs.supabase.co" crossorigin>
+<link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+<link rel="dns-prefetch" href="//unpkg.com">
+<link rel="dns-prefetch" href="//news.google.com">
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"WebSite",
+  "name":"BRENZKafrica Plus",
+  "url":"https://brenz-kafrica-plus.vercel.app/",
+  "description":"Digital media and streaming platform for African originals, entertainment, sports, documentaries, news and business.",
+  "publisher":{"@type":"Organization","name":"BRENZKafrica"},
+  "inLanguage":"en"
+}</script>
+<script type="application/ld+json">{
+  "@context":"https://schema.org",
+  "@type":"Organization",
+  "name":"BRENZKafrica",
+  "url":"https://brenz-kafrica-plus.vercel.app/",
+  "email":"brenzkafrica@gmail.com",
+  "telephone":"+256701833398",
+  "areaServed":"Worldwide"
+}</script>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -2193,6 +2230,32 @@ body.modal-open{overflow:hidden}
  .advertising-footer{padding:0 16px 15px}
 }
 
+
+/* PERFORMANCE + AFRICAN POLITICS */
+.politics-section{padding:clamp(64px,8vw,120px) 24px;background:#070707;border-top:1px solid rgba(255,255,255,.10);border-bottom:1px solid rgba(255,255,255,.08)}
+.politics-header{width:min(1500px,100%);margin:0 auto 34px;display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
+.politics-kicker{font-size:11px;letter-spacing:.18em;color:#aaa;text-transform:uppercase}
+.politics-header h2{font-size:clamp(34px,5vw,68px);letter-spacing:-.05em;line-height:1;margin:10px 0 14px}
+.politics-header p{max-width:760px;color:#999;line-height:1.65;margin:0}
+.politics-refresh{border:1px solid rgba(255,255,255,.18);background:#111;color:#fff;padding:11px 16px;border-radius:999px;cursor:pointer}
+.politics-grid{width:min(1500px,100%);margin:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.10)}
+.politics-card{background:#0a0a0a;padding:20px;min-height:210px;display:flex;flex-direction:column;gap:12px;text-decoration:none;color:#fff;transition:transform .35s ease,background .35s ease}
+.politics-card:hover{background:#101010;transform:translateY(-4px)}
+.politics-source{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#888}
+.politics-card h3{font-size:20px;line-height:1.15;margin:0;letter-spacing:-.025em}
+.politics-card p{color:#929292;font-size:13px;line-height:1.55;margin:0}
+.politics-date{margin-top:auto;color:#666;font-size:11px;text-transform:uppercase}
+.politics-loading,.politics-error{grid-column:1/-1;padding:28px;color:#888;background:#0a0a0a}
+
+/* Fast path: expensive visual layers wait until the browser is idle. */
+.bk3d-grid,.bk3d-grid2{contain:paint}
+.bk3d-orb,.bk3d-orbit{will-change:transform;contain:layout paint}
+.content-card,.movie-card,.video-card,.episode-card,.news-card,.sports-card,.article-card,.business-story-card,.international-story-card,.trending-series-card,.wwe-card{content-visibility:auto;contain-intrinsic-size:320px 240px}
+section{contain:layout style}
+img{content-visibility:auto}
+
+@media(max-width:1000px){.politics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.politics-section{padding-left:16px;padding-right:16px}.politics-header{align-items:flex-start;flex-direction:column}.politics-grid{grid-template-columns:1fr}.politics-card{min-height:180px}}
 </style>
 <style id="brenzk-performance-3d">
 /* BRENZKafrica Plus — PERFORMANCE 3D / CINEMATIC MODE */
@@ -2557,6 +2620,18 @@ The latest stories and developments from across Africa.
 
 </section>
 
+<section class="politics-section" id="politics">
+<div class="politics-header">
+<div>
+<div class="politics-kicker">AFRICA / POLITICS</div>
+<h2>African Politics</h2>
+<p>Current political, government, parliamentary, diplomatic and public-policy reporting from across Africa.</p>
+</div>
+<button class="politics-refresh" type="button" onclick="loadAfricanPolitics()">Refresh</button>
+</div>
+<div class="politics-grid" id="africanPoliticsFeed"><div class="politics-loading">Loading the latest African politics stories…</div></div>
+</section>
+
 <section class="international-news-section" id="internationalNews">
 <div class="international-news-header">
 <div>
@@ -2617,25 +2692,25 @@ The latest stories and developments from across Africa.
 </div>
 
 <div class="finance-content-block" id="businessNewsBlock">
-<div class="finance-block-cover" id="cover-latest"><img src="" alt="BUSINESS OF AFRICA editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">BUSINESS OF AFRICA</div><div class="cover-title">Business Of Africa</div></div><div class="cover-note">African companies, entrepreneurs and investment stories</div></div></div>
+<div class="finance-block-cover" id="cover-latest"><img src="" alt="BUSINESS OF AFRICA editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">BUSINESS OF AFRICA</div><div class="cover-title">Business Of Africa</div></div><div class="cover-note">African companies, entrepreneurs and investment stories</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">BUSINESS OF AFRICA</span><h3>Latest African Business</h3><p>Fresh business stories aggregated from current news feeds.</p></div><button onclick="loadBusinessFeed('africa')">Refresh Stories ↻</button></div>
 <div class="business-story-row" id="africaBusinessFeed"><div class="business-feed-loading">Loading African business stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="marketsBusinessBlock">
-<div class="finance-block-cover" id="cover-markets"><img src="" alt="AFRICA MARKETS & COMPANIES editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA MARKETS & COMPANIES</div><div class="cover-title">Africa Markets & Companies</div></div><div class="cover-note">Markets, capital, companies and investment</div></div></div>
+<div class="finance-block-cover" id="cover-markets"><img src="" alt="AFRICA MARKETS & COMPANIES editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA MARKETS & COMPANIES</div><div class="cover-title">Africa Markets & Companies</div></div><div class="cover-note">Markets, capital, companies and investment</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">MARKETS</span><h3>Africa Markets & Companies</h3><p>Current market, corporate and investment headlines.</p></div><button onclick="loadBusinessFeed('markets')">Refresh ↻</button></div>
 <div class="business-story-row" id="marketsBusinessFeed"><div class="business-feed-loading">Loading market stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="fintechBusinessBlock">
-<div class="finance-block-cover" id="cover-fintech"><img src="" alt="AFRICA’S DIGITAL FINANCE editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA’S DIGITAL FINANCE</div><div class="cover-title">Africa’S Digital Finance</div></div><div class="cover-note">Mobile money, payments and financial technology</div></div></div>
+<div class="finance-block-cover" id="cover-fintech"><img src="" alt="AFRICA’S DIGITAL FINANCE editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA’S DIGITAL FINANCE</div><div class="cover-title">Africa’S Digital Finance</div></div><div class="cover-note">Mobile money, payments and financial technology</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">FINTECH</span><h3>Africa's Digital Finance</h3><p>Mobile money, digital banking, payments, startups and financial technology.</p></div><button onclick="loadBusinessFeed('fintech')">Refresh ↻</button></div>
 <div class="business-story-row" id="fintechBusinessFeed"><div class="business-feed-loading">Loading fintech stories…</div></div>
 </div>
 
 <div class="finance-content-block" id="economyBusinessBlock">
-<div class="finance-block-cover" id="cover-economy"><img src="" alt="AFRICAN ECONOMY editorial cover" loading="lazy" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICAN ECONOMY</div><div class="cover-title">African Economy</div></div><div class="cover-note">Growth, infrastructure, trade and economic outlook</div></div></div>
+<div class="finance-block-cover" id="cover-economy"><img src="" alt="AFRICAN ECONOMY editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICAN ECONOMY</div><div class="cover-title">African Economy</div></div><div class="cover-note">Growth, infrastructure, trade and economic outlook</div></div></div>
 <div class="finance-block-header"><div><span class="section-kicker">ECONOMY</span><h3>African Economy</h3><p>Growth, inflation, trade, investment, policy and economic outlook.</p></div><button onclick="loadBusinessFeed('economy')">Refresh ↻</button></div>
 <div class="business-story-row" id="economyBusinessFeed"><div class="business-feed-loading">Loading economy stories…</div></div>
 </div>
@@ -3697,7 +3772,7 @@ const thumb=item.thumbnail||"";
 const saved=watchlistIsSaved(key);
 return `
 <article class="card universal-watchlist-video" data-content-id="${escapeHTML(key)}" onclick="playVideo('${escapeHTML(title).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.description||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">
-<img src="${escapeHTML(thumb)}" alt="${escapeHTML(title)}" loading="lazy">
+<img src="${escapeHTML(thumb)}" alt="${escapeHTML(title)}" loading="lazy" decoding="async">
 <button class="watchlist-button ${saved?"saved":""}" data-content-id="${escapeHTML(key)}" data-watchlist-source="local" onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(key)}',this,${escapeHTML(JSON.stringify(item))})" aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"":"＋"}</button>
 <div class="card-overlay">
 <div class="card-title">${escapeHTML(title)}</div>
@@ -7553,8 +7628,8 @@ setInterval(async function(){
 })();
 </script>
 
-<script src="./share.js"></script>
-<script src="/notifications.js"></script>
+<script src="./share.js" defer></script>
+<script src="/notifications.js" defer></script>
 
 
 <script>
@@ -8248,7 +8323,45 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-\n<script id="brenz-real-experience-runtime">\n(function(){\n  'use strict';\n  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;\n  var wipe=document.createElement('div');\n  wipe.className='rx-page-wipe';\n  document.body.appendChild(wipe);\n\n  var sectionSelector='main section, .newsletter, .rx-contact';\n  var sections=[].slice.call(document.querySelectorAll(sectionSelector));\n  sections.forEach(function(el){el.classList.add('rx-scene-enter')});\n\n  if(!reduced && 'IntersectionObserver' in window){\n    var io=new IntersectionObserver(function(entries){\n      entries.forEach(function(entry){\n        if(entry.isIntersecting){\n          entry.target.classList.add('rx-scene-visible');\n          io.unobserve(entry.target);\n        }\n      });\n    },{threshold:.08,rootMargin:'0px 0px -8% 0px'});\n    sections.forEach(function(el){io.observe(el)});\n  }else{sections.forEach(function(el){el.classList.add('rx-scene-visible')})}\n\n  /* Section-specific editorial transition behavior. */\n  var editorialMap={\n    news:'news',\n    businessFinanceSection:'business',\n    sports:'sports',\n    entertainment:'entertainment',\n    documentaries:'documentary',\n    trendingSeries:'series',\n    originals:'originals',\n    live:'live'\n  };\n  Object.keys(editorialMap).forEach(function(id){\n    var el=document.getElementById(id);\n    if(el) el.setAttribute('data-editorial-scene',editorialMap[id]);\n  });\n\n  /* Page navigation: use a spatial wipe only for true same-origin pages. */\n  document.addEventListener('click',function(e){\n    var a=e.target.closest&&e.target.closest('a[href]');\n    if(!a || reduced || a.target==='_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;\n    var href=a.getAttribute('href')||'';\n    if(!href || href.charAt(0)==='#' || href.indexOf('javascript:')===0 || href.indexOf('mailto:')===0 || href.indexOf('tel:')===0) return;\n    try{\n      var u=new URL(href,location.href);\n      if(u.origin!==location.origin) return;\n      e.preventDefault();\n      wipe.classList.add('active');\n      setTimeout(function(){location.href=u.href},350);\n    }catch(_){}\n  },true);\n})();\n</script>\n
+\n<script id="brenzk-politics-performance">
+(function(){
+  'use strict';
+  const politicsCache=[];
+  const feeds=[
+    'https://news.google.com/rss/search?q=Africa+(politics+OR+government+OR+elections+OR+parliament+OR+diplomacy)&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=African+(president+OR+minister+OR+parliament+OR+election+OR+policy)&hl=en-US&gl=US&ceid=US:en'
+  ];
+  window.loadAfricanPolitics=async function(){
+    const target=document.getElementById('africanPoliticsFeed'); if(!target)return;
+    target.innerHTML='<div class="politics-loading">Loading the latest African politics stories…</div>';
+    let items=[];
+    for(const url of feeds){
+      try{
+        const r=await brenzSafeFetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(url)+'&count=10',{timeout:7000,cache:'no-store'});
+        if(!r.ok)continue; const d=await r.json();
+        if(Array.isArray(d.items))items.push(...d.items);
+        if(items.length>=8)break;
+      }catch(e){console.warn('Politics feed failed',e)}
+    }
+    const seen=new Set();
+    items=items.filter(x=>{const k=(x.title||'')+'|'+(x.link||'');if(!x.title||!x.link||seen.has(k))return false;seen.add(k);return true}).slice(0,8);
+    politicsCache.splice(0,politicsCache.length,...items);
+    if(!items.length){target.innerHTML='<div class="politics-error">Politics feeds are updating. Tap Refresh to try again.</div>';return}
+    target.innerHTML=items.map((x,i)=>'<a class="politics-card" href="'+escapeHTML(x.link)+'" target="_blank" rel="noopener noreferrer"><div class="politics-source">'+escapeHTML(x.author||x.source||'African politics')+'</div><h3>'+escapeHTML(x.title)+'</h3><p>'+escapeHTML(String(x.description||'').replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim().slice(0,180))+'</p><div class="politics-date">'+escapeHTML(x.pubDate||'Latest')+'</div></a>').join('');
+  };
+
+  // Defer below-the-fold expensive work until the browser is idle.
+  const idle=window.requestIdleCallback||function(cb){return setTimeout(cb,900)};
+  idle(function(){
+    if(window.loadAfricanPolitics)window.loadAfricanPolitics();
+  });
+
+  // Keep animations off for users/devices that explicitly request reduced motion.
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.classList.add('reduce-motion')}
+})();
+</script>
+
+<script id="brenz-real-experience-runtime">\n(function(){\n  'use strict';\n  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;\n  var wipe=document.createElement('div');\n  wipe.className='rx-page-wipe';\n  document.body.appendChild(wipe);\n\n  var sectionSelector='main section, .newsletter, .rx-contact';\n  var sections=[].slice.call(document.querySelectorAll(sectionSelector));\n  sections.forEach(function(el){el.classList.add('rx-scene-enter')});\n\n  if(!reduced && 'IntersectionObserver' in window){\n    var io=new IntersectionObserver(function(entries){\n      entries.forEach(function(entry){\n        if(entry.isIntersecting){\n          entry.target.classList.add('rx-scene-visible');\n          io.unobserve(entry.target);\n        }\n      });\n    },{threshold:.08,rootMargin:'0px 0px -8% 0px'});\n    sections.forEach(function(el){io.observe(el)});\n  }else{sections.forEach(function(el){el.classList.add('rx-scene-visible')})}\n\n  /* Section-specific editorial transition behavior. */\n  var editorialMap={\n    news:'news',\n    businessFinanceSection:'business',\n    sports:'sports',\n    entertainment:'entertainment',\n    documentaries:'documentary',\n    trendingSeries:'series',\n    originals:'originals',\n    live:'live'\n  };\n  Object.keys(editorialMap).forEach(function(id){\n    var el=document.getElementById(id);\n    if(el) el.setAttribute('data-editorial-scene',editorialMap[id]);\n  });\n\n  /* Page navigation: use a spatial wipe only for true same-origin pages. */\n  document.addEventListener('click',function(e){\n    var a=e.target.closest&&e.target.closest('a[href]');\n    if(!a || reduced || a.target==='_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;\n    var href=a.getAttribute('href')||'';\n    if(!href || href.charAt(0)==='#' || href.indexOf('javascript:')===0 || href.indexOf('mailto:')===0 || href.indexOf('tel:')===0) return;\n    try{\n      var u=new URL(href,location.href);\n      if(u.origin!==location.origin) return;\n      e.preventDefault();\n      wipe.classList.add('active');\n      setTimeout(function(){location.href=u.href},350);\n    }catch(_){}\n  },true);\n})();\n</script>\n
 </body>
 </html>
 
