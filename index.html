@@ -2366,7 +2366,106 @@ main > section{position:relative;backface-visibility:hidden;contain:paint}
 }
 </style>
 
-\n<style id="brenz-real-experience-redesign">\n/* BRENZKafrica Plus Real Experience Redesign\n   Solid editorial surfaces. No social links. */\n:root{\n  --rx-bg:#050505;\n  --rx-surface:#0b0b0b;\n  --rx-surface-2:#111111;\n  --rx-line:rgba(255,255,255,.12);\n  --rx-muted:#969696;\n  --rx-text:#f4f4f4;\n  --rx-accent:#e50914;\n}\nhtml{scroll-behavior:auto;background:var(--rx-bg)}\nbody{background:var(--rx-bg)!important;color:var(--rx-text);overflow-x:hidden}\nbody:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-3;background:#050505}\nbody:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;border:1px solid rgba(255,255,255,.025)}\n\n/* Editorial navigation: compact, deliberate and tactile. */\n#siteHeader{backdrop-filter:blur(18px);background:rgba(5,5,5,.88)!important;border-bottom:1px solid transparent;transition:background .45s ease,border-color .45s ease,transform .45s ease}\n#siteHeader.scrolled{background:rgba(5,5,5,.97)!important;border-bottom-color:var(--rx-line)}\n.logo{letter-spacing:-.04em}\n#desktopNav a,.mobile-menu a{transition:color .25s ease,opacity .25s ease}\n#desktopNav a:hover,.mobile-menu a:hover{color:#fff;opacity:1}\n\n/* Every major section gets its own visual rhythm instead of a repeated template. */\nmain section{position:relative;isolation:isolate}\nmain section:nth-of-type(odd){--rx-section-space:clamp(72px,9vw,150px)}\nmain section:nth-of-type(even){--rx-section-space:clamp(54px,7vw,118px)}\n#news{border-left:1px solid rgba(255,255,255,.08)}\n#businessFinanceSection{border-top:1px solid rgba(255,255,255,.10);border-bottom:1px solid rgba(255,255,255,.10)}\n#sports{border-top:1px solid rgba(255,255,255,.07)}\n#entertainment{border-left:2px solid rgba(229,9,20,.75)}\n#documentaries{border-top:1px solid rgba(255,255,255,.09)}\n#trendingSeries{border-top:1px solid rgba(255,255,255,.12)}\n\n/* Hero becomes an editorial opening scene, not a generic landing block. */\n.hero{min-height:min(92vh,920px);display:flex;align-items:flex-end;padding-bottom:clamp(80px,12vh,150px);border-bottom:1px solid rgba(255,255,255,.10)}\n.hero-content{max-width:980px;position:relative;z-index:3}\n.hero h1{max-width:760px;letter-spacing:-.055em;text-wrap:balance}\n.hero-label,.hero-meta,.section-kicker,.rx-eyebrow{letter-spacing:.18em;text-transform:uppercase}\n\n/* Cards behave like media objects: measured motion, no novelty effects. */\n.content-card,.movie-card,.video-card,.episode-card,.news-card,.sports-card,.article-card,.business-story-card,.international-story-card,.trending-series-card,.wwe-card{transform-origin:center bottom;transition:transform .55s cubic-bezier(.16,1,.3,1),border-color .35s ease,box-shadow .35s ease,opacity .55s ease}\n.content-card:hover,.movie-card:hover,.video-card:hover,.episode-card:hover,.news-card:hover,.sports-card:hover,.article-card:hover,.business-story-card:hover,.international-story-card:hover,.trending-series-card:hover,.wwe-card:hover{transform:translateY(-8px) scale(1.008);border-color:rgba(255,255,255,.24);box-shadow:0 24px 70px rgba(0,0,0,.38)}\n\n/* Real contact experience. */\n.rx-contact{padding:clamp(70px,9vw,140px) 24px;background:#080808;border-top:1px solid var(--rx-line)}\n.rx-contact-inner{width:min(1500px,100%);margin:0 auto}\n.rx-contact-intro{max-width:850px;margin-bottom:48px}\n.rx-contact-intro h2{font-size:clamp(38px,5vw,78px);line-height:.98;letter-spacing:-.055em;margin:14px 0 22px}\n.rx-contact-intro p{max-width:720px;color:#b4b4b4;font-size:clamp(16px,1.5vw,20px);line-height:1.7}\n.rx-contact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rx-line);border-left:1px solid var(--rx-line)}\n.rx-contact-card{min-height:210px;padding:28px;border-right:1px solid var(--rx-line);border-bottom:1px solid var(--rx-line);display:flex;flex-direction:column;justify-content:space-between;gap:16px;color:#fff;text-decoration:none;background:#0b0b0b;transition:background .35s ease,transform .45s ease}\n.rx-contact-card:hover{background:#111;transform:translateY(-4px)}\n.rx-contact-card strong{font-size:clamp(18px,1.8vw,26px);line-height:1.15;overflow-wrap:anywhere}\n.rx-contact-card>span:last-child{color:#858585;line-height:1.5}\n.rx-contact-label{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#aaa}\n.rx-contact-location{cursor:default}\n\nfooter{background:#050505!important;border-top:1px solid var(--rx-line);padding:60px 24px 30px!important}\n.rx-footer-top{width:min(1500px,100%);margin:0 auto;display:flex;gap:50px;justify-content:space-between;align-items:flex-start}\n.rx-footer-top h3{font-size:24px;margin:0 0 8px}\n.rx-footer-top p{color:#8d8d8d;margin:0}\n.rx-footer-top .footer-links{display:flex;flex-wrap:wrap;gap:12px 22px;max-width:780px;justify-content:flex-end}\n.rx-footer-top .footer-links a{color:#aaa;text-decoration:none;transition:color .25s ease}\n.rx-footer-top .footer-links a:hover{color:#fff}\n.rx-footer-copy{width:min(1500px,100%);margin:44px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);color:#666;font-size:12px}\n\n/* Contact action is restrained rather than a floating emoji button. */\n.whatsapp-float{position:fixed;right:20px;bottom:20px;z-index:1000;background:#111;border:1px solid rgba(255,255,255,.22);color:#fff;text-decoration:none;padding:13px 16px;border-radius:999px;box-shadow:0 14px 35px rgba(0,0,0,.38);transition:transform .3s ease,background .3s ease,border-color .3s ease}\n.whatsapp-float:hover{transform:translateY(-4px);background:#171717;border-color:rgba(255,255,255,.42)}\n\n/* Scene transitions: camera-like movement without making the site feel like a game demo. */\n.rx-scene-enter{opacity:0;transform:translate3d(0,46px,0) scale(.985);filter:blur(4px)}\n.rx-scene-visible{opacity:1;transform:none;filter:none;transition:opacity .8s ease,transform .9s cubic-bezier(.16,1,.3,1),filter .8s ease}\n.rx-page-wipe{position:fixed;inset:0;z-index:9999;background:#e50914;transform:translateX(-102%);pointer-events:none}\n.rx-page-wipe.active{animation:rxWipe .75s cubic-bezier(.76,0,.24,1) forwards}\n@keyframes rxWipe{0%{transform:translateX(-102%)}45%{transform:translateX(0)}55%{transform:translateX(0)}100%{transform:translateX(102%)}}\n\n@media(max-width:1000px){\n .rx-contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}\n .rx-footer-top{flex-direction:column}\n .rx-footer-top .footer-links{justify-content:flex-start}\n}\n@media(max-width:650px){\n .hero{min-height:82vh;padding-bottom:72px}\n .rx-contact{padding-left:16px;padding-right:16px}\n .rx-contact-grid{grid-template-columns:1fr}\n .rx-contact-card{min-height:170px}\n .rx-footer-top .footer-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}\n .whatsapp-float{right:14px;bottom:14px}\n}\n@media(prefers-reduced-motion:reduce){\n html{scroll-behavior:auto}\n .rx-scene-enter,.rx-scene-visible{opacity:1;transform:none;filter:none;transition:none}\n .rx-page-wipe{display:none}\n}\n</style>\n
+
+<style id="brenz-real-experience-redesign">
+/* BRENZKafrica Plus Real Experience Redesign
+   Solid editorial surfaces. No social links. */
+:root{
+  --rx-bg:#050505;
+  --rx-surface:#0b0b0b;
+  --rx-surface-2:#111111;
+  --rx-line:rgba(255,255,255,.12);
+  --rx-muted:#969696;
+  --rx-text:#f4f4f4;
+  --rx-accent:#e50914;
+}
+html{scroll-behavior:auto;background:var(--rx-bg)}
+body{background:var(--rx-bg)!important;color:var(--rx-text);overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-3;background:#050505}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;border:1px solid rgba(255,255,255,.025)}
+
+/* Editorial navigation: compact, deliberate and tactile. */
+#siteHeader{backdrop-filter:blur(18px);background:rgba(5,5,5,.88)!important;border-bottom:1px solid transparent;transition:background .45s ease,border-color .45s ease,transform .45s ease}
+#siteHeader.scrolled{background:rgba(5,5,5,.97)!important;border-bottom-color:var(--rx-line)}
+.logo{letter-spacing:-.04em}
+#desktopNav a,.mobile-menu a{transition:color .25s ease,opacity .25s ease}
+#desktopNav a:hover,.mobile-menu a:hover{color:#fff;opacity:1}
+
+/* Every major section gets its own visual rhythm instead of a repeated template. */
+main section{position:relative;isolation:isolate}
+main section:nth-of-type(odd){--rx-section-space:clamp(72px,9vw,150px)}
+main section:nth-of-type(even){--rx-section-space:clamp(54px,7vw,118px)}
+#news{border-left:1px solid rgba(255,255,255,.08)}
+#businessFinanceSection{border-top:1px solid rgba(255,255,255,.10);border-bottom:1px solid rgba(255,255,255,.10)}
+#sports{border-top:1px solid rgba(255,255,255,.07)}
+#entertainment{border-left:2px solid rgba(229,9,20,.75)}
+#documentaries{border-top:1px solid rgba(255,255,255,.09)}
+#trendingSeries{border-top:1px solid rgba(255,255,255,.12)}
+
+/* Hero becomes an editorial opening scene, not a generic landing block. */
+.hero{min-height:min(92vh,920px);display:flex;align-items:flex-end;padding-bottom:clamp(80px,12vh,150px);border-bottom:1px solid rgba(255,255,255,.10)}
+.hero-content{max-width:980px;position:relative;z-index:3}
+.hero h1{max-width:760px;letter-spacing:-.055em;text-wrap:balance}
+.hero-label,.hero-meta,.section-kicker,.rx-eyebrow{letter-spacing:.18em;text-transform:uppercase}
+
+/* Cards behave like media objects: measured motion, no novelty effects. */
+.content-card,.movie-card,.video-card,.episode-card,.news-card,.sports-card,.article-card,.business-story-card,.international-story-card,.trending-series-card,.wwe-card{transform-origin:center bottom;transition:transform .55s cubic-bezier(.16,1,.3,1),border-color .35s ease,box-shadow .35s ease,opacity .55s ease}
+.content-card:hover,.movie-card:hover,.video-card:hover,.episode-card:hover,.news-card:hover,.sports-card:hover,.article-card:hover,.business-story-card:hover,.international-story-card:hover,.trending-series-card:hover,.wwe-card:hover{transform:translateY(-8px) scale(1.008);border-color:rgba(255,255,255,.24);box-shadow:0 24px 70px rgba(0,0,0,.38)}
+
+/* Real contact experience. */
+.rx-contact{padding:clamp(70px,9vw,140px) 24px;background:#080808;border-top:1px solid var(--rx-line)}
+.rx-contact-inner{width:min(1500px,100%);margin:0 auto}
+.rx-contact-intro{max-width:850px;margin-bottom:48px}
+.rx-contact-intro h2{font-size:clamp(38px,5vw,78px);line-height:.98;letter-spacing:-.055em;margin:14px 0 22px}
+.rx-contact-intro p{max-width:720px;color:#b4b4b4;font-size:clamp(16px,1.5vw,20px);line-height:1.7}
+.rx-contact-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--rx-line);border-left:1px solid var(--rx-line)}
+.rx-contact-card{min-height:210px;padding:28px;border-right:1px solid var(--rx-line);border-bottom:1px solid var(--rx-line);display:flex;flex-direction:column;justify-content:space-between;gap:16px;color:#fff;text-decoration:none;background:#0b0b0b;transition:background .35s ease,transform .45s ease}
+.rx-contact-card:hover{background:#111;transform:translateY(-4px)}
+.rx-contact-card strong{font-size:clamp(18px,1.8vw,26px);line-height:1.15;overflow-wrap:anywhere}
+.rx-contact-card>span:last-child{color:#858585;line-height:1.5}
+.rx-contact-label{font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:#aaa}
+.rx-contact-location{cursor:default}
+
+footer{background:#050505!important;border-top:1px solid var(--rx-line);padding:60px 24px 30px!important}
+.rx-footer-top{width:min(1500px,100%);margin:0 auto;display:flex;gap:50px;justify-content:space-between;align-items:flex-start}
+.rx-footer-top h3{font-size:24px;margin:0 0 8px}
+.rx-footer-top p{color:#8d8d8d;margin:0}
+.rx-footer-top .footer-links{display:flex;flex-wrap:wrap;gap:12px 22px;max-width:780px;justify-content:flex-end}
+.rx-footer-top .footer-links a{color:#aaa;text-decoration:none;transition:color .25s ease}
+.rx-footer-top .footer-links a:hover{color:#fff}
+.rx-footer-copy{width:min(1500px,100%);margin:44px auto 0;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);color:#666;font-size:12px}
+
+/* Contact action is restrained rather than a floating emoji button. */
+.whatsapp-float{position:fixed;right:20px;bottom:20px;z-index:1000;background:#111;border:1px solid rgba(255,255,255,.22);color:#fff;text-decoration:none;padding:13px 16px;border-radius:999px;box-shadow:0 14px 35px rgba(0,0,0,.38);transition:transform .3s ease,background .3s ease,border-color .3s ease}
+.whatsapp-float:hover{transform:translateY(-4px);background:#171717;border-color:rgba(255,255,255,.42)}
+
+/* Scene transitions: camera-like movement without making the site feel like a game demo. */
+.rx-scene-enter{opacity:0;transform:translate3d(0,46px,0) scale(.985);filter:blur(4px)}
+.rx-scene-visible{opacity:1;transform:none;filter:none;transition:opacity .8s ease,transform .9s cubic-bezier(.16,1,.3,1),filter .8s ease}
+.rx-page-wipe{position:fixed;inset:0;z-index:9999;background:#e50914;transform:translateX(-102%);pointer-events:none}
+.rx-page-wipe.active{animation:rxWipe .75s cubic-bezier(.76,0,.24,1) forwards}
+@keyframes rxWipe{0%{transform:translateX(-102%)}45%{transform:translateX(0)}55%{transform:translateX(0)}100%{transform:translateX(102%)}}
+
+@media(max-width:1000px){
+ .rx-contact-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .rx-footer-top{flex-direction:column}
+ .rx-footer-top .footer-links{justify-content:flex-start}
+}
+@media(max-width:650px){
+ .hero{min-height:82vh;padding-bottom:72px}
+ .rx-contact{padding-left:16px;padding-right:16px}
+ .rx-contact-grid{grid-template-columns:1fr}
+ .rx-contact-card{min-height:170px}
+ .rx-footer-top .footer-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
+ .whatsapp-float{right:14px;bottom:14px}
+}
+@media(prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ .rx-scene-enter,.rx-scene-visible{opacity:1;transform:none;filter:none;transition:none}
+ .rx-page-wipe{display:none}
+}
+</style>
+
 </head>
 
 <body id="top">
@@ -8127,7 +8226,8 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-\n<script id="brenzk-politics-performance">
+
+<script id="brenzk-politics-performance">
 (function(){
   'use strict';
   const politicsCache=[];
@@ -8165,7 +8265,62 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
-<script id="brenz-real-experience-runtime">\n(function(){\n  'use strict';\n  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;\n  var wipe=document.createElement('div');\n  wipe.className='rx-page-wipe';\n  document.body.appendChild(wipe);\n\n  var sectionSelector='main section, .newsletter, .rx-contact';\n  var sections=[].slice.call(document.querySelectorAll(sectionSelector));\n  sections.forEach(function(el){el.classList.add('rx-scene-enter')});\n\n  if(!reduced && 'IntersectionObserver' in window){\n    var io=new IntersectionObserver(function(entries){\n      entries.forEach(function(entry){\n        if(entry.isIntersecting){\n          entry.target.classList.add('rx-scene-visible');\n          io.unobserve(entry.target);\n        }\n      });\n    },{threshold:.08,rootMargin:'0px 0px -8% 0px'});\n    sections.forEach(function(el){io.observe(el)});\n  }else{sections.forEach(function(el){el.classList.add('rx-scene-visible')})}\n\n  /* Section-specific editorial transition behavior. */\n  var editorialMap={\n    news:'news',\n    businessFinanceSection:'business',\n    sports:'sports',\n    entertainment:'entertainment',\n    documentaries:'documentary',\n    trendingSeries:'series',\n    originals:'originals',\n    live:'live'\n  };\n  Object.keys(editorialMap).forEach(function(id){\n    var el=document.getElementById(id);\n    if(el) el.setAttribute('data-editorial-scene',editorialMap[id]);\n  });\n\n  /* Page navigation: use a spatial wipe only for true same-origin pages. */\n  document.addEventListener('click',function(e){\n    var a=e.target.closest&&e.target.closest('a[href]');\n    if(!a || reduced || a.target==='_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;\n    var href=a.getAttribute('href')||'';\n    if(!href || href.charAt(0)==='#' || href.indexOf('javascript:')===0 || href.indexOf('mailto:')===0 || href.indexOf('tel:')===0) return;\n    try{\n      var u=new URL(href,location.href);\n      if(u.origin!==location.origin) return;\n      e.preventDefault();\n      wipe.classList.add('active');\n      setTimeout(function(){location.href=u.href},350);\n    }catch(_){}\n  },true);\n})();\n</script>\n
+<script id="brenz-real-experience-runtime">
+(function(){
+  'use strict';
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var wipe=document.createElement('div');
+  wipe.className='rx-page-wipe';
+  document.body.appendChild(wipe);
+
+  var sectionSelector='main section, .newsletter, .rx-contact';
+  var sections=[].slice.call(document.querySelectorAll(sectionSelector));
+  sections.forEach(function(el){el.classList.add('rx-scene-enter')});
+
+  if(!reduced && 'IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('rx-scene-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    },{threshold:.08,rootMargin:'0px 0px -8% 0px'});
+    sections.forEach(function(el){io.observe(el)});
+  }else{sections.forEach(function(el){el.classList.add('rx-scene-visible')})}
+
+  /* Section-specific editorial transition behavior. */
+  var editorialMap={
+    news:'news',
+    businessFinanceSection:'business',
+    sports:'sports',
+    entertainment:'entertainment',
+    documentaries:'documentary',
+    trendingSeries:'series',
+    originals:'originals',
+    live:'live'
+  };
+  Object.keys(editorialMap).forEach(function(id){
+    var el=document.getElementById(id);
+    if(el) el.setAttribute('data-editorial-scene',editorialMap[id]);
+  });
+
+  /* Page navigation: use a spatial wipe only for true same-origin pages. */
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]');
+    if(!a || reduced || a.target==='_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var href=a.getAttribute('href')||'';
+    if(!href || href.charAt(0)==='#' || href.indexOf('javascript:')===0 || href.indexOf('mailto:')===0 || href.indexOf('tel:')===0) return;
+    try{
+      var u=new URL(href,location.href);
+      if(u.origin!==location.origin) return;
+      e.preventDefault();
+      wipe.classList.add('active');
+      setTimeout(function(){location.href=u.href},350);
+    }catch(_){}
+  },true);
+})();
+</script>
+
 </body>
 </html>
-
