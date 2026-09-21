@@ -228,40 +228,6 @@ overflow:hidden;
 text-overflow:ellipsis;
 white-space:nowrap
 }
-.mobile-menu-button{
-display:none;
-width:40px;
-height:40px;
-background:#171717;
-border:1px solid #333;
-color:#fff;
-border-radius:6px;
-font-size:18px
-}
-
-/* MOBILE MENU */
-.mobile-menu{
-display:none;
-position:fixed;
-top:66px;
-left:0;
-right:0;
-z-index:2900;
-background:rgba(9,9,9,.98);
-backdrop-filter:blur(18px);
-border-bottom:1px solid #222;
-padding:12px 20px 20px
-}
-.mobile-menu.active{display:block}
-.mobile-menu a{
-display:block;
-color:#bbb;
-text-decoration:none;
-padding:14px 4px;
-border-bottom:1px solid #222;
-font-size:14px;
-font-weight:700
-}
 
 /* HERO */
 .hero{
@@ -1366,21 +1332,6 @@ transform:translate(-50%,0)
 @media(max-width:850px){
 header{padding:0 20px}
 nav{display:none}
-.mobile-menu-button{display:block}
-.nav-right{margin-left:auto}
-.search{width:120px}
-.hero{min-height:650px;height:82vh;background-position:62% center}
-.hero-content{padding:100px 20px 45px}
-.section,.live-section,.breaking-news{padding-left:20px;padding-right:20px}
-}
-
-@media(max-width:600px){
-header{height:60px;padding:0 15px}
-header.scrolled{height:60px}
-.logo{font-size:19px}
-.search-wrap{display:none}
-.signin{padding:8px 11px;font-size:10px}
-.mobile-menu{top:60px}
 .hero{min-height:580px;height:78vh;background-position:63% center}
 .hero-content{padding:90px 20px 35px}
 .hero h1{font-size:48px;line-height:.94;letter-spacing:-2px}
@@ -2388,8 +2339,8 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;bord
 #siteHeader{backdrop-filter:blur(18px);background:rgba(5,5,5,.88)!important;border-bottom:1px solid transparent;transition:background .45s ease,border-color .45s ease,transform .45s ease}
 #siteHeader.scrolled{background:rgba(5,5,5,.97)!important;border-bottom-color:var(--rx-line)}
 .logo{letter-spacing:-.04em}
-#desktopNav a,.mobile-menu a{transition:color .25s ease,opacity .25s ease}
-#desktopNav a:hover,.mobile-menu a:hover{color:#fff;opacity:1}
+#desktopNav a{transition:color .25s ease,opacity .25s ease}
+#desktopNav a:hover{color:#fff;opacity:1}
 
 /* Every major section gets its own visual rhythm instead of a repeated template. */
 main section{position:relative;isolation:isolate}
@@ -2601,24 +2552,11 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <button class="signout" onclick="signOut()">Sign Out</button>
 </div>
 
-<button class="mobile-menu-button" onclick="toggleMobileMenu()">Menu</button>
 
 </div>
 </div>
 </header>
 
-<div class="mobile-menu" id="mobileMenu">
-<a href="#top" onclick="closeMobileMenu()">Home</a>
-<a href="#watchlist" onclick="closeMobileMenu()">My Watchlist</a>
-<a href="#originals" onclick="closeMobileMenu()">Originals</a>
-<a href="#news" onclick="closeMobileMenu()">News</a>
-<a href="#businessFinanceSection" onclick="closeMobileMenu()">Business</a>
-<a href="#live" onclick="closeMobileMenu()">Live</a>
-<a href="#trendingSeries" onclick="closeMobileMenu()">Trending Series</a>
-<a href="#sports" onclick="closeMobileMenu()">Sports</a>
-<a href="#entertainment" onclick="closeMobileMenu()">Entertainment</a>
-<a href="#documentaries" onclick="closeMobileMenu()">Documentaries</a>
-</div>
 
 <section class="hero">
 <div class="hero-content">
@@ -2733,7 +2671,7 @@ and global creative work from BRENZKafrica.
 <section class="section" id="originals">
 <div class="section-heading">
 <h2 class="section-title">BRENZKafrica Originals</h2>
-<a href="#originals" class="section-link">Explore Explore</a>
+<a href="#originals" class="section-link">Explore</a>
 </div>
 <p class="section-subtitle">Stories created by Africa. For the world.</p>
 <div class="row" id="originalsRow">
@@ -2772,7 +2710,7 @@ and global creative work from BRENZKafrica.
 Live
 </div>
 <div class="live-status" id="liveStatus">Loading live events...</div>
-<button class="live-refresh" onclick="loadLiveEvents()">Refresh Refresh</button>
+<button class="live-refresh" onclick="loadLiveEvents()">Refresh</button>
 </div>
 
 <p class="section-subtitle">
@@ -2795,7 +2733,7 @@ Breaking News
 <div class="breaking-news-status" id="newsStatus">
 Loading latest African news...
 </div>
-<button class="news-refresh" onclick="loadBreakingNews()">Refresh Refresh</button>
+<button class="news-refresh" onclick="loadBreakingNews()">Refresh</button>
 </div>
 
 <p class="section-subtitle">
@@ -2826,7 +2764,7 @@ The latest stories and developments from across Africa.
 <div class="international-news-title-wrap"><div class="international-news-title">Breaking International News</div></div>
 <div class="international-news-status" id="internationalNewsStatus">Loading global headlines...</div>
 </div>
-<button class="international-news-refresh" type="button" onclick="loadInternationalNews()">Refresh Refresh</button>
+<button class="international-news-refresh" type="button" onclick="loadInternationalNews()">Refresh</button>
 </div>
 <p class="international-news-subtitle">Major developments from around the world, organized across politics, wars & conflicts, space and education.</p>
 <div class="international-news-grid">
@@ -2850,7 +2788,7 @@ The latest stories and developments from across Africa.
 <h2>Business of Africa</h2>
 <p>Live African business news, markets, currencies, fintech, crypto and economic intelligence.</p>
 </div>
-<div class="business-live-meta"><span id="businessUpdated">Updating live feeds...</span><button class="section-link" onclick="loadBusinessOfAfrica()">Refresh Refresh</button></div>
+<div class="business-live-meta"><span id="businessUpdated">Updating live feeds...</span><button class="section-link" onclick="loadBusinessOfAfrica()">Refresh</button></div>
 </div>
 
 <div class="finance-dashboard">
@@ -2887,34 +2825,34 @@ The latest stories and developments from across Africa.
 
 <div class="finance-content-block" id="marketsBusinessBlock">
 <div class="finance-block-cover" id="cover-markets"><img src="" alt="AFRICA MARKETS & COMPANIES editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA MARKETS & COMPANIES</div><div class="cover-title">Africa Markets & Companies</div></div><div class="cover-note">Markets, capital, companies and investment</div></div></div>
-<div class="finance-block-header"><div><span class="section-kicker">MARKETS</span><h3>Africa Markets & Companies</h3><p>Current market, corporate and investment headlines.</p></div><button onclick="loadBusinessFeed('markets')">Refresh Refresh</button></div>
+<div class="finance-block-header"><div><span class="section-kicker">MARKETS</span><h3>Africa Markets & Companies</h3><p>Current market, corporate and investment headlines.</p></div><button onclick="loadBusinessFeed('markets')">Refresh</button></div>
 <div class="business-story-row" id="marketsBusinessFeed"><div class="business-feed-loading">Loading market stories...</div></div>
 </div>
 
 <div class="finance-content-block" id="fintechBusinessBlock">
 <div class="finance-block-cover" id="cover-fintech"><img src="" alt="AFRICA'S DIGITAL FINANCE editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICA'S DIGITAL FINANCE</div><div class="cover-title">Africa'S Digital Finance</div></div><div class="cover-note">Mobile money, payments and financial technology</div></div></div>
-<div class="finance-block-header"><div><span class="section-kicker">FINTECH</span><h3>Africa's Digital Finance</h3><p>Mobile money, digital banking, payments, startups and financial technology.</p></div><button onclick="loadBusinessFeed('fintech')">Refresh Refresh</button></div>
+<div class="finance-block-header"><div><span class="section-kicker">FINTECH</span><h3>Africa's Digital Finance</h3><p>Mobile money, digital banking, payments, startups and financial technology.</p></div><button onclick="loadBusinessFeed('fintech')">Refresh</button></div>
 <div class="business-story-row" id="fintechBusinessFeed"><div class="business-feed-loading">Loading fintech stories...</div></div>
 </div>
 
 <div class="finance-content-block" id="economyBusinessBlock">
 <div class="finance-block-cover" id="cover-economy"><img src="" alt="AFRICAN ECONOMY editorial cover" loading="lazy" decoding="async" onerror="this.style.display='none'"><div class="finance-block-cover-content"><div><div class="cover-kicker">AFRICAN ECONOMY</div><div class="cover-title">African Economy</div></div><div class="cover-note">Growth, infrastructure, trade and economic outlook</div></div></div>
-<div class="finance-block-header"><div><span class="section-kicker">ECONOMY</span><h3>African Economy</h3><p>Growth, inflation, trade, investment, policy and economic outlook.</p></div><button onclick="loadBusinessFeed('economy')">Refresh Refresh</button></div>
+<div class="finance-block-header"><div><span class="section-kicker">ECONOMY</span><h3>African Economy</h3><p>Growth, inflation, trade, investment, policy and economic outlook.</p></div><button onclick="loadBusinessFeed('economy')">Refresh</button></div>
 <div class="business-story-row" id="economyBusinessFeed"><div class="business-feed-loading">Loading economy stories...</div></div>
 </div>
 
 <div class="finance-content-block">
-<div class="finance-block-header"><div><span class="section-kicker">FOREIGN EXCHANGE</span><h3>African Currencies</h3><p>Reference exchange rates for major African currencies and global pairs.</p></div><button onclick="openCurrencyConverter()">Currency Converter Explore</button></div>
+<div class="finance-block-header"><div><span class="section-kicker">FOREIGN EXCHANGE</span><h3>African Currencies</h3><p>Reference exchange rates for major African currencies and global pairs.</p></div><button onclick="openCurrencyConverter()">Currency Converter</button></div>
 <div class="currency-row" id="businessCurrencyRow"><div class="business-feed-loading">Loading currency rates...</div></div>
 </div>
 
 <div class="finance-content-block crypto-section">
-<div class="finance-block-header"><div><span class="section-kicker">DIGITAL ASSETS</span><h3>Crypto Market</h3><p>Bitcoin, Ethereum, BNB, Solana, XRP and Cardano with live market data.</p></div><button onclick="loadBusinessCrypto()">Refresh Market Refresh</button></div>
+<div class="finance-block-header"><div><span class="section-kicker">DIGITAL ASSETS</span><h3>Crypto Market</h3><p>Bitcoin, Ethereum, BNB, Solana, XRP and Cardano with live market data.</p></div><button onclick="loadBusinessCrypto()">Refresh Market</button></div>
 <div class="crypto-grid business-crypto-grid" id="businessCryptoGrid"><div class="business-feed-loading">Loading crypto market data...</div></div>
 </div>
 
 <div class="finance-original">
-<div class="original-overlay"><span>BRENZKAFRICA ORIGINALS</span><h3>THE BUSINESS OF AFRICA</h3><p>Exclusive conversations with entrepreneurs, investors, innovators and leaders shaping Africa's economic future.</p><button onclick="openBusinessOriginals()">Watch Originals Explore</button></div>
+<div class="original-overlay"><span>BRENZKAFRICA ORIGINALS</span><h3>THE BUSINESS OF AFRICA</h3><p>Exclusive conversations with entrepreneurs, investors, innovators and leaders shaping Africa's economic future.</p><button onclick="openBusinessOriginals()">Watch Originals</button></div>
 </div>
 
 <div id="currencyConverterModal">
@@ -2938,7 +2876,7 @@ The latest stories and developments from across Africa.
 <div class="sports-breaking-title-wrap"><div class="sports-breaking-title">Sports Breaking News</div></div>
 <div class="sports-breaking-status" id="sportsBreakingNewsStatus">Loading latest sports headlines...</div>
 </div>
-<button class="sports-breaking-refresh" type="button" onclick="loadSportsBreakingNews()">Refresh Refresh</button>
+<button class="sports-breaking-refresh" type="button" onclick="loadSportsBreakingNews()">Refresh</button>
 </div>
 <p class="sports-breaking-subtitle">Major breaking developments across football, basketball, motorsport, tennis, fight sports and other major sporting events  -  with dedicated African sports coverage.</p>
 <div class="sports-breaking-tabs">
@@ -2974,7 +2912,7 @@ Worldwide sports  -  live scores, upcoming fixtures and major events.
 
 <div class="sports-heading-right">
 <span class="sports-status" id="sportsStatus">Updating...</span>
-<button class="sports-refresh" onclick="loadSports()">Refresh Refresh</button>
+<button class="sports-refresh" onclick="loadSports()">Refresh</button>
 </div>
 
 </div>
@@ -3080,7 +3018,7 @@ onclick="showSportsTab('all',this)">
 
  <div class="wwe-subheading">
   <div><h3>Latest WWE News</h3><p>Recent official WWE stories and results.</p></div>
-  <button class="wwe-refresh" type="button" onclick="refreshWWEHub()">Refresh Refresh WWE</button>
+  <button class="wwe-refresh" type="button" onclick="refreshWWEHub()">Refresh WWE</button>
  </div>
  <div class="wwe-row" id="wweNewsRow"></div>
 
@@ -3126,7 +3064,7 @@ onclick="showEntertainmentTab('trending',this)">
 <button class="entertainment-tab"
 data-entertainment-tab="celebrity"
 onclick="showEntertainmentTab('celebrity',this)">
-Celebrity News Celebrity News
+Celebrity News
 </button>
 
 <button class="entertainment-tab"
@@ -3240,7 +3178,7 @@ Celebrating excellence across music, film, television and the creative industrie
 
 <div class="section-heading">
 <h2 class="section-title">Documentaries</h2>
-<a href="#documentaries" class="section-link">View all Explore</a>
+<a href="#documentaries" class="section-link">View All</a>
 </div>
 
 <p class="section-subtitle">
@@ -3569,17 +3507,6 @@ siteHeader.classList.remove("scrolled");
 window.addEventListener("scroll",updateHeader,{passive:true});
 updateHeader();
 
-/* =========================================================
-  MOBILE MENU
-========================================================= */
-
-function toggleMobileMenu(){
-mobileMenu.classList.toggle("active");
-}
-
-function closeMobileMenu(){
-mobileMenu.classList.remove("active");
-}
 
 /* =========================================================
   URL HELPERS
@@ -3929,7 +3856,7 @@ const saved=watchlistIsSaved(key);
 return `
 <article class="card universal-watchlist-video" data-content-id="${escapeHTML(key)}" onclick="playVideo('${escapeHTML(title).replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.url||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}','${escapeHTML(item.description||"").replace(/\\/g,"\\\\").replace(/'/g,"\\'")}')">
 <img src="${escapeHTML(thumb)}" alt="${escapeHTML(title)}" loading="lazy" decoding="async">
-<button class="watchlist-button ${saved?"saved":""}" data-content-id="${escapeHTML(key)}" data-watchlist-source="local" onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(key)}',this,${escapeHTML(JSON.stringify(item))})" aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"":"Watchlist"}</button>
+<button class="watchlist-button ${saved?"saved":""}" data-content-id="${escapeHTML(key)}" data-watchlist-source="local" onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(key)}',this,${escapeHTML(JSON.stringify(item))})" aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">${saved?"Saved":"Watchlist"}</button>
 <div class="card-overlay">
 <div class="card-title">${escapeHTML(title)}</div>
 <div class="card-type">${escapeHTML(item.type||"Video")}</div>
@@ -4129,7 +4056,7 @@ data-content-id="${escapeHTML(id)}"
 data-watchlist-source="content"
 onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(id)}',this)"
 aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">
-${saved?"":"Watchlist"}
+${saved?"Saved":"Watchlist"}
 </button>
 
 <div class="card-overlay">
@@ -4373,7 +4300,7 @@ data-content-id="${escapeHTML(watchKey)}"
 data-watchlist-source="local"
 onclick="event.stopPropagation();toggleWatchlist('${escapeHTML(watchKey)}',this,${escapeHTML(JSON.stringify({key:watchKey,title:title,type:'YouTube Tutorial',thumbnail:thumbnail,url:'https://www.youtube.com/watch?v='+videoId}))})"
 aria-label="${saved?"Remove from Watchlist":"Add to Watchlist"}">
-${saved?"":"Watchlist"}
+${saved?"Saved":"Watchlist"}
 </button>
 
 <div class="card-overlay">
@@ -7084,7 +7011,6 @@ if(event.key==="Escape"){
 
 closePlayer();
 closeAccount();
-closeMobileMenu();
 
 }
 
@@ -7260,7 +7186,7 @@ function performGlobalSearch(query){
     terms.forEach(t=>{if(hay.includes(t))score+=1;if(searchText(item.title).includes(t))score+=3;});
     return {...item,index,score};
   }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,30);
-  status.textContent=matches.length+" result"+(matches.length===1?"":"s")+" for ""+query+""";
+  status.textContent=matches.length+" result"+(matches.length===1?"":"s")+" for \""+query+"\"";
   if(!matches.length){results.innerHTML='<div class="search-empty">No matching content or information found.</div>';return;}
   results.innerHTML=matches.map((item,i)=>`<article class="search-result" data-search-index="${i}">
     ${item.thumb?`<img class="search-result-thumb" src="${escapeHTML(item.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'" decoding="async">`:'<div class="search-result-thumb"></div>'}
@@ -7342,10 +7268,6 @@ function initBrenzNavigationTools(){
 
       event.preventDefault();
 
-      if(typeof closeMobileMenu==="function"){
-        try{ closeMobileMenu(); }catch(e){}
-      }
-
       const header=document.querySelector("header");
       const offset=(header ? header.offsetHeight : 72)+14;
       const top=target.getBoundingClientRect().top + window.pageYOffset - offset;
@@ -7365,9 +7287,6 @@ function initBrenzNavigationTools(){
     homeLink.dataset.brenzHomeBound="1";
     homeLink.addEventListener("click",function(event){
       event.preventDefault();
-      if(typeof closeMobileMenu==="function"){
-        try{ closeMobileMenu(); }catch(e){}
-      }
       window.scrollTo({top:0,behavior:"smooth"});
       history.replaceState(null,"",window.location.pathname+window.location.search);
     });
