@@ -96,7 +96,7 @@ html{scroll-behavior:smooth;background:var(--bg)}
 body{
 background:var(--bg);
 color:var(--text);
-font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+font-family:Inter,Arial,sans-serif;
 min-height:100vh;
 overflow-x:hidden
 }
@@ -2154,7 +2154,7 @@ line-height:1;
 }
 
 /* REAL STORY IMAGE STATES */
-.real-image-placeholder,.real-image-empty{width:100%;height:100%;min-height:150px;background: #0c0c0c;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.real-image-placeholder,.real-image-empty{width:100%;height:100%;min-height:0;background:transparent;display:block;overflow:hidden}.real-story-media:empty{display:none}
 .real-image-placeholder span{display:block;width:28px;height:28px;border:2px solid rgba(255,255,255,.18);border-top-color:rgba(255,255,255,.72);border-radius:50%;animation:brenzImageSpin .8s linear infinite}
 .real-image-empty{background:#0c0c0c;}
 @keyframes brenzImageSpin{to{transform:rotate(360deg)}}
@@ -2466,6 +2466,72 @@ footer{background:#050505!important;border-top:1px solid var(--rx-line);padding:
 }
 </style>
 
+
+<!-- BRENZKafrica Plus UX Enhancement: two-font system, loading, transitions, responsive motion -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style id="brenzkafrica-ux-enhancements">
+:root{--font-body:"Inter",Arial,sans-serif;--font-display:"Syne","Inter",Arial,sans-serif;--motion-fast:180ms;--motion:320ms;--motion-slow:520ms}
+html{scroll-behavior:smooth;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);overflow-x:hidden;opacity:1;transition:opacity var(--motion) ease;}
+h1,h2,h3,h4,h5,h6,.brand,.logo,.section-title,.hero-title,[class*="title"]{font-family:var(--font-display),var(--font-body)}
+button,a,input,select,textarea{font-family:var(--font-body)}
+
+/* Initial loading screen */
+#brenzkafrica-loader{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;background:#070707;color:#fff;opacity:1;visibility:visible;transition:opacity 420ms ease,visibility 420ms ease}
+#brenzkafrica-loader.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.bz-loader-inner{display:flex;flex-direction:column;align-items:center;gap:18px;text-align:center;padding:24px}
+.bz-loader-mark{font-family:var(--font-display);font-size:clamp(28px,7vw,54px);font-weight:800;letter-spacing:-.055em}
+.bz-loader-mark span{color:#e50914}
+.bz-loader-ring{width:38px;height:38px;border:2px solid rgba(255,255,255,.16);border-top-color:#e50914;border-radius:50%;animation:bzSpin 820ms linear infinite}
+.bz-loader-status{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.58)}
+@keyframes bzSpin{to{transform:rotate(360deg)}}
+
+/* Page/section transitions */
+body.bz-page-exit{opacity:0}
+.bz-reveal{opacity:0;transform:translate3d(0,18px,0);transition:opacity 560ms cubic-bezier(.2,.7,.2,1),transform 560ms cubic-bezier(.2,.7,.2,1)}
+.bz-reveal.bz-visible{opacity:1;transform:none}
+.bz-card-reveal{opacity:0;transform:translate3d(0,12px,0);transition:opacity 420ms ease,transform 420ms ease}
+.bz-card-reveal.bz-visible{opacity:1;transform:none}
+
+/* Safer image behavior */
+img{max-width:100%;height:auto}
+img[loading="lazy"]{content-visibility:auto}
+.bz-img-wrap{overflow:hidden;background:#101010}
+.bz-img-wrap img{display:block;width:100%;height:100%;object-fit:cover;transition:transform 600ms cubic-bezier(.2,.7,.2,1)}
+.bz-img-wrap:hover img{transform:scale(1.035)}
+
+/* Mobile/desktop stability */
+section,.section,.content-section,[id]{scroll-margin-top:88px}
+@media (min-width:1200px){
+  body{font-size:15px}
+  .bz-reveal{transform:translate3d(0,24px,0)}
+}
+@media (max-width:900px){
+  .bz-loader-mark{font-size:38px}
+  .bz-reveal{transform:translate3d(0,12px,0)}
+  *{-webkit-tap-highlight-color:transparent}
+  button,a{touch-action:manipulation}
+}
+@media (max-width:600px){
+  #brenzkafrica-loader{padding:20px}
+  .bz-loader-status{font-size:10px;letter-spacing:.13em}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .bz-reveal,.bz-card-reveal{opacity:1!important;transform:none!important}
+}
+</style>
+
+<style id="brenzkafrica-feed-media">
+.wwe-card-media{width:100%;aspect-ratio:16/9;margin:-1px 0 16px;border-radius:12px;overflow:hidden;background:#111}
+.wwe-card-media:empty{display:none}
+.wwe-card-media img{width:100%;height:100%;display:block;object-fit:cover}
+.wwe-card{contain:layout paint}
+@media(max-width:640px){.wwe-card-media{aspect-ratio:16/10;border-radius:10px;margin-bottom:12px}}
+</style>
 </head>
 
 <body id="top">
@@ -4030,7 +4096,7 @@ onclick="playContentCard(this)">
 src="${escapeHTML(thumbnail)}"
 alt="${escapeHTML(title)}"
 loading="lazy"
-onerror="this.src=''">
+onerror="this.src=''" decoding="async">
 
 ${featured?'<span class="card-badge">FEATURED</span>':""}
 
@@ -4274,7 +4340,7 @@ onclick="playYouTubeOriginal(this)">
 <img
 src="${escapeHTML(thumbnail)}"
 alt="${escapeHTML(title)}"
-loading="lazy">
+loading="lazy" decoding="async">
 
 <span class="card-badge">BRENZKAFRICA</span>
 
@@ -4672,7 +4738,7 @@ function loadPolygamistEpisodes(){
               src="${polygamistThumbnail}"
               alt="${escapeHTML(episode.title)}"
               loading="lazy"
-            >
+             decoding="async">
 
             <div class="episode-number">
               EP ${episode.episode}
@@ -4887,7 +4953,7 @@ event.thumbnail||
 ""
 )}"
 alt="${escapeHTML(event.title||"Live")}"
-loading="lazy">
+loading="lazy" decoding="async">
 
 <div class="live-badge ${isLive?"":"upcoming-badge"}">
 ${isLive?" LIVE NOW":"UPCOMING"}
@@ -5303,7 +5369,7 @@ class="sports-team-logo"
 src="${escapeHTML(event.homeLogo)}"
 alt="${escapeHTML(event.home)}"
 loading="lazy"
-onerror="this.style.display='none'">
+onerror="this.style.display='none'" decoding="async">
 `
 :""}
 
@@ -5334,7 +5400,7 @@ class="sports-team-logo"
 src="${escapeHTML(event.awayLogo)}"
 alt="${escapeHTML(event.away)}"
 loading="lazy"
-onerror="this.style.display='none'">
+onerror="this.style.display='none'" decoding="async">
 `
 :""}
 
@@ -5800,7 +5866,7 @@ async function resolveActualArticleImage(item){
   return image;
 }
 function realImagePlaceholder(title){
-  return `<div class="real-image-placeholder" aria-label="Publisher image loading"><span></span></div>`;
+  return `<div class="real-image-empty" aria-hidden="true"></div>`;
 }
 async function hydrateRealStoryImages(container,items,limit){
   if(!container||!Array.isArray(items)||!items.length)return;
@@ -5812,16 +5878,16 @@ async function hydrateRealStoryImages(container,items,limit){
     const image=await resolveActualArticleImage(item);
     const media=card.querySelector(".real-story-media");if(!media)return;
     if(image){
-      media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\"></div>'}">`;
+      media.innerHTML=`<img src="${escapeHTML(image)}" alt="${escapeHTML(item.title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\" decoding="async"></div>'}">`;
     }else{
-      media.innerHTML=`<div class="real-image-empty" aria-label="No publisher image available"></div>`;
+      media.innerHTML="";
     }
   }));
 }
 function realStoryMedia(item,title){
   const image=extractFeedImage(item);
   return image
-    ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\"></div>'}"></div>`
+    ? `<div class="real-story-media"><img src="${escapeHTML(image)}" alt="${escapeHTML(title||"News story")}" loading="lazy" referrerpolicy="no-referrer" onerror="this.dataset.failed=(this.dataset.failed||0)*1+1;if(!this.dataset.proxyTried){this.dataset.proxyTried='1';this.src='https://images.weserv.nl/?url='+encodeURIComponent(this.src)}else{this.parentElement.innerHTML='<div class=\"real-image-empty\" decoding="async"></div>'}"></div>`
     : `<div class="real-story-media">${realImagePlaceholder(title)}</div>`;
 }
 
@@ -6104,10 +6170,7 @@ return key;
 results.forEach((result,index)=>{
 if(result.status==="rejected"){
 const row=document.getElementById(feedMap[index][0]);
-if(row){
-row.innerHTML=
-'<div class="news-loading">Entertainment information is temporarily unavailable. Please refresh.</div>';
-}
+if(row) row.innerHTML="";
 console.warn("Entertainment feed failed:",feedMap[index][1],result.reason);
 }
 });
@@ -6468,7 +6531,7 @@ async function loadInternationalCategory(category){
     if(count)count.textContent=items.length+" STORIES";
   }catch(error){
     console.warn("International news error",category,error);
-    target.innerHTML="<div class='international-error'>Global headlines are temporarily unavailable. Tap Refresh to retry.</div>";
+    target.innerHTML="";
     if(count)count.textContent="RETRY";
   }
 }
@@ -6501,7 +6564,7 @@ async function loadBusinessFeed(category){
     items=items.slice(0,10);
     businessNewsCache[category]=items;
     if(!items.length){
-      target.innerHTML="<div class='business-feed-loading'>No current stories are available right now. Tap Refresh to try again.</div>";
+      target.innerHTML="";
       return;
     }
     target.innerHTML=items.map((item,index)=>{
@@ -6517,7 +6580,7 @@ async function loadBusinessFeed(category){
     hydrateRealStoryImages(target,items);
   }catch(error){
     console.warn("BRENZKafrica business news error",category,error);
-    target.innerHTML="<div class='business-feed-loading'>Business feed temporarily unavailable. Tap Refresh to try again.</div>";
+    target.innerHTML="";
   }
 }
 function openBusinessArticle(category,index){
@@ -7064,7 +7127,7 @@ function renderTrendingSeries(items=NETFLIX_TRENDING_SNAPSHOT){
  TRENDING_SERIES=items.slice();
  row.innerHTML=TRENDING_SERIES.map(item=>`
  <article class="trending-series-card" role="link" tabindex="0" data-trending-series-title="${escapeHTML(item.title)}" onclick="openTrendingSeries('${encodeURIComponent(item.title)}')">
-  <img class="trending-series-art" src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" loading="lazy" onerror="this.style.display='none'">
+  <img class="trending-series-art" src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" loading="lazy" onerror="this.style.display='none'" decoding="async">
   <span class="trending-rank">#${item.rank}</span>
   <span class="trending-netflix">Netflix</span>
   <div class="trending-series-info">
@@ -7177,7 +7240,7 @@ function performGlobalSearch(query){
   status.textContent=matches.length+" result"+(matches.length===1?"":"s")+" for “"+query+"”";
   if(!matches.length){results.innerHTML='<div class="search-empty">No matching content or information found.</div>';return;}
   results.innerHTML=matches.map((item,i)=>`<article class="search-result" data-search-index="${i}">
-    ${item.thumb?`<img class="search-result-thumb" src="${escapeHTML(item.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'">`:'<div class="search-result-thumb"></div>'}
+    ${item.thumb?`<img class="search-result-thumb" src="${escapeHTML(item.thumb)}" alt="" loading="lazy" onerror="this.style.display='none'" decoding="async">`:'<div class="search-result-thumb"></div>'}
     <div class="search-result-info"><div class="search-result-title">${escapeHTML(item.title)}</div><div class="search-result-meta">${escapeHTML(item.type)} · ${escapeHTML(item.meta)}</div><div class="search-result-desc">${escapeHTML(item.description)}</div></div>
   </article>`).join("");
   results.querySelectorAll(".search-result").forEach((el,i)=>el.addEventListener("click",()=>{const item=matches[i];closeGlobalSearch();if(typeof item.action==="function")item.action();}));
@@ -7436,7 +7499,8 @@ function renderWWENews(items){
  const news=document.getElementById("wweNewsRow");
  if(!news) return;
  const source = Array.isArray(items) && items.length ? items : WWE_NEWS_SNAPSHOT;
- news.innerHTML=source.slice(0,8).map(x=>`<article class="wwe-card"><div class="wwe-card-label">WWE NEWS</div><h4>${escapeHTML(x.title)}</h4><p><strong>${escapeHTML(x.meta||"")}</strong>${x.description?`<br>${escapeHTML(x.description)}`:""}</p><a href="${escapeHTML(x.url)}" target="_blank" rel="noopener noreferrer">Read official WWE coverage ↗</a></article>`).join("");
+ news.innerHTML=source.slice(0,8).map((x,i)=>`<article class="wwe-card bz-card-reveal" style="--bz-delay:${Math.min(i,7)*45}ms"><div class="wwe-card-media">${x.image?`<img src="${escapeHTML(x.image)}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer">`:""}</div><div class="wwe-card-label">WWE NEWS</div><h4>${escapeHTML(x.title)}</h4><p><strong>${escapeHTML(x.meta||"")}</strong>${x.description?`<br>${escapeHTML(x.description)}`:""}</p><a href="${escapeHTML(x.url)}" target="_blank" rel="noopener noreferrer">Read official WWE coverage ↗</a></article>`).join("");
+news.querySelectorAll(".bz-card-reveal").forEach((el)=>requestAnimationFrame(()=>setTimeout(()=>el.classList.add("bz-visible"),parseInt(getComputedStyle(el).getPropertyValue("--bz-delay"))||0)));
 }
 
 async function loadWWELiveNews(force=false){
@@ -8362,5 +8426,56 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 </script>
 
+
+<script id="brenzkafrica-ux-runtime">
+(function(){
+  const loader=document.getElementById('brenzkafrica-loader');
+  const hide=()=>{ if(loader) loader.classList.add('is-hidden'); document.documentElement.classList.add('bz-ready'); };
+  if(document.readyState==='complete') setTimeout(hide,120); else window.addEventListener('load',()=>setTimeout(hide,180),{once:true});
+  setTimeout(hide,4500);
+
+  // Smooth page transitions for real page navigation without breaking modifier clicks or external links.
+  document.addEventListener('click',function(e){
+    const a=e.target.closest('a[href]');
+    if(!a || e.defaultPrevented || a.target==='_blank' || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const raw=a.getAttribute('href');
+    if(!raw || raw.startsWith('#') || raw.startsWith('javascript:') || raw.startsWith('mailto:') || raw.startsWith('tel:')) return;
+    try{
+      const u=new URL(raw,location.href);
+      if(u.origin!==location.origin) return;
+      e.preventDefault();
+      document.body.classList.add('bz-page-exit');
+      setTimeout(()=>{location.href=u.href},220);
+    }catch(_){ }
+  },true);
+
+  // Reveal sections/cards as they enter the viewport. IntersectionObserver keeps motion cheap on phones.
+  const targets=[...document.querySelectorAll('section,.section,.content-section')].filter(el=>!el.closest('#brenzkafrica-loader'));
+  targets.forEach(el=>el.classList.add('bz-reveal'));
+  if('IntersectionObserver' in window){
+    const io=new IntersectionObserver(entries=>entries.forEach(entry=>{
+      if(entry.isIntersecting){entry.target.classList.add('bz-visible');io.unobserve(entry.target)}
+    }),{rootMargin:'0px 0px -8% 0px',threshold:.04});
+    targets.forEach(el=>io.observe(el));
+  }else targets.forEach(el=>el.classList.add('bz-visible'));
+
+  // Normalize images created later by feeds/admin without touching their source URLs.
+  const normalizeImages=(root)=>{
+    root.querySelectorAll?.('img').forEach(img=>{
+      if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      if(!img.hasAttribute('decoding')) img.setAttribute('decoding','async');
+    });
+  };
+  normalizeImages(document);
+  if('MutationObserver' in window){
+    const mo=new MutationObserver(muts=>muts.forEach(m=>m.addedNodes.forEach(n=>{if(n.nodeType===1) normalizeImages(n)})));
+    mo.observe(document.body,{subtree:true,childList:true});
+  }
+
+  // Prevent accidental horizontal overflow caused by long feed content on narrow screens.
+  const clampOverflow=()=>{document.documentElement.style.overflowX='hidden';document.body.style.overflowX='hidden'};
+  clampOverflow();
+})();
+</script>
 </body>
 </html>
