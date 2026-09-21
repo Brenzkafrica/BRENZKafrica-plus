@@ -2577,14 +2577,13 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <a href="#top" class="active">Home</a>
 <a href="#watchlist">My Watchlist</a>
 <a href="#originals">Originals</a>
-<a href="#live"> Live</a>
 <a href="#news">News</a>
 <a href="#businessFinanceSection">Business</a>
+<a href="#live">Live</a>
+<a href="#trendingSeries">Trending Series</a>
 <a href="#sports">Sports</a>
-<a href="#wwe">WWE</a>
 <a href="#entertainment">Entertainment</a>
 <a href="#documentaries">Documentaries</a>
-<a href="#sourcesPartners">Sources</a>
 
 </nav>
 
@@ -2602,7 +2601,7 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <button class="signout" onclick="signOut()">Sign Out</button>
 </div>
 
-<button class="mobile-menu-button" onclick="toggleMobileMenu()"></button>
+<button class="mobile-menu-button" onclick="toggleMobileMenu()">Menu</button>
 
 </div>
 </div>
@@ -2612,15 +2611,13 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <a href="#top" onclick="closeMobileMenu()">Home</a>
 <a href="#watchlist" onclick="closeMobileMenu()">My Watchlist</a>
 <a href="#originals" onclick="closeMobileMenu()">Originals</a>
-<a href="#live" onclick="closeMobileMenu()"> Live</a>
 <a href="#news" onclick="closeMobileMenu()">News</a>
 <a href="#businessFinanceSection" onclick="closeMobileMenu()">Business</a>
+<a href="#live" onclick="closeMobileMenu()">Live</a>
+<a href="#trendingSeries" onclick="closeMobileMenu()">Trending Series</a>
 <a href="#sports" onclick="closeMobileMenu()">Sports</a>
-<a href="#wwe" onclick="closeMobileMenu()"> WWE</a>
 <a href="#entertainment" onclick="closeMobileMenu()">Entertainment</a>
 <a href="#documentaries" onclick="closeMobileMenu()">Documentaries</a>
-<a href="#sourcesPartners" onclick="closeMobileMenu()">Sources</a>
-
 </div>
 
 <section class="hero">
@@ -2649,9 +2646,9 @@ and global creative work from BRENZKafrica.
 </p>
 
 <div class="hero-buttons">
-<button class="play-btn" onclick="playFeatured()">Play Play</button>
-<button class="info-btn" onclick="showInfo()">Info More Info</button>
-<button class="info-btn hero-watchlist-btn" id="featuredWatchlistButton" data-content-id="featured:brenzkafrica-cinema" data-watchlist-source="local" onclick="toggleWatchlist('featured:brenzkafrica-cinema',this,{key:'featured:brenzkafrica-cinema',title:'BRENZKafrica Cinema',type:'Featured Video',thumbnail:'BRENZKafrica cinema.jpeg',url:'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov',description:'BRENZKafrica Plus featured video'})">Watchlist Watchlist</button>
+<button class="play-btn" onclick="playFeatured()">Play</button>
+<button class="info-btn" onclick="showInfo()">Info</button>
+<button class="info-btn hero-watchlist-btn" id="featuredWatchlistButton" data-content-id="featured:brenzkafrica-cinema" data-watchlist-source="local" onclick="toggleWatchlist('featured:brenzkafrica-cinema',this,{key:'featured:brenzkafrica-cinema',title:'BRENZKafrica Cinema',type:'Featured Video',thumbnail:'BRENZKafrica cinema.jpeg',url:'https://fcddfmfpzbilagphpsxs.supabase.co/storage/v1/object/public/BRENZKafrica%20series%20episode%201/BRENZKafrica%20cinema%20ad%20.mov',description:'BRENZKafrica Plus featured video'})">Watchlist</button>
 </div>
 
 </div>
@@ -2707,8 +2704,8 @@ and global creative work from BRENZKafrica.
     <a id="advertisingCta" class="advertising-cta" href="mailto:brenzkafrica@gmail.com?subject=Advertising%20on%20BRENZKafrica%20Plus">Learn More</a>
    </div>
    <div class="advertising-controls" id="advertisingControls" hidden>
-    <button class="ad-control" type="button" onclick="BKPAdvertising.previous()" aria-label="Previous advertisement">Previous</button>
-    <button class="ad-control" type="button" onclick="BKPAdvertising.next()" aria-label="Next advertisement">Next</button>
+    <button class="ad-control" type="button" onclick="BKPAdvertising.previous()" aria-label="Previous advertisement">&lt;</button>
+    <button class="ad-control" type="button" onclick="BKPAdvertising.next()" aria-label="Next advertisement">&gt;</button>
    </div>
    <div class="advertising-dots" id="advertisingDots" hidden></div>
    <div class="advertising-progress"></div>
@@ -4072,7 +4069,7 @@ const saved=watchlistIsSaved(id);
 
 button.classList.toggle("saved",saved);
 button.textContent=button.id==="featuredWatchlistButton"
-?(saved?" Saved":"Watchlist Watchlist")
+?(saved?"Saved":"Watchlist")
 :(saved?"":"Watchlist");
 
 button.setAttribute(
@@ -4800,7 +4797,7 @@ function loadPolygamistEpisodes(){
           <button
             class="episode-play-btn"
             onclick="event.stopPropagation(); playEpisode(${index})">
-            Play Play
+            Play
           </button>
 
         </article>
