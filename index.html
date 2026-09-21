@@ -2532,9 +2532,35 @@ section,.section,.content-section,[id]{scroll-margin-top:88px}
 .wwe-card{contain:layout paint}
 @media(max-width:640px){.wwe-card-media{aspect-ratio:16/10;border-radius:10px;margin-bottom:12px}}
 </style>
+
+<style id="brenzkafrica-opening-opener">
+#bk-opening-opener{position:fixed;inset:0;z-index:100000;background:#000;display:flex;align-items:center;justify-content:center;opacity:1;visibility:visible;pointer-events:auto;transition:opacity .75s ease,visibility .75s ease}
+#bk-opening-opener.bk-opening-exit{opacity:0;visibility:hidden;pointer-events:none}
+#bk-opening-brand{font-family:Inter,Arial,sans-serif;font-size:clamp(32px,6vw,64px);font-weight:900;letter-spacing:-2.8px;color:#fff;line-height:1;opacity:0;transform:scale(.94);animation:bkBrandIn .8s cubic-bezier(.2,.75,.25,1) .15s forwards;will-change:transform,opacity}
+#bk-opening-brand span{color:#e50914}
+@keyframes bkBrandIn{to{opacity:1;transform:scale(1)}}
+#bk-opening-opener.bk-opening-exit #bk-opening-brand{opacity:0;transform:scale(1.035);transition:opacity .65s ease,transform .7s ease}
+@media(prefers-reduced-motion:reduce){#bk-opening-opener,#bk-opening-opener.bk-opening-exit,#bk-opening-brand,#bk-opening-opener.bk-opening-exit #bk-opening-brand{animation:none;transition:none;transform:none}#bk-opening-brand{opacity:1}}
+</style>
 </head>
 
 <body id="top">
+<div id="bk-opening-opener" aria-label="BRENZKafrica Plus" role="presentation">
+  <div id="bk-opening-brand" aria-hidden="true">BRENZKafrica<span>+</span></div>
+</div>
+<script>
+(function(){
+  function closeOpening(){
+    var opener=document.getElementById('bk-opening-opener');
+    if(!opener) return;
+    setTimeout(function(){opener.classList.add('bk-opening-exit');},2100);
+    setTimeout(function(){if(opener.parentNode) opener.parentNode.removeChild(opener);},3000);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',closeOpening,{once:true});
+  else closeOpening();
+})();
+</script>
+
 <!-- DIRECT CONTACT -->
 <a class="whatsapp-float" href="https://wa.me/256701833398?text=Hello%20BRENZKafrica%20Plus%2C%20I%20would%20like%20to%20know%20more%20about%20the%20platform." target="_blank" rel="noopener noreferrer" aria-label="Contact BRENZKafrica Plus on WhatsApp" title="Contact BRENZKafrica Plus on WhatsApp">
   <span class="whatsapp-float-label">WhatsApp</span>
