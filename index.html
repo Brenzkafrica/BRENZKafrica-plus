@@ -2532,7 +2532,35 @@ section,.section,.content-section,[id]{scroll-margin-top:88px}
 .wwe-card{contain:layout paint}
 @media(max-width:640px){.wwe-card-media{aspect-ratio:16/10;border-radius:10px;margin-bottom:12px}}
 </style>
+
+<style id="brenzkafrica-opening-opener">
+#bk-opening-opener{
+ position:fixed;inset:0;z-index:100000;background:#000;
+ display:flex;align-items:center;justify-content:center;
+ opacity:1;visibility:visible;pointer-events:auto;
+ transition:opacity .65s ease,visibility .65s ease;
+}
+#bk-opening-opener.bk-opening-exit{opacity:0;visibility:hidden;pointer-events:none}
+#bk-opening-brand{
+ font-family:Inter,Arial,sans-serif;font-size:clamp(30px,6vw,64px);
+ font-weight:900;letter-spacing:-2.8px;color:#fff;line-height:1;
+ opacity:0;transform:scale(.94);
+ animation:bkBrandIn .72s cubic-bezier(.2,.75,.25,1) .12s forwards;
+ will-change:transform,opacity;
+}
+#bk-opening-brand span{color:#e50914}
+@keyframes bkBrandIn{to{opacity:1;transform:scale(1)}}
+#bk-opening-opener.bk-opening-exit #bk-opening-brand{opacity:0;transform:scale(1.035);transition:opacity .55s ease,transform .7s ease}
+@media(prefers-reduced-motion:reduce){
+ #bk-opening-opener,#bk-opening-opener.bk-opening-exit,#bk-opening-brand,#bk-opening-opener.bk-opening-exit #bk-opening-brand{animation:none;transition:none;transform:none}
+ #bk-opening-brand{opacity:1}
+}
+</style>
 </head>
+
+<div id="bk-opening-opener" aria-label="BRENZKafrica Plus" role="presentation">
+  <div id="bk-opening-brand" aria-hidden="true">BRENZKafrica<span>+</span></div>
+</div>
 
 <body id="top">
 <!-- DIRECT CONTACT -->
@@ -8475,6 +8503,21 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   // Prevent accidental horizontal overflow caused by long feed content on narrow screens.
   const clampOverflow=()=>{document.documentElement.style.overflowX='hidden';document.body.style.overflowX='hidden'};
   clampOverflow();
+})();
+</script>
+
+<script id="brenzkafrica-opening-opener-script">
+(function(){
+  var opener=document.getElementById('bk-opening-opener');
+  if(!opener)return;
+  var reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finish=function(){
+    opener.classList.add('bk-opening-exit');
+    setTimeout(function(){if(opener.parentNode)opener.remove();}, reduced?0:750);
+  };
+  if(reduced){finish();return;}
+  window.addEventListener('load',function(){setTimeout(finish,1150);},{once:true});
+  setTimeout(finish,2400);
 })();
 </script>
 </body>
