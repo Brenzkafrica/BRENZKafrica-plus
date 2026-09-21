@@ -2470,9 +2470,9 @@ footer{background:#050505!important;border-top:1px solid var(--rx-line);padding:
 <!-- BRENZKafrica Plus UX Enhancement: two-font system, loading, transitions, responsive motion -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style id="brenzkafrica-ux-enhancements">
-:root{--font-body:"Inter",Arial,sans-serif;--font-display:"Syne","Inter",Arial,sans-serif;--motion-fast:180ms;--motion:320ms;--motion-slow:520ms}
+:root{--font-body:"Inter",Arial,sans-serif;--font-display:"Inter",Arial,sans-serif;--motion-fast:180ms;--motion:320ms;--motion-slow:520ms}
 html{scroll-behavior:smooth;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
 body{font-family:var(--font-body);overflow-x:hidden;opacity:1;transition:opacity var(--motion) ease;}
 h1,h2,h3,h4,h5,h6,.brand,.logo,.section-title,.hero-title,[class*="title"]{font-family:var(--font-display),var(--font-body)}
@@ -2565,14 +2565,14 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <div class="nav-right">
 
 <div class="search-wrap">
-<span class="search-icon"></span>
+
 <input class="search" id="search" type="search" placeholder="Search" autocomplete="off" onclick="openGlobalSearch(this.value)" onfocus="openGlobalSearch(this.value)">
 </div>
 
 <button class="signin" id="signinButton" onclick="openAccount()">Sign In</button>
 
 <div class="account-status" id="accountStatus">
-<span id="userEmail"></span>
+
 <button class="signout" onclick="signOut()">Sign Out</button>
 </div>
 
@@ -2610,9 +2610,9 @@ Unlimited Vision.
 
 <div class="hero-meta">
 <strong>2026</strong>
-<span class="meta-dot"></span>
+
 <span>Original</span>
-<span class="meta-dot"></span>
+
 <span>Africa</span>
 </div>
 
@@ -2685,7 +2685,7 @@ and global creative work from BRENZKafrica.
     <button class="ad-control" type="button" onclick="BKPAdvertising.next()" aria-label="Next advertisement">›</button>
    </div>
    <div class="advertising-dots" id="advertisingDots" hidden></div>
-   <div class="advertising-progress"><span id="advertisingProgressBar"></span></div>
+   <div class="advertising-progress"></div>
   </div>
   <div class="advertising-footer">
    <span id="advertisingAdvertiser"><strong>BRENZKafrica Plus</strong> commercial media space</span>
@@ -2745,7 +2745,7 @@ and global creative work from BRENZKafrica.
 
 <div class="live-header">
 <div class="live-title">
-<span class="live-dot"></span>
+
 Live
 </div>
 <div class="live-status" id="liveStatus">Loading live events...</div>
@@ -2766,7 +2766,7 @@ Watch BRENZKafrica live events and broadcasts.
 
 <div class="breaking-news-header">
 <div class="breaking-news-title">
-<span class="breaking-dot"></span>
+
 Breaking News
 </div>
 <div class="breaking-news-status" id="newsStatus">
@@ -2800,7 +2800,7 @@ The latest stories and developments from across Africa.
 <section class="international-news-section" id="internationalNews">
 <div class="international-news-header">
 <div>
-<div class="international-news-title-wrap"><span class="international-news-dot"></span><div class="international-news-title">Breaking International News</div></div>
+<div class="international-news-title-wrap"><div class="international-news-title">Breaking International News</div></div>
 <div class="international-news-status" id="internationalNewsStatus">Loading global headlines...</div>
 </div>
 <button class="international-news-refresh" type="button" onclick="loadInternationalNews()">↻ Refresh</button>
@@ -2827,7 +2827,7 @@ The latest stories and developments from across Africa.
 <h2>Business of Africa</h2>
 <p>Live African business news, markets, currencies, fintech, crypto and economic intelligence.</p>
 </div>
-<div class="business-live-meta"><span class="business-live-dot"></span><span id="businessUpdated">Updating live feeds…</span><button class="section-link" onclick="loadBusinessOfAfrica()">↻ Refresh</button></div>
+<div class="business-live-meta"><span id="businessUpdated">Updating live feeds…</span><button class="section-link" onclick="loadBusinessOfAfrica()">↻ Refresh</button></div>
 </div>
 
 <div class="finance-dashboard">
@@ -2912,7 +2912,7 @@ The latest stories and developments from across Africa.
 <section class="sports-breaking-section" id="sportsBreakingNews">
 <div class="sports-breaking-header">
 <div>
-<div class="sports-breaking-title-wrap"><span class="sports-breaking-dot"></span><div class="sports-breaking-title">Sports Breaking News</div></div>
+<div class="sports-breaking-title-wrap"><div class="sports-breaking-title">Sports Breaking News</div></div>
 <div class="sports-breaking-status" id="sportsBreakingNewsStatus">Loading latest sports headlines...</div>
 </div>
 <button class="sports-breaking-refresh" type="button" onclick="loadSportsBreakingNews()">↻ Refresh</button>
@@ -3051,7 +3051,7 @@ onclick="showSportsTab('all',this)">
    <div class="wwe-kicker">BRENZKAFRICA PLUS • SPORTS</div>
    <h2 class="wwe-title">WWE <span>NOW</span></h2>
    <p class="wwe-description">A dedicated WWE destination for official WWE stories, current match coverage, weekly shows and major Premium Live Events. The latest WWE news is fetched automatically through the BRENZKafrica Plus WWE feed, with a verified snapshot available as a fallback.</p>
-   <div class="wwe-meta"><span class="wwe-live-dot"></span><span>LIVE WWE FEED</span><span>•</span><span id="wweLastUpdated">Connecting to WWE feed…</span></div>
+   <div class="wwe-meta"><span>LIVE WWE FEED</span><span>•</span><span id="wweLastUpdated">Connecting to WWE feed…</span></div>
   </div>
  </div>
 
@@ -3087,7 +3087,7 @@ onclick="showSportsTab('all',this)">
 <p class="section-subtitle">
 Live global and African entertainment news — music, film, television, celebrities, theatre, events and awards.
 </p>
-<div class="business-live-meta" style="margin-top:8px"><span class="live-dot"></span><span>LIVE ENTERTAINMENT FEED</span><span id="entertainmentLastUpdated">Updating…</span></div>
+<div class="business-live-meta" style="margin-top:8px"><span>LIVE ENTERTAINMENT FEED</span><span id="entertainmentLastUpdated">Updating…</span></div>
 </div>
 </div>
 
@@ -5305,7 +5305,7 @@ if(isLive){
 
 badgeHTML=
 '<span class="sports-live-badge">'+
-'<span class="sports-live-pulse"></span>'+
+''+
 'LIVE</span>';
 
 }
@@ -8157,7 +8157,7 @@ function boot(){
  var uni=scene.querySelector('.bk3d-universe');
  var count=window.matchMedia&&window.matchMedia('(max-width:900px)').matches?6:12;
  for(var i=0;i<count;i++){var p=document.createElement('i');p.className='bk3d-particle';p.style.left=(Math.random()*100)+'%';p.style.top=(Math.random()*100)+'%';p.style.animationDuration=(10+Math.random()*10)+'s';p.style.animationDelay=(-Math.random()*12)+'s';uni.appendChild(p)}
- var bar=document.createElement('div');bar.id='bk3dScrollBar';bar.innerHTML='<span></span>';document.body.appendChild(bar);
+ var bar=document.createElement('div');bar.id='bk3dScrollBar';bar.innerHTML='';document.body.appendChild(bar);
  var sections=[].slice.call(document.querySelectorAll('main > section'));
  sections.forEach(function(s){
   s.classList.add('bk3d-section-glass','bk3d-reveal');
