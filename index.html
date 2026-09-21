@@ -2976,7 +2976,7 @@ onclick="showSportsTab('all',this)">
  <div class="section-heading">
   <div>
    <h2 class="section-title">WWE</h2>
-   <p class="section-subtitle">WWE news, current match coverage and upcoming events — worldwide.</p>
+   <p class="section-subtitle">WWE news, current match coverage and upcoming events — automatically updated from official WWE coverage.</p>
   </div>
  </div>
 
@@ -2984,8 +2984,8 @@ onclick="showSportsTab('all',this)">
   <div class="wwe-hero-content">
    <div class="wwe-kicker">BRENZKAFRICA PLUS • SPORTS</div>
    <h2 class="wwe-title">WWE <span>NOW</span></h2>
-   <p class="wwe-description">A dedicated WWE destination for official WWE stories, current match coverage, weekly shows and major Premium Live Events. This module uses a verified snapshot so the page never gets stuck on an empty loading state.</p>
-   <div class="wwe-meta"><span class="wwe-live-dot"></span><span>WWE SNAPSHOT</span><span>•</span><span id="wweLastUpdated">Verified Sep 11, 2026</span></div>
+   <p class="wwe-description">A dedicated WWE destination for official WWE stories, current match coverage, weekly shows and major Premium Live Events. The latest WWE news is fetched automatically through the BRENZKafrica Plus WWE feed, with a verified snapshot available as a fallback.</p>
+   <div class="wwe-meta"><span class="wwe-live-dot"></span><span>LIVE WWE FEED</span><span>•</span><span id="wweLastUpdated">Connecting to WWE feed…</span></div>
   </div>
  </div>
 
@@ -7429,8 +7429,48 @@ function renderWWEHub(){
  const stamp=document.getElementById("wweLastUpdated");
  if(stamp)stamp.textContent="Verified snapshot • "+new Date().toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
 }
-function refreshWWEHub(){renderWWEHub();}
-function loadWWE(){renderWWEHub();}
+let wweLiveNewsCache = [];
+let wweLiveNewsLoadedAt = 0;
+
+function renderWWENews(items){
+ const news=document.getElementById("wweNewsRow");
+ if(!news) return;
+ const source = Array.isArray(items) && items.length ? items : WWE_NEWS_SNAPSHOT;
+ news.innerHTML=source.slice(0,8).map(x=>`<article class="wwe-card"><div class="wwe-card-label">WWE NEWS</div><h4>${escapeHTML(x.title)}</h4><p><strong>${escapeHTML(x.meta||"")}</strong>${x.description?`<br>${escapeHTML(x.description)}`:""}</p><a href="${escapeHTML(x.url)}" target="_blank" rel="noopener noreferrer">Read official WWE coverage ↗</a></article>`).join("");
+}
+
+async function loadWWELiveNews(force=false){
+ const now=Date.now();
+ if(!force && wweLiveNewsCache.length && now-wweLiveNewsLoadedAt<240000) return wweLiveNewsCache;
+ try{
+  const res=await fetch("/api/wwe",{cache:"no-store",headers:{"Accept":"application/json"}});
+  if(!res.ok) throw new Error("WWE API "+res.status);
+  const data=await res.json();
+  if(Array.isArray(data.news) && data.news.length){
+   wweLiveNewsCache=data.news;
+   wweLiveNewsLoadedAt=now;
+   renderWWENews(wweLiveNewsCache);
+   const stamp=document.getElementById("wweLastUpdated");
+   if(stamp) stamp.textContent="Live WWE feed • "+new Date(data.updatedAt||now).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+   return wweLiveNewsCache;
+  }
+ }catch(e){
+  console.warn("WWE live feed unavailable; using verified snapshot.",e);
+ }
+ renderWWENews(wweLiveNewsCache.length?wweLiveNewsCache:WWE_NEWS_SNAPSHOT);
+ return wweLiveNewsCache.length?wweLiveNewsCache:WWE_NEWS_SNAPSHOT;
+}
+
+async function refreshWWEHub(){
+ renderWWEHub();
+ await loadWWELiveNews(true);
+}
+
+async function loadWWE(){
+ await loadWWELiveNews(false);
+ renderWWEHub();
+ renderWWENews(wweLiveNewsCache.length?wweLiveNewsCache:WWE_NEWS_SNAPSHOT);
+}
 
 /*
  Background refresh intervals. These update only the information blocks;
