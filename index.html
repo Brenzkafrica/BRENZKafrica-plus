@@ -2542,7 +2542,7 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 
 <div class="search-wrap">
 
-<input class="search" id="search" type="search" placeholder="Search" autocomplete="off" onclick="openGlobalSearch(this.value)" onfocus="openGlobalSearch(this.value)">
+<input class="search" id="search" type="search" placeholder="Search anything on BRENZKafrica Plus" autocomplete="off" aria-label="Search anything on BRENZKafrica Plus" onclick="openGlobalSearch(this.value)" onfocus="openGlobalSearch(this.value)">
 </div>
 
 <button class="signin" id="signinButton" onclick="openAccount()">Sign In</button>
@@ -3198,7 +3198,7 @@ Real people. Real places. African perspectives.
 <div class="search-backdrop" id="searchBackdrop" onclick="closeGlobalSearch()"></div>
 <div class="global-search-panel" id="globalSearchPanel" role="dialog" aria-label="Search BRENZKafrica Plus">
 <div class="global-search-head">
-<input class="global-search-input" id="globalSearchInput" type="search" placeholder="Search movies, series, episodes, news, sports, entertainment, business..." autocomplete="off">
+<input class="global-search-input" id="globalSearchInput" type="search" placeholder="Search anything on BRENZKafrica Plus" autocomplete="off" aria-label="Search anything on BRENZKafrica Plus">
 <button class="global-search-close" type="button" onclick="closeGlobalSearch()"></button>
 </div>
 <div class="global-search-status" id="globalSearchStatus">Search BRENZKafrica Plus</div>
@@ -4699,15 +4699,6 @@ function loadPolygamistEpisodes(){
             </div>
 
           </div>
-
-          <button
-            class="watchlist-button ${watchlistIsSaved("episode:"+episode.episode)?"saved":""}"
-            data-content-id="episode:${episode.episode}"
-            data-watchlist-source="local"
-            onclick="event.stopPropagation();toggleWatchlist('episode:${episode.episode}',this,${escapeHTML(JSON.stringify({key:"episode:"+episode.episode,title:episode.title,type:"The Polygamist",thumbnail:polygamistThumbnail,url:episode.url,description:"The Polygamist  |  Season 1  |  Episode "+episode.episode}))})"
-            aria-label="${watchlistIsSaved("episode:"+episode.episode)?"Remove from Watchlist":"Add to Watchlist"}">
-            ${watchlistIsSaved("episode:"+episode.episode)?"":"Watchlist"}
-          </button>
 
           <div class="episode-info">
 
@@ -7171,6 +7162,21 @@ function getSearchItems(){
     const desc=card.querySelector(".news-description")?.textContent?.trim();
     if(title)push(title,source||"Breaking News",desc,"",()=>card.click(),"News");
   });
+
+  // Index rendered site content as a final fallback so the global search can find
+  // content that is present on the page even when it came from a newly loaded block.
+  const seenDom=new Set(items.map(item=>searchText(item.title+"|"+item.meta+"|"+item.type)));
+  document.querySelectorAll("main section:not(#watchlist) .card, main section:not(#watchlist) article, main section:not(#watchlist) .news-card").forEach(card=>{
+    const title=(card.querySelector(".card-title,.episode-title,.news-title,.trending-series-title,.sports-title,.business-title,.entertainment-title")?.textContent||card.querySelector("h3,h4,h5")?.textContent||"").trim();
+    if(!title)return;
+    const meta=(card.querySelector(".card-meta,.news-source,.episode-number,.trending-series-season,.business-meta")?.textContent||"").trim();
+    const description=(card.querySelector(".card-description,.news-description,.episode-description,.business-description")?.textContent||"").trim();
+    const key=searchText(title+"|"+meta+"|"+card.className);
+    if(!key||seenDom.has(key))return;
+    seenDom.add(key);
+    const thumb=card.querySelector("img")?.getAttribute("src")||"";
+    items.push({title,meta:meta||"BRENZKafrica Plus",description,thumb,action:()=>{try{card.click();}catch(e){}},type:"Site Content"});
+  });
   return items;
 }
 function performGlobalSearch(query){
@@ -7219,6 +7225,9 @@ function initBrenzNavigationTools(){
 
     topSearch.addEventListener("input",function(){
       openGlobalSearch(this.value||"");
+      const globalInput=document.getElementById("globalSearchInput");
+      if(globalInput && globalInput.value!==this.value) globalInput.value=this.value;
+      performGlobalSearch(this.value||"");
     });
 
     topSearch.addEventListener("keydown",function(event){
