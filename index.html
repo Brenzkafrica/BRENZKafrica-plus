@@ -2542,7 +2542,7 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 
 <div class="search-wrap">
 
-<input class="search" id="search" type="search" placeholder="Search anything on BRENZKafrica Plus" autocomplete="off" aria-label="Search anything on BRENZKafrica Plus" onclick="openGlobalSearch(this.value)" onfocus="openGlobalSearch(this.value)">
+<input class="search" id="search" type="search" placeholder="Search anything on BRENZKafrica Plus" autocomplete="off" aria-label="Search anything on BRENZKafrica Plus">
 </div>
 
 <button class="signin" id="signinButton" onclick="openAccount()">Sign In</button>
@@ -3198,8 +3198,8 @@ Real people. Real places. African perspectives.
 <div class="search-backdrop" id="searchBackdrop" onclick="closeGlobalSearch()"></div>
 <div class="global-search-panel" id="globalSearchPanel" role="dialog" aria-label="Search BRENZKafrica Plus">
 <div class="global-search-head">
-<input class="global-search-input" id="globalSearchInput" type="search" placeholder="Search anything on BRENZKafrica Plus" autocomplete="off" aria-label="Search anything on BRENZKafrica Plus">
-<button class="global-search-close" type="button" onclick="closeGlobalSearch()"></button>
+<div class="global-search-label">Search results</div>
+<button class="global-search-close" type="button" onclick="closeGlobalSearch()">Close</button>
 </div>
 <div class="global-search-status" id="globalSearchStatus">Search BRENZKafrica Plus</div>
 <div class="global-search-results" id="globalSearchResults"></div>
@@ -7099,24 +7099,18 @@ async function loadTrendingSeries(){
 function openGlobalSearch(initialValue=""){
   const panel=document.getElementById("globalSearchPanel");
   const backdrop=document.getElementById("searchBackdrop");
-  const input=document.getElementById("globalSearchInput");
-  if(!panel||!backdrop||!input)return;
+  const topInput=document.getElementById("search");
+  if(!panel||!backdrop||!topInput)return;
 
   panel.classList.add("active");
   backdrop.classList.add("active");
   document.body.classList.add("modal-open");
 
-  if(initialValue!==undefined && initialValue!==null){
-    input.value=String(initialValue);
+  if(initialValue!==undefined && initialValue!==null && String(initialValue)!==""){
+    topInput.value=String(initialValue);
   }
 
-  setTimeout(function(){
-    try{
-      input.focus();
-      input.setSelectionRange(input.value.length,input.value.length);
-    }catch(e){}
-    performGlobalSearch(input.value||"");
-  },20);
+  performGlobalSearch(topInput.value||"");
 }
 function closeGlobalSearch(){
   const panel=document.getElementById("globalSearchPanel");
@@ -7124,8 +7118,6 @@ function closeGlobalSearch(){
   if(panel)panel.classList.remove("active");
   if(backdrop)backdrop.classList.remove("active");
   document.body.classList.remove("modal-open");
-  const top=document.getElementById("search");
-  if(top)top.value="";
 }
 function searchText(value){
   return String(value||"").toLowerCase().replace(/<[^>]*>/g," ").replace(/[^a-z0-9\s]/g," ").replace(/\s+/g," ").trim();
@@ -7206,59 +7198,29 @@ function performGlobalSearch(query){
   - Binds after the DOM exists so desktop browsers cannot miss handlers.
   - Uses delegated events for dynamically rendered content.
   - Quick links scroll reliably with the fixed header offset.
-  - Header search opens the full search panel and searches as the user types.
+  - Header search is the single search input and searches as the user types.
 ========================================================= */
 function initBrenzNavigationTools(){
   const topSearch=document.getElementById("search");
-  const globalSearchInput=document.getElementById("globalSearchInput");
 
   if(topSearch && !topSearch.dataset.brenzBound){
     topSearch.dataset.brenzBound="1";
 
-    topSearch.addEventListener("click",function(){
-      openGlobalSearch(this.value||"");
-    });
-
-    topSearch.addEventListener("focus",function(){
-      openGlobalSearch(this.value||"");
-    });
-
     topSearch.addEventListener("input",function(){
-      openGlobalSearch(this.value||"");
-      const globalInput=document.getElementById("globalSearchInput");
-      if(globalInput && globalInput.value!==this.value) globalInput.value=this.value;
+      openGlobalSearch();
       performGlobalSearch(this.value||"");
     });
 
     topSearch.addEventListener("keydown",function(event){
       if(event.key==="Enter"){
         event.preventDefault();
-        openGlobalSearch(this.value||"");
+        openGlobalSearch();
         performGlobalSearch(this.value||"");
       }
       if(event.key==="Escape"){
         event.preventDefault();
         closeGlobalSearch();
         this.blur();
-      }
-    });
-  }
-
-  if(globalSearchInput && !globalSearchInput.dataset.brenzBound){
-    globalSearchInput.dataset.brenzBound="1";
-
-    globalSearchInput.addEventListener("input",function(){
-      performGlobalSearch(this.value||"");
-    });
-
-    globalSearchInput.addEventListener("keydown",function(event){
-      if(event.key==="Escape"){
-        event.preventDefault();
-        closeGlobalSearch();
-      }
-      if(event.key==="Enter"){
-        event.preventDefault();
-        performGlobalSearch(this.value||"");
       }
     });
   }
