@@ -2207,6 +2207,52 @@ img{content-visibility:auto}
 
 @media(max-width:1000px){.politics-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.politics-section{padding-left:16px;padding-right:16px}.politics-header{align-items:flex-start;flex-direction:column}.politics-grid{grid-template-columns:1fr}.politics-card{min-height:180px}}
+
+
+/* =========================================================
+   NEW EDITORIAL BLOCKS AND RESPONSIVE LAYOUT
+========================================================= */
+.bk-editorial-section{scroll-margin-top:90px}
+.bk-editorial-grid,.bk-travel-grid,.bk-earth-layout{display:grid;gap:22px}
+.bk-editorial-grid{grid-template-columns:minmax(0,1.65fr) minmax(320px,.9fr)}
+.bk-editorial-feature,.bk-earth-feature,.bk-travel-feature{position:relative;overflow:hidden;background:#111;border:1px solid var(--border);border-radius:16px;min-height:420px}
+.bk-editorial-feature img,.bk-earth-feature img,.bk-travel-feature img{width:100%;height:100%;min-height:420px;object-fit:cover}
+.bk-editorial-copy,.bk-editorial-feature>div,.bk-earth-feature>div,.bk-travel-feature>div{position:absolute;left:0;right:0;bottom:0;padding:28px;background:rgba(0,0,0,.78)}
+.bk-editorial-copy span,.bk-editorial-side span,.bk-story-card span,.bk-travel-card span,.bk-culture-grid span,.bk-earth-list span{display:block;color:#aaa;font-size:12px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px}
+.bk-editorial-copy h3,.bk-earth-feature h3,.bk-travel-feature h3{font-size:clamp(24px,3vw,42px);line-height:1.08;margin-bottom:10px}
+.bk-editorial-copy p,.bk-earth-feature p,.bk-travel-feature p{color:#d0d0d0;line-height:1.55;max-width:760px}
+.bk-editorial-side{display:grid;gap:22px}
+.bk-editorial-side article{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;background:#111;border:1px solid var(--border);border-radius:16px;padding:12px;min-height:150px}
+.bk-editorial-side img{width:150px;height:125px;object-fit:cover;border-radius:10px}
+.bk-editorial-side h3,.bk-story-card h3,.bk-travel-card h3,.bk-culture-grid h3,.bk-earth-list h3{font-size:18px;line-height:1.25}
+.bk-card-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.bk-story-card{overflow:hidden;background:#111;border:1px solid var(--border);border-radius:16px}
+.bk-story-card img{width:100%;height:220px;object-fit:cover}
+.bk-story-card>div{padding:20px}
+.bk-story-card p{color:#999;line-height:1.5;margin-top:8px}
+.bk-travel-grid{grid-template-columns:1.6fr .7fr .7fr}
+.bk-travel-feature{min-height:390px}.bk-travel-feature img{min-height:390px}
+.bk-travel-card{overflow:hidden;background:#111;border:1px solid var(--border);border-radius:16px}
+.bk-travel-card img{width:100%;height:260px;object-fit:cover}.bk-travel-card span,.bk-travel-card h3{margin-left:18px;margin-right:18px}.bk-travel-card span{margin-top:18px}.bk-travel-card h3{margin-bottom:20px}
+.bk-weather-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:18px}.bk-weather-toolbar label{font-size:13px;color:#aaa;font-weight:700}.bk-weather-toolbar select{background:#111;color:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 14px;min-width:190px;outline:none}
+.bk-weather-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.bk-weather-card{background:#111;border:1px solid var(--border);border-radius:14px;padding:20px;min-height:150px}.bk-weather-card strong{display:block;font-size:28px;margin:7px 0}.bk-weather-card span{color:#999;font-size:13px}.bk-weather-current{grid-column:span 2}.bk-weather-current strong{font-size:42px}.bk-data-loading{padding:28px;background:#111;border:1px solid var(--border);border-radius:14px;color:#999}
+.bk-text-button{background:transparent;border:1px solid var(--border);color:#fff;border-radius:9px;padding:9px 14px}
+.bk-culture-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.bk-culture-grid article{overflow:hidden;background:#111;border:1px solid var(--border);border-radius:15px}.bk-culture-grid img{width:100%;height:250px;object-fit:cover}.bk-culture-grid div{padding:17px}
+.bk-earth-layout{grid-template-columns:1.5fr .8fr}.bk-earth-list{display:grid;gap:18px}.bk-earth-list article{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;background:#111;border:1px solid var(--border);border-radius:15px;padding:12px}.bk-earth-list img{width:150px;height:130px;object-fit:cover;border-radius:10px}
+@media(max-width:1100px){
+  #desktopNav{overflow-x:auto;white-space:nowrap;scrollbar-width:none}.bk-editorial-grid,.bk-travel-grid,.bk-earth-layout{grid-template-columns:1fr}.bk-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bk-culture-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bk-weather-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+  .content-container{width:100%;padding-left:14px;padding-right:14px}.section{padding-top:28px;padding-bottom:28px}.section-heading{gap:12px}.section-title{font-size:24px}.section-subtitle{font-size:14px;line-height:1.5}
+  .bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout,.bk-weather-grid{grid-template-columns:1fr;gap:14px}
+  .bk-editorial-feature,.bk-editorial-feature img,.bk-travel-feature,.bk-travel-feature img,.bk-earth-feature,.bk-earth-feature img{min-height:300px;height:300px}
+  .bk-editorial-copy,.bk-editorial-feature>div,.bk-earth-feature>div,.bk-travel-feature>div{padding:18px}.bk-editorial-copy h3,.bk-earth-feature h3,.bk-travel-feature h3{font-size:25px}
+  .bk-editorial-side{gap:12px}.bk-editorial-side article{grid-template-columns:105px 1fr;min-height:105px;padding:9px}.bk-editorial-side img{width:105px;height:90px}.bk-editorial-side h3{font-size:16px}
+  .bk-story-card img{height:205px}.bk-travel-card img{height:210px}.bk-culture-grid img{height:210px}.bk-earth-list{gap:12px}.bk-earth-list article{grid-template-columns:105px 1fr;padding:9px}.bk-earth-list img{width:105px;height:90px}
+  .bk-weather-toolbar{align-items:stretch;flex-direction:column}.bk-weather-toolbar select{width:100%;min-width:0}.bk-weather-current{grid-column:auto}.bk-weather-current strong{font-size:36px}
+  .bk-text-button{padding:8px 11px;white-space:nowrap}
+}
 </style>
 <style id="brenzk-performance-3d">
 /* BRENZKafrica Plus  -  PERFORMANCE 3D / CINEMATIC MODE */
@@ -2530,6 +2576,12 @@ BRENZK<span>africa</span><span class="logo-plus">+</span>
 <a href="#originals">Originals</a>
 <a href="#news">News</a>
 <a href="#businessFinanceSection">Business</a>
+<a href="#technology">Technology</a>
+<a href="#health">Health</a>
+<a href="#travel">Travel</a>
+<a href="#weather">Weather</a>
+<a href="#culture">Culture</a>
+<a href="#earth">Earth</a>
 <a href="#live">Live</a>
 <a href="#trendingSeries">Trending Series</a>
 <a href="#sports">Sports</a>
@@ -7501,6 +7553,63 @@ setInterval(async function(){
 </script>
 
 
+<!-- NEW EDITORIAL BLOCKS: TECHNOLOGY, HEALTH, TRAVEL, WEATHER, CULTURE, EARTH -->
+<section class="section bk-editorial-section" id="technology">
+  <div class="section-heading"><div><span class="section-kicker">TECHNOLOGY</span><h2 class="section-title">Technology</h2></div><a href="#technology" class="section-link">View All</a></div>
+  <p class="section-subtitle">Technology, artificial intelligence, digital innovation, startups, cybersecurity and the future of Africa.</p>
+  <div class="bk-editorial-grid">
+    <article class="bk-editorial-feature"><img src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1400&q=85" alt="Technology and digital innovation" loading="lazy"><div class="bk-editorial-copy"><span>Digital Innovation</span><h3>Africa's technology ecosystem continues to expand</h3><p>Follow major developments in AI, digital infrastructure, startups and emerging technology.</p></div></article>
+    <div class="bk-editorial-side"><article><img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=900&q=85" alt="Cybersecurity technology" loading="lazy"><div><span>Cybersecurity</span><h3>Digital security and the connected world</h3></div></article><article><img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=900&q=85" alt="Artificial intelligence" loading="lazy"><div><span>Artificial Intelligence</span><h3>AI innovation and the next generation of digital products</h3></div></article></div>
+  </div>
+</section>
+
+<section class="section bk-editorial-section" id="health">
+  <div class="section-heading"><div><span class="section-kicker">HEALTH</span><h2 class="section-title">Health</h2></div><a href="#health" class="section-link">View All</a></div>
+  <p class="section-subtitle">Health, healthcare innovation, public health, medical developments and wellness.</p>
+  <div class="bk-card-grid">
+    <article class="bk-story-card"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1000&q=85" alt="Healthcare professionals" loading="lazy"><div><span>Healthcare</span><h3>Healthcare innovation across Africa</h3><p>New ideas and technologies changing access to care.</p></div></article>
+    <article class="bk-story-card"><img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1000&q=85" alt="Medical research" loading="lazy"><div><span>Medical Research</span><h3>Research shaping modern medicine</h3><p>Important developments in medical science and treatment.</p></div></article>
+    <article class="bk-story-card"><img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1000&q=85" alt="Healthy food and wellness" loading="lazy"><div><span>Wellness</span><h3>Practical approaches to healthier living</h3><p>Evidence-based health and wellbeing stories.</p></div></article>
+  </div>
+</section>
+
+<section class="section bk-editorial-section" id="travel">
+  <div class="section-heading"><div><span class="section-kicker">TRAVEL</span><h2 class="section-title">Travel</h2></div><a href="#travel" class="section-link">View All</a></div>
+  <p class="section-subtitle">Destinations, tourism, safaris, travel experiences, hotels, airlines and travel guides.</p>
+  <div class="bk-travel-grid">
+    <article class="bk-travel-feature"><img src="https://images.unsplash.com/photo-1516426122078-c23e76319801?auto=format&fit=crop&w=1500&q=85" alt="African safari landscape" loading="lazy"><div><span>Explore Africa</span><h3>Journeys across Africa</h3><p>Discover destinations, wildlife, landscapes and experiences worth exploring.</p></div></article>
+    <article class="bk-travel-card"><img src="https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1000&q=85" alt="African city travel" loading="lazy"><span>City Guides</span><h3>Urban travel and city experiences</h3></article>
+    <article class="bk-travel-card"><img src="https://images.unsplash.com/photo-1527631746610-bca00a040d60?auto=format&fit=crop&w=1000&q=85" alt="Travel experience" loading="lazy"><span>Experiences</span><h3>Travel experiences and hidden places</h3></article>
+  </div>
+</section>
+
+<section class="section bk-editorial-section" id="weather">
+  <div class="section-heading"><div><span class="section-kicker">WEATHER</span><h2 class="section-title">Weather</h2></div><button class="bk-text-button" type="button" onclick="loadBKWeather()">Refresh</button></div>
+  <p class="section-subtitle">Live weather conditions and forecasts for selected African cities.</p>
+  <div class="bk-weather-toolbar"><label for="bkWeatherCity">Location</label><select id="bkWeatherCity" onchange="loadBKWeather()"><option value="0.3476,32.5825,Kampala">Kampala</option><option value="-1.2921,36.8219,Nairobi">Nairobi</option><option value="-6.7924,39.2083,Dar es Salaam">Dar es Salaam</option><option value="5.6037,-0.1870,Accra">Accra</option><option value="6.5244,3.3792,Lagos">Lagos</option><option value="-26.2041,28.0473,Johannesburg">Johannesburg</option><option value="30.0444,31.2357,Cairo">Cairo</option></select></div>
+  <div class="bk-weather-grid" id="bkWeatherGrid"><div class="bk-data-loading">Loading weather...</div></div>
+</section>
+
+<section class="section bk-editorial-section" id="culture">
+  <div class="section-heading"><div><span class="section-kicker">CULTURE</span><h2 class="section-title">Culture</h2></div><a href="#culture" class="section-link">View All</a></div>
+  <p class="section-subtitle">African heritage, art, fashion, languages, music, film, literature and cultural events.</p>
+  <div class="bk-culture-grid">
+    <article><img src="https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?auto=format&fit=crop&w=1100&q=85" alt="African cultural landscape" loading="lazy"><div><span>Heritage</span><h3>Stories rooted in African heritage</h3></div></article>
+    <article><img src="https://images.unsplash.com/photo-1577083552431-6e5fd01aa342?auto=format&fit=crop&w=1100&q=85" alt="African art" loading="lazy"><div><span>Art</span><h3>Contemporary African creativity</h3></div></article>
+    <article><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=1100&q=85" alt="African fashion inspired style" loading="lazy"><div><span>Fashion</span><h3>Fashion, identity and modern culture</h3></div></article>
+    <article><img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1100&q=85" alt="Music performance" loading="lazy"><div><span>Music</span><h3>Music and culture across the continent</h3></div></article>
+  </div>
+</section>
+
+<section class="section bk-editorial-section" id="earth">
+  <div class="section-heading"><div><span class="section-kicker">EARTH</span><h2 class="section-title">Earth</h2></div><a href="#earth" class="section-link">View All</a></div>
+  <p class="section-subtitle">Climate, conservation, wildlife, forests, oceans, sustainability and the changing planet.</p>
+  <div class="bk-earth-layout">
+    <article class="bk-earth-feature"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1500&q=85" alt="Forest and conservation" loading="lazy"><div><span>Conservation</span><h3>Protecting Africa's natural ecosystems</h3><p>Stories about conservation, biodiversity, wildlife and sustainable development.</p></div></article>
+    <div class="bk-earth-list"><article><img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=700&q=85" alt="Forest ecosystem" loading="lazy"><div><span>Climate</span><h3>Climate and environmental change</h3></div></article><article><img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=700&q=85" alt="Natural landscape" loading="lazy"><div><span>Sustainability</span><h3>Building a more sustainable future</h3></div></article></div>
+  </div>
+</section>
+
 <section class="section sources-partners-section" id="sourcesPartners">
  <div class="section-heading">
   <h2 class="section-title">Sources &amp; Partners</h2>
@@ -8388,6 +8497,39 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   // Prevent accidental horizontal overflow caused by long feed content on narrow screens.
   const clampOverflow=()=>{document.documentElement.style.overflowX='hidden';document.body.style.overflowX='hidden'};
   clampOverflow();
+})();
+</script>
+
+<script>
+(function(){
+  const weatherGrid=document.getElementById('bkWeatherGrid');
+  const weatherCity=document.getElementById('bkWeatherCity');
+  window.loadBKWeather=async function(){
+    if(!weatherGrid||!weatherCity)return;
+    const parts=String(weatherCity.value).split(',');
+    const lat=parts[0],lon=parts[1],name=parts.slice(2).join(',');
+    weatherGrid.innerHTML='<div class="bk-data-loading">Loading weather...</div>';
+    try{
+      const url='https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(lat)+'&longitude='+encodeURIComponent(lon)+'&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=4';
+      const response=await fetch(url,{cache:'no-store'});
+      if(!response.ok)throw new Error('Weather request failed');
+      const data=await response.json();
+      const current=data.current||{};
+      const daily=data.daily||{};
+      const codeMap={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Depositing rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Rain showers',82:'Heavy rain showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};
+      let html='<article class="bk-weather-card bk-weather-current"><span>'+name+'</span><strong>'+Math.round(Number(current.temperature_2m||0))+' C</strong><span>'+(codeMap[current.weather_code]||'Current conditions')+'</span></article>';
+      html+='<article class="bk-weather-card"><span>Feels like</span><strong>'+Math.round(Number(current.apparent_temperature||0))+' C</strong><span>Current apparent temperature</span></article>';
+      html+='<article class="bk-weather-card"><span>Humidity</span><strong>'+Math.round(Number(current.relative_humidity_2m||0))+'%</strong><span>Relative humidity</span></article>';
+      (daily.time||[]).forEach(function(day,i){
+        html+='<article class="bk-weather-card"><span>'+day+'</span><strong>'+Math.round(Number(daily.temperature_2m_max[i]||0))+' C</strong><span>Low '+Math.round(Number(daily.temperature_2m_min[i]||0))+' C. Rain chance '+Math.round(Number(daily.precipitation_probability_max[i]||0))+'%</span></article>';
+      });
+      weatherGrid.innerHTML=html;
+    }catch(error){
+      console.warn('BRENZKafrica weather error:',error);
+      weatherGrid.innerHTML='<div class="bk-data-loading">Weather data is temporarily unavailable. Please try again.</div>';
+    }
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadBKWeather,{once:true});else loadBKWeather();
 })();
 </script>
 </body>
