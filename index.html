@@ -2236,7 +2236,8 @@ img{content-visibility:auto}
 .bk-travel-card img{width:100%;height:260px;object-fit:cover}.bk-travel-card span,.bk-travel-card h3{margin-left:18px;margin-right:18px}.bk-travel-card span{margin-top:18px}.bk-travel-card h3{margin-bottom:20px}
 .bk-weather-toolbar{display:flex;align-items:center;gap:12px;margin-bottom:18px}.bk-weather-toolbar label{font-size:13px;color:#aaa;font-weight:700}.bk-weather-toolbar select{background:#111;color:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 14px;min-width:190px;outline:none}
 .bk-weather-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.bk-weather-card{background:#111;border:1px solid var(--border);border-radius:14px;padding:20px;min-height:150px}.bk-weather-card strong{display:block;font-size:28px;margin:7px 0}.bk-weather-card span{color:#999;font-size:13px}.bk-weather-current{grid-column:span 2}.bk-weather-current strong{font-size:42px}.bk-data-loading{padding:28px;background:#111;border:1px solid var(--border);border-radius:14px;color:#999}
+.bk-weather-card{background:#111;border:1px solid var(--border);border-radius:14px;padding:20px;min-height:150px}.bk-weather-card strong{display:block;font-size:28px;margin:7px 0}.bk-weather-card span{color:#999;font-size:13px}.bk-weather-current{grid-column:span 2}.bk-weather-current strong{font-size:42px}.bk-data-loading{padding:28px;background:#111;border:1px solid var(--border);border-radius:14px;color:#999}.bk-live-status{margin-left:auto;color:#777;font-size:12px;white-space:nowrap}.bk-live-feed{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.bk-live-story-card{background:#111;border:1px solid var(--border);border-radius:14px;overflow:hidden;min-width:0}.bk-live-story-card img{width:100%;aspect-ratio:16/9;object-fit:cover;background:#181818}.bk-live-story-copy{padding:15px}.bk-live-story-copy>span{display:block;color:#999;font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:7px}.bk-live-story-copy h3{font-size:17px;line-height:1.25}.bk-live-story-copy h3 a{text-decoration:none}.bk-live-story-copy p{margin-top:9px;color:#777;font-size:12px}.bk-live-feed .bk-data-loading{grid-column:1/-1}.bk-live-feed a:hover{text-decoration:underline}
+.bk-weather-toolbar input{flex:1;min-width:220px;background:#111;color:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 14px;outline:none}.bk-weather-toolbar input:focus,.bk-weather-toolbar select:focus{border-color:rgba(255,255,255,.3)}.bk-weather-location-list{display:flex;flex-wrap:wrap;gap:8px;width:100%}.bk-weather-location{background:#111;color:#fff;border:1px solid var(--border);border-radius:9px;padding:9px 12px;cursor:pointer}.bk-weather-meta{margin-top:10px;color:#777;font-size:12px}.bk-weather-hourly{grid-column:1/-1;display:grid;grid-template-columns:repeat(8,minmax(100px,1fr));gap:8px;overflow-x:auto}.bk-weather-hour{background:#111;border:1px solid var(--border);border-radius:10px;padding:12px;min-width:100px}.bk-weather-hour strong{font-size:18px}.bk-weather-day{background:#111;border:1px solid var(--border);border-radius:12px;padding:16px}.bk-weather-day strong{font-size:24px}.bk-weather-source{grid-column:1/-1;color:#777;font-size:12px;padding-top:4px}
 .bk-text-button{background:transparent;border:1px solid var(--border);color:#fff;border-radius:9px;padding:9px 14px}
 .bk-culture-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}.bk-culture-grid article{overflow:hidden;background:#111;border:1px solid var(--border);border-radius:15px}.bk-culture-grid img{width:100%;height:250px;object-fit:cover}.bk-culture-grid div{padding:17px}
 .bk-earth-layout{grid-template-columns:1.5fr .8fr}.bk-earth-list{display:grid;gap:18px}.bk-earth-list article{display:grid;grid-template-columns:150px 1fr;gap:16px;align-items:center;background:#111;border:1px solid var(--border);border-radius:15px;padding:12px}.bk-earth-list img{width:150px;height:130px;object-fit:cover;border-radius:10px}
@@ -7585,9 +7586,15 @@ setInterval(async function(){
 
 <section class="section bk-editorial-section" id="weather">
   <div class="section-heading"><div><span class="section-kicker">WEATHER</span><h2 class="section-title">Weather</h2></div><button class="bk-text-button" type="button" onclick="loadBKWeather()">Refresh</button></div>
-  <p class="section-subtitle">Live weather conditions and forecasts for selected African cities.</p>
-  <div class="bk-weather-toolbar"><label for="bkWeatherCity">Location</label><select id="bkWeatherCity" onchange="loadBKWeather()"><option value="0.3476,32.5825,Kampala">Kampala</option><option value="-1.2921,36.8219,Nairobi">Nairobi</option><option value="-6.7924,39.2083,Dar es Salaam">Dar es Salaam</option><option value="5.6037,-0.1870,Accra">Accra</option><option value="6.5244,3.3792,Lagos">Lagos</option><option value="-26.2041,28.0473,Johannesburg">Johannesburg</option><option value="30.0444,31.2357,Cairo">Cairo</option></select></div>
-  <div class="bk-weather-grid" id="bkWeatherGrid"><div class="bk-data-loading">Loading weather...</div></div>
+  <p class="section-subtitle">Live conditions and forecasts for locations around the world. Search any city, region or postal code.</p>
+  <div class="bk-weather-toolbar">
+    <label for="bkWeatherSearch">Search location</label>
+    <input id="bkWeatherSearch" type="search" placeholder="Search any city or region" autocomplete="off">
+    <button class="bk-text-button" type="button" onclick="searchBKWeather()">Search</button>
+    <button class="bk-text-button" type="button" onclick="loadBKWeather()">Refresh</button>
+  </div>
+  <div class="bk-weather-toolbar" id="bkWeatherLocations"></div>
+  <div class="bk-weather-grid" id="bkWeatherGrid"><div class="bk-data-loading">Loading global weather...</div></div>
 </section>
 
 <section class="section bk-editorial-section" id="culture">
@@ -8503,33 +8510,148 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 <script>
 (function(){
   const weatherGrid=document.getElementById('bkWeatherGrid');
-  const weatherCity=document.getElementById('bkWeatherCity');
+  const weatherSearch=document.getElementById('bkWeatherSearch');
+  const weatherLocations=document.getElementById('bkWeatherLocations');
+  const featured=[
+    ['Kampala',0.3476,32.5825],['Nairobi',-1.2921,36.8219],['Lagos',6.5244,3.3792],['Cairo',30.0444,31.2357],
+    ['Johannesburg',-26.2041,28.0473],['London',51.5074,-0.1278],['New York',40.7128,-74.0060],['Los Angeles',34.0522,-118.2437],
+    ['Dubai',25.2048,55.2708],['Tokyo',35.6762,139.6503],['Sydney',-33.8688,151.2093],['Sao Paulo',-23.5505,-46.6333]
+  ];
+  const codeMap={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',56:'Freezing drizzle',57:'Heavy freezing drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',66:'Freezing rain',67:'Heavy freezing rain',71:'Light snow',73:'Snow',75:'Heavy snow',77:'Snow grains',80:'Rain showers',81:'Rain showers',82:'Heavy rain showers',85:'Snow showers',86:'Heavy snow showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};
+  let selectedLocation={name:'Kampala',lat:0.3476,lon:32.5825};
+  let lastWeatherKey='';
+  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const fmtTime=v=>{try{return new Date(v).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}catch(e){return v||''}};
+  const fmtDate=v=>{try{return new Date(v+'T12:00:00').toLocaleDateString([], {weekday:'short',month:'short',day:'numeric'});}catch(e){return v||''}};
+
+  function renderLocationButtons(items){
+    if(!weatherLocations)return;
+    weatherLocations.innerHTML='<div class="bk-weather-location-list">'+items.map((x,i)=>'<button type="button" class="bk-weather-location" data-weather-index="'+i+'">'+esc(x.name)+'</button>').join('')+'</div>';
+    weatherLocations.querySelectorAll('[data-weather-index]').forEach(btn=>btn.addEventListener('click',()=>{
+      const x=items[Number(btn.getAttribute('data-weather-index'))];
+      selectedLocation={name:x.name,lat:Number(x.lat),lon:Number(x.lon)};
+      loadBKWeather();
+    }));
+  }
+
+  async function fetchForecast(location){
+    const url='https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(location.lat)+'&longitude='+encodeURIComponent(location.lon)+'&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&hourly=temperature_2m,precipitation_probability,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,sunrise,sunset&timezone=auto&forecast_days=16';
+    const response=await fetch(url,{cache:'no-store'});
+    if(!response.ok)throw new Error('Weather request failed');
+    return response.json();
+  }
+
   window.loadBKWeather=async function(){
-    if(!weatherGrid||!weatherCity)return;
-    const parts=String(weatherCity.value).split(',');
-    const lat=parts[0],lon=parts[1],name=parts.slice(2).join(',');
-    weatherGrid.innerHTML='<div class="bk-data-loading">Loading weather...</div>';
+    if(!weatherGrid)return;
+    weatherGrid.innerHTML='<div class="bk-data-loading">Updating global weather data...</div>';
     try{
-      const url='https://api.open-meteo.com/v1/forecast?latitude='+encodeURIComponent(lat)+'&longitude='+encodeURIComponent(lon)+'&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&forecast_days=4';
-      const response=await fetch(url,{cache:'no-store'});
-      if(!response.ok)throw new Error('Weather request failed');
-      const data=await response.json();
-      const current=data.current||{};
-      const daily=data.daily||{};
-      const codeMap={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Fog',48:'Depositing rime fog',51:'Light drizzle',53:'Drizzle',55:'Heavy drizzle',61:'Light rain',63:'Rain',65:'Heavy rain',71:'Light snow',73:'Snow',75:'Heavy snow',80:'Rain showers',81:'Rain showers',82:'Heavy rain showers',95:'Thunderstorm',96:'Thunderstorm with hail',99:'Thunderstorm with hail'};
-      let html='<article class="bk-weather-card bk-weather-current"><span>'+name+'</span><strong>'+Math.round(Number(current.temperature_2m||0))+' C</strong><span>'+(codeMap[current.weather_code]||'Current conditions')+'</span></article>';
-      html+='<article class="bk-weather-card"><span>Feels like</span><strong>'+Math.round(Number(current.apparent_temperature||0))+' C</strong><span>Current apparent temperature</span></article>';
+      const data=await fetchForecast(selectedLocation);
+      const current=data.current||{}; const hourly=data.hourly||{}; const daily=data.daily||{};
+      const hourlyTimes=hourly.time||[]; const nowIndex=Math.max(0,hourlyTimes.findIndex(t=>t>=current.time));
+      let html='<article class="bk-weather-card bk-weather-current"><span>'+esc(selectedLocation.name)+'</span><strong>'+Math.round(Number(current.temperature_2m||0))+' C</strong><span>'+esc(codeMap[current.weather_code]||'Current conditions')+'</span><div class="bk-weather-meta">Updated '+esc(fmtTime(current.time))+' local time</div></article>';
+      html+='<article class="bk-weather-card"><span>Feels like</span><strong>'+Math.round(Number(current.apparent_temperature||0))+' C</strong><span>Apparent temperature</span></article>';
       html+='<article class="bk-weather-card"><span>Humidity</span><strong>'+Math.round(Number(current.relative_humidity_2m||0))+'%</strong><span>Relative humidity</span></article>';
-      (daily.time||[]).forEach(function(day,i){
-        html+='<article class="bk-weather-card"><span>'+day+'</span><strong>'+Math.round(Number(daily.temperature_2m_max[i]||0))+' C</strong><span>Low '+Math.round(Number(daily.temperature_2m_min[i]||0))+' C. Rain chance '+Math.round(Number(daily.precipitation_probability_max[i]||0))+'%</span></article>';
+      html+='<article class="bk-weather-card"><span>Wind</span><strong>'+Math.round(Number(current.wind_speed_10m||0))+' km/h</strong><span>Cloud cover '+Math.round(Number(current.cloud_cover||0))+'%</span></article>';
+      html+='<article class="bk-weather-hourly"><div class="bk-weather-hour"><span>Local time</span><strong>Temperature</strong></div>';
+      for(let i=nowIndex;i<Math.min(nowIndex+12,hourlyTimes.length);i++){
+        html+='<div class="bk-weather-hour"><span>'+esc(fmtTime(hourlyTimes[i]))+'</span><strong>'+Math.round(Number(hourly.temperature_2m?.[i]||0))+' C</strong><span>Rain '+Math.round(Number(hourly.precipitation_probability?.[i]||0))+'%</span></div>';
+      }
+      html+='</article>';
+      (daily.time||[]).forEach((day,i)=>{
+        html+='<article class="bk-weather-day"><span>'+esc(fmtDate(day))+'</span><strong>'+Math.round(Number(daily.temperature_2m_max?.[i]||0))+' C</strong><span>Low '+Math.round(Number(daily.temperature_2m_min?.[i]||0))+' C</span><span>Rain '+Math.round(Number(daily.precipitation_probability_max?.[i]||0))+'%</span></article>';
       });
+      html+='<div class="bk-weather-source">Weather data: Open-Meteo. Forecast range: up to 16 days. Location search supports cities and postal codes worldwide.</div>';
       weatherGrid.innerHTML=html;
+      lastWeatherKey=JSON.stringify([selectedLocation.name,current.time,current.temperature_2m]);
     }catch(error){
-      console.warn('BRENZKafrica weather error:',error);
-      weatherGrid.innerHTML='<div class="bk-data-loading">Weather data is temporarily unavailable. Please try again.</div>';
+      console.warn('BRENZKafrica global weather error:',error);
+      weatherGrid.innerHTML='<div class="bk-data-loading">Global weather data is temporarily unavailable. Please try again.</div>';
     }
   };
+
+  window.searchBKWeather=async function(){
+    const q=(weatherSearch?.value||'').trim();
+    if(!q)return;
+    if(weatherLocations)weatherLocations.innerHTML='<div class="bk-data-loading">Searching locations...</div>';
+    try{
+      const url='https://geocoding-api.open-meteo.com/v1/search?name='+encodeURIComponent(q)+'&count=10&language=en&format=json';
+      const response=await fetch(url,{cache:'no-store'}); if(!response.ok)throw new Error('Location search failed');
+      const data=await response.json(); const results=(data.results||[]).map(x=>({name:[x.name,x.admin1,x.country].filter(Boolean).join(', '),lat:x.latitude,lon:x.longitude}));
+      if(!results.length){if(weatherLocations)weatherLocations.innerHTML='<div class="bk-data-loading">No matching location was found.</div>';return;}
+      renderLocationButtons(results);
+      selectedLocation=results[0];
+      await loadBKWeather();
+    }catch(error){
+      console.warn('BRENZKafrica weather location search error:',error);
+      if(weatherLocations)weatherLocations.innerHTML='<div class="bk-data-loading">Location search is temporarily unavailable.</div>';
+    }
+  };
+
+  if(weatherSearch)weatherSearch.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();window.searchBKWeather();}});
+  renderLocationButtons(featured);
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',loadBKWeather,{once:true});else loadBKWeather();
+
+  // Refresh current conditions frequently without reloading the page.
+  setInterval(()=>{if(document.visibilityState==='visible')loadBKWeather();},5*60*1000);
+})();
+</script>
+
+<script>
+(function(){
+  const feeds={
+    technology:{id:'technology',query:'(technology OR artificial intelligence OR startup OR cybersecurity OR fintech)',label:'Technology'},
+    health:{id:'health',query:'(health OR healthcare OR medical OR public health OR medicine)',label:'Health'},
+    travel:{id:'travel',query:'(travel OR tourism OR safari OR destination OR airline OR hotel)',label:'Travel'},
+    culture:{id:'culture',query:'(culture OR heritage OR art OR fashion OR music OR film OR literature)',label:'Culture'},
+    earth:{id:'earth',query:'(climate OR environment OR conservation OR wildlife OR sustainability OR biodiversity)',label:'Earth'}
+  };
+  const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const domainName=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return ''}};
+  const timeText=v=>{try{return new Date(v).toLocaleString([], {dateStyle:'medium',timeStyle:'short'})}catch(e){return v||''}};
+  function articleCard(a,label){
+    const title=a.title||'Latest '+label+' update';
+    const url=a.url||'#';
+    const image=a.socialimage||'';
+    const source=a.domain||domainName(url)||'Source';
+    const date=a.seendate||'';
+    return '<article class="bk-live-story-card">'+(image?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(image)+'" alt="'+esc(title)+'" loading="lazy" decoding="async"></a>':'')+'<div class="bk-live-story-copy"><span>'+esc(source)+'</span><h3><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(title)+'</a></h3><p>'+esc(timeText(date))+'</p></div></article>';
+  }
+  async function fetchFeed(config){
+    const endpoint='https://api.gdeltproject.org/api/v2/doc/doc?query='+encodeURIComponent(config.query)+'&mode=artlist&maxrecords=8&timespan=24h&sort=datedesc&format=json';
+    const response=await fetch(endpoint,{cache:'no-store'}); if(!response.ok)throw new Error('GDELT request failed');
+    const data=await response.json(); return Array.isArray(data.articles)?data.articles:[];
+  }
+  async function loadEditorial(config){
+    const section=document.getElementById(config.id); if(!section)return;
+    const old=section.querySelector('.bk-live-feed');
+    if(!old)return;
+    try{
+      const articles=await fetchFeed(config);
+      if(!articles.length){old.innerHTML='<div class="bk-data-loading">No recent '+esc(config.label)+' stories are available.</div>';return;}
+      old.innerHTML=articles.map(a=>articleCard(a,config.label)).join('');
+      const status=section.querySelector('.bk-live-status');
+      if(status)status.textContent='Updated '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+    }catch(error){
+      console.warn('BRENZKafrica '+config.label+' feed error:',error);
+      if(!old.querySelector('.bk-live-story-card'))old.innerHTML='<div class="bk-data-loading">Live '+esc(config.label)+' updates are temporarily unavailable.</div>';
+    }
+  }
+  async function refreshAll(){
+    if(document.visibilityState!=='visible')return;
+    await Promise.allSettled(Object.values(feeds).map(loadEditorial));
+  }
+  Object.values(feeds).forEach(config=>{
+    const section=document.getElementById(config.id); if(!section)return;
+    const grid=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');
+    if(!grid)return;
+    const feed=document.createElement('div'); feed.className='bk-live-feed';
+    feed.innerHTML='<div class="bk-data-loading">Loading live '+esc(config.label)+' updates...</div>';
+    const status=document.createElement('div'); status.className='bk-live-status'; status.textContent='Updating automatically';
+    const heading=section.querySelector('.section-heading'); if(heading)heading.appendChild(status);
+    grid.parentNode.insertBefore(feed,grid); grid.style.display='none';
+  });
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshAll,{once:true});else refreshAll();
+  setInterval(refreshAll,5*60*1000);
 })();
 </script>
 </body>
