@@ -2069,7 +2069,7 @@ line-height:1;
 }
 .whatsapp-float-label{white-space:nowrap}
 @media(max-width:700px){
-.whatsapp-float{right:15px;bottom:15px;padding:10px 12px 10px 10px;gap:7px}
+.whatsapp-float{right:15px;bottom:max(15px,env(safe-area-inset-bottom));padding:10px 12px 10px 10px;gap:7px}
 .whatsapp-float-icon{width:25px;height:25px;font-size:19px}
 .whatsapp-float-label{font-size:11px}
 }
@@ -2560,13 +2560,21 @@ section,.section,.content-section,[id]{scroll-margin-top:88px}
 .bk-bubble-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.38);backdrop-filter:blur(2px);opacity:0;visibility:hidden;pointer-events:none;z-index:10040;transition:opacity .25s ease,visibility .25s ease}
 .bk-bubble-nav.is-open + .bk-bubble-backdrop{opacity:1;visibility:visible;pointer-events:auto}
 @media(max-width:700px){
- .bk-bubble-nav{right:14px;top:auto;bottom:18px}
+ .bk-bubble-nav{right:14px;top:auto;bottom:96px}
  .bk-bubble-toggle{width:68px;height:68px;font-size:10px}
- .bk-bubble-panel{top:auto;bottom:80px;right:0;width:min(250px,calc(100vw - 28px));grid-template-columns:repeat(3,64px);gap:9px;transform-origin:bottom right}
+ .bk-bubble-panel{top:auto;bottom:76px;right:0;width:min(250px,calc(100vw - 28px));grid-template-columns:repeat(3,64px);gap:9px;transform-origin:bottom right}
  .bk-bubble-item{width:64px;height:64px;font-size:9px;padding:7px}
  .bk-bubble-nav.is-open .bk-bubble-panel{transform:translateY(0) scale(1)}
 }
 @media(prefers-reduced-motion:reduce){.bk-bubble-toggle,.bk-bubble-panel,.bk-bubble-item,.bk-bubble-backdrop{transition:none!important}}
+/* BUBBLE NAV / WHATSAPP NON-OVERLAP */
+.whatsapp-float{z-index:10020;right:22px;bottom:max(22px,env(safe-area-inset-bottom));}
+.bk-bubble-nav{z-index:10050;}
+@media(max-width:700px){
+  .whatsapp-float{right:15px;bottom:max(15px,env(safe-area-inset-bottom));}
+  .bk-bubble-nav{right:14px;bottom:96px;}
+  .bk-bubble-panel{bottom:76px;}
+}
 </style>
 </head>
 
