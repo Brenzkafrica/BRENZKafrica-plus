@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -2252,6 +2253,10 @@ img{content-visibility:auto}
   .bk-weather-toolbar{align-items:stretch;flex-direction:column}.bk-weather-toolbar select{width:100%;min-width:0}.bk-weather-current{grid-column:auto}.bk-weather-current strong{font-size:36px}
   .bk-text-button{padding:8px 11px;white-space:nowrap}
 }
+
+/* Editorial order: Advertising immediately before Live */
+#advertisingPartners{order:1}
+#live{order:2}
 </style>
 <style id="brenzk-performance-3d">
 /* BRENZKafrica Plus  -  PERFORMANCE 3D / CINEMATIC MODE */
@@ -2730,6 +2735,37 @@ and global creative work from BRENZKafrica.
 <!-- ENTERTAINMENT -->
 
 
+<section class="section advertising-section" id="advertisingPartners">
+<div class="advertising-shell">
+<div class="advertising-top">
+<div>
+<div class="advertising-kicker">Advertising &amp; Partners</div>
+<div class="advertising-title">Featured Campaigns</div>
+<div class="advertising-subtitle">Premium advertising space for brands, sponsors and commercial partners.</div>
+</div>
+<div class="advertising-sponsored">Sponsored</div>
+</div>
+<div aria-live="polite" class="advertising-stage" id="advertisingStage">
+<div class="advertising-empty">Loading campaign...</div>
+<div class="advertising-copy" hidden="" id="advertisingCopy">
+<div class="ad-label" id="advertisingLabel">Featured Partner</div>
+<h3 id="advertisingTitle"></h3>
+<p id="advertisingDescription"></p>
+<a class="advertising-cta" href="mailto:brenzkafrica@gmail.com?subject=Advertising%20on%20BRENZKafrica%20Plus" id="advertisingCta">Learn More</a>
+</div>
+<div class="advertising-controls" hidden="" id="advertisingControls">
+<button aria-label="Previous advertisement" class="ad-control" onclick="BKPAdvertising.previous()" type="button">&lt;</button>
+<button aria-label="Next advertisement" class="ad-control" onclick="BKPAdvertising.next()" type="button">&gt;</button>
+</div>
+<div class="advertising-dots" hidden="" id="advertisingDots"></div>
+<div class="advertising-progress"></div>
+</div>
+<div class="advertising-footer">
+<span id="advertisingAdvertiser"><strong>BRENZKafrica Plus</strong> commercial media space</span>
+<span id="advertisingFormat">Campaign</span>
+</div>
+</div>
+</section>
 <section class="live-section" id="live">
 <div class="live-header">
 <div class="live-title">
@@ -3182,36 +3218,6 @@ Real people. Real places. African perspectives.
 </p>
 <div class="row" id="documentaryRow">
 <div class="news-loading">Loading documentaries...</div>
-</div>
-</section><section class="section advertising-section" id="advertisingPartners">
-<div class="advertising-shell">
-<div class="advertising-top">
-<div>
-<div class="advertising-kicker">Advertising &amp; Partners</div>
-<div class="advertising-title">Featured Campaigns</div>
-<div class="advertising-subtitle">Premium advertising space for brands, sponsors and commercial partners.</div>
-</div>
-<div class="advertising-sponsored">Sponsored</div>
-</div>
-<div aria-live="polite" class="advertising-stage" id="advertisingStage">
-<div class="advertising-empty">Loading campaign...</div>
-<div class="advertising-copy" hidden="" id="advertisingCopy">
-<div class="ad-label" id="advertisingLabel">Featured Partner</div>
-<h3 id="advertisingTitle"></h3>
-<p id="advertisingDescription"></p>
-<a class="advertising-cta" href="mailto:brenzkafrica@gmail.com?subject=Advertising%20on%20BRENZKafrica%20Plus" id="advertisingCta">Learn More</a>
-</div>
-<div class="advertising-controls" hidden="" id="advertisingControls">
-<button aria-label="Previous advertisement" class="ad-control" onclick="BKPAdvertising.previous()" type="button">&lt;</button>
-<button aria-label="Next advertisement" class="ad-control" onclick="BKPAdvertising.next()" type="button">&gt;</button>
-</div>
-<div class="advertising-dots" hidden="" id="advertisingDots"></div>
-<div class="advertising-progress"></div>
-</div>
-<div class="advertising-footer">
-<span id="advertisingAdvertiser"><strong>BRENZKafrica Plus</strong> commercial media space</span>
-<span id="advertisingFormat">Campaign</span>
-</div>
 </div>
 </section><section class="section sources-partners-section" id="sourcesPartners">
 <div class="section-heading">
@@ -4510,133 +4516,155 @@ const polygamistEpisodes = [
   {
     episode: 1,
     title: "The Polygamist  -  Episode 1",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E01.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E01.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E01.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 2,
     title: "The Polygamist  -  Episode 2",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E02.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E02.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E02.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 3,
     title: "The Polygamist  -  Episode 3",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E03.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E03.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E03.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 4,
     title: "The Polygamist  -  Episode 4",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E04.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E04.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E04.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 5,
     title: "The Polygamist  -  Episode 5",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E05.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E05.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E05.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 6,
     title: "The Polygamist  -  Episode 6",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E06.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E06.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E06.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 7,
     title: "The Polygamist  -  Episode 7",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E07.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E07.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E07.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 8,
     title: "The Polygamist  -  Episode 8",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E08.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E08.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E08.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 9,
     title: "The Polygamist  -  Episode 9",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E09.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E09.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E09.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 10,
     title: "The Polygamist  -  Episode 10",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E10.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E10.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E10.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 11,
     title: "The Polygamist  -  Episode 11",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E11.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E11.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E11.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 12,
     title: "The Polygamist  -  Episode 12",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E12.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E12.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E12.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 13,
     title: "The Polygamist  -  Episode 13",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E13.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E13.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E13.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 14,
     title: "The Polygamist  -  Episode 14",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E14.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E14.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E14.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 15,
     title: "The Polygamist  -  Episode 15",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E15.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E15.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E15.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 16,
     title: "The Polygamist  -  Episode 16",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E16.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E16.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E16.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 17,
     title: "The Polygamist  -  Episode 17",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E17.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E17.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E17.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 18,
     title: "The Polygamist  -  Episode 18",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E18.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E18.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E18.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 19,
     title: "The Polygamist  -  Episode 19",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E19.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E19.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E19.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 20,
     title: "The Polygamist  -  Episode 20",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E20.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E20.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E20.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 21,
     title: "The Polygamist  -  Episode 21",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E21.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E21.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E21.540p.X265.AAC._9jaRocks.Com.jpg"
   },
 
   {
     episode: 22,
     title: "The Polygamist  -  Episode 22",
-    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E22.540p.X265.AAC._9jaRocks.Com"
+    url: "https://player.cloudinary.com/embed/?cloud_name=zveaunox&public_id=The.Polygamist.S01E22.540p.X265.AAC._9jaRocks.Com",
+    thumbnail: "https://res.cloudinary.com/zveaunox/video/upload/so_0,w_900,h_506,c_fill,q_auto,f_jpg/The.Polygamist.S01E22.540p.X265.AAC._9jaRocks.Com.jpg"
   }
 
 ];
@@ -4665,9 +4693,6 @@ function loadPolygamistEpisodes(){
   episodesSubtitle.textContent =
     polygamistEpisodes.length + " episodes available";
 
-  const polygamistThumbnail =
-    "https://res.cloudinary.com/zveaunox/image/upload/v1788455560/IMG_2009.jpg";
-
   episodesRow.innerHTML =
     polygamistEpisodes.map((episode,index)=>{
 
@@ -4680,7 +4705,7 @@ function loadPolygamistEpisodes(){
           <div class="episode-image">
 
             <img
-              src="${polygamistThumbnail}"
+              src="${escapeHTML(episode.thumbnail || "https://res.cloudinary.com/zveaunox/image/upload/v1788455560/IMG_2009.jpg")}"
               alt="${escapeHTML(episode.title)}"
               loading="lazy"
              decoding="async">
