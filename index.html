@@ -2591,6 +2591,9 @@ section,.section,.content-section,[id]{scroll-margin-top:88px}
   .bk-master-container{padding-inline:14px}
 }
 </style>
+<style id="bk-live-editorial-hardening">
+.bk-live-story-media{display:block;width:100%;aspect-ratio:16/9;background:#151515;overflow:hidden}.bk-live-story-media img{width:100%;height:100%;object-fit:cover}.bk-live-story-media-fallback{display:flex;align-items:center;justify-content:center;color:#777;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}.bk-live-description{color:#999!important;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.bk-live-story-copy p:last-child{margin-top:auto}.bk-live-feed{grid-template-columns:repeat(3,minmax(0,1fr));min-width:0}.bk-live-story-card{min-width:0}@media(max-width:1100px){.bk-live-feed{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.bk-live-feed{grid-template-columns:1fr}.bk-live-story-copy{padding:16px}.bk-live-story-copy h3{font-size:18px}}
+</style>
 </head>
 <body id="top">
 <div aria-label="BRENZKafrica Plus" id="bk-opening-opener" role="presentation">
@@ -8457,73 +8460,115 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
   setInterval(()=>{if(document.visibilityState==='visible')loadBKWeather();},5*60*1000);
 })();
 </script>
-<script>
+<script id="bk-live-editorial-engine">
 (function(){
+  'use strict';
   const feeds={
-    technology:{id:'technology',query:'(technology OR artificial intelligence OR startup OR cybersecurity OR fintech)',label:'Technology'},
-    health:{id:'health',query:'(health OR healthcare OR medical OR public health OR medicine)',label:'Health'},
-    travel:{id:'travel',query:'(travel OR tourism OR safari OR destination OR airline OR hotel)',label:'Travel'},
-    culture:{id:'culture',query:'(culture OR heritage OR art OR fashion OR music OR film OR literature)',label:'Culture'},
-    earth:{id:'earth',query:'(climate OR environment OR conservation OR wildlife OR sustainability OR biodiversity)',label:'Earth'}
+    technology:{id:'technology',label:'Technology',query:'(technology OR "artificial intelligence" OR startup OR cybersecurity OR fintech)',rss:'technology OR "artificial intelligence" OR cybersecurity OR startup OR fintech'},
+    health:{id:'health',label:'Health',query:'(health OR healthcare OR medical OR "public health" OR medicine)',rss:'health OR healthcare OR medical OR medicine'},
+    travel:{id:'travel',label:'Travel',query:'(travel OR tourism OR safari OR destination OR airline OR hotel)',rss:'travel OR tourism OR safari OR destination OR airline OR hotel'},
+    culture:{id:'culture',label:'Culture',query:'(culture OR heritage OR art OR fashion OR music OR film OR literature)',rss:'culture OR heritage OR art OR fashion OR music OR film OR literature'},
+    earth:{id:'earth',label:'Earth',query:'(climate OR environment OR conservation OR wildlife OR sustainability OR biodiversity)',rss:'climate OR environment OR conservation OR wildlife OR sustainability OR biodiversity'}
   };
+  const CACHE_PREFIX='brenzkafrica_plus_editorial_v2_';
   const esc=v=>String(v==null?'':v).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   const domainName=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch(e){return ''}};
-  const validDate=v=>{if(v===null||v===undefined||v==='')return null;const raw=String(v);const d=new Date(raw.length===14&&/^[0-9]{14}$/.test(raw)?raw.slice(0,4)+'-'+raw.slice(4,6)+'-'+raw.slice(6,8)+'T'+raw.slice(8,10)+':'+raw.slice(10,12)+':'+raw.slice(12,14):raw);return Number.isNaN(d.getTime())?null:d};
-  const timeText=v=>{const d=validDate(v);return d?d.toLocaleString([], {dateStyle:'medium',timeStyle:'short'}):'Published time unavailable'};
+  const validUrl=u=>{try{const x=new URL(String(u||''));return /^https?:$/.test(x.protocol)}catch(e){return false}};
+  const validDate=v=>{
+    if(v===null||v===undefined||v==='')return null;
+    const raw=String(v).trim();
+    let d;
+    if(/^\d{14}$/.test(raw)) d=new Date(raw.slice(0,4)+'-'+raw.slice(4,6)+'-'+raw.slice(6,8)+'T'+raw.slice(8,10)+':'+raw.slice(10,12)+':'+raw.slice(12,14)+'Z');
+    else d=new Date(raw);
+    return Number.isNaN(d.getTime())?null:d;
+  };
+  const timeText=v=>{const d=validDate(v);return d?d.toLocaleString([], {dateStyle:'medium',timeStyle:'short'}):'Latest update'};
+  const cleanText=v=>String(v==null?'':v).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+  const normalize=item=>{
+    if(!item)return null;
+    const url=item.url||item.link||'';
+    const title=cleanText(item.title||item.name||'');
+    if(!title||!validUrl(url))return null;
+    const image=item.socialimage||item.thumbnail||item.image||item.enclosure?.link||'';
+    return {title,url,image:validUrl(image)?image:'',source:item.domain||item.source||domainName(url)||'Source',date:item.seendate||item.pubDate||item.date||'',description:cleanText(item.description||item.content||'').slice(0,240)};
+  };
+  const dedupe=items=>{
+    const seen=new Set();
+    return items.map(normalize).filter(Boolean).filter(x=>{const k=x.url+'|'+x.title;if(seen.has(k))return false;seen.add(k);return true}).slice(0,8);
+  };
   function articleCard(a,label){
-    const title=a.title||'Latest '+label+' update';
-    const url=a.url||'#';
-    const image=a.socialimage||'';
-    const source=a.domain||domainName(url)||'Source';
-    const date=a.seendate||'';
-    return '<article class="bk-live-story-card">'+(image?'<a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(image)+'" alt="'+esc(title)+'" loading="lazy" decoding="async"></a>':'')+'<div class="bk-live-story-copy"><span>'+esc(source)+'</span><h3><a href="'+esc(url)+'" target="_blank" rel="noopener noreferrer">'+esc(title)+'</a></h3><p>'+esc(timeText(date))+'</p></div></article>';
+    const media=a.image
+      ? '<a class="bk-live-story-media" href="'+esc(a.url)+'" target="_blank" rel="noopener noreferrer"><img src="'+esc(a.image)+'" alt="'+esc(a.title)+'" loading="lazy" decoding="async" onerror="this.parentElement.remove()"></a>'
+      : '<div class="bk-live-story-media bk-live-story-media-fallback"><span>'+esc(label)+'</span></div>';
+    return '<article class="bk-live-story-card">'+media+'<div class="bk-live-story-copy"><span>'+esc(a.source)+'</span><h3><a href="'+esc(a.url)+'" target="_blank" rel="noopener noreferrer">'+esc(a.title)+'</a></h3>'+(a.description?'<p class="bk-live-description">'+esc(a.description)+'</p>':'')+'<p>'+esc(timeText(a.date))+'</p></div></article>';
   }
-  async function fetchFeed(config){
-    const endpoint='https://api.gdeltproject.org/api/v2/doc/doc?query='+encodeURIComponent(config.query)+'&mode=artlist&maxrecords=8&timespan=24h&sort=datedesc&format=json';
-    const response=await fetch(endpoint,{cache:'no-store'}); if(!response.ok)throw new Error('GDELT request failed');
-    const data=await response.json(); return Array.isArray(data.articles)?data.articles:[];
+  function cacheRead(config){
+    try{const raw=localStorage.getItem(CACHE_PREFIX+config.id);if(!raw)return[];const data=JSON.parse(raw);return Array.isArray(data)?dedupe(data):[]}catch(e){return[]}}
+  function cacheWrite(config,items){try{localStorage.setItem(CACHE_PREFIX+config.id,JSON.stringify(items))}catch(e){}}
+  async function fetchGDELT(config){
+    const endpoint='https://api.gdeltproject.org/api/v2/doc/doc?query='+encodeURIComponent(config.query)+'&mode=artlist&maxrecords=12&timespan=72h&sort=datedesc&format=json';
+    const r=await brenzSafeFetch(endpoint,{timeout:10000,cache:'no-store'});
+    if(!r.ok)throw new Error('GDELT '+r.status);
+    const d=await r.json();
+    return dedupe(Array.isArray(d.articles)?d.articles:[]);
+  }
+  async function fetchRSS(config){
+    const rss='https://news.google.com/rss/search?q='+encodeURIComponent(config.rss)+'&hl=en-US&gl=US&ceid=US:en';
+    const proxy='https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent(rss)+'&count=12';
+    const r=await brenzSafeFetch(proxy,{timeout:9000,cache:'no-store'});
+    if(!r.ok)throw new Error('RSS '+r.status);
+    const d=await r.json();
+    return dedupe(Array.isArray(d.items)?d.items:[]);
+  }
+  async function fetchLive(config){
+    const results=[];
+    try{results.push(...await fetchGDELT(config))}catch(e){console.warn('BRENZKafrica '+config.label+' GDELT feed:',e)}
+    if(results.length<4){try{results.push(...await fetchRSS(config))}catch(e){console.warn('BRENZKafrica '+config.label+' RSS feed:',e)}}
+    return dedupe(results);
+  }
+  function showFeed(section,feed,items,config,live){
+    feed.innerHTML=items.map(a=>articleCard(a,config.label)).join('');
+    feed.style.display='grid';
+    const fallback=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');
+    if(fallback)fallback.style.display=live?'none':'grid';
+    const status=section.querySelector('.bk-live-status');
+    if(status)status.textContent=live?'Live update '+new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}):'Latest saved update';
   }
   async function loadEditorial(config){
     const section=document.getElementById(config.id); if(!section)return;
-    const old=section.querySelector('.bk-live-feed');
-    if(!old)return;
-    try{
-      const articles=await fetchFeed(config);
-      const usable=articles.filter(a=>a&&a.title&&a.url);
-      if(!usable.length){old.style.display='none';return;}
-      old.innerHTML=usable.map(a=>articleCard(a,config.label)).join('');
-      old.style.display='grid';
-      const fallback=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');
-      if(fallback)fallback.style.display='none';
-      const status=section.querySelector('.bk-live-status');
-      if(status){const now=new Date();status.textContent='Updated '+now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});}
-    }catch(error){
-      console.warn('BRENZKafrica '+config.label+' feed error:',error);
-      old.style.display='none';
+    let feed=section.querySelector('.bk-live-feed');
+    if(!feed){
+      const grid=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');
+      if(!grid)return;
+      feed=document.createElement('div');feed.className='bk-live-feed';grid.parentNode.insertBefore(feed,grid);
+    }
+    const cached=cacheRead(config);
+    if(cached.length)showFeed(section,feed,cached,config,false);
+    const items=await fetchLive(config);
+    if(items.length){cacheWrite(config,items);showFeed(section,feed,items,config,true);}
+    else if(!cached.length){
       const fallback=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');
       if(fallback)fallback.style.display='grid';
       const status=section.querySelector('.bk-live-status');
-      if(status)status.textContent='Showing latest available stories';
+      if(status)status.textContent='Editorial feed ready for the next update';
     }
   }
+  Object.values(feeds).forEach(config=>{
+    const section=document.getElementById(config.id);if(!section)return;
+    const grid=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');if(!grid)return;
+    const feed=document.createElement('div');feed.className='bk-live-feed';feed.style.display='none';
+    const heading=section.querySelector('.section-heading');
+    if(heading){const status=document.createElement('div');status.className='bk-live-status';status.textContent='Live feed';heading.appendChild(status)}
+    grid.parentNode.insertBefore(feed,grid);
+  });
   async function refreshAll(){
     if(document.visibilityState!=='visible')return;
     await Promise.allSettled(Object.values(feeds).map(loadEditorial));
   }
-  Object.values(feeds).forEach(config=>{
-    const section=document.getElementById(config.id); if(!section)return;
-    const grid=section.querySelector('.bk-editorial-grid,.bk-card-grid,.bk-travel-grid,.bk-culture-grid,.bk-earth-layout');
-    if(!grid)return;
-    const feed=document.createElement('div'); feed.className='bk-live-feed';
-    feed.innerHTML='<div class="bk-data-loading">Loading '+esc(config.label)+' updates...</div>';
-    feed.style.display='none';
-    const status=document.createElement('div'); status.className='bk-live-status'; status.textContent='Updating automatically';
-    const heading=section.querySelector('.section-heading'); if(heading)heading.appendChild(status);
-    grid.parentNode.insertBefore(feed,grid);
-  });
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',refreshAll,{once:true});else refreshAll();
   setInterval(refreshAll,5*60*1000);
 })();
+</script>
 </script>
 <script id="bk-floating-bubble-nav-js">
 (function(){
